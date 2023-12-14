@@ -50,7 +50,7 @@ function M.update(datamodel)
     end
 
     for _ in load_tutorial_template_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/template.rml"}, function(s) return s:match("^tutorial.*$") end)
+        iui.open({rml = "/pkg/vaststars.resources/ui/tutorial_list.rml"}, function(s) return s:match("^tutorial.*$") end)
     end
 end
 

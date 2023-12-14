@@ -393,4 +393,10 @@ return {
       infinite_item = false,
     },
     camera = "/pkg/vaststars.resources/camera_default.prefab",
+    tutorial_desc = "学习如何物流搭建。",
+    tutorial_details = {
+      "放置无人机平台收集开采出来的矿物 3",
+      "放置无人机平台收集开采出来的矿物 3",
+      "放置无人机平台收集开采出来的矿物 3",
+    },
 }

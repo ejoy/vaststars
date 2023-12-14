@@ -1,0 +1,145 @@
+<rml>
+    <head>
+        <style path = "/pkg/vaststars.resources/ui/common.rcss"/>
+        <style>
+            body:after {
+                position: absolute;
+                z-index: -1;
+                width: 100vmax;
+                height: 100vmin;
+                background-image: /pkg/vaststars.resources/ui/textures/tutorial-list/bg.texture;
+                background-size: 100% 100%;
+            }
+            header-container {
+                height: 13.05vmin;
+                width: 100%;
+                flex-direction: row;
+            }
+            caption-line-container {
+                width: 38.745vmax;
+                height: 100%;
+                align-items: center;
+            }
+            caption-line {
+                width: 15.34vmax;
+                height: 0.15vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture";
+                background-size: 100% 100%;
+            }
+            caption {
+                height: 100%;
+                width: 22.51vmax;
+            }
+            left-box {
+                position: absolute;
+                left: 6.01vmax;
+                top: 22.98vmin;
+                width: 13.21vmax;
+                height: 35.67vmin;
+                gap: 1.71vmin;
+            }
+            tab {
+                background-size: 100% 100%;
+                width: 13.21vmax;
+                height: 7.63vmin;
+            }
+            .tab-normal {
+                background-image: "/pkg/vaststars.resources/ui/textures/tutorial-list/tab-bg.texture";
+            }
+            .tab-active {
+                background-image: "/pkg/vaststars.resources/ui/textures/tutorial-list/tab-bg-active.texture";
+            }
+            frame {
+                position: absolute;
+                left: 19.22vmax;
+                top: 11.84vmin;
+                width: 73.43vmax;
+                height: 81.31vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 4.22% 6.27% 4.22% 6.27% 49.22% 49.22%;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                gap: 5.14vmin;
+            }
+            detail {
+                width: 32.63vmin;
+                height: 46.73vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/tutorial-list/detail-square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 39.38% 14.33% 20.05% 14.17% 65.74% 49.71%;
+            }
+            button {
+                -webkit-text-stroke: 0.5vmin rgb(40, 40, 40);
+                background-image: /pkg/vaststars.resources/ui/textures/common/button-green-grid.texture;
+                width: 36.84vmin;
+                height: 9.97vmin;
+                background-size: 100% 100%;
+                background-lattice: 13.53% 50.00% 13.11% 48.44% 50.00% 50.00%
+                margin: 3.90vmin 0 0 4.00vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 6.00vmin;
+            }
+            button:active {
+                background-image: /pkg/vaststars.resources/ui/textures/common/button-green-grid-active.texture;
+                width: 36.84vmin;
+                height: 9.97vmin;
+                background-size: 100% 100%;
+                background-lattice: 13.53% 50.00% 13.11% 48.44% 50.00% 50.00%
+                margin: 3.90vmin 0 0 4.00vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 6.00vmin;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local args = ...
+            local start = window.createModel(args or {})
+            local audio = import_package "ant.audio"
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+
+            function start.clickTab(name)
+                start.name = name
+            end
+
+            function start.clickClose()
+                ui_sys.close(window)
+            end
+
+            function start.clickButton(...)
+                audio.play("event:/ui/button1")
+                ui_sys.pub(window, {...})
+            end
+        </script>
+    </head>
+    <body style = "pointer-events: none;">
+        <header-container>
+            <caption-line-container style = "flex-direction: row-reverse;"><caption-line /></caption-line-container>
+            <caption style = "font-size: 6.50vmin; justify-content: center; align-items: center;">游 戏 教 学</caption>
+            <caption-line-container style = "flex-direction: row;"><caption-line /></caption-line-container>
+        </header-container>
+        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+        <left-box>
+            <tab style = "align-items: center; justify-content: center;" data-for = "tutorials" data-attr-class = "it.name == name and 'tab-active' or 'tab-normal'" data-event-click = "clickTab(it.name)">
+                <div style = "font-size: 4.67vmin">{{it.name}}</div>
+            </tab>
+        </left-box>
+        <frame data-for = "tutorials" data-if = "name == it.name">
+            <div style = "font-size: 4.67vmin; flex-direction: row;">
+                <div style = "background-image: /pkg/vaststars.resources/ui/textures/tutorial-list/icon.texture; width: 8.49vmin; height: 6.54vmin; background-size: 100% 100%;"/>
+                {{it.desc}}
+            </div>
+            <div style = "font-size: 4.67vmin; flex-direction: row; gap: 8.37vmin;">
+                <detail data-for = "v : it.details" style = "align-items: center;">
+                    <div style = "margin-top: 6.67vmin; width: 90%; word-break: break-word;">{{v}}</div>
+                </detail>
+            </div>
+            <button data-event-click = "clickButton('start_game', it.template)">
+                进入教程
+            </button>
+        </frame>
+    </body>
+</rml>
