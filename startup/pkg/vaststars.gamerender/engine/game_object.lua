@@ -82,11 +82,6 @@ local getHitchChildren, stopWorld, restartWorld ; do
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end
-
-                    if e.anim_ctrl then
-                        -- special handling for keyframe animations
-                        iani.load_events(eid, getEventFile(prefab))
-                    end
                 end
 
                 -- special handling for work_start & idle_start work status

@@ -1,8 +1,0 @@
-confirm:
-  ---
-  event_list:
-    ---
-    event_type: Message
-    msg_content: ""
-    name: confirm
-  time: 0.24
