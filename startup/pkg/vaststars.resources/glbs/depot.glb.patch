@@ -26,12 +26,9 @@ value:
   data:
     scene:
       t: {-2.5, 6, -2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_1
 ---
@@ -42,12 +39,9 @@ value:
   data:
     scene:
       t: {-2.5, 6, 2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_2
 ---
@@ -58,12 +52,9 @@ value:
   data:
     scene:
       t: {2.5, 6, -2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_3
 ---
@@ -74,12 +65,9 @@ value:
   data:
     scene:
       t: {2.5, 6, 2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_4
 ---
@@ -124,47 +112,35 @@ value:
   data:
     scene:
       t: {-2.5, 6, -2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_1
   ---
   data:
     scene:
       t: {-2.5, 6, 2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_2
   ---
   data:
     scene:
       t: {2.5, 6, -2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_3
   ---
   data:
     scene:
       t: {2.5, 6, 2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_4

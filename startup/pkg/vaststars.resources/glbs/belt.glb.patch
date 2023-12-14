@@ -6,12 +6,9 @@ value:
   data:
     scene:
       t: {0, 5, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot
 ---

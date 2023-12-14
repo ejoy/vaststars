@@ -7,12 +7,9 @@ value:
     scene:
       s: {1.5, 1.5, 1.5}
       t: {0, 3.7491300106048584, -1.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item
 ---
@@ -22,12 +19,9 @@ path: /-
 value:
   data:
     scene: {}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     arrow
 ---
@@ -83,22 +77,16 @@ value:
     scene:
       s: {1.5, 1.5, 1.5}
       t: {0, 3.7491300106048584, -1.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item
   ---
   data:
     scene: {}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     arrow

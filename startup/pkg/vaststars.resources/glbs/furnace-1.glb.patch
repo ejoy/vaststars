@@ -7,12 +7,9 @@ value:
     scene:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       t: {-10, 4.5, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf1
 ---
@@ -24,12 +21,9 @@ value:
     scene:
       r: {0, 0, 0, 1}
       t: {0, 4.5, 15}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf2
 ---
@@ -41,12 +35,9 @@ value:
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       t: {10, 7.5, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf3
 ---
@@ -58,12 +49,9 @@ value:
     scene:
       r: {0, -0.9238795042037964, 0, 0.3826834261417389}
       t: {-10, 4.5, -11.399999618530273}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf4
 ---
@@ -75,12 +63,9 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 4.5, -15}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf5
 ---
@@ -92,12 +77,9 @@ value:
     scene:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       t: {10, 4.5, -10}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf6
 ---
@@ -273,12 +255,9 @@ value:
     scene:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       t: {-10, 4.5, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf1
   ---
@@ -286,12 +265,9 @@ value:
     scene:
       r: {0, 0, 0, 1}
       t: {0, 4.5, 15}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf2
   ---
@@ -299,12 +275,9 @@ value:
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       t: {10, 7.5, 10}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf3
   ---
@@ -312,12 +285,9 @@ value:
     scene:
       r: {0, -0.9238795042037964, 0, 0.3826834261417389}
       t: {-10, 4.5, -11.399999618530273}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf4
   ---
@@ -325,12 +295,9 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 4.5, -15}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf5
   ---
@@ -338,11 +305,8 @@ value:
     scene:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       t: {10, 4.5, -10}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     shelf6

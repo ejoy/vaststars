@@ -17,12 +17,11 @@ local function slots(fullpath)
     local res = {}
     local t = parse(fullpath)
     for _, v in ipairs(t) do
-        if v.data and v.data.slot then
+        if v.data and v.data.scene and v.tag and v.tag[1] then
             v.data.scene.s = v.data.scene.s or mc.ONE
             v.data.scene.r = v.data.scene.r or mc.IDENTITY_QUAT
             v.data.scene.t = v.data.scene.t or mc.ZERO_PT
-
-            local name = assert(v.tag[1])
+            local name = v.tag[1]
             res[name] = v.data
         end
     end

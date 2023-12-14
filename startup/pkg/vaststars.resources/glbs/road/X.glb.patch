@@ -8,11 +8,8 @@ value:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {3.5, 0, -5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2t_1
@@ -26,11 +23,8 @@ value:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {3.5, 0, 5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2t_2
@@ -44,11 +38,8 @@ value:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-3.5, 0, 5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2b_1
@@ -62,11 +53,8 @@ value:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-3.5, 0, -5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2b_2
@@ -80,11 +68,8 @@ value:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 0, 3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_r2l_1
@@ -98,11 +83,8 @@ value:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 0, 3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_r2l_2
@@ -116,11 +98,8 @@ value:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 0, -3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2r_1
@@ -134,11 +113,8 @@ value:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 0, -3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2r_2
@@ -152,11 +128,8 @@ value:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {3.5, 0, -7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2r_1
@@ -170,11 +143,8 @@ value:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {4, 0, -4.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2r_2
@@ -188,11 +158,8 @@ value:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {7.5, 0, -3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2r_3
@@ -206,11 +173,8 @@ value:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {3.5, 0, -7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2l_1
@@ -224,11 +188,8 @@ value:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {0, 0, 0}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2l_2
@@ -242,11 +203,8 @@ value:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-7.5, 0, 3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_b2l_3
@@ -260,11 +218,8 @@ value:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-3.5, 0, 7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2r_1
@@ -278,11 +233,8 @@ value:
       r: {0, 0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
       t: {0, 0, 0}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2r_2
@@ -296,11 +248,8 @@ value:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {7.5, 0, -3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2r_3
@@ -314,11 +263,8 @@ value:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-3.5, 0, 7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2l_1
@@ -332,11 +278,8 @@ value:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
       t: {-4.5, 0, 4}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2l_2
@@ -350,11 +293,8 @@ value:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-7.5, 0, 3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_t2l_3
@@ -368,11 +308,8 @@ value:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {7.5, 0, 3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_r2b_1
@@ -386,11 +323,8 @@ value:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
       t: {0, 0, 0}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_r2b_2
@@ -404,11 +338,8 @@ value:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-3.5, 0, -7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_r2b_3
@@ -426,7 +357,7 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
     ant.scene|scene_object
   tag:
     path_r2t_1
@@ -440,11 +371,8 @@ value:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {4, 0, 4.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_r2t_2
@@ -458,11 +386,8 @@ value:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {3.5, 0, 7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_r2t_3
@@ -476,11 +401,8 @@ value:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-7.5, 0, -3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2b_1
@@ -494,11 +416,8 @@ value:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       s: {1, 1, 1}
       t: {-4, 0, -4.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2b_2
@@ -512,11 +431,8 @@ value:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-3.5, 0, -7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2b_3
@@ -530,11 +446,8 @@ value:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-7.5, 0, -3.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2t_1
@@ -548,11 +461,8 @@ value:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {0, 0, 0}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2t_2
@@ -566,11 +476,8 @@ value:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {3.5, 0, 7.5}
-    slot:
-      follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
     ant.scene|scene_object
   tag:
     path_l2t_3
@@ -582,12 +489,9 @@ value:
   data:
     scene:
       t: {3.5, 0, -7.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_b2b_1
 ---
@@ -599,12 +503,9 @@ value:
     scene:
       r: {0, -0.30070579051971436, 0, 0.9537169337272644}
       t: {2.5, 0, -4.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_b2b_2
 ---
@@ -615,12 +516,9 @@ value:
   data:
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_b2b_3
 ---
@@ -632,12 +530,9 @@ value:
     scene:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       t: {-2.5, 0, -4.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_b2b_4
 ---
@@ -649,12 +544,9 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {-3.5, 0, -7.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_b2b_5
 ---
@@ -666,12 +558,9 @@ value:
     scene:
       r: {0, -1, 0, -4.371138828673793e-08}
       t: {-3.5, 0, 7.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_t2t_1
 ---
@@ -683,12 +572,9 @@ value:
     scene:
       r: {0, 0.9537169337272644, 0, 0.30070582032203674}
       t: {-2.5, 0, 4.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_t2t_2
 ---
@@ -699,12 +585,9 @@ value:
   data:
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_t2t_3
 ---
@@ -716,12 +599,9 @@ value:
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       t: {2.5, 0, 4.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_t2t_4
 ---
@@ -732,12 +612,9 @@ value:
   data:
     scene:
       t: {3.5, 0, 7.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_t2t_5
 ---
@@ -749,12 +626,9 @@ value:
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {-7.5, 0, -3.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_l2l_1
 ---
@@ -766,12 +640,9 @@ value:
     scene:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       t: {-4.5, 0, -2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_l2l_2
 ---
@@ -782,12 +653,9 @@ value:
   data:
     scene:
       r: {0, 0, 0, 1}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_l2l_3
 ---
@@ -799,12 +667,9 @@ value:
     scene:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       t: {-4.5, 0, 2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_l2l_4
 ---
@@ -816,12 +681,9 @@ value:
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       t: {-7.5, 0, 3.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_l2l_5
 ---
@@ -833,12 +695,9 @@ value:
     scene:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       t: {7.5, 0, 3.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_r2r_1
 ---
@@ -850,12 +709,9 @@ value:
     scene:
       r: {0, -0.9238795042037964, 0, 0.3826834261417389}
       t: {4.5, 0, 2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_r2r_2
 ---
@@ -866,12 +722,9 @@ value:
   data:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_r2r_3
 ---
@@ -883,12 +736,9 @@ value:
     scene:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       t: {4.5, 0, -2.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_r2r_4
 ---
@@ -900,12 +750,9 @@ value:
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {7.5, 0, -3.5}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_r2r_5
 ---
@@ -922,7 +769,7 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
     ant.scene|scene_object
   tag:
     path_start_r
@@ -940,7 +787,7 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
     ant.scene|scene_object
   tag:
     path_start_t
@@ -958,7 +805,7 @@ value:
       follow_flag: 1
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
     ant.scene|scene_object
   tag:
     path_start_l
@@ -970,12 +817,9 @@ value:
   data:
     scene:
       t: {3.5, 0, -10}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     path_start_b
 ---

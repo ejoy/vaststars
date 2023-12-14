@@ -11,12 +11,9 @@ value:
   data:
     scene:
       t: {-2.700000047683716, 5, 2.700000047683716}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot
 ---
@@ -27,12 +24,9 @@ value:
   data:
     scene:
       t: {0.25, 5, 2.700000047683716}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_1
 ---
@@ -44,12 +38,9 @@ value:
     scene:
       r: {0, 0, 0, 1}
       t: {-5.550000190734863, 5, 2.700000047683716}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_2
 ---
@@ -71,24 +62,18 @@ value:
   data:
     scene:
       t: {-2.700000047683716, 5, 2.700000047683716}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot
   ---
   data:
     scene:
       t: {0.25, 5, 2.700000047683716}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_1
   ---
@@ -96,11 +81,8 @@ value:
     scene:
       r: {0, 0, 0, 1}
       t: {-5.550000190734863, 5, 2.700000047683716}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     item_slot_2

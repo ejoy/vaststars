@@ -26,12 +26,9 @@ value:
   data:
     scene:
       t: {0, 5.6971516609191895, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     park
 ---
@@ -76,11 +73,8 @@ value:
   data:
     scene:
       t: {0, 5.6971516609191895, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     park

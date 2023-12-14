@@ -44,7 +44,7 @@ local function init_game(template)
     imountain:init(template.mountain)
     iscience.update_tech_list(gameplay_world)
 
-    rhwi.set_profie(template.performance_stats ~= false and gameplay_core.settings_get("debug", true) or false)
+    rhwi.set_profie(true)
     irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 1))
 
     iinventory.set_infinite_item(game_settings.infinite_item)

@@ -6,12 +6,9 @@ value:
   data:
     scene:
       t: {6.159999847412109, 7.059999942779541, -10.670000076293945}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot2
 ---
@@ -22,12 +19,9 @@ value:
   data:
     scene:
       t: {-6.159999847412109, 7.059999942779541, -10.670000076293945}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot3
 ---
@@ -38,12 +32,9 @@ value:
   data:
     scene:
       t: {12.319999694824219, 10.140000343322754, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot4
 ---
@@ -54,12 +45,9 @@ value:
   data:
     scene:
       t: {-12.319999694824219, 10.140000343322754, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot5
 ---
@@ -70,12 +58,9 @@ value:
   data:
     scene:
       t: {6.159999847412109, 16.040000915527344, 10.670000076293945}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot6
 ---
@@ -86,12 +71,9 @@ value:
   data:
     scene:
       t: {-6.159999847412109, 16.040000915527344, 10.670000076293945}
-    slot:
-      follow_flag: 1
-      joint_name: None
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot7
 ---
@@ -180,13 +162,10 @@ value:
     scene:
       parent: 111
       t: {6.159999847412109, 7.059999942779541, -10.670000076293945}
-    slot:
-      follow_flag: 1
-      joint_name: None
   index: 4
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot2
   ---
@@ -194,13 +173,10 @@ value:
     scene:
       parent: 111
       t: {-6.159999847412109, 7.059999942779541, -10.670000076293945}
-    slot:
-      follow_flag: 1
-      joint_name: None
   index: 5
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot3
   ---
@@ -208,13 +184,10 @@ value:
     scene:
       parent: 111
       t: {12.319999694824219, 10.140000343322754, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
   index: 6
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot4
   ---
@@ -222,12 +195,9 @@ value:
     scene:
       parent: 111
       t: {-12.319999694824219, 10.140000343322754, 0}
-    slot:
-      follow_flag: 1
-      joint_name: None
   index: 7
   mount: 1
   policy:
-    ant.animation|slot
+    ant.scene|scene_object
   tag:
     slot5
