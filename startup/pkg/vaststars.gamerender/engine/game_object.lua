@@ -56,13 +56,6 @@ local getHitchChildren, stopWorld, restartWorld ; do
     local cache = {}
     local NEXT_HITCH_GROUP = 1
 
-    local function getEventFile(prefab)
-        local PATTERN <const> = "^.*/(.*)%.glb|.*%.prefab$"
-        local match = prefab:match(PATTERN)
-        local eventFile = (match or assert(prefab:match("^.*/(.*)%.prefab$"))) .. ".event"
-        return ANIMATIONS_BASE_PATH .. eventFile
-    end
-
     function getHitchChildren(prefab, color, work_status, emissive_color, render_layer)
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)

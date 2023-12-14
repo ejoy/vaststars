@@ -134,7 +134,7 @@
             </div>
             <div style = "font-size: 4.67vmin; flex-direction: row; gap: 8.37vmin;">
                 <detail data-for = "v : it.details" style = "align-items: center;">
-                    <div style = "margin-top: 6.67vmin; width: 90%; word-break: break-word;">{{v}}</div>
+                    <richtext style = "margin-top: 6.67vmin; width: 90%; word-break: break-word;">{{v}}</richtext>
                 </detail>
             </div>
             <button data-event-click = "clickButton('start_game', it.template)">
