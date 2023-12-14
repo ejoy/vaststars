@@ -70,7 +70,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"碎石","铁矿石","铝矿石"},
     },
     count = 1,
-    time = "0s"
+    time = "1s"
   }
 
   -- prototype "搜索废墟" {
