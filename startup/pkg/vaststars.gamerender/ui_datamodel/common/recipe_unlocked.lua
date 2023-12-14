@@ -12,7 +12,7 @@ local function recipe_unlocked(recipe)
     end
     local tech = next(iprototype_cache.get("recipe_unlocked")[recipe])
     if not tech then
-        return true
+        return false
     end
     return gameplay_core.is_researched(tech)
 end

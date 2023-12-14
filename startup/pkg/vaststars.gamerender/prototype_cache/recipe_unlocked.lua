@@ -4,6 +4,7 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local iprototype_cache = ecs.require "prototype_cache"
+local gameplay_core = require "gameplay.core"
 
 return function ()
     local mt = {}
@@ -22,13 +23,23 @@ return function ()
     end
 
     local unlocked_tech = setmetatable({}, mt)
-    for name in pairs(iprototype_cache.get_techs()) do
+    local function _insert_unlocked_tech(name)
         local typeobject = iprototype.queryByName(name)
-        if typeobject.effects and typeobject.effects.unlock_recipe then
-            for _, prototype_name in ipairs(typeobject.effects.unlock_recipe) do
+        if typeobject.effects and typeobject.effects.unlock_item then
+            for _, prototype_name in ipairs(typeobject.effects.unlock_item) do
                 unlocked_tech[prototype_name][typeobject.name] = true
             end
         end
+    end
+
+    for name in pairs(iprototype_cache.get_techs()) do
+        _insert_unlocked_tech(name)
+    end
+
+    local game_template = gameplay_core.get_storage().game_template
+    local research_queue = ecs.require(("vaststars.prototype|%s"):format(game_template)).research_queue or {}
+    for _, name in ipairs(research_queue) do
+        _insert_unlocked_tech(name)
     end
 
     for prototype_name, v in pairs(unlocked_tech) do
