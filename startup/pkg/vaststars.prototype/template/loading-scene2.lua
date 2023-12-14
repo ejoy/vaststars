@@ -4615,7 +4615,7 @@ return {
     order = 4,
     guide = guide,
     show = true,
-    start_tech = "自动化教学",
+    start_tech = "登录科技",
     performance_stats = false,
     canvas_icon = false,
     init_ui = {
