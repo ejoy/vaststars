@@ -20,24 +20,6 @@ path: /maxsize
 value: 128
 ---
 file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, -13, 0}
-    slot:
-      follow_flag: 1
-      joint_name: Bone
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    water_slot
----
-file: mesh.prefab
 op: copyfile
 path: debris.prefab
 ---
@@ -74,17 +56,3 @@ value:
     ant.render|hitch_object
   tag:
     hitch
-  ---
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, -13, 0}
-    slot:
-      follow_flag: 1
-      joint_name: Bone
-  mount: 1
-  policy:
-    ant.animation|slot
-  tag:
-    water_slot
