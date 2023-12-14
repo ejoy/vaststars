@@ -767,7 +767,7 @@ prototype "熔炼炉1" {
     type = { "recipe" },
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
-    recipe_order =  50,
+    recipe_order =  55,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"铁板", 8},
@@ -784,7 +784,7 @@ prototype "熔炼炉2" {
     type = { "recipe" },
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
-    recipe_order =  51,
+    recipe_order =  56,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"钢板", 4},
@@ -802,7 +802,7 @@ prototype "熔炼炉3" {
     type = { "recipe" },
     recipe_craft_category = "生产中型制造",
     recipe_category =  "加工",
-    recipe_order =  51,
+    recipe_order =  57,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/furnace-design.texture",
     ingredients = {
         {"钛板", 5},
@@ -1523,7 +1523,7 @@ prototype "粉碎机1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  63,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"铁板", 4},
@@ -1541,7 +1541,7 @@ prototype "粉碎机2" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  64,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"绝缘线", 6},
@@ -1559,7 +1559,7 @@ prototype "粉碎机3" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  65,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/assembler-design.texture",
     ingredients = {
         {"采矿机III", 1},
@@ -1576,7 +1576,7 @@ prototype "仓库1" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  50,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/depot.texture",
     ingredients = {
         {"铁齿轮", 4},
