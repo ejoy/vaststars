@@ -253,15 +253,20 @@ function page_meta:show_detail(item_index, show)
         end
     end
 end
-
+local last_x
 function page_meta:on_pan(event)
     if self.page_count < 2 then
+        return
+    end
+    if event.state == 'began' or event.state == 'ended' then
+        last_x = event.x
         return
     end
     if not self.page_width then
         self.page_width = self.panel.childNodes[1].clientWidth
     end
-    local target_pos = self.pos + event.dx
+    local target_pos = self.pos + (event.x - last_x)
+    last_x = event.x
     if target_pos > 0 or target_pos < (1 - self.page_count) * self.page_width - 1 then
         return
     end

@@ -157,7 +157,8 @@ function list_meta:show_detail(it, show)
         end
     end
 end
-
+local last_x
+local last_y
 function list_meta:on_pan(event)
     -- if event.state == 'began' then
     --     self:on_panbegan(event)
@@ -167,9 +168,12 @@ function list_meta:on_pan(event)
     --     self:on_panended(event)
     -- end
     if event.state == 'began' or event.state == 'ended' then
+        last_x, last_y = event.x, event.y
         return
     end
-    local target_pos = (self.direction == 0) and (self.pos + event.dx) or (self.pos + event.dy)
+    -- local target_pos = (self.direction == 0) and event.x or event.y
+    local target_pos = (self.direction == 0) and (self.pos + (event.x - last_x)) or (self.pos + (event.y - last_y))
+    last_x, last_y = event.x, event.y
     if not self.min_pos then
         self.min_pos = (self.direction == 0) and (self.view.clientWidth - self.panel.clientWidth) or self.view.clientHeight - self.panel.clientHeight 
     end
