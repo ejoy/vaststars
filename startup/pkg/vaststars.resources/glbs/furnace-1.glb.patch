@@ -99,13 +99,13 @@ op: replace
 path: /2/data/anim_ctrl
 value:
   play_state:
-    ratio: 0.0
-    previous_ratio: 0.0
-    speed: 1.0
-    play: false
+    forwards: true
     loop: false
     manual_update: false
-    forwards: true
+    play: false
+    previous_ratio: 0
+    ratio: 0
+    speed: 1
 ---
 file: mesh.prefab
 op: copyfile
@@ -169,25 +169,6 @@ op: replace
 path: /2/data/animation_birth
 value: work
 ---
-file: work_start.prefab
-op: replace
-path: /2/data/anim_ctrl
-value:
-  play_state:
-    ratio: 0.0
-    previous_ratio: 0.0
-    speed: 1.0
-    play: true
-    loop: false
-    manual_update: false
-    forwards: true
----
-file: work_start.prefab
-op: replace
-path: /2/tag
-value:
-  animation_auto_triggered
----
 file: debris.prefab
 op: add
 path: /-
@@ -208,33 +189,54 @@ value:
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
 ---
 file: work_start.prefab
-op: replace
-path: /2/data/animation_birth
-value: work_start
----
-file: idle_start.prefab
-op: replace
-path: /2/data/animation_birth
-value: idle_start
----
-file: idle_start.prefab
-op: replace
-path: /2/data/anim_ctrl
+op: add
+path: /-
 value:
-  play_state:
-    ratio: 0.0
-    previous_ratio: 0.0
-    speed: 1.0
-    play: true
-    loop: false
-    manual_update: false
-    forwards: true
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work_start
+          event_type: Animation
+          forwards: true
+          name: furnace-1.glb-Animation4
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+    timeline_auto_triggered
 ---
 file: idle_start.prefab
-op: replace
-path: /2/tag
+op: add
+path: /-
 value:
-  animation_auto_triggered
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: idle_start
+          event_type: Animation
+          forwards: true
+          name: furnace-1.glb-Animation3
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline2
+    timeline_auto_triggered
 ---
 file: mesh.prefab
 op: createfile

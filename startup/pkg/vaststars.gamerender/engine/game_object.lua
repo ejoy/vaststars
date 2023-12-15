@@ -71,17 +71,20 @@ local getHitchChildren, stopWorld, restartWorld ; do
             group = hitch_group_id,
             on_ready = function (self)
                 for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update anim_ctrl?in")
+                    local e <close> = world:entity(eid, "render_object?update timeline?in")
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end
+
+                    if e.timeline then
+                        e.timeline.eid_map = self.tag
+                    end
                 end
 
-                -- special handling for work_start & idle_start work status
-                if self.tag["animation_auto_triggered"] then
-                    for _, eid in ipairs(self.tag["animation_auto_triggered"]) do
-                        local e <close> = world:entity(eid, "animation_auto_triggered?out")
-                        e.animation_auto_triggered = true
+                if self.tag["timeline_auto_triggered"] then
+                    for _, eid in ipairs(self.tag["timeline_auto_triggered"]) do
+                        local e <close> = world:entity(eid, "timeline_auto_triggered?out")
+                        e.timeline_auto_triggered = true
                     end
                 end
 

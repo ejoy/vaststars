@@ -16,7 +16,7 @@ import_feature "ant.shadow_bounding|scene_bounding_pack"
 import_feature "ant.timeline"
 
 component "efk_auto_triggered"
-component "animation_auto_triggered"
+component "timeline_auto_triggered"
 
 system "ui_system"
     .implement "engine/system/ui_system.lua"

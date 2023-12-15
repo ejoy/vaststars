@@ -114,7 +114,7 @@ function debug_sys:ui_update()
         local pos = icamera_controller.screen_to_world(x, y, XZ_PLANE)
         local coord = icoord.position2coord(pos)
         if coord then
-            local pp = icoord.position(coord[1], coord[2], 256, 256)
+            local pp = icoord.position(coord[1], coord[2], 1, 1)
             log.info(("gesture tap coord: (%d, %d), position: (%.2f, %.2f, %.2f)"):format(coord[1], coord[2], pp[1], pp[2], pp[3]))
             log.info(("group(%s)"):format(igroup.id(coord[1], coord[2])))
 

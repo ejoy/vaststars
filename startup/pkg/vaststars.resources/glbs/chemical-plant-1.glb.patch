@@ -155,6 +155,29 @@ value:
     speed: 1
 ---
 file: idle_start.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: idle_start
+          event_type: Animation
+          name: Animation2
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+    timeline_auto_triggered
+---
+file: idle_start.prefab
 op: replace
 path: /2/data/animation_birth
 value: idle_start
@@ -171,12 +194,6 @@ value:
     previous_ratio: 0
     ratio: 0
     speed: 1
----
-file: idle_start.prefab
-op: replace
-path: /2/tag
-value:
-  animation_auto_triggered
 ---
 file: work_start.prefab
 op: add
@@ -199,6 +216,7 @@ value:
     ant.timeline|timeline
   tag:
     timeline1
+    timeline_auto_triggered
 ---
 file: work_start.prefab
 op: replace
@@ -217,12 +235,6 @@ value:
     previous_ratio: 0
     ratio: 0
     speed: 1
----
-file: work_start.prefab
-op: replace
-path: /2/tag
-value:
-  animation_auto_triggered
 ---
 file: mesh.prefab
 op: createfile

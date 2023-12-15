@@ -33,7 +33,7 @@ local work_status_sys = ecs.system "work_status_system"
 local ipower_check = ecs.require "power_check_system"
 local iprototype = require "gameplay.interface.prototype"
 local iefk = ecs.require "ant.efk|efk"
-local iani = ecs.require "ant.anim_ctrl|state_machine"
+local itl = ecs.require "ant.timeline|timeline"
 local itimer = ecs.require "utility.timer"
 
 local work_statuses = {} -- gameplay_eid -> work_status
@@ -114,9 +114,8 @@ local function _update_work_status()
         ::continue::
     end
 
-    for e in w:select "animation_auto_triggered anim_ctrl:in eid:in animation_birth:in" do
-        local play_state = e.anim_ctrl.play_state
-        iani.play(e.eid, {name = e.animation_birth, loop = play_state.loop, speed = play_state.speed, manual = play_state.manual_update, forwards = true})
+    for e in w:select "timeline_auto_triggered timeline:in" do
+        itl.start(e)
     end
 end
 
