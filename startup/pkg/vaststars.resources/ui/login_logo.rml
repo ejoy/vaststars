@@ -24,10 +24,19 @@
                 height: 26.56vmin;
                 left: 4.97vmax;
             }
+            @keyframes walk {
+                from {
+                    left: 5vmax;
+                }
+                to {
+                    left: 5.6vmax;
+                }
+            }
             info {
                 font-size: 2.5vmin;
                 color: rgb(145, 141, 141);
-                left: 4.97vmax;
+                left: 5vmax;
+                animation:0.65s exponential 0s infinite alternate walk;
             }
         </style>
         <script type="text/x-lua" >
