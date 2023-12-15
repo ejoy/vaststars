@@ -2594,7 +2594,7 @@ prototype "维修水电站" {
     type = { "recipe" },
     recipe_craft_category = "建筑打印",
     recipe_category =  "加工",
-    recipe_order =  60,
+    recipe_order =  59,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/hydroplant-design.texture",
     ingredients = {
         {"石砖", 16},
