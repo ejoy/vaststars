@@ -124,7 +124,7 @@
         <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
         <left-box>
             <tab style = "align-items: center; justify-content: center;" data-for = "tutorials" data-attr-class = "it.name == name and 'tab-active' or 'tab-normal'" data-event-click = "clickTab(it.name)">
-                <div style = "font-size: 4.67vmin">{{it.name}}</div>
+                <div style = "font-size: 4.67vmin; -webkit-text-stroke: 0.15vmin #000;">{{it.name}}</div>
             </tab>
         </left-box>
         <frame data-for = "tutorials" data-if = "name == it.name">
@@ -134,7 +134,7 @@
             </div>
             <div style = "font-size: 4.67vmin; flex-direction: row; gap: 8.37vmin;">
                 <detail data-for = "v, v_index : it.details" style = "align-items: center;">
-                    <div style = "width: 100%; margin-left: 4vmin;">{{v_index}}</div>
+                    <div style = "width: 100%; margin-left: 4vmin; -webkit-text-stroke: 0.2vmin #000; color: rgb(255, 255, 0);">{{v_index}}</div>
                     <richtext style = "margin-top: 6.67vmin; width: 90%; word-break: break-word;">{{v}}</richtext>
                 </detail>
             </div>
