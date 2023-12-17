@@ -70,7 +70,6 @@ value:
     ant.efk|efk
   tag:
     work
-    efk_auto_triggered
 ---
 file: work.prefab
 op: add

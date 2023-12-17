@@ -114,7 +114,7 @@ local function _update_work_status()
         ::continue::
     end
 
-    for e in w:select "timeline_auto_triggered timeline:in" do
+    for e in w:select "timeline:in" do
         itl.start(e)
     end
 end
@@ -133,12 +133,6 @@ end
 function work_status_sys:init_world()
     -- switch the working status of all machines every 3 seconds
     timer:interval(90, _update_work_status)
-
-    timer:interval(30, function()
-        for e in w:select "efk_auto_triggered efk:in eid:in" do
-            iefk.play(e)
-        end
-    end)
 end
 
 function work_status_sys:gameworld_update()

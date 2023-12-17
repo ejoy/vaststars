@@ -1,6 +1,12 @@
 ---
 file: mesh.prefab
 op: replace
+path: /2/tag
+value:
+  anim_ctrl
+---
+file: mesh.prefab
+op: replace
 path: /1/data/scene
 value:
   s: {2, 2, 2}
@@ -14,6 +20,19 @@ file: mesh.prefab
 op: replace
 path: /2/data/animation_birth
 value: Armature.001Action
+---
+file: mesh.prefab
+op: replace
+path: /2/data/anim_ctrl
+value:
+  play_state:
+    forwards: true
+    loop: true
+    manual_update: false
+    play: true
+    previous_ratio: 0
+    ratio: 0
+    speed: 1
 ---
 file: mesh.prefab
 op: createfile

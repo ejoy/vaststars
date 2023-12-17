@@ -11,6 +11,5 @@ block:
 	/pkg/ant.resources/textures/irbtn_normal.texture
 	/pkg/ant.resources/textures/texture_plane.texture
 	/pkg/vaststars.mod.test
-	/pkg/vaststars.tools
 ignore:
 	/web

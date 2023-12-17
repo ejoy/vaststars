@@ -1,4 +1,8 @@
 ---
+file: mesh.prefab
+op: copyfile
+path: debris.prefab
+---
 file: images/accumulator_Metallic-accumulator_Roughness.texture
 op: add
 path: /maxsize
@@ -18,10 +22,6 @@ file: images/accumulator_normal.texture
 op: add
 path: /maxsize
 value: 128
----
-file: mesh.prefab
-op: copyfile
-path: debris.prefab
 ---
 file: debris.prefab
 op: add

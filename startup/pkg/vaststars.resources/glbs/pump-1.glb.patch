@@ -1,6 +1,12 @@
 ---
 file: mesh.prefab
 op: replace
+path: /2/tag
+value:
+  anim_ctrl
+---
+file: mesh.prefab
+op: replace
 path: /1/data/scene
 value:
   t: {0, 3, 0}

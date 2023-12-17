@@ -1,5 +1,11 @@
 ---
 file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  anim_ctrl
+---
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -119,11 +125,6 @@ op: replace
 path: /2/data/animation
 value: ./animations/work.ozz
 ---
-file: work.prefab
-op: replace
-path: /2/data/animation_birth
-value: work
----
 file: debris.prefab
 op: add
 path: /-
@@ -143,6 +144,29 @@ value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
 ---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work
+          event_type: Animation
+          name: Animation2
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+---
 file: mesh.prefab
 op: createfile
 path: hitch.prefab
@@ -160,9 +184,7 @@ value:
   ---
   data:
     scene:
-      parent: 111
       t: {6.159999847412109, 7.059999942779541, -10.670000076293945}
-  index: 4
   mount: 1
   policy:
     ant.scene|scene_object
@@ -171,9 +193,7 @@ value:
   ---
   data:
     scene:
-      parent: 111
       t: {-6.159999847412109, 7.059999942779541, -10.670000076293945}
-  index: 5
   mount: 1
   policy:
     ant.scene|scene_object
@@ -182,9 +202,7 @@ value:
   ---
   data:
     scene:
-      parent: 111
       t: {12.319999694824219, 10.140000343322754, 0}
-  index: 6
   mount: 1
   policy:
     ant.scene|scene_object
@@ -193,11 +211,27 @@ value:
   ---
   data:
     scene:
-      parent: 111
       t: {-12.319999694824219, 10.140000343322754, 0}
-  index: 7
   mount: 1
   policy:
     ant.scene|scene_object
   tag:
     slot5
+  ---
+  data:
+    scene:
+      t: {6.159999847412109, 16.040000915527344, 10.670000076293945}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    slot6
+  ---
+  data:
+    scene:
+      t: {-6.159999847412109, 16.040000915527344, 10.670000076293945}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    slot7

@@ -1,24 +1,16 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
+
 local game_object_event = ecs.require "engine.game_object_event"
-local iani              = ecs.require "ant.anim_ctrl|state_machine"
 local iom               = ecs.require "ant.objcontroller|obj_motion"
 local irl               = ecs.require "ant.render|render_layer.render_layer"
 local ig                = ecs.require "ant.group|group"
 local imodifier         = ecs.require "ant.modifier|modifier"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
-local ANIMATIONS_BASE_PATH <const> = "/pkg/vaststars.resources/animations/"
-
-local function on_prefab_message(prefab, cmd, ...)
-    local event = game_object_event[cmd]
-    if event then
-        event(prefab, ...)
-    else
-        log.error(("game_object unknown event `%s`"):format(cmd))
-    end
-end
+local itl = ecs.require "ant.timeline|timeline"
 
 local calcHash ; do
     local function get_hash_func(max_value)
@@ -52,15 +44,15 @@ local calcHash ; do
     end
 end
 
-local getHitchChildren, stopWorld, restartWorld ; do
+local get_hitch_group_id, stopWorld, restartWorld ; do
     local cache = {}
     local NEXT_HITCH_GROUP = 1
 
-    function getHitchChildren(prefab, color, work_status, emissive_color, render_layer)
+    function get_hitch_group_id(prefab, color, work_status, emissive_color, render_layer)
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
         if cache[hash] then
-            return cache[hash]
+            return assert(cache[hash].hitch_group_id)
         end
 
         local hitch_group_id = ig.register("HITCH_GROUP_" .. NEXT_HITCH_GROUP)
@@ -78,26 +70,17 @@ local getHitchChildren, stopWorld, restartWorld ; do
 
                     if e.timeline then
                         e.timeline.eid_map = self.tag
-                    end
-                end
-
-                if self.tag["timeline_auto_triggered"] then
-                    for _, eid in ipairs(self.tag["timeline_auto_triggered"]) do
-                        local e <close> = world:entity(eid, "timeline_auto_triggered?out")
-                        e.timeline_auto_triggered = true
-                    end
-                end
-
-                -- special handling for work status
-                if self.tag["efk_auto_triggered"] then
-                    for _, eid in ipairs(self.tag["efk_auto_triggered"]) do
-                        local e <close> = world:entity(eid, "efk_auto_triggered?out")
-                        e.efk_auto_triggered = true
+                        itl.start(e)
                     end
                 end
             end,
-            on_message = function (self, ...)
-                on_prefab_message(self, ...)
+            on_message = function (self, cmd, ...)
+                local event = game_object_event[cmd]
+                if event then
+                    event(self, ...)
+                else
+                    log.error(("game_object unknown event `%s`"):format(cmd))
+                end
             end
         }
         if color then
@@ -108,7 +91,7 @@ local getHitchChildren, stopWorld, restartWorld ; do
         end
 
         cache[hash] = {instance = inst, hitch_group_id = hitch_group_id}
-        return cache[hash]
+        return hitch_group_id
     end
 
     function stopWorld()
@@ -175,20 +158,19 @@ init = {
 function igame_object.create(init)
     local prefab = RESOURCES_BASE_PATH:format(init.prefab)
     local glb = assert(prefab:match("^(.*%.glb)|.*%.prefab$"))
-    local hitchPrefab = glb .. "|hitch.prefab"
     -- log.info(("hitch prefab: %s, group_id: %s"):format(hitchPrefab, init.group_id))
 
-    local children = getHitchChildren(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer)
+    local hitch_group_id = get_hitch_group_id(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer)
     local srt = init.srt or {}
 
-    local hitchObject = world:create_instance {
+    local instance = world:create_instance {
         group = init.group_id,
-        prefab = hitchPrefab,
+        prefab = glb .. "|hitch.prefab",
         parent = init.parent,
         on_ready = function(self)
             local root <close> = world:entity(self.tag["hitch"][1])
             set_srt(root, srt)
-            assert(hitchEvents["group"])(self, children.hitch_group_id)
+            assert(hitchEvents["group"])(self, hitch_group_id)
         end,
         on_message = function(self, event, ...)
             assert(hitchEvents[event])(self, ...)
@@ -196,7 +178,7 @@ function igame_object.create(init)
     }
 
     local function remove(self)
-        world:remove_instance(self.hitchObject)
+        world:remove_instance(self.instance)
     end
 
     local function update(self, t)
@@ -208,24 +190,24 @@ function igame_object.create(init)
             end
         end
 
-        children = getHitchChildren(
+        local hitch_group_id = get_hitch_group_id(
             RESOURCES_BASE_PATH:format(self.data.prefab),
             self.data.color,
             self.data.work_status,
             self.data.emissive_color,
             self.data.render_layer
         )
-        world:instance_message(self.hitchObject, "group", children.hitch_group_id)
+        world:instance_message(self.instance, "group", hitch_group_id)
     end
     local function send(self, ...)
-        world:instance_message(self.hitchObject, ...)
+        world:instance_message(self.instance, ...)
     end
     local function modifier(self, method, ...)
-        world:instance_message(self.hitchObject, "modifier", method, ...)
+        world:instance_message(self.instance, "modifier", method, ...)
     end
     local function get_slot_position(self, slot_name)
-        assert(self.hitchObject)
-        local eid = assert(self.hitchObject.tag[slot_name][1])
+        assert(self.instance)
+        local eid = assert(self.instance.tag[slot_name][1])
         local e <close> = assert(world:entity(eid))
         return iom.worldmat(e)
     end
@@ -233,7 +215,7 @@ function igame_object.create(init)
     local outer = {
         data = init,
         group_id = init.group_id,
-        hitchObject = hitchObject,
+        instance = instance,
     }
     outer.modifier = modifier
     outer.remove = remove

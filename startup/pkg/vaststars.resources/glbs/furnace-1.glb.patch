@@ -1,5 +1,11 @@
 ---
 file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  anim_ctrl
+---
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -90,24 +96,6 @@ value:
   no_color_factors
 ---
 file: mesh.prefab
-op: replace
-path: /2/data/animation_birth
-value: work_start
----
-file: mesh.prefab
-op: replace
-path: /2/data/anim_ctrl
-value:
-  play_state:
-    forwards: true
-    loop: false
-    manual_update: false
-    play: false
-    previous_ratio: 0
-    ratio: 0
-    speed: 1
----
-file: mesh.prefab
 op: copyfile
 path: idle_start.prefab
 ---
@@ -142,32 +130,6 @@ file: images/furnace_norml.texture
 op: add
 path: /maxsize
 value: 128
----
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/furnace_smoke.efk
-      speed: 1
-    scene:
-      r: {0, 0, 0, 1}
-      s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
-      t: {0, 11.5, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work
-    efk_auto_triggered
----
-file: work.prefab
-op: replace
-path: /2/data/animation_birth
-value: work
 ---
 file: debris.prefab
 op: add
@@ -211,7 +173,6 @@ value:
     ant.timeline|timeline
   tag:
     timeline1
-    timeline_auto_triggered
 ---
 file: idle_start.prefab
 op: add
@@ -236,7 +197,50 @@ value:
     ant.timeline|timeline
   tag:
     timeline2
-    timeline_auto_triggered
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/furnace_smoke.efk
+      speed: 1
+    scene:
+      r: {0, 0, 0, 1}
+      s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
+      t: {0, 11.5, 0}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    work
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work
+          event_type: Animation
+          forwards: true
+          name: Animation2
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
 ---
 file: mesh.prefab
 op: createfile
