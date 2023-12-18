@@ -4602,7 +4602,6 @@ return {
     guide = {},
     show = false,
     start_tech = "登录科技",
-    performance_stats = false,
     canvas_icon = false,
     init_ui = {
       "/pkg/vaststars.resources/ui/login.rml",

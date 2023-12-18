@@ -4616,7 +4616,6 @@ return {
     guide = guide,
     show = true,
     start_tech = "登录科技",
-    performance_stats = false,
     canvas_icon = false,
     init_ui = {
       "/pkg/vaststars.resources/ui/construct.rml",

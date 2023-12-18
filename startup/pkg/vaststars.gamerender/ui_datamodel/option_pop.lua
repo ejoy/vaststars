@@ -71,7 +71,7 @@ function M.update(datamodel)
     end
 
     for _ in debug_mb:unpack() do
-        local debug = not gameplay_core.settings_get("debug", true)
+        local debug = not gameplay_core.settings_get("debug", false)
         gameplay_core.settings_set("debug", debug)
         rhwi.set_profie(debug)
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
