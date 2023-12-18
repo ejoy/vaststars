@@ -61,7 +61,7 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, fluids = {xx, xx}}
   -- count = 1
 
-  prototype "迫降火星" {
+  prototype "登录科技开启" {
     desc = "迫降火星",
     type = { "tech" },
     prerequisites = {},
