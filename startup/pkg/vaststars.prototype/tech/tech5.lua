@@ -104,7 +104,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "修补断开的公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "修补断开的2处公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -234,7 +234,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "生产3个地质科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产3个地质科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -349,7 +349,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "生产3个气候科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "水电站生产3个气候科技包", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
