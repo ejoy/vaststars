@@ -59,12 +59,10 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
+            local args = ...
             local ui = import_package "vaststars.ui"
             local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                speech = "none",
-                avatar = "none",
-            })
+            local start = ui_sys.createDataMode(window, args)
 
             function start.click()
                 ui_sys.pub(window, {"story_click"})
