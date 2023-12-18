@@ -31,10 +31,26 @@ local guide2 = {
     --     },
 	-- },
 
+    {
+        name = "",
+		narrative = {
+            {"哔哩..将获得{/color:4bd0ff 采矿机}放入{/g 指挥中心}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+        },
+        narrative_end = {
+            task = {
+                "放置资源",
+            },
+            guide_progress = 10,
+        },
+        prerequisites = {
+            "检查废墟",
+        },
+	},
+
 	{
         name = "",
 		narrative = {
-            {"哔哩..放置{/color:4bd0ff 采矿机}准备开采矿物..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..分别在{/color:4bd0ff 三处}矿点修建{/g 采矿机}准备开采矿物..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -43,7 +59,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "检查废墟",
+            "放置资源",
         },
 	},
 
