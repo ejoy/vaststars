@@ -14,10 +14,16 @@ local entities = { {
   y = 122
 },{
   dir = "N",
-  items = { { "地下水挖掘机I", 2 },{ "空气过滤器I", 2 },  { "排水口I", 1},{ "烟囱I", 1} },
+  items = { { "地下水挖掘机I", 2 },{ "空气过滤器I", 2 }},
   prototype_name = "机身残骸",
   x = 126,
   y = 147
+},{
+  dir = "N",
+  items = {{ "烟囱I", 1} },
+  prototype_name = "机头残骸",
+  x = 103,
+  y = 156
 },{
   dir = "N",
   fluid_name = {

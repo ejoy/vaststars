@@ -563,7 +563,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "蒸馏厂配方设置" {
-    desc = "组装机配方选择地质科技包1",
+    desc = "蒸馏厂配方设置",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 3},                          
@@ -596,7 +596,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "连接空气净化器" {
-    desc = "连接烟囱",
+    desc = "连接空气净化器",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 11},
@@ -624,12 +624,12 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "放置地下水挖掘机连接电解厂", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置空气净化器连接蒸馏厂对应液口", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
   prototype "二氧化碳存储" {
-    desc = "液罐存储氢气",
+    desc = "液罐存储二氧化碳",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 11},
@@ -663,7 +663,7 @@ local prototype = gameplay.register.prototype
       unlock_recipe = {"二氧化碳转甲烷"},
     },
     sign_desc = {
-      { desc = "电解厂生产氢气并用液罐存储", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "蒸馏厂生产二氧化碳并用液罐存储", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -701,7 +701,7 @@ local prototype = gameplay.register.prototype
   }
 
   prototype "化工厂配方设置" {
-    desc = "组装机配方选择地质科技包1",
+    desc = "化工厂配方设置",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 3},                          
@@ -730,7 +730,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "蒸馏厂选择配方“空气分离1”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "化工厂选择配方“二氧化碳转甲烷”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
