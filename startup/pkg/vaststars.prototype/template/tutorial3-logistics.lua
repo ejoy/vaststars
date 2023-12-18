@@ -74,19 +74,19 @@ local entities = { {
   fluid_name = "",
   prototype_name = "熔炼炉I",
   x = 152,
-  y = 126
+  y = 125
 }, {
   dir = "N",
   fluid_name = "",
   prototype_name = "科研中心I",
-  x = 156,
-  y = 126
+  x = 152,
+  y = 128
 }, {
   dir = "N",
   fluid_name = "",
   prototype_name = "组装机I",
   x = 150,
-  y = 130
+  y = 131
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
@@ -100,6 +100,11 @@ local entities = { {
 }, {
   dir = "N",
   prototype_name = "无人机平台I",
+  x = 150,
+  y = 130
+},{
+  dir = "N",
+  prototype_name = "仓库I",
   x = 150,
   y = 128
 }, {
