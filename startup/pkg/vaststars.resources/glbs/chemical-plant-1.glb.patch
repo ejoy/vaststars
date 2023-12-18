@@ -1,5 +1,9 @@
 ---
 file: mesh.prefab
+op: copyfile
+path: idle.prefab
+---
+file: mesh.prefab
 op: replace
 path: /2/tag
 value:
@@ -123,6 +127,101 @@ path: /-
 value:
   mount: 1
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work_start
+          event_type: Animation
+          name: Animation3
+          pause_frame: 89
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline2
+---
+file: work_start.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work_start
+          event_type: Animation
+          forwards: true
+          name: Animation2
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+---
+file: idle_start.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: idle_start
+          event_type: Animation
+          forwards: true
+          name: Animation4
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline3
+---
+file: idle.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: idle_start
+          event_type: Animation
+          forwards: false
+          name: Animation5
+          pause_frame: 89
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline4
 ---
 file: mesh.prefab
 op: createfile

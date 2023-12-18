@@ -106,7 +106,7 @@ prototype "蒸汽发电机III" {
 prototype "轻型风力发电机" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,5,1.2",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "generator", "wind_turbine"},
@@ -118,7 +118,7 @@ prototype "轻型风力发电机" {
 prototype "风力发电机I" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,5,1.2",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "generator", "wind_turbine"},
@@ -213,7 +213,7 @@ prototype "蓄电池III" {
 prototype "核反应堆" {
     model = "glbs/wind-turbine-1.glb|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,5,1.2",
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "generator"},

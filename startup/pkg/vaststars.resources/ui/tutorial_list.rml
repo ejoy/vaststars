@@ -128,7 +128,7 @@
             </tab>
         </left-box>
         <frame data-for = "tutorials" data-if = "name == it.name">
-            <div style = "font-size: 4.67vmin; flex-direction: row; color: rgb(0, 255, 0);">
+            <div style = "font-size: 4.67vmin; flex-direction: row; color: rgb(0, 195, 255); -webkit-text-stroke: 0.2px #fff;">
                 <div style = "background-image: /pkg/vaststars.resources/ui/textures/tutorial-list/icon.texture; width: 8.49vmin; height: 6.54vmin; background-size: 100% 100%;"/>
                 {{it.desc}}
             </div>
