@@ -356,10 +356,16 @@
             window.customElements.define("detaillist", function(e)
                 start.detaillist = ui.list.create(document, e, detail_item_init, detail_item_update)
             end)
+
+            local inited = false
+            
             ui_sys.mapping(start, {
                 {
                     "techitems",
                     function()
+                        if not inited then
+                            return
+                        end
                         unselect_recipe()
                         unselect_tech()
                         start.list:on_dirty_all(#start.techitems)
@@ -368,6 +374,9 @@
                 {
                     "current_tech",
                     function()
+                        if not inited then
+                            return
+                        end
                         unselect_recipe()
                         start.detaillist:on_dirty_all(#start.current_tech.detail)
                     end
@@ -375,6 +384,9 @@
                 {
                     "current_progress",
                     function()
+                        if not inited then
+                            return
+                        end
                         unselect_recipe()
                         unselect_tech()
                         start.list:on_dirty(start.current_tech.index)
@@ -414,9 +426,16 @@
                     onclose()
                 end
             end
+            function init()
+                inited = true
+                unselect_recipe()
+                unselect_tech()
+                start.list:on_dirty_all(#start.techitems)
+                start.detaillist:on_dirty_all(#start.current_tech.detail)
+            end
         </script>
     </head>
-    <body>
+    <body onload = "init()">
         <!--div style='position: absolute; width: 100%; height: 100%; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn()"/-->
         <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
             <div style="width: 60%; flex-direction: row; justify-content: center; align-items: center;">
