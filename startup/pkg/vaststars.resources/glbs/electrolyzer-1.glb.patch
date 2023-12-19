@@ -57,5 +57,5 @@ file: debris.prefab
 op: add
 path: /-
 value:
-  mount: 1
+  mount: 3
   prefab: /pkg/vaststars.resources/glbs/scaffold/4x4.glb|mesh.prefab
