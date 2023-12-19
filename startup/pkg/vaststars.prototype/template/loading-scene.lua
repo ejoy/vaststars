@@ -2433,13 +2433,18 @@ local entities = {{
   y = 137
 }, {
   dir = "N",
-  prototype_name = "无人机平台I",
+  prototype_name = "无人机平台II",
   x = 149,
   y = 124
 }, {
   dir = "N",
-  prototype_name = "无人机平台I",
+  prototype_name = "无人机平台II",
   x = 152,
+  y = 124
+}, {
+  dir = "N",
+  prototype_name = "无人机平台II",
+  x = 155,
   y = 124
 }, {
   dir = "N",
