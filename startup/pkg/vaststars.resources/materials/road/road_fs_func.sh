@@ -12,12 +12,11 @@
 // }
 
 
-material_info road_material_info_init(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord, float metallic, float roughness)
+material_info road_material_info_init(vec3 gnormal, vec3 normal, vec3 posWS, vec4 basecolor, vec4 fragcoord, float metallic, float roughness)
 {
     material_info mi  = (material_info)0;
     mi.basecolor         = basecolor;
     mi.posWS             = posWS.xyz;
-    mi.distanceVS        = posWS.w;
     mi.V                 = normalize(u_eyepos.xyz - posWS.xyz);
     mi.gN                = gnormal;  //geomtery normal
     mi.N                 = normal;
@@ -42,6 +41,7 @@ void CUSTOM_FS(in Varyings varyings, out FSOutput fsoutput)
     const float metallic = mrSample.b;
     const vec3 normal = vec3(0.0, 1.0, 0.0);
     material_info mi = road_material_info_init(normal, normal, varyings.posWS, vec4(basecolor, road_basecolor.a), varyings.frag_coord, metallic, roughness);
+    mi.distanceVS = varyings.frag_coord.w;
     build_material_info(mi);
     fsoutput.color = compute_lighting(mi);
 }

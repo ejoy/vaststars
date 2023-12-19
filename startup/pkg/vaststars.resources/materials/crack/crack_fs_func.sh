@@ -39,7 +39,6 @@ void init_material_info(Varyings varyings, inout material_info mi)
     mi.screen_uv = calc_normalize_fragcoord(varyings.frag_coord.xy);
 
     mi.posWS        = varyings.posWS.xyz;
-    mi.distanceVS   = varyings.posWS.w;
 
     mi.metallic = u_metallic_factor;
     mi.perceptual_roughness = u_roughness_factor;
@@ -96,7 +95,7 @@ void CUSTOM_FS(Varyings varyings, out FSOutput fsoutput)
     if(uv.x > 1.0 || uv.y > 1.0 || uv.x < 0.0 || uv.y < 0.0){
         discard;
     }
-
+    mi.distanceVS = varyings.frag_coord.w;
     build_material_info(mi);
 
     fsoutput.color = compute_lighting(mi);

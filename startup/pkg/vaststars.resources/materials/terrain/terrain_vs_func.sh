@@ -12,5 +12,4 @@ void CUSTOM_VS(mat4 worldmat, VSInput vsinput, inout Varyings varyings)
 	varyings.normal		= vec3(0, 1, 0);
 	varyings.tangent	= vec3(1, 0, 0);
 	varyings.bitangent 	= vec3(0, 0, -1);
-	varyings.posWS.w	= mul(u_view, varyings.posWS).z;
 }

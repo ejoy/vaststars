@@ -11,12 +11,11 @@
 #include "pbr/lighting.sh"
 #include "pbr/material_info.sh"
 
-material_info terrain_material_info_init(vec3 gnormal, vec3 normal, vec4 posWS, vec4 basecolor, vec4 fragcoord, float metallic, float roughness)
+material_info terrain_material_info_init(vec3 gnormal, vec3 normal, vec3 posWS, vec4 basecolor, vec4 fragcoord, float metallic, float roughness)
 {
     material_info mi  = (material_info)0;
     mi.basecolor         = basecolor;
     mi.posWS             = posWS.xyz;
-    mi.distanceVS        = posWS.w;
     mi.V                 = normalize(u_eyepos.xyz - posWS.xyz);
     mi.gN                = gnormal;  //geomtery normal
     mi.N                 = normal;
@@ -60,6 +59,7 @@ void CUSTOM_FS(in Varyings varyings, out FSOutput fsoutput)
     vec3 stone_normal = terrain_normal_from_tangent_frame(tbn, vec3(terrain_uv, 1.0));
 
     material_info mi = terrain_material_info_init(varyings.normal, stone_normal, varyings.posWS, vec4(terrain_color, 1.0), varyings.frag_coord, u_metallic_factor, u_roughness_factor);
+    mi.distanceVS = varyings.frag_coord.w;
     build_material_info(mi);
     fsoutput.color = compute_lighting(mi); 
 }
