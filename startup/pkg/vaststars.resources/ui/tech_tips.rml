@@ -35,14 +35,10 @@
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <style path = "/pkg/vaststars.resources/ui/common/listpage_style.rcss"/>
         <script type="text/x-lua" >
+            local args = ...
             local ui = import_package "vaststars.ui"
             local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                message = "none",
-                items = {},
-                left = "0vmin",
-                top = "0vmin",
-            })
+            local start = ui_sys.createDataMode(window, args)
             window.setTimeout(function()
                 ui_sys.pub(window, {"close"})
             end, 3000)
