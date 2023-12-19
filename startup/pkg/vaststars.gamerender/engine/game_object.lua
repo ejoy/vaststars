@@ -70,7 +70,7 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
 
                     if e.timeline then
                         e.timeline.eid_map = self.tag
-                        itl.start(e)
+                        itl:start(e)
                     end
                 end
             end,
