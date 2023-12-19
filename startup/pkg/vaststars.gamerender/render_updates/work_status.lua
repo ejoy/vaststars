@@ -115,7 +115,7 @@ local function _update_work_status()
     end
 
     for e in w:select "timeline:in" do
-        itl.start(e)
+        itl:start(e)
     end
 end
 
