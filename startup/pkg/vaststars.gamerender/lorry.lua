@@ -8,6 +8,7 @@ local ientity = ecs.require "ant.render|components.entity"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 local imotion = ecs.require "engine.motion"
+local itl = ecs.require "ant.timeline|timeline"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
@@ -49,13 +50,21 @@ local function create(prefab, s, r, t)
         prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
         on_ready = function(self)
             for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "visible_state?in render_object?in")
+                local e <close> = world:entity(eid, "visible_state?in render_object?in timeline?in loop_timeline?out")
                 if e.visible_state then
                     ivs.set_state(e, "cast_shadow", false)
                     ivs.set_state(e, "main_view", false)
                 end
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
+                end
+                if e.timeline then
+                    e.timeline.eid_map = self.tag
+                    itl:start(e)
+
+                    if e.timeline.loop == true then
+                        e.loop_timeline = true
+                    end
                 end
             end
         end,

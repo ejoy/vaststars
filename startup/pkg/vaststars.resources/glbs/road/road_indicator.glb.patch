@@ -1,8 +1,27 @@
 ---
 file: mesh.prefab
-op: replace
-path: /2/data/animation_birth
-value: Armature.002Action
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 0.8333333333333334
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: Armature.002Action
+          event_type: Animation
+          forwards: false
+          name: Animation4
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: true
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline2
 ---
 file: mesh.prefab
 op: replace
@@ -21,3 +40,9 @@ value:
     previous_ratio: 0
     ratio: 0
     speed: 1
+---
+file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  anim_ctrl

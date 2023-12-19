@@ -114,7 +114,7 @@ local function _update_work_status()
         ::continue::
     end
 
-    for e in w:select "timeline:in" do
+    for e in w:select "timeline:in loop_timeline:absent" do
         itl:start(e)
     end
 end

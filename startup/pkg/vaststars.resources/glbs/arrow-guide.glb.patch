@@ -1,5 +1,28 @@
 ---
 file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 2
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: Armature.001Action
+          event_type: Animation
+          name: Animation2
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: true
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+---
+file: mesh.prefab
 op: replace
 path: /2/tag
 value:
@@ -15,11 +38,6 @@ file: mesh.prefab
 op: replace
 path: /3/data/visible_state
 value: main_view|selectable
----
-file: mesh.prefab
-op: replace
-path: /2/data/animation_birth
-value: Armature.001Action
 ---
 file: mesh.prefab
 op: replace
