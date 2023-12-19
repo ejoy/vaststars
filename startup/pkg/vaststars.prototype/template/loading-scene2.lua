@@ -2447,13 +2447,18 @@ local entities = { {
   y = 137
 }, {
   dir = "N",
-  prototype_name = "无人机平台I",
+  prototype_name = "无人机平台II",
   x = 149,
   y = 124
 }, {
   dir = "N",
-  prototype_name = "无人机平台I",
+  prototype_name = "无人机平台II",
   x = 152,
+  y = 124
+}, {
+  dir = "N",
+  prototype_name = "无人机平台II",
+  x = 155,
   y = 124
 }, {
   dir = "N",
@@ -4616,7 +4621,6 @@ return {
     guide = guide,
     show = true,
     start_tech = "登录科技",
-    performance_stats = false,
     canvas_icon = false,
     init_ui = {
       "/pkg/vaststars.resources/ui/construct.rml",

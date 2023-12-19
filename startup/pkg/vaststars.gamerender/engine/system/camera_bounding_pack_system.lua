@@ -43,9 +43,9 @@ function cbp_sys:update_camera()
         get_frustum_points_rays()
         ray_intersect_with_plane(CUSTOM_NPLANE)
         ray_intersect_with_plane(CUSTOM_FPLANE)
-        local aabb_min, aabb_max = math3d.minmax(ipoints)
+        local newaabb = math3d.minmax(ipoints)
         math3d.unmark(sbe.shadow_bounding.camera_aabb)
-        sbe.shadow_bounding.camera_aabb = math3d.marked_aabb(aabb_min, aabb_max)
+        sbe.shadow_bounding.camera_aabb = math3d.marked_aabb(newaabb)
         w:submit(sbe)
     end
 

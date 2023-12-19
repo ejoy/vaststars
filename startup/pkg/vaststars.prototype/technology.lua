@@ -61,8 +61,8 @@ local prototype = gameplay.register.prototype
   -- task_params = {building = xx, fluids = {xx, xx}}
   -- count = 1
 
-  prototype "迫降火星" {
-    desc = "迫降火星",
+  prototype "登录科技开启" {
+    desc = "登录科技开启",
     type = { "tech" },
     prerequisites = {},
     ingredients = {},
@@ -79,7 +79,7 @@ local prototype = gameplay.register.prototype
   --   type = {"task" },
   --   task = {"unknown", 0, 6},
   --   task_params = {ui = "set_transfer_source", building = "机身残骸"},
-  --   prerequisites = {"迫降火星"},
+  --   prerequisites = {"登录科技开启"},
   --   count = 1,
   --   effects = {
   --     unlock_item = {"碎石"},

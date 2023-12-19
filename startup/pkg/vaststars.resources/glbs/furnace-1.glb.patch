@@ -97,6 +97,10 @@ value:
 ---
 file: mesh.prefab
 op: copyfile
+path: idle.prefab
+---
+file: mesh.prefab
+op: copyfile
 path: idle_start.prefab
 ---
 file: mesh.prefab
@@ -164,7 +168,7 @@ value:
           asset_path: work_start
           event_type: Animation
           forwards: true
-          name: furnace-1.glb-Animation4
+          name: Animation1
           pause_frame: -1
         tick: 0
         time: 0
@@ -188,7 +192,7 @@ value:
           asset_path: idle_start
           event_type: Animation
           forwards: true
-          name: furnace-1.glb-Animation3
+          name: Animation3
           pause_frame: -1
         tick: 0
         time: 0
@@ -229,11 +233,35 @@ value:
         ---
         event_list:
           ---
-          asset_path: work
+          asset_path: work_start
           event_type: Animation
           forwards: true
           name: Animation2
-          pause_frame: -1
+          pause_frame: 90
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+---
+file: idle.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: idle_start
+          event_type: Animation
+          forwards: true
+          name: Animation2
+          pause_frame: 90
         tick: 0
         time: 0
       loop: false

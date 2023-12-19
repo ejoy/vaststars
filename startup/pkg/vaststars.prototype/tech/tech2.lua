@@ -162,7 +162,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "放置1座轻型风力发电机供电给矿区的无人机平台", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1座轻型风力发电机给基地供电", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -346,7 +346,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置1个轻型太阳能板并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置1个轻型太阳能板", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -362,7 +362,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置4个蓄电池并确保连入电网", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置4个蓄电池", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
