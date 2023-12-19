@@ -9,7 +9,7 @@ local guide = {
     --     },
     --     narrative_end = {
     --         task = {
-    --             "迫降火星",
+    --             "登录科技开启",
     --         },
     --         guide_progress = 10,
     --     },

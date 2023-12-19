@@ -127,7 +127,7 @@ return {
   guide = guide,
   start_tech = "地质研究",
   research_queue = {
-    "迫降火星",
+    "登录科技开启",
   },
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.rml",

@@ -20,7 +20,7 @@ return {
   mountain = mountain,
   order = 2,
   guide = guide,
-  start_tech = "迫降火星",
+  start_tech = "登录科技开启",
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.rml",
     "/pkg/vaststars.resources/ui/message_pop.rml"
