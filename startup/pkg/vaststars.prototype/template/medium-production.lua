@@ -15,7 +15,7 @@ local entities = { {
   y = 120
 }, {
   dir = "W",
-  amount = 20,
+  amount = 30,
   prototype_name = "物流中心",
   x = 152,
   y = 142
