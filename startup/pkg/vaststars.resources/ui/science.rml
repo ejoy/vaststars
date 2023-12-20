@@ -144,16 +144,16 @@
             local ui = import_package "vaststars.ui"
             local ui_sys = ui.ui_system
             local start = ui_sys.createDataMode(window, args)
-            start.selected_index = -1
-            start.selected_tech = nil
-            start.selected_recipe_index = -1
-            start.selected_recipe = nil
+            local selected_index = -1
+            local selected_tech = nil
+            local selected_recipe_index = -1
+            local selected_recipe = nil
 
             local function unselect_tech()
-                if start.selected_tech then
-                    start.selected_tech = nil
-                    local index = start.selected_index
-                    start.selected_index = -1
+                if selected_tech then
+                    selected_tech = nil
+                    local index = selected_index
+                    selected_index = -1
                     if index > 0 then
                         start.list:on_dirty(index)
                     end
@@ -161,10 +161,10 @@
             end
 
             local function unselect_recipe()
-                if start.selected_recipe then
-                    start.selected_recipe = nil
-                    local index = start.selected_recipe_index
-                    start.selected_recipe_index = -1
+                if selected_recipe then
+                    selected_recipe = nil
+                    local index = selected_recipe_index
+                    selected_recipe_index = -1
                     if index > 0 then
                         start.detaillist:on_dirty(index)
                     end
@@ -180,13 +180,13 @@
             
             local select_style_border = "3px rgb(0,255,0)"
             function start.click_tech_item(item, index)
-                if start.selected_tech == item then
+                if selected_tech == item then
                     return
                 end
                 unselect_tech()
                 clickTech(index)
-                start.selected_tech = item
-                start.selected_index = index
+                selected_tech = item
+                selected_index = index
                 if start.techitems[index].new then
                     start.techitems[index].new = false
                 end
@@ -223,7 +223,7 @@
                 local item_icon = item_data.task and "/pkg/vaststars.resources/ui/textures/science/task.texture" or "/pkg/vaststars.resources/ui/textures/science/tech.texture"
                 local font_color = item_data.running and 'rgb(0,255,0)' or 'rgb(255, 255, 255)'
                 local percent = (item_data.progress * 100) // item_data.count
-                local highlight = start.selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
+                local highlight = selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
                 -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
                 item.outerHTML = ([[
                     <div style="flex-direction: row; align-items:center;">
@@ -254,13 +254,13 @@
             end)
 
             function start.click_detail_item(item, index)
-                if start.selected_recipe == item then
+                if selected_recipe == item then
                     unselect_recipe()
                     return
                 end
                 unselect_recipe()
-                start.selected_recipe_index = index
-                start.selected_recipe = item
+                selected_recipe_index = index
+                selected_recipe = item
                 start.detaillist:on_dirty(index)
                 clickRecipe(index)
             end
@@ -326,7 +326,7 @@
                 if not start.current_tech then
                     return
                 end
-                local selected = (start.selected_recipe_index == index)
+                local selected = (selected_recipe_index == index)
                 item.style.backgroundImage = selected and '/pkg/vaststars.resources/ui/textures/science/right_item_bg1.texture' or '/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture'
                 item.style.height = selected and '15.72vmin' or '12vmin'
                 local detail = start.current_tech.detail[index]
@@ -401,12 +401,15 @@
                 ui_sys.pub(window, {"show_list", "finish"})
             end
             local function onclose()
+                unselect_recipe()
+                unselect_tech()
                 if start.show_finish then
                     start.show_finish = false
                     start.return_title = "科研目标"
                     start.list:reset_position()
                     ui_sys.pub(window, {"show_list", "todo"})
                 else
+                    inited = false
                     ui_sys.pub(window, {"close_techui"})
                 end
             end
@@ -418,7 +421,7 @@
             function start.startSwitch()
                 ui_sys.pub(window, {"switch"})
                 if not start.current_running then
-                    if not start.selected_tech then
+                    if not selected_tech then
                         -- clear new flag
                         clickTech(1)
                         start.techitems[1].new = false
@@ -428,8 +431,6 @@
             end
             function init()
                 inited = true
-                unselect_recipe()
-                unselect_tech()
                 start.list:on_dirty_all(#start.techitems)
                 start.detaillist:on_dirty_all(#start.current_tech.detail)
             end
