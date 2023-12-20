@@ -49,6 +49,10 @@
                 audio.play "event:/ui/button1"
                 ui_sys.pub(window, {...})
             end
+            function start.open(...)
+                audio.play "event:/ui/button1"
+                window.open(...)
+            end
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
@@ -62,7 +66,7 @@
             <button data-event-click = "clickButton('new_game', 'template.free')">
                 <button-text>自由模式</button-text>
             </button> 
-            <button data-event-click = "clickButton('load_resources')">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/loading.rml'">
                 <button-text>加载资源</button-text>
             </button> 
             <button data-event-click = "clickButton('restore')">

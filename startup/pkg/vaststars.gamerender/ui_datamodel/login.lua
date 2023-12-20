@@ -4,7 +4,6 @@ local world = ecs.world
 local iui = ecs.require "engine.system.ui_system"
 
 local new_game_mb = mailbox:sub {"new_game"}
-local load_resources_mb = mailbox:sub {"load_resources"}
 local restore_mb = mailbox:sub {"restore"}
 local continue_mb = mailbox:sub {"continue"}
 local load_template_mb = mailbox:sub {"load_template"}
@@ -35,10 +34,6 @@ function M.update(datamodel)
         window.reboot {
             feature = {"vaststars.gamerender|gameplay"},
         }
-    end
-
-    for _ in load_resources_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/loading.rml"})
     end
 
     for _ in restore_mb:unpack() do

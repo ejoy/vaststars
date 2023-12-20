@@ -1,12 +1,7 @@
-local ecs = ...
-
-local iui = ecs.require "engine.system.ui_system"
-local assetmgr = import_package "ant.asset"
 local vfs = require "vfs"
 local ltask = require "ltask"
 local fs = require "filesystem"
 
-local M = {}
 local WorkerNum <const> = 6
 local status
 
@@ -35,12 +30,6 @@ local function status_stopped()
     end
     return true
 end
-
-local Resource <const> = {
-    [".texture"] = true,
-    [".material"] = true,
-    [".glb"] = true,
-}
 
 local handler = {}
 
@@ -86,46 +75,39 @@ local function worker(index)
     status[index] = ""
 end
 
-function M.create()
-    status = {
-        pending = {},
-        loading = 0,
+return function (window)
+    local model = window.createModel {
+        status = {
+            pending = {},
+            loading = 0,
+            loaded = 0,
+            stop = false,
+        },
+        progress = "0%",
         loaded = 0,
-        stop = false,
+        total = 1,
     }
-
+    status = model.status
     status_addtask {
         type = "dir",
         filename = "/",
     }
-
     for i = 1, WorkerNum do
         status[i] = ""
         ltask.fork(worker, i)
     end
-    return {
-        status = status,
-        progress = "0%",
-    }
-end
-
-function M.update(datamodel)
-    if status_stopped() then
-        iui.close("/pkg/vaststars.resources/ui/loading.rml")
-        return
+    local function update()
+        if status_stopped() then
+            status.stop = true
+            window.close()
+            return
+        end
+        for i, v in ipairs(status) do
+            model.status[i] = v
+        end
+        model.loaded = status.loaded
+        model.total = status.loading + #status.pending + status.loaded
+        window.requestAnimationFrame(update)
     end
-    for i, v in ipairs(status) do
-        datamodel.status[i] = v
-    end
-    datamodel.loaded = status.loaded
-    datamodel.total = status.loading + #status.pending + status.loaded
+    window.requestAnimationFrame(update)
 end
-
-function M.close()
-    status.stop = true
-    while not status_stopped() do
-        ltask.sleep(1)
-    end
-end
-
-return M
