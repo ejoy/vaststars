@@ -38,22 +38,26 @@ local function createFluidBox(init, recipe, fluidboxes, items)
         local s = items[idx]
         if s.type == "none" then
             local fluid_idx = findFluidbox(init.input, s.item)
-            if fluid_idx > 4 then
-                error "The assembling does not support this recipe."
+            if fluid_idx ~= 0 then
+                if fluid_idx > 4 then
+                    error "The assembling does not support this recipe."
+                end
+                input_fluids[fluid_idx] = idx
+                fluidboxes["in"..fluid_idx.."_limit"] = s.limit
             end
-            input_fluids[fluid_idx] = idx
-            fluidboxes["in"..idx.."_limit"] = s.limit
         end
     end
     for idx = 1, results_n do
         local s = items[ingredients_n + idx]
         if s.type == "none" then
             local fluid_idx = findFluidbox(init.output, s.item)
-            if fluid_idx > 3 then
-                error "The assembling does not support this recipe."
+            if fluid_idx ~= 0 then
+                if fluid_idx > 3 then
+                    error "The assembling does not support this recipe."
+                end
+                output_fluids[fluid_idx] = ingredients_n + idx
+                fluidboxes["out"..fluid_idx.."_limit"] = s.limit
             end
-            output_fluids[fluid_idx] = ingredients_n + idx
-            fluidboxes["out"..idx.."_limit"] = s.limit
         end
     end
     local fluidbox_in = 0

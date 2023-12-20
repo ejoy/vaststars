@@ -97,7 +97,9 @@ local function builder_build(world, fluid, fluidbox, limit)
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return cFluidflow.build(world._cworld, fluid, limit or fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    local capacity = limit or fluidbox.capacity
+    assert(capacity > 0)
+    return cFluidflow.build(world._cworld, fluid, capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function connect(connects, a_id, a_type, b_id, b_type)
