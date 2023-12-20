@@ -11,12 +11,13 @@ local gameplay = import_package "vaststars.gameplay"
 local igameplay_building = gameplay.interface "building"
 local itask = ecs.require "task"
 local ichest = require "gameplay.interface.chest"
-local itransfer = ecs.require "transfer"
+local itransfer = require "gameplay.interface.transfer"
 local iobject = ecs.require "object"
 local global = require "global"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local iui = ecs.require "engine.system.ui_system"
 local interval_call = ecs.require "engine.interval_call"
+local transfer_source_box = ecs.require "transfer_source_box"
 
 local DIRECTION <const> = {
     N = 0,
@@ -51,6 +52,8 @@ local check_debris = interval_call(300, function(gameplay_world, gameplay_ecs)
             itransfer.set_source_eid(nil)
             iui.leave()
             iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected", e.eid)
+
+            transfer_source_box.remove()
         end
         ::continue::
     end

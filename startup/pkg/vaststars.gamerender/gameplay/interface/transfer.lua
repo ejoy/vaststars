@@ -1,7 +1,3 @@
-local ecs = ...
-local world = ecs.world
-local w = world.w
-
 local EMPTY_FUNCTION <const> = function() end
 local SOURCE_TYPES <const> = {
     ["transit"] = true,

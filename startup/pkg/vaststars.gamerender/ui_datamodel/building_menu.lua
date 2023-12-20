@@ -38,13 +38,14 @@ local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local iinventory = require "gameplay.interface.inventory"
 local igameplay = ecs.require "gameplay.gameplay_system"
-local itransfer = ecs.require "transfer"
+local itransfer = require "gameplay.interface.transfer"
 local iobject = ecs.require "object"
 local global = require "global"
 local icoord = require "coord"
 local itask = ecs.require "task"
 local objects = require "objects"
 local handler = ecs.require "ui_datamodel.common.building_menu_handler"
+local transfer_source_box = ecs.require "transfer_source_box"
 
 ---------------
 local M = {}
@@ -287,6 +288,9 @@ function M.update(datamodel, gameplay_eid)
         datamodel.status.transfer_source = true
         datamodel.status.set_transfer_source = not datamodel.status.transfer_source and e.chest ~= nil
         datamodel.buttons = handler(typeobject.name, datamodel.status)
+
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        transfer_source_box.create(object.id)
     end
 
     for _ in transfer_source_mb:unpack() do
@@ -294,6 +298,8 @@ function M.update(datamodel, gameplay_eid)
         datamodel.status.transfer_source = false
         datamodel.status.set_transfer_source = not datamodel.status.transfer_source and e.chest ~= nil
         datamodel.buttons = handler(typeobject.name, datamodel.status)
+
+        transfer_source_box.remove()
     end
 
     for _ in transfer_mb:unpack() do
@@ -350,6 +356,8 @@ function M.update(datamodel, gameplay_eid)
                 igameplay.destroy_entity(seid)
                 itransfer.set_source_eid(nil)
                 iui.leave()
+
+                transfer_source_box.remove()
             end
         end
         ::continue::
