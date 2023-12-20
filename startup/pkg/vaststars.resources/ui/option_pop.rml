@@ -49,16 +49,9 @@
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
             local audio = import_package "ant.audio"
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                archival_files = {},
-                show_archival_files = false,
-                info = false,
-                debug = false,
-                lock_group = false,
-                scene_ratio = 0,
-            })
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+            start.show_archival_files = false
 
             function start.clickButton(...)
                 audio.play "event:/ui/button1"

@@ -40,10 +40,8 @@ button:active {
 	justify-content: flex-start;
 }
 .back-button {
-	background-image:"/pkg/vaststars.resources/ui/textures/common/return.texture"; 
 	width: 14.67vmin; 
 	height: 14.67vmin; 
-	background-size:cover;
 }
 .menu-title {
 	-webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 

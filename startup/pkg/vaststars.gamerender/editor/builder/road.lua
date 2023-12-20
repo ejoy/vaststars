@@ -52,13 +52,15 @@ local function isValidRoadCoord(x, y)
             if object then
                 return false
             end
+
+            if imineral.get(x + i, y + j) then
+                return false
+            end
+
+            if imountain:has_mountain(x + i, y + j) then
+                return false
+            end
         end
-    end
-    if imineral.get(x, y) then
-        return false
-    end
-    if imountain:has_mountain(x, y) then
-        return false
     end
     return true
 end

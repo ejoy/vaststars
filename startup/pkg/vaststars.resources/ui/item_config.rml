@@ -179,36 +179,25 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
 
-            local start = ui_sys.createDataMode(window, {
-                slots = {},
-                buttons = {},
-                items = {},
-                show_set_item = false,
-                set_type = "",
-                disable = true,
-                supply_button = false,
-                demand_button = false,
-                show_add = false,
-            }, function(start)
-                if start.supply_button then
-                    start.buttons[#start.buttons+1] = {
-                        class = "supply-button",
-                        text = "设 置 发 货",
-                        type = "supply",
-                    }
-                end
+            start.buttons = {}
+            if start.supply_button then
+                start.buttons[#start.buttons+1] = {
+                    class = "supply-button",
+                    text = "设 置 发 货",
+                    type = "supply",
+                }
+            end
 
-                if start.demand_button then
-                    start.buttons[#start.buttons+1] = {
-                        class = "demand-button",
-                        text = "设 置 收 货",
-                        type = "demand",
-                    }
-                end
-            end)
+            if start.demand_button then
+                start.buttons[#start.buttons+1] = {
+                    class = "demand-button",
+                    text = "设 置 收 货",
+                    type = "demand",
+                }
+            end
 
             function start.clickIcon(c, i)
                 assert(start.set_type == "supply" or start.set_type == "demand", start.set_type)

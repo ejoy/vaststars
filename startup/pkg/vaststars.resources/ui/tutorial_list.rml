@@ -95,11 +95,14 @@
             }
         </style>
         <script type="text/x-lua" >
-            local args = ...
-            local start = window.createModel(args or {})
             local audio = import_package "ant.audio"
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
 
             function start.clickTab(name)
                 start.name = name
@@ -107,11 +110,6 @@
 
             function start.clickClose()
                 ui_sys.close(window)
-            end
-
-            function start.clickButton(...)
-                audio.play("event:/ui/button1")
-                ui_sys.pub(window, {...})
             end
         </script>
     </head>

@@ -45,7 +45,7 @@ function m.list()
     return fetch_all_archiving(ARCHIVAL_BASE_DIR)
 end
 
-function m.path()
+function m.PATH()
     return ARCHIVAL_BASE_DIR
 end
 

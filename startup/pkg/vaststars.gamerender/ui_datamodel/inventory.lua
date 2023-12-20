@@ -8,8 +8,6 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local iinventory = require "gameplay.interface.inventory"
 local click_item_mb = mailbox:sub {"click_item"}
-local close_mb = mailbox:sub {"close"}
-local iui = ecs.require "engine.system.ui_system"
 local iprototype_cache = ecs.require "prototype_cache"
 
 local function get_items()
@@ -112,10 +110,6 @@ function M.update(datamodel)
                 datamodel.item_assembling[#datamodel.item_assembling+1] = t
             end
         end
-    end
-
-    for _ in close_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/inventory.rml")
     end
 end
 

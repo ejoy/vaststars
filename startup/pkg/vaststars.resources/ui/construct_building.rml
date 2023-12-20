@@ -22,14 +22,10 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                buttons = {},
-                show_rotate = false,
-                show_confirm = false,
-            })
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
 
+            start.buttons = {}
             start.buttons[#start.buttons+1] = {name = "旋转", bind_var = "show_rotate", enabled = true, show = false, param = "rotate", background_color = "rgb(105, 112, 8)", background_image = "/pkg/vaststars.resources/ui/textures/construct/rotate.texture"}
             start.buttons[#start.buttons+1] = {name = "修建", bind_var = "show_confirm", enabled = true, show = false, always_show = true, param = "build", background_color = "rgb(19,175,240)", background_image = "/pkg/vaststars.resources/ui/textures/construct/confirm.texture"}
             start("buttons")

@@ -42,6 +42,7 @@ function M.create(gameplay_eid)
     local datamodel = {}
     datamodel.category_idx = 0
     datamodel.recipe_idx = 0
+    datamodel.confirm = false
 
     if e.assembling.recipe ~= 0 then
         local typeobject = iprototype.queryById(e.assembling.recipe)

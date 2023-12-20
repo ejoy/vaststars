@@ -128,6 +128,10 @@ function M.create()
         tech_count = #global.science.tech_list,
         item_bar = {},
         transfer_id = 0,
+        show_construct_button = false,
+        is_task = false,                --是否是任务
+        guide_progress = 0,             --引导进度
+        focus_building_icon = "",
     }
 end
 

@@ -23,6 +23,9 @@ end
 local object_id
 
 local function remove()
+    if not object_id then
+        return
+    end
     local building = assert(global.buildings[object_id])
     assert(building.transfer_source_box)
     building.transfer_source_box:remove()

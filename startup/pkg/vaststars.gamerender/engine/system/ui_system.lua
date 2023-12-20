@@ -69,12 +69,11 @@ local function open(v, ...)
     end
 
     binding = {}
-    
+
     irmlui.onMessage(rml, function(data)
         local res = assert(data)
         if res.event == "__CLOSE" then
-            local close_rml = res.ud[1] or rml
-            closeWindows[close_rml] = true
+            closeWindows[rml] = true
         elseif res.event == "__PUB" then
             world:pub {"rmlui_message_pub", rml, table_unpack(res.ud)}
         else

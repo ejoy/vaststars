@@ -109,24 +109,14 @@
             }
         </style>
         <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
             local ui = import_package "vaststars.ui"
             local ui_sys = ui.ui_system
             local scrollToItem = ui.scrolltoitem
-
-            local start = ui_sys.createDataMode(window, {
-                object_id = 0,
-                recipes = {},
-                recipe_name = "",
-                recipe_time = "",
-                recipe_ingredients = {},
-                recipe_results = {},
-                recipe_icon = "",
-                confirm = false,
-                category_idx = 0,
-                recipe_idx = 0,
-            })
+            local start = ui_sys.createDataMode(window, ...)
 
             function start.clickButton(...)
+                audio.play "event:/ui/button1"
                 ui_sys.pub(window, {...})
             end
 
@@ -139,7 +129,7 @@
             end
 
             function start.clickConfirm()
-                ui_sys.pub(window, {"set_recipe", start.object_id})
+                ui_sys.pub(window, {"set_recipe"})
             end
 
             function init()
