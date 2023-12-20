@@ -4,7 +4,7 @@ local directory = require "directory"
 local fastio = require "fastio"
 
 local ARCHIVAL_BASE_DIR <const> = (directory.app_path() / "archiving/"):string()
-local PROTOTYPE_VERSION = 1
+local PROTOTYPE_VERSION <const> = dofile "/pkg/vaststars.prototype/version.lua"
 
 local function readall(file)
     return fastio.readall_s(file)
@@ -47,10 +47,6 @@ end
 
 function m.PATH()
     return ARCHIVAL_BASE_DIR
-end
-
-function m.set_version(version)
-    PROTOTYPE_VERSION = version
 end
 
 return m

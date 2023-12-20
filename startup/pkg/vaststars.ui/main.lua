@@ -7,5 +7,6 @@ return {
         loading = require "on.loading",
         template = require "on.template",
         tutorial_list = require "on.tutorial_list",
+        login = require "on.login",
     }
 }

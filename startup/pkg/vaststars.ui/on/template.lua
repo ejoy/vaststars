@@ -30,7 +30,7 @@ return function (window, document)
 
     function model.open(filename)
         audio.play("event:/ui/button1")
-        window.callMessage("new-game", filename)
+        window.callMessage("reboot", "new_game", filename)
         window.close()
     end
 
