@@ -70,7 +70,7 @@
             <button data-event-click = "clickButton('restore')">
                 <button-text>读取进度</button-text>
             </button>
-            <button data-event-click = "clickButton('load_tutorial_template')">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/tutorial_list.rml'">
                 <button-text>教学模式</button-text>
             </button>
             <button data-event-click = "open '/pkg/vaststars.resources/ui/template.rml'">

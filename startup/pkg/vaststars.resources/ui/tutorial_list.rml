@@ -95,22 +95,8 @@
             }
         </style>
         <script type="text/x-lua" >
-            local audio = import_package "ant.audio"
-            local ui_sys = import_package "vaststars.ui".ui_system
-            local start = ui_sys.createDataMode(window, ...)
-
-            function start.clickButton(...)
-                audio.play "event:/ui/button1"
-                ui_sys.pub(window, {...})
-            end
-
-            function start.clickTab(name)
-                start.name = name
-            end
-
-            function start.clickClose()
-                ui_sys.close(window)
-            end
+            local ui = import_package "vaststars.ui"
+            ui.on.tutorial_list(window)
         </script>
     </head>
     <body style = "pointer-events: none;">
@@ -136,7 +122,7 @@
                     <richtext style = "margin-top: 6.67vmin; width: 90%; word-break: break-word;">{{v}}</richtext>
                 </detail>
             </div>
-            <button data-event-click = "clickButton('start_game', it.template)">
+            <button data-event-click = "open(it.template)">
                 进入教程
             </button>
         </frame>
