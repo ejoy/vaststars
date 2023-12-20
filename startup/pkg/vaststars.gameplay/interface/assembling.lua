@@ -92,16 +92,6 @@ local function assembling_reset(world, e, chest)
     end
 end
 
-local function isFluidId(id)
-    local pt = prototype.queryById(id)
-    for _, t in ipairs(pt.type) do
-        if t == "fluid" then
-            return true
-        end
-    end
-    return false
-end
-
 local function assembling_reset_items(world, recipe, chest, option, maxslot)
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
