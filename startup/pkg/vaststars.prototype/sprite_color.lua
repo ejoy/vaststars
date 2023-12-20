@@ -14,5 +14,5 @@ return {
     WORK_STATE_WORKING = math3d.constant("v4", {0.0, 1.0, 0.0, 1}),
     WORK_STATE_IDLE = math3d.constant("v4", {1.0, 1.0, 0.0, 1}),
     WORK_STATE_NO_POWER = math3d.constant("v4", {1.0, 0.0, 0.0, 1}),
-    TRANSFER_SOURCE = math3d.constant("v4", {1.0, 0.0, 0.0, 1}),
+    TRANSFER_SOURCE = math3d.constant("v4", {1.0, 1.0, 0.0, 1}),
 }
