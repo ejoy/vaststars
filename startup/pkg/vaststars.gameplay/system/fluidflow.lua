@@ -92,12 +92,12 @@ local function builder_init()
     builder = {}
 end
 
-local function builder_build(world, fluid, fluidbox)
+local function builder_build(world, fluid, fluidbox, limit)
     local pumping_speed = fluidbox.pumping_speed
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return cFluidflow.build(world._cworld, fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    return cFluidflow.build(world._cworld, fluid, limit or fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function connect(connects, a_id, a_type, b_id, b_type)
@@ -334,7 +334,7 @@ function m.build(world)
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
                     if id == 0 then
-                        id = builder_build(world, fluid, fluidbox)
+                        id = builder_build(world, fluid, fluidbox, v.fluidboxes[classify..i.."_limit"])
                         v.fluidboxes[classify..i.."_id"] = id
                     end
                     builder_connect_fluidbox(fluid, id, fluidbox, v.eid, v.building, pt.area)
