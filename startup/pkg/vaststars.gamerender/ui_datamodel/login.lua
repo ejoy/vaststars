@@ -6,7 +6,6 @@ local iui = ecs.require "engine.system.ui_system"
 local new_game_mb = mailbox:sub {"new_game"}
 local restore_mb = mailbox:sub {"restore"}
 local continue_mb = mailbox:sub {"continue"}
-local load_template_mb = mailbox:sub {"load_template"}
 local load_tutorial_template_mb = mailbox:sub {"load_tutorial_template"}
 local archiving = require "archiving"
 local window = import_package "ant.window"
@@ -38,10 +37,6 @@ function M.update(datamodel)
 
     for _ in restore_mb:unpack() do
         iui.open({rml = "/pkg/vaststars.resources/ui/option_pop.rml"})
-    end
-
-    for _ in load_template_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/template.rml"}, function(s) return not s:match("^tutorial.*$") end)
     end
 
     for _ in load_tutorial_template_mb:unpack() do

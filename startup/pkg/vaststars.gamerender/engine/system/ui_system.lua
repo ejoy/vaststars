@@ -254,4 +254,13 @@ function iui.add_datamodel_listener(rml, func)
     windowListeners[rml] = func
 end
 
+irmlui.onMessage("new-game", function(template)
+    local window = import_package "ant.window"
+    local global = require "global"
+    global.startup_args = { "new_game", template }
+    window.reboot {
+        feature = { "vaststars.gamerender|gameplay" },
+    }
+end)
+
 return iui

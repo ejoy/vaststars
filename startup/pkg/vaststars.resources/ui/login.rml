@@ -73,7 +73,7 @@
             <button data-event-click = "clickButton('load_tutorial_template')">
                 <button-text>教学模式</button-text>
             </button>
-            <button data-event-click = "clickButton('load_template')">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/template.rml'">
                 <button-text>测试模式</button-text>
             </button>           
         </right-box>

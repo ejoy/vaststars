@@ -48,31 +48,11 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local audio = import_package "ant.audio"
-            local ui_sys = import_package "vaststars.ui".ui_system
-            local start = ui_sys.createDataMode(window, ...)
-
-            function start.clickButton(...)
-                audio.play "event:/ui/button1"
-                ui_sys.pub(window, {...})
-            end
-
-            function init()
-                for _, e in ipairs(document.getElementsByTagName "template-list") do
-                    e.scrollInsets(0, 0, 0, 200)
-
-                    local last_y
-                    e.addEventListener("pan", function(param)
-                        if last_y and param.state == "changed" then
-                            e.scrollTop = e.scrollTop - (param.y - last_y)
-                        end
-                        last_y = param.y
-                    end)
-                end
-            end
+            local ui = import_package "vaststars.ui"
+            ui.on.template(window, document)
         </script>
     </head>
-    <body style = "background-color: black;" onload="init()">
+    <body style = "background-color: black;">
         <div class="item-container-region">
             <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
                 <!-- 标题栏 -->
@@ -81,7 +61,7 @@
                 </div>
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <template-list class = "recipe-change-block" style = "justify-content: center; align-items: center; overflow: scroll;">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "clickButton('start_game', it.filename)">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "open(it.filename)">
                             <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{it.name}}</div>
                         </button>
                     </template-list>
