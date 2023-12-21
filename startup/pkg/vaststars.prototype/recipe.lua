@@ -2862,7 +2862,7 @@ prototype "电子科技包1" {
     ingredients = {
         {"电容I", 1},
         {"绝缘线", 2},
-        {"润滑油", 5},
+        {"逻辑电路", 1},
     },
     results = {
         {"电子科技包", 1},
@@ -3065,10 +3065,9 @@ prototype "逻辑电路1" {
     recipe_order =  74,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
-        {"电容I", 1},
         {"铝丝", 3},
-        {"塑料", 3},
-        {"硅板", 3},
+        {"硅板", 4},
+        {"润滑油", 5},
     },
     results = {
         {"逻辑电路", 2},
