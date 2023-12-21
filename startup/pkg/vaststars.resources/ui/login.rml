@@ -57,7 +57,7 @@
             <button data-event-click = "open '/pkg/vaststars.resources/ui/loading.rml'">
                 <button-text>加载资源</button-text>
             </button> 
-            <button data-event-click = "restore()">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/archiving.rml'">
                 <button-text>读取进度</button-text>
             </button>
             <button data-event-click = "open '/pkg/vaststars.resources/ui/tutorial_list.rml'">

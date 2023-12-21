@@ -1,0 +1,72 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            .recipe-panel {
+                background-color: rgb(44, 32, 18);
+                border: 0.27vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
+                width: 25%;
+                height: 100%;
+            }
+            .recipe-name-block {
+                background-color: rgb(203, 118, 24);
+                width: 100%;
+                height:5%;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border: 0.10vmin rgb(89, 73, 39);
+            }
+            .recipe-change-block {
+                width: 100%;
+                height:100%;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                background-color: rgb(44, 32, 18);
+            }
+            .recipe-name-text {
+                padding-bottom: 0.15em;
+                font-size: 3.73vmin;
+                text-align: center;
+                align-items: center;
+            }
+            .button-style {
+                margin-bottom: 1vmin;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 35.00vmin;
+                height:10.0vmin;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size: cover;
+            }
+        </style>
+        <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui = import_package "vaststars.ui"
+            ui.on.archiving(window, document)
+        </script>
+    </head>
+    <body style = "background-color: black;">
+        <div class="item-container-region">
+            <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
+                <!-- 标题栏 -->
+                <div class = "recipe-name-block">
+                    <div class = "recipe-name-text">模板</div>
+                </div>
+                <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
+                    <template-list class = "recipe-change-block" style = "justify-content: center; align-items: center; overflow: scroll;">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "open(it.filename)">
+                            <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{it.name}}</div>
+                        </button>
+                    </template-list>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

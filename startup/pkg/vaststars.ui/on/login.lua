@@ -21,10 +21,4 @@ return function (window)
         window.callMessage("reboot", "restore", lastname)
         window.close()
     end
-    function model.restore()
-        --TODO
-        local ui_sys = require "ui_system"
-        audio.play "event:/ui/button1"
-        ui_sys.pub(window, {'restore'})
-    end
 end
