@@ -199,13 +199,21 @@ local function get_display_info(e, typeobject, t)
     t.status = status
 end
 
-local function getChestSlots(gameplay_world, chest, max_slot, res)
+local function getChestSlots(gameplay_world, chest, max_slot, res, show_zero_count)
     for i = 1, max_slot do
         local slot = ichest.get(gameplay_world, chest, i)
         if not slot then
             break
         end
-        if slot.item ~= 0 and slot.amount > 0 then
+
+        local show = false
+        if show_zero_count then
+            show = slot.item ~= 0
+        else
+            show = slot.item ~= 0 and slot.amount > 0
+        end
+
+        if show then
             local typeobject_item = assert(iprototype.queryById(slot.item))
             res[#res + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, count = ichest.get_amount(slot), max_count = slot.limit, type = slot.type}
         end
@@ -238,11 +246,11 @@ local function get_property(e, typeobject)
 
         if e.station then
             t.chest_list_1 = {}
-            t.chest_list_1 = getChestSlots(gameplay_world, e.station, max_slot, t.chest_list_1)
+            t.chest_list_1 = getChestSlots(gameplay_world, e.station, max_slot, t.chest_list_1, true)
             t.chest_list_1 = processStationSlots(max_slot, t.chest_list_1)
 
             t.chest_list_2 = {}
-            t.chest_list_2 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_2)
+            t.chest_list_2 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_2, true)
             t.chest_list_2 = processStationSlots(max_slot, t.chest_list_2)
         else
             t.chest_list_1 = {}

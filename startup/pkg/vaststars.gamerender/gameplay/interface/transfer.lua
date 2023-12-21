@@ -33,6 +33,7 @@ local function get_slots(gameplay_world, e, slot_types)
 
     local max_slots = ichest.get_max_slot(iprototype.queryById(e.building.prototype))
     local idx = 0
+    local show_zero_count = e.assembling ~= nil
 
     return function()
         idx = idx + 1
@@ -43,7 +44,13 @@ local function get_slots(gameplay_world, e, slot_types)
 
         local slot = ichest.get(gameplay_world, e.chest, idx)
         while slot do
-            if slot.item ~= 0 and not iprototype.is_fluid_id(slot.item) and slot_types[slot.type] then
+            local show = false
+            if show_zero_count then
+                show = true
+            elseif slot.amount > 0 then
+                show = true
+            end
+            if slot.item ~= 0 and not iprototype.is_fluid_id(slot.item) and slot_types[slot.type] and show then
                 return idx, slot
             else
                 idx = idx + 1

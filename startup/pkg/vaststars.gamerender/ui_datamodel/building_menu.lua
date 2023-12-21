@@ -47,6 +47,25 @@ local objects = require "objects"
 local handler = ecs.require "ui_datamodel.common.building_menu_handler"
 local transfer_source_box = ecs.require "transfer_source_box"
 
+local function _get_transfer_count()
+    local count = 0
+    local info = itransfer.get_transfer_info(gameplay_core.get_world())
+    local length = 0
+    for _, _ in pairs(info) do
+        length = length + 1
+    end
+
+    if length > 1 then
+        count = "+"
+    elseif length == 1 then
+        local _, amount = next(info)
+        count = amount
+    else
+        count = 0
+    end
+    return count
+end
+
 ---------------
 local M = {}
 function M.create(gameplay_eid, longpress)
@@ -101,7 +120,7 @@ function M.create(gameplay_eid, longpress)
         inventory = inventory,
         teardown = teardown,
 
-        transfer_count = transfer_count,
+        transfer_count = transfer and _get_transfer_count() or 0,
     }
 
     local buttons = handler(typeobject.name, status)
@@ -147,9 +166,11 @@ local function station_remove_item(gameplay_world, e, slot_index, item)
             break
         end
 
-        if slot.item == item and slot.limit - 1 > 0 then
-            items[#items+1] = {slot.type, slot.item, slot.limit - 1}
-        elseif i ~= slot_index then
+        if slot.item == item then
+            if slot.limit - 1 > 0 then
+                items[#items+1] = {slot.type, slot.item, slot.limit - 1}
+            end
+        else
             items[#items+1] = {slot.type, slot.item, slot.limit}
         end
     end
@@ -193,23 +214,7 @@ local function chest_remove_item(gameplay_world, e, slot_index)
 end
 
 local update = interval_call(300, function(datamodel, typeobject)
-    local info = itransfer.get_transfer_info(gameplay_core.get_world())
-    local length = 0
-    for _, _ in pairs(info) do
-        length = length + 1
-    end
-
-    local count = 0
-    if datamodel.status.transfer then
-        if length > 1 then
-            count = "+"
-        elseif length == 1 then
-            local _, amount = next(info)
-            count = amount
-        else
-            count = 0
-        end
-    end
+    local count = datamodel.status.transfer and _get_transfer_count() or 0
     if datamodel.status.transfer_count ~= count then
         datamodel.status.transfer_count = count
         datamodel.buttons = handler(typeobject.name, datamodel.status)
