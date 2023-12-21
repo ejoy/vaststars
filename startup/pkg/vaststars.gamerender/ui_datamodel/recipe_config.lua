@@ -53,6 +53,10 @@ function M.create(gameplay_eid)
         datamodel.recipe_results = irecipe.get_elements(typeobject.results)
     else
         datamodel.recipe_name = ""
+        datamodel.recipe_icon = ""
+        datamodel.recipe_time = 0
+        datamodel.recipe_ingredients = {}
+        datamodel.recipe_results = {}
     end
 
     local storage = gameplay_core.get_storage()

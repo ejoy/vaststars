@@ -48,7 +48,11 @@ local function init_game(template)
     iscience.update_tech_list(gameplay_world)
 
     rhwi.set_profie(gameplay_core.settings_get("debug", false))
-    irender.set_framebuffer_ratio("scene_ratio", gameplay_core.settings_get("ratio", 0.5))
+
+    local scene_ratio = gameplay_core.settings_get("scene_ratio")
+    if scene_ratio then
+        irender.set_framebuffer_ratio("scene_ratio", scene_ratio)
+    end
 
     iinventory.set_infinite_item(game_settings.infinite_item)
     iinventory.set_lorry_list(get_lorrys())
