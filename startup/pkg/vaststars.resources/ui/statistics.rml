@@ -171,17 +171,9 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss" />
         <script type="text/x-lua">
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                items = {},
-                total = 0,
-                total_str = "",
-                total_label = "",
-                percent_str = "100%;",
-                label_x = {},
-                label_y = {}
-            })
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+            print(window.getName())
 
             function start.ClickBuilding()
                 start.show = not start.show
@@ -252,7 +244,7 @@
 
             local page_item_init = page_item_update
 
-            local pageclass = require "page"
+            local pageclass = import_package "vaststars.ui".page
             window.customElements.define("page", function(e)
                 start.page = pageclass.create(document, e, page_item_init, page_item_update)
             end)

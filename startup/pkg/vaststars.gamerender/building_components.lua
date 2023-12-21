@@ -6,6 +6,7 @@ local BUILDING_COMPONENTS = {
     chimney_icon = true,
     consumer_icon = true,
     storage_tank_icon = true,
+    transfer_source_box = true,
 }
 local BUILDING_COMPONENT_METHODS = {
     on_position_change = true,

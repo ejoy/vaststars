@@ -33,6 +33,34 @@ op: add
 path: /maxsize
 value: 128
 ---
+file: animations/animation.ozz
+op: copyfile
+path: animations/work.ozz
+---
+file: animations/work.ozz
+op: replace
+path: /animations/work
+value: /pkg/vaststars.resources/animations/air-filter_animat.anim
+---
+file: debris.prefab
+op: add
+path: /-
+value:
+  data:
+    scene: {}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    mesh
+---
+file: debris.prefab
+op: add
+path: /-
+value:
+  mount: 4
+  prefab: /pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab
+---
 file: work.prefab
 op: add
 path: /-
@@ -52,43 +80,33 @@ value:
   tag:
     work
 ---
-file: animations/animation.ozz
-op: copyfile
-path: animations/work.ozz
----
-file: animations/work.ozz
-op: replace
-path: /animations/work
-value: /pkg/vaststars.resources/animations/air-filter_animat.anim
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 0.6
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work
+          event_type: Animation
+          name: Animation2
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: true
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
 ---
 file: work.prefab
 op: replace
 path: /2/data/animation
 value: ./animations/work.ozz
----
-file: work.prefab
-op: replace
-path: /2/data/animation_birth
-value: work
----
-file: debris.prefab
-op: add
-path: /-
-value:
-  data:
-    scene: {}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    mesh
----
-file: debris.prefab
-op: add
-path: /-
-value:
-  mount: 1
-  prefab: /pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab
 ---
 file: mesh.prefab
 op: createfile

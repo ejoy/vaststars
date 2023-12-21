@@ -53,7 +53,7 @@ local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
-local itransfer = ecs.require "transfer"
+local itransfer = require "gameplay.interface.transfer"
 local can_build = ecs.require "ui_datamodel.common.can_build"
 local ichest = require "gameplay.interface.chest"
 local inner_building = require "editor.inner_building"
@@ -128,6 +128,10 @@ function M.create()
         tech_count = #global.science.tech_list,
         item_bar = {},
         transfer_id = 0,
+        show_construct_button = false,
+        is_task = false,                --是否是任务
+        guide_progress = 0,             --引导进度
+        focus_building_icon = "",
     }
 end
 

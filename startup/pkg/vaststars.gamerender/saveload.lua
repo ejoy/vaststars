@@ -9,7 +9,7 @@ local ROTATORS <const> = CONSTANT.ROTATORS
 local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
 
 local archiving = require "archiving"
-local CAMERA_CONFIG = archiving.path() .. "camera.json"
+local CAMERA_CONFIG = archiving.PATH() .. "camera.json"
 
 local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
@@ -187,7 +187,7 @@ function M:backup()
 
     local t = os.date("*t")
     local dn = ("%04d-%02d-%02d-%02d-%02d-%02d"):format(t.year, t.month, t.day, t.hour, t.min, t.sec)
-    local fullpath = archiving.path() .. ("%s"):format(dn)
+    local fullpath = archiving.PATH() .. ("%s"):format(dn)
 
     list[#list + 1] = {dir = dn}
     gameplay_core.backup(fullpath)

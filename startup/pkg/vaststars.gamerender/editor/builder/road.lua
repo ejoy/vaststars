@@ -43,6 +43,7 @@ local iinventory = require "gameplay.interface.inventory"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
+local itl = ecs.require "ant.timeline|timeline"
 
 local function isValidRoadCoord(x, y)
     for i = 0, ROAD_SIZE - 1 do
@@ -51,13 +52,15 @@ local function isValidRoadCoord(x, y)
             if object then
                 return false
             end
+
+            if imineral.get(x + i, y + j) then
+                return false
+            end
+
+            if imountain:has_mountain(x + i, y + j) then
+                return false
+            end
         end
-    end
-    if imineral.get(x, y) then
-        return false
-    end
-    if imountain:has_mountain(x, y) then
-        return false
     end
     return true
 end
@@ -166,6 +169,18 @@ local function _new_entity(self, datamodel, typeobject, x, y)
                 local root <close> = world:entity(instance.tag['*'][1])
                 iom.set_position(root, math3d.vector(icoord.position(dx, dy, iprototype.rotate_area(typeobject.area, dir))))
                 iom.set_rotation(root, ROTATORS[self.forward_dir])
+
+                for _, eid in ipairs(instance.tag["*"]) do
+                    local e <close> = world:entity(eid, "timeline?in loop_timeline?out")
+                    if e.timeline then
+                        e.timeline.eid_map = instance.tag
+                        itl:start(e)
+
+                        if e.timeline.loop == true then
+                            e.loop_timeline = true
+                        end
+                    end
+                end
             end,
             on_message = function (instance, msg, ...)
                 if msg == "on_position_change" then

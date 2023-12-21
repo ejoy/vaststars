@@ -148,31 +148,8 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                object_id = 0,
-                property_list = {},
-                icon = "",
-                desc = "",
-                status_icon = "",
-                prototype_name = " ",
-                model = "",
-                detail_panel_status_icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture",
-                detail_panel_status_desc = "正常工作",
-                chest_list_1 = {},
-                chest_list_2 = {},
-                progress = "0%",
-                recipe_inputs = {},
-                recipe_ouputs = {},
-                chest_style = "",
-                recipe_name = " ",
-                goods_icon = "",
-                goods_count = 0,
-                goods_desc = "",
-                guide_progress = 0,
-                areaid = 0
-            })
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
 
             function start.onLongPress(ev, areaid)
                 if ev.state == "began" then
@@ -363,7 +340,7 @@
                                 </div>
                             </div>
                             <div style='flex-direction: row;'>
-                                <div style="margin-bottom: 1.25vmin; font-size: 3vmin;">{{it.name}}</div>
+                                <div style="margin-bottom: 0.25vmin; font-size: 2.8vmin;">{{it.name}}</div>
                                 <div style="font-size: 2.8vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.demand_count > 1">x{{it.demand_count}}</div>
                             </div>
                         </div>
@@ -383,7 +360,7 @@
                                 </div>
                             </div>
                             <div style='flex-direction: row;'>
-                                <div style="margin-bottom: 1.25vmin; font-size: 3vmin;">{{it.name}}</div>
+                                <div style="margin-bottom: 0.25vmin; font-size: 2.8vmin;">{{it.name}}</div>
                                 <div style="font-size: 2.8vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.output_count > 1">x{{it.output_count}}</div>
                             </div>
                         </div>

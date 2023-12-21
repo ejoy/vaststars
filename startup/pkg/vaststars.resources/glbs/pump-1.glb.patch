@@ -24,16 +24,6 @@ op: replace
 path: /animations/work
 value: /pkg/vaststars.resources/animations/pump_animat.anim
 ---
-file: work.prefab
-op: replace
-path: /2/data/animation
-value: ./animations/work.ozz
----
-file: work.prefab
-op: replace
-path: /2/data/animation_birth
-value: work
----
 file: mesh.prefab
 op: copyfile
 path: debris.prefab
@@ -54,8 +44,36 @@ file: debris.prefab
 op: add
 path: /-
 value:
-  mount: 1
+  mount: 4
   prefab: /pkg/vaststars.resources/glbs/scaffold/1x2.glb|mesh.prefab
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 0.6
+      key_event:
+        ---
+        event_list:
+          ---
+          asset_path: work
+          event_type: Animation
+          name: Animation2
+          pause_frame: -1
+        tick: 0
+        time: 0
+      loop: true
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
+---
+file: work.prefab
+op: replace
+path: /2/data/animation
+value: ./animations/work.ozz
 ---
 file: mesh.prefab
 op: createfile

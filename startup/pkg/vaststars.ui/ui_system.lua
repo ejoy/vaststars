@@ -9,10 +9,10 @@ function M.pub(window, msg)
     window.sendMessage(window.getName(), ud)
 end
 
-function M.close(window, url)
+function M.close(window)
     local ud = {}
     ud.event = "__CLOSE"
-    ud.ud = {url}
+    ud.ud = {}
     window.sendMessage(window.getName(), ud)
 end
 
@@ -23,15 +23,13 @@ function M.onMessage(window, event_funcs)
             return
         end
         func(table.unpack(data.ud))
-        return
     end)
 end
 
-function M.createDataMode(window, init, onload)
+function M.createDataMode(window, init)
     local doc = tracedoc.new(init)
     local datamodel = window.createModel(init)
     datamodel.mapping = nil
-    datamodel.__first = true
 
     window.onMessage(window.getName().."-data-model", function(data)
         if data.event ~= "__DATAMODEL" then
@@ -56,14 +54,6 @@ function M.createDataMode(window, init, onload)
             tracedoc.mapchange(doc, datamodel.mapping)
         end
         tracedoc.commit(doc)
-
-        if datamodel.__first then
-            datamodel.__first = false
-            if onload then
-                print("onload")
-                onload(datamodel)
-            end
-        end
     end)
 
     return datamodel

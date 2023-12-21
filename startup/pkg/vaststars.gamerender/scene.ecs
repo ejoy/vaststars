@@ -15,6 +15,8 @@ import_feature "ant.shadow_bounding"
 import_feature "ant.shadow_bounding|scene_bounding_pack"
 import_feature "ant.timeline"
 
+component "loop_timeline"
+
 system "ui_system"
     .implement "engine/system/ui_system.lua"
 

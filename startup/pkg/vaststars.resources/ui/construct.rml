@@ -62,27 +62,12 @@
             }
         </style>
         <script type="text/x-lua" >
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                status = "NORMAL",
-                show_construct_button = false,
-                show_tech_progress = false,     --是否显示科技进度
-                is_task = false,                --是否是任务
-                current_tech_icon = "none",     --当前科技图标
-                current_tech_name = "none",     --当前科技名字
-                current_tech_progress = "0%",   --当前科技进度
-                current_tech_progress_detail = "0/0",  --当前科技进度（数量）
-                show_ingredient = false,
-                ingredient_icons = {},
-                guide_progress = 0,
-                focus_building_icon = "",
-                item_bar = {},
-                tech_count = 0,
-                transfer_id = 0,
-            })
+            local audio = import_package "ant.audio"
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
 
             function start.clickButton(...)
+                audio.play "event:/ui/button1"
                 ui_sys.pub(window, {...})
             end
 

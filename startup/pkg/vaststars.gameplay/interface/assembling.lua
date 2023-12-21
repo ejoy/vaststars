@@ -28,32 +28,36 @@ local function findFluidbox(init, id)
     return 0
 end
 
-local function createFluidBox(init, recipe)
+local function createFluidBox(init, recipe, fluidboxes, items)
     local input_fluids = {}
     local output_fluids = {}
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
     assert(ingredients_n <= 16 and results_n <= 16)
-    for idx = 1, ingredients_n do
-        local MAX <const> = 4
-        local id = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
-        if isFluidId(id) then
-            local fluid_idx = findFluidbox(init.input, id)
-            if fluid_idx > MAX then
-                error "The assembling does not support this recipe."
+    for idx = 1, ingredients_n + results_n do
+        local s = items[idx]
+        if s.type == "none" then
+            local fluid_idx = findFluidbox(init.input, s.item)
+            if fluid_idx ~= 0 then
+                if fluid_idx > 4 then
+                    error "The assembling does not support this recipe."
+                end
+                input_fluids[fluid_idx] = idx
+                fluidboxes["in"..fluid_idx.."_limit"] = s.limit
             end
-            input_fluids[fluid_idx] = idx
         end
     end
     for idx = 1, results_n do
-        local MAX <const> = 3
-        local id = string.unpack("<I2I2", recipe.results, 4*idx+1)
-        if isFluidId(id) then
-            local fluid_idx = findFluidbox(init.output, id)
-            if fluid_idx > MAX then
-                error "The assembling does not support this recipe."
+        local s = items[ingredients_n + idx]
+        if s.type == "none" then
+            local fluid_idx = findFluidbox(init.output, s.item)
+            if fluid_idx ~= 0 then
+                if fluid_idx > 3 then
+                    error "The assembling does not support this recipe."
+                end
+                output_fluids[fluid_idx] = ingredients_n + idx
+                fluidboxes["out"..fluid_idx.."_limit"] = s.limit
             end
-            output_fluids[fluid_idx] = idx + ingredients_n
         end
     end
     local fluidbox_in = 0
@@ -73,7 +77,8 @@ local function chest_destroy(world, chest, recycle)
     return cChest.destroy(world._cworld, chest.chest, recycle)
 end
 
-local function assembling_reset(world, e, chest)
+local function assembling_reset(world, e)
+    local chest = e.chest
     local olditems = {}
     if chest.chest ~= InvalidChest then
         for i = 1, 256 do
@@ -90,16 +95,6 @@ local function assembling_reset(world, e, chest)
         chest.chest = InvalidChest
         iBuilding.dirty(world, "chest")
     end
-end
-
-local function isFluidId(id)
-    local pt = prototype.queryById(id)
-    for _, t in ipairs(pt.type) do
-        if t == "fluid" then
-            return true
-        end
-    end
-    return false
 end
 
 local function assembling_reset_items(world, recipe, chest, option, maxslot)
@@ -160,14 +155,7 @@ local function assembling_set(world, e, recipe, option, maxslot)
     end
     chest.chest = iChest.create(world, items)
     iBuilding.dirty(world, "chest")
-end
-
-local function chest_assembling_set(world, e, recipe, option, maxslot)
-    if recipe == nil then
-        assembling_reset(world, e, e.chest)
-        return
-    end
-    assembling_set(world, e, recipe, option, maxslot)
+    return items
 end
 
 local function del_recipe(world, e)
@@ -177,7 +165,7 @@ local function del_recipe(world, e)
     assembling.recipe = 0
     assembling.fluidbox_in = 0
     assembling.fluidbox_out = 0
-    chest_assembling_set(world, e)
+    assembling_reset(world, e)
 end
 
 local function set_recipe(world, e, pt, recipe_name, fluids, option)
@@ -195,9 +183,9 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     assembling.recipe = recipe.id
     assembling.progress = 0
     assembling.status = STATUS_IDLE
-    chest_assembling_set(world, e, recipe, option, pt.maxslot)
+    local items = assembling_set(world, e, recipe, option, pt.maxslot)
     if fluids and pt.fluidboxes then
-        local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe)
+        local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe, e.fluidboxes, items)
         assembling.fluidbox_in = fluidbox_in
         assembling.fluidbox_out = fluidbox_out
     else

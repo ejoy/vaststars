@@ -51,12 +51,8 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                main_text = "none",
-                sub_text = "none",
-            })
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
             window.setTimeout(function() ui_sys.close(window) end, 3500)
         </script>
     </head>

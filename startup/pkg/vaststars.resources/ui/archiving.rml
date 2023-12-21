@@ -49,7 +49,7 @@
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui = import_package "vaststars.ui"
-            ui.on.template(window, document)
+            ui.on.archiving(window, document)
         </script>
     </head>
     <body style = "background-color: black;">

@@ -10,25 +10,21 @@
         <li><a href="app">App Directory</a></li>
         <li><a href="debug/call/ping">Ping Info</a></li>
         <li>
-            <a id="debug-mipmap-link" href="#" onclick="
-                var debug = document.getElementById('mipmap-debug').checked;
-                var level = document.getElementById('mipmap-level').value;
-                sendRequest('debug/send/mipmap?debug=' + debug + '&level=' + level);
-            ">Debug Mipmap</a>
-               
-            <div>
-                <label>Mipmap Debug: </label>
-                <input id="mipmap-debug" type="checkbox">
-            </div>
-            <div>
-                <label>Mipmap Level: </label>
-                <input id="mipmap-level" type="text" style="width: 50px;" value="9" >
-            </div>
+            <form name="mipmap-form" style = "margin: 0;" onsubmit="
+                    var debug = document.forms['mipmap-form']['debug'].checked;
+                    var level = document.forms['mipmap-form']['level'].value;
+                    sendRequest('debug/send/mipmap?debug=' + debug + '&level=' + level); return false;">
+                <label>Mipmap Debug:</label>
+                <input name="debug" type="checkbox" />
+                <label>Mipmap Level:</label>
+                <input name="level" type="text" style="width: 50px;" value="9" />
+                <button type="submit">Debug Mipmap</button>
+            </form>
         </li>
         <li>
-            <a id="show-debug-link" href="#" onclick="sendRequest('debug/send/debug');">Show Debug</a>
+            <a href="#" onclick="sendRequest('debug/send/debug');">Show Debug</a>
         </li>
-        <li><a id="texture-link" href="texture">Texture</a></li>
+        <li><a href="texture">Texture</a></li>
     </ul>
 
     <form id="upload-form" action="upload" method="post" enctype="multipart/form-data">

@@ -206,7 +206,7 @@ return {
         inspect(roads),
         inspect(imineral.source()),
         template.name,
-        template.order,
+        template.order or 1,
         template.start_tech,
         tostring(template.canvas_icon),
         inspect(template.init_ui),

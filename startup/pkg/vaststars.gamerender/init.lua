@@ -2,7 +2,6 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local PROTOTYPE_VERSION <const> = ecs.require "vaststars.prototype|version"
 local DISABLE_AUDIO <const> = ecs.require "game_settings".disable_audio
 local NOTHING <const> = ecs.require "game_settings".nothing
 local TERRAIN_ONLY <const> = ecs.require "game_settings".terrain_only
@@ -10,7 +9,6 @@ local TERRAIN_ONLY <const> = ecs.require "game_settings".terrain_only
 local global = require "global"
 local audio = import_package "ant.audio"
 local start_web = ecs.require "engine.webcgi"
-local archiving = require "archiving"
 local ltask = require "ltask"
 local window = import_package "ant.window"
 
@@ -23,8 +21,6 @@ return function()
     ltask.uniqueservice "vaststars.gamerender|memtexture"
 
     start_web()
-
-    archiving.set_version(PROTOTYPE_VERSION)
 
     -- audio test (Master.strings.bank must be first)
     audio.load {

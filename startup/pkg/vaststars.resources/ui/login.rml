@@ -39,39 +39,31 @@
             }
         </style>
         <script type="text/x-lua" >
-            local audio = import_package "ant.audio"
             local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                show_continue_game = false,
-            })
-            function start.clickButton(...)
-                audio.play "event:/ui/button1"
-                ui_sys.pub(window, {...})
-            end
+            ui.on.login(window)
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
         <right-box>
-            <button data-event-click = "clickButton('continue')" data-if = "show_continue_game">
+            <button data-event-click = "continue()" data-if = "show_continue_game">
                 <button-text>继续游戏</button-text>
             </button>
-            <button data-event-click = "clickButton('new_game', 'template.adventure')">
+            <button data-event-click = "newgame 'template.adventure'">
                 <button-text>冒险模式</button-text>
             </button>
-            <button data-event-click = "clickButton('new_game', 'template.free')">
+            <button data-event-click = "newgame 'template.free'">
                 <button-text>自由模式</button-text>
             </button> 
-            <button data-event-click = "clickButton('load_resources')">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/loading.rml'">
                 <button-text>加载资源</button-text>
             </button> 
-            <button data-event-click = "clickButton('restore')">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/archiving.rml'">
                 <button-text>读取进度</button-text>
             </button>
-            <button data-event-click = "clickButton('load_tutorial_template')">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/tutorial_list.rml'">
                 <button-text>教学模式</button-text>
             </button>
-            <button data-event-click = "clickButton('load_template')">
+            <button data-event-click = "open '/pkg/vaststars.resources/ui/template.rml'">
                 <button-text>测试模式</button-text>
             </button>           
         </right-box>

@@ -33,14 +33,9 @@
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local args = ...
             local audio = import_package "ant.audio"
-            local ui = import_package "vaststars.ui"
-            local ui_sys = ui.ui_system
-            local start = ui_sys.createDataMode(window, {
-                guide_progress = 0,
-                buttons = args.buttons,
-            })
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
 
             function start.clickButton(button)
                 if button.command == "" then

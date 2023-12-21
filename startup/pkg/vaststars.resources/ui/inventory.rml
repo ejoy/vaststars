@@ -120,22 +120,20 @@
                 background-lattice: 5.24% 11.21% 28.29% 5.26% 15.52% 67.12%;
             }
         </style>
-        <script type="text/x-lua" >
+        <script type="text/x-lua">
+            local audio = import_package "ant.audio"
             local ui = import_package "vaststars.ui"
             local ui_sys = ui.ui_system
             local scrollToItem = ui.scrolltoitem
-            local start = ui_sys.createDataMode(window, {
-                inventory = {},
-                item_name = "",
-                item_desc = "",
-                item_ingredients = {},
-                item_assembling = {},
-                category_idx = 0,
-                item_idx = 0,
-            })
+            local start = ui_sys.createDataMode(window, ...)
 
             function start.clickButton(...)
+                audio.play "event:/ui/button1"
                 ui_sys.pub(window, {...})
+            end
+
+            function start.clickClose()
+                ui_sys.close(window)
             end
 
             ui_sys.mapping(start, {
@@ -164,7 +162,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;" onload="init()">
-        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickButton('close')" />
+        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
         <construct-box>
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : inventory">

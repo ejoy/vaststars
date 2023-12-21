@@ -134,9 +134,15 @@ component "fluidbox" {
     "uint16 id",
 }
 
+component "fluidbox2" {
+    "uint16 fluid",
+    "uint16 id",
+    "uint16 limit",
+}
+
 component "fluidboxes" {
-    "fluidbox in[4]",
-    "fluidbox out[3]",
+    "fluidbox2 in[4]",
+    "fluidbox2 out[3]",
 }
 
 tag "pump"

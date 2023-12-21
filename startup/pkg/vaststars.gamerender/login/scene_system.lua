@@ -10,7 +10,6 @@ local rhwi = import_package "ant.hwi"
 local irender = ecs.require "ant.render|render_system.render"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local imodifier = ecs.require "ant.modifier|modifier"
-local iui = ecs.require "engine.system.ui_system"
 local iroadnet = ecs.require "engine.roadnet"
 local icanvas = ecs.require "engine.canvas"
 local imountain = ecs.require "engine.mountain"
@@ -23,6 +22,7 @@ local iterrain  = ecs.require "terrain"
 local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
+local iRmlUi = ecs.require "ant.rmlui|rmlui_system"
 
 local m = ecs.system "login_scene_system"
 
@@ -64,9 +64,7 @@ local function init_game(template)
         }
     end
 
-    for _, rml in ipairs(template.init_ui) do
-        iui.open({rml = rml})
-    end
+    iRmlUi.open "/pkg/vaststars.resources/ui/login.rml"
 end
 
 function m:init()

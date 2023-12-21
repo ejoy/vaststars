@@ -393,6 +393,7 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
     end
 
     PipeToGroundState.map[coord] = {x, y, _prototype_name, _dir}
+    return x, y
 end
 
 -- NOTE: different from pipe_builder
