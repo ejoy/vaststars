@@ -3066,7 +3066,7 @@ prototype "逻辑电路1" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
         {"铝丝", 3},
-        {"硅板", 4},
+        {"硅板", 6},
         {"润滑油", 5},
     },
     results = {
