@@ -111,7 +111,7 @@ local function toggle_view(v, cur_xzpoint)
         local dst_vp = math3d.mul(pm, dst_vm)
 
         local sx, sy = math3d.index(screen_point, 1, 2)
-
+        sx, sy = mu.convert_screen_to_device_coord(world.args.device_size, world.args.scene.viewrect, sx, sy)
         local src_dir = math3d.inverse(math3d.todirection(sr))
         local src_plane = math3d.plane(xzpoint, src_dir)
         local src_dis = math3d.dot(st, src_dir) - math3d.index(src_plane, 4)
@@ -170,7 +170,7 @@ local function toggle_view(v, cur_xzpoint)
     elseif v == "pickup" then
         last_view = "pickup"
         local h = math.min(math3d.index(CAMERA_PICKUP_POSITION, 2), math3d.index(ce.scene.t, 2))
-        local pos = math3d.set_index(CAMERA_PICKUP_ROTATION, 2, h)
+        local pos = math3d.set_index(CAMERA_PICKUP_POSITION, 2, h)
         return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_PICKUP_ROTATION, pos, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
     elseif v == "default" then
         delta_dis = delta_dis and -delta_dis or 0
