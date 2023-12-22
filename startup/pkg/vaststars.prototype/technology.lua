@@ -2154,29 +2154,29 @@ prototype "优化1" {
   time = "20s"
 }
 
-prototype "广播1" {
-  desc = "研究可影响周边生产设施工作效率的装置",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"广播塔1"},
-    unlock_item = {"广播塔I"},
-  },
-  prerequisites = {"发电机2"},
-  ingredients = {
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-    {"电子科技包", 1},
-  },
-  count = 70,
-  time = "25s"
-}
+-- prototype "广播1" {
+--   desc = "研究可影响周边生产设施工作效率的装置",
+--   type = { "tech" },
+--   effects = {
+--     unlock_recipe = {"广播塔1"},
+--     unlock_item = {"广播塔I"},
+--   },
+--   prerequisites = {"发电机2"},
+--   ingredients = {
+--     {"气候科技包", 1},
+--     {"机械科技包", 1},
+--     {"电子科技包", 1},
+--   },
+--   count = 70,
+--   time = "25s"
+-- }
 
 prototype "效能提升" {
   desc = "生产可以降低机器能耗的插件",
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "效能插件I"},
-  prerequisites = {"优化1","广播1"},
+  prerequisites = {"优化1"},
   count = 5,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
@@ -2191,7 +2191,7 @@ prototype "速度提升" {
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "速度插件I"},
-  prerequisites = {"优化1","广播1"},
+  prerequisites = {"优化1"},
   count = 5,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
@@ -2206,7 +2206,7 @@ prototype "产能提升" {
   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   type = { "task" },
   task = {"stat_production", 0, "产能插件I"},
-  prerequisites = {"优化1","广播1"},
+  prerequisites = {"优化1"},
   count = 5,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
@@ -2223,7 +2223,7 @@ prototype "矿物处理2" {
     unlock_recipe = {"粉碎机2"},
     unlock_item = {"粉碎机II"},
   },
-  prerequisites = {"优化1","广播1"},
+  prerequisites = {"优化1"},
   ingredients = {
     {"地质科技包", 1},
     {"机械科技包", 1},
@@ -2801,24 +2801,24 @@ prototype "电子器件2" {
   time = "30s"
 }
 
-prototype "广播2" {
-  desc = "研究可影响周边生产设施工作效率的装置",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"广播塔2"},
-    unlock_item = {"广播塔II"},
-  },
-  prerequisites = {"电子器件2"},
-  ingredients = {
-    {"地质科技包", 1},  
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-    {"电子科技包", 1},
-    {"化学科技包", 1},
-  },
-  count = 380,
-  time = "30s"
-}
+-- prototype "广播2" {
+--   desc = "研究可影响周边生产设施工作效率的装置",
+--   type = { "tech" },
+--   effects = {
+--     unlock_recipe = {"广播塔2"},
+--     unlock_item = {"广播塔II"},
+--   },
+--   prerequisites = {"电子器件2"},
+--   ingredients = {
+--     {"地质科技包", 1},  
+--     {"气候科技包", 1},
+--     {"机械科技包", 1},
+--     {"电子科技包", 1},
+--     {"化学科技包", 1},
+--   },
+--   count = 380,
+--   time = "30s"
+-- }
 
 prototype "优化2" {
   desc = "研究提高生产效率的插件",
@@ -2827,7 +2827,7 @@ prototype "优化2" {
     unlock_recipe = {"效能插件2","速度插件2","产能插件2"},
     unlock_item = {"效能插件II","速度插件II","产能插件II"},
   },
-  prerequisites = {"广播2"},
+  prerequisites = {"电子器件2"},
   ingredients = {
     {"地质科技包", 1},  
     {"气候科技包", 1},

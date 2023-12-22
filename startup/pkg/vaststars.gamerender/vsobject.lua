@@ -65,6 +65,10 @@ return function (init)
         model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
         model = model .. "debris.prefab"
     end
+    if init.state == "translucent" then
+        model = assert(typeobject.model:match("(.*%.glb|).*%.prefab"))
+        model = model .. "translucent.prefab"
+    end
 
     local game_object = assert(igame_object.create({
         prefab = model,
@@ -73,6 +77,9 @@ return function (init)
         srt = {r = ROTATORS[init.dir], t = init.position},
         parent = nil,
         slot = nil,
+        state = init.state,
+        emissive_color = init.emissive_color,
+
     }))
 
     local vsobject = {

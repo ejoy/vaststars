@@ -354,6 +354,7 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
         fluid_name = fluid_name,
         group_id = 0,
         recipe = recipe,
+        state = "translucent", color = SPRITE_COLOR.CONSTRUCT_SELF, emissive_color = SPRITE_COLOR.CONSTRUCT_SELF_EMISSIVE
     }
 
     if typeobject.fluid_indicators ~= false and iprototype.has_types(typeobject.type, "chimney", "fluidbox", "fluidboxes") then
@@ -525,6 +526,10 @@ local function confirm(self, datamodel)
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
+
+    local vsobject_manager = ecs.require "vsobject_manager"
+    local vsobject = assert(vsobject_manager:get(pickup_object.id))
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null"}
 
     self.pickup_object = nil
     complete(pickup_object.id)

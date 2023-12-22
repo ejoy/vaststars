@@ -64,6 +64,9 @@ local function new(init)
         group_id = init.group_id,
         items = init.items,
         debris = init.debris,
+        state = init.state,
+        color = init.color,
+        emissive_color = init.emissive_color,
     }
 
     local outer = setmetatable(t, mt)
@@ -84,6 +87,10 @@ local function clone(outer)
         gameplay_eid = outer.gameplay_eid,
         srt = outer.srt,
         group_id = outer.group_id,
+        debris = outer.debris,
+        state = outer.state,
+        color = outer.color,
+        emissive_color = outer.emissive_color,
     }
 
     local outer = setmetatable(t, mt)
@@ -134,6 +141,9 @@ local function flush()
                 position = outer.srt.t,
                 group_id = outer.group_id or igroup.id(outer.x, outer.y),
                 debris = outer.debris,
+                state = outer.state,
+                color = outer.color,
+                emissive_color = outer.emissive_color,
             }
         else
             for k in pairs(outer.__change_keys) do
@@ -179,7 +189,7 @@ local function flush()
     for _, outer in ipairs(appear) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:modifier("start_bone_modifier", {name = "appear", forwards = true})
+            -- vsobject:modifier("start_bone_modifier", {name = "appear", forwards = true})
         end
     end
 end
