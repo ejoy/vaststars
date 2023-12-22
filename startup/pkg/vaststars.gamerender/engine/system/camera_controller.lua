@@ -58,6 +58,7 @@ local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_mathqueue()
 local LockAxis
 
+
 local function zoom(factor, x, y)
     local ce <close> = world:entity(irq.main_camera())
 
@@ -341,8 +342,10 @@ function camera_controller:camera_usage()
     handle_camera_motion(ce)
 end
 
+
 -- the following interfaces must be called after the `camera_usage` stage
 function icamera_controller.screen_to_world(x, y, plane, vp)
+    x, y = mu.convert_device_to_screen_coord(world.args.backbuffer_viewport, world.args.scene.viewrect, x, y)
     local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vpmat = vp and vp or ce.camera.viewprojmat
 
