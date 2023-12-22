@@ -345,13 +345,12 @@ end
 
 -- the following interfaces must be called after the `camera_usage` stage
 function icamera_controller.screen_to_world(x, y, plane, vp)
-    x, y = mu.convert_device_to_screen_coord(world.args.backbuffer_viewport, world.args.scene.viewrect, x, y)
+    x, y = mu.convert_device_to_screen_coord(world.args.device_size, world.args.scene.viewrect, x, y)
     local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vpmat = vp and vp or ce.camera.viewprojmat
 
     local vr = irq.view_rect("main_queue")
-    local nx, ny = mu.remap_xy(x, y, vr.ratio)
-    local ndcpt = mu.pt2D_to_NDC({nx, ny}, vr)
+    local ndcpt = mu.pt2D_to_NDC({x, y}, vr)
     ndcpt[3] = 0
     local p0 = mu.ndc_to_world(vpmat, ndcpt)
     ndcpt[3] = 1
