@@ -3268,23 +3268,23 @@ prototype "产能插件3" {
     description = "生产可以传输数据的导线",
 }
 
-prototype "火箭控制器1" {
-    type = { "recipe" },
-    recipe_craft_category = "器件小型制造",
-    recipe_category =  "器件",
-    recipe_order =  70,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
-    ingredients = {
-        {"速度插件III", 1},
-        {"产能插件III", 1},
-        {"效能插件III", 1},
-    },
-    results = {
-        {"火箭控制器", 1},
-    },
-    time = "20s",
-    description = "生产可以传输数据的导线",
-}
+-- prototype "火箭控制器1" {
+--     type = { "recipe" },
+--     recipe_craft_category = "器件小型制造",
+--     recipe_category =  "器件",
+--     recipe_order =  70,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
+--     ingredients = {
+--         {"速度插件III", 1},
+--         {"产能插件III", 1},
+--         {"效能插件III", 1},
+--     },
+--     results = {
+--         {"火箭控制器", 1},
+--     },
+--     time = "20s",
+--     description = "生产可以传输数据的导线",
+-- }
 
 prototype "空气过滤" {
     type = { "recipe" },
