@@ -139,6 +139,9 @@ local function converter(name, object, key)
 		error(string.format("Error format .%s in %s", key.key, name))
 	end
 	if r == nil then
+		if errmsg then
+			error(string.format("Error format .%s in %s, %s", key.key, name, errmsg))
+		end
 		return
 	end
 	object[key.key] = r

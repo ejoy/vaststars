@@ -5,7 +5,6 @@ local iChest = require "interface.chest"
 local c = type "factory"
     .starting "position"
     .road "network"
-    .check_pos "position"
     .check_area "size"
     .lorry_track "lorry_track"
 
