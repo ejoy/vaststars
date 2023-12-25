@@ -2085,23 +2085,6 @@ prototype "挖掘2" {
   time = "15s"
 }
 
-prototype "水能利用" {
-  desc = "研究淡水处理的工艺",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"淡水沸腾","淡水过滤"},
-  },
-  prerequisites = {"计算元件"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-    {"电子科技包", 1},
-  },
-  count = 40,
-  time = "15s"
-}
-
 prototype "自动化2" {
   desc = "使用3D打印技术复制物品",
   type = { "tech" },
@@ -2109,7 +2092,7 @@ prototype "自动化2" {
     unlock_recipe = {"组装机2"},
     unlock_item = {"组装机II"},
   },
-  prerequisites = {"水能利用"},
+  prerequisites = {"挖掘2"},
   ingredients = {
     {"地质科技包", 1},
     {"机械科技包", 1},
