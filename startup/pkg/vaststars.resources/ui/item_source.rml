@@ -146,7 +146,7 @@
                                 <div data-for = "recipe_ingredients" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickButton('click_item', it.id)">
                                     <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
                                     <div style = "width: 7.00vmax; height: 6.94vmin;">
-                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
+                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;text-decoration: underline;">{{it.name}}</div>
                                         <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                 <div data-for = "recipe_results" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickButton('click_item', it.id)">
                                     <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
                                     <div style = "width: 7.00vmax; height: 6.94vmin;">
-                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
+                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;text-decoration: underline;">{{it.name}}</div>
                                         <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
                                     </div>
                                 </div>
