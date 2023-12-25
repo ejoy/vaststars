@@ -3813,22 +3813,22 @@ prototype "钢板1" {
     description = "铁板通过金属冶炼获得钢板",
 }
 
-prototype "钢丝1" {
-    type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
-    recipe_category =  "金属",
-    recipe_order =  20,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/steel-beam.texture",
-    ingredients = {
-        {"钢板", 3},
-        {"润滑油", 1},
-    },
-    results = {
-        {"钢丝", 3},
-    },
-    time = "2s",
-    description = "铁板通过金属冶炼获得钢板",
-}
+-- prototype "钢丝1" {
+--     type = { "recipe" },
+--     recipe_craft_category = "器件中型制造",
+--     recipe_category =  "金属",
+--     recipe_order =  20,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/steel-beam.texture",
+--     ingredients = {
+--         {"钢板", 3},
+--         {"润滑油", 1},
+--     },
+--     results = {
+--         {"钢丝", 3},
+--     },
+--     time = "2s",
+--     description = "铁板通过金属冶炼获得钢板",
+-- }
 
 prototype "钢齿轮" {
     type = { "recipe" },
