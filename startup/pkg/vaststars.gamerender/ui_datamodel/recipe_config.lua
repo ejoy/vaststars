@@ -8,6 +8,7 @@ local RECIPE_CATEGORY <const> = ecs.require "vaststars.prototype|recipe_category
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
 local clear_recipe_mb = mailbox:sub {"clear_recipe"}
+local click_item_mb = mailbox:sub {"click_item"}
 local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
@@ -136,6 +137,10 @@ function M.update(datamodel, gameplay_eid)
         datamodel.recipe_results = irecipe.get_elements(typeobject.results)
 
         datamodel.confirm = true
+    end
+
+    for _, _, _, item in click_item_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/item_source.rml"}, datamodel.recipe_name, datamodel.recipe_icon, datamodel.recipe_time, datamodel.recipe_ingredients, datamodel.recipe_results, datamodel.confirm, item)
     end
 
     for _ in set_recipe_mb:unpack() do

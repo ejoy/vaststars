@@ -25,6 +25,7 @@ local iterrain  = ecs.require "terrain"
 local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
+local setting = import_package "vaststars.settings"
 
 local m = ecs.system "game_init_system"
 
@@ -47,9 +48,9 @@ local function init_game(template)
     imountain:init(template.mountain)
     iscience.update_tech_list(gameplay_world)
 
-    rhwi.set_profie(gameplay_core.settings_get("debug", false))
+    rhwi.set_profie(setting.get("debug", false))
 
-    local scene_ratio = gameplay_core.settings_get("scene_ratio")
+    local scene_ratio = setting.get("scene_ratio")
     if scene_ratio then
         irender.set_framebuffer_ratio("scene_ratio", scene_ratio)
     end
@@ -57,7 +58,7 @@ local function init_game(template)
     iinventory.set_infinite_item(game_settings.infinite_item)
     iinventory.set_lorry_list(get_lorrys())
 
-    icanvas.create("icon", template.canvas_icon ~= false and gameplay_core.settings_get("info", true) or false, 10)
+    icanvas.create("icon", template.canvas_icon ~= false and setting.get("info", true) or false, 10)
     icanvas.create("pickup_icon", false, 10)
     icanvas.create("road_entrance_marker", false, 0.02)
 

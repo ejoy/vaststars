@@ -7,7 +7,6 @@ end
 local world = __create_gameplay_world()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
-local global_settings = require "gameplay.global_settings"
 
 local m = {}
 m.world_update = false
@@ -68,8 +67,6 @@ init_func["base"] = function (pt, template)
     return template
 end
 
-local post_funcs = {}
-
 function m.create_entity(init)
     -- assert(not(init.x == 0 and init.y == 0))
     local func
@@ -90,10 +87,6 @@ function m.create_entity(init)
         func = init_func[entity_type]
         if func then
             template = assert(func(typeobject, template))
-        end
-        func = post_funcs[entity_type]
-        if func then
-            func(typeobject, template)
         end
     end
 
@@ -146,14 +139,6 @@ end
 
 function m.set_changed(flag)
     m.system_changed_flags = m.system_changed_flags | flag
-end
-
-function m.settings_get(...)
-    return global_settings.get(...)
-end
-
-function m.settings_set(...)
-    global_settings.set(...)
 end
 
 return m

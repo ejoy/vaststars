@@ -1,5 +1,6 @@
-local archiving = require "archiving"
-local GLOBAL_SETTINGS_FILE <const> = archiving.PATH() .. "settings.json"
+local directory = require "directory"
+local ARCHIVAL_BASE_DIR <const> = (directory.app_path() / "archiving/"):string()
+local GLOBAL_SETTINGS_FILE <const> = ARCHIVAL_BASE_DIR .. "settings.json"
 
 local json = import_package "ant.json"
 local fastio = require "fastio"

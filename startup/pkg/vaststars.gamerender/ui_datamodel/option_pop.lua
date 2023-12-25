@@ -20,6 +20,7 @@ local irender = ecs.require "ant.render|render_system.render"
 local igroup = ecs.require "group"
 local window = import_package "ant.window"
 local global = require "global"
+local setting = import_package "vaststars.settings"
 
 ---------------
 local M = {}
@@ -34,8 +35,8 @@ function M.create()
 
     return {
         archival_files = archival_files,
-        info = gameplay_core.settings_get("info", true),
-        debug = gameplay_core.settings_get("debug", true),
+        info = setting.get("info", true),
+        debug = setting.get("debug", true),
         lock_group = igroup.is_lock(),
         scene_ratio = scene_ratio,
     }
@@ -64,15 +65,15 @@ function M.update(datamodel)
     end
 
     for _ in info_mb:unpack() do
-        local info = not gameplay_core.settings_get("info", true)
-        gameplay_core.settings_set("info", info)
+        local info = not setting.get("info", true)
+        setting.set("info", info)
         icanvas.show("icon", info)
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
     end
 
     for _ in debug_mb:unpack() do
-        local debug = not gameplay_core.settings_get("debug", false)
-        gameplay_core.settings_set("debug", debug)
+        local debug = not setting.get("debug", false)
+        setting.set("debug", debug)
         rhwi.set_profie(debug)
         iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
     end
@@ -97,7 +98,7 @@ function M.update(datamodel)
             datamodel.scene_ratio = 1
         end
         irender.set_framebuffer_ratio(whichratio, datamodel.scene_ratio)
-        gameplay_core.settings_set("ratio", datamodel.scene_ratio)
+        setting.set("scene_ratio", datamodel.scene_ratio)
     end
 end
 

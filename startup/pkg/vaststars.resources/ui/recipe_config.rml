@@ -27,18 +27,16 @@
                 width: 111.44vmin;
             }
             left-box {
-                width: 53.81vmax;
+                width: 54.81vmax;
                 height: 78.34vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture";
                 background-size: 100% 100%;
                 background-lattice: 4.22% 6.27% 4.22% 6.27% 49.22% 49.22%;
-                align-items: center; 
+                align-items: center;
             }
             recipe {
-                margin-right: -1.58vmax;
-                margin-bottom: -1.5vmax;
-                width: 8.99vmax;
-                height: 19.47vmin;
+                width: 16.00vmin;
+                height: 16.00vmin;
                 background-size: 100% 100%;
                 justify-content: center;
                 align-items: center;
@@ -132,6 +130,10 @@
                 ui_sys.pub(window, {"set_recipe"})
             end
 
+            function start.clickItem(id)
+                ui_sys.pub(window, {"click_item", id})
+            end
+
             function init()
                 local e = assert(document.getElementById "recipe-list")
                 e.scrollInsets(0, 0, 0, 200)
@@ -171,15 +173,13 @@
                             <div style = "width: 100%; align-items: center;" data-for = "c, c_index : recipes">
                                 <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/recipe-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                                 <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
-                                <div style = "margin-left: -2.20vmax; margin-top: -2.58vmin; width: 96.40%; flex-direction: row; flex-wrap: wrap;">
-                                    <div data-for = "r, r_index : c.recipes">
-                                        <recipe data-attr-id = "r.id"
-                                            data-event-click = "clickButton('click_recipe', c_index, r_index)" data-style-background-image = "r.selected and '/pkg/vaststars.resources/ui/textures/recipe-config/recipe-active.texture' or 'none'">
-                                                <div data-style-background-image = "r.icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
-                                                    <new data-if = "r.new">新</new>
-                                                </div>
-                                        </recipe>
-                                    </div>
+                                <div style = "margin-left: 2.58vmin; margin-top: 1.58vmin; width: 97.40%; flex-direction: row; flex-wrap: wrap;">
+                                    <recipe data-attr-id = "r.id" data-for = "r, r_index : c.recipes" style = "margin-left: -2.58vmin; margin-top: -2.58vmin;"
+                                        data-event-click = "clickButton('click_recipe', c_index, r_index)" data-style-background-image = "r.selected and '/pkg/vaststars.resources/ui/textures/recipe-config/recipe-active.texture' or 'none'">
+                                            <div data-style-background-image = "r.icon" style = "width: 11.95vmin; height: 11.95vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);">
+                                                <new data-if = "r.new">新</new>
+                                            </div>
+                                    </recipe>
                                 </div>
                             </div>
                         </recipe-list>
@@ -192,23 +192,23 @@
                         </recipe-category>
                     </left-box>
                     <right-box>
-                        <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; justify-content: center; align-items: center;">
-                            <div data-style-background-image = "recipe_icon" style = "width: 6.91vmax; height: 14.95vmin; background-size: 100% 100%;" data-if = "recipe_icon ~= ''" />
+                        <div style = "position: absolute; top: 1.25vmin; left: 2.9vmax; width: 15.57vmin; height: 15.57vmin; justify-content: center; align-items: center;">
+                            <div data-style-background-image = "recipe_icon" style = "width: 14.95vmin; height: 14.95vmin; background-size: 100% 100%;" data-if = "recipe_icon ~= ''" />
                         </div>
-                        <div style = "position: absolute; top: 1.25vmin; left: 3.42vmax; width: 7.19vmax; height: 15.57vmin; background-image: /pkg/vaststars.resources/ui/textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
+                        <div style = "position: absolute; top: 1.25vmin; left: 2.9vmax; width: 15.57vmin; height: 15.57vmin; background-image: /pkg/vaststars.resources/ui/textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
                         <div style = "position: absolute; margin-top: -1.50vmin; margin-left: 0.80vmax; top: 3.70vmin; left: 10.65vmax; width: 16.60vmax; text-align: center; font-size: 3.2vmin; -webkit-text-stroke: 0.1vmin #252525;" data-if = "recipe_name ~= ''">
                             {{recipe_name}}
                         </div>
-                        <div style = "position: absolute; top: 14.49vmin; left: 20.00vmax; width: 10vmax; height: 5.12vmin; justify-content: center; align-items: center; font-size: 4.50vmin;" data-if = "recipe_time ~= ''">
+                        <div style = "position: absolute; top: 14.49vmin; left: 22.00vmax; width: 5vmax; height: 5.12vmin; justify-content: center; align-items: center; font-size: 3.50vmin;">
                             {{recipe_time}}
                         </div>
                         <recipe-ingredients-container>
                             <div style = "margin-top: -1vmin; font-size: 3.50vmin; color:rgb(241,157,52); -webkit-text-stroke: 0.08vmin rgb(241,157,52);">原料</div>
                             <line style = "width: 93.88%;" />
                             <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
-                                <div data-for = "recipe_ingredients" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;">
-                                    <div data-style-background-image = "it.icon" style = "width: 3.45vmax; height: 7.47vmin; background-size: 100% 100%;" />
-                                    <div style = "width: 8.50vmax; height: 6.94vmin;">
+                                <div data-for = "recipe_ingredients" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickItem(it.id)">
+                                    <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 7.00vmax; height: 6.94vmin;">
                                         <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
                                         <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
                                     </div>
@@ -219,9 +219,9 @@
                             <div style = "margin-top: -1vmin; font-size: 3.50vmin; color:rgb(241,157,52); -webkit-text-stroke: 0.08vmin rgb(241,157,52);">成品</div>
                             <line style = "width: 93.88%;" />
                             <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
-                                <div data-for = "recipe_results" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;">
-                                    <div data-style-background-image = "it.icon" style = "width: 3.45vmax; height: 7.47vmin; background-size: 100% 100%;" />
-                                    <div style = "width: 8.50vmax; height: 6.94vmin;">
+                                <div data-for = "recipe_results" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickItem(it.id)">
+                                    <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 7.00vmax; height: 6.94vmin;">
                                         <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
                                         <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
                                     </div>

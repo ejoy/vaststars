@@ -1,0 +1,177 @@
+<rml>
+    <head>
+        <style path = "/pkg/vaststars.resources/ui/common.rcss"/>
+        <style>
+            body::after {
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                left: -4.97vmax;
+                top: -1.32vmin;
+                background-color: rgba(0, 0, 0, 240);
+            }
+            item {
+                width: 16.40vmin;
+                height: 16.40vmin;
+                background-size: 100% 100%;
+                justify-content: center;
+                align-items: center;
+                margin-right: -2.57vmin;
+                margin-bottom: -2.57vmin;
+            }
+            item-detail {
+                position: absolute;
+                left: 32.30vmax;
+                top: 11.44vmin;
+                width: 31.92vmax;
+                height: 32.63vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/construct/item-detail.texture";
+                background-size: 100% 100%;
+            }
+            item-source {
+                position: absolute;
+                left: 32.30vmax;
+                top: 39.74vmin;
+                width: 31.02vmax;
+                height: 56.83vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/inventory/item-source-bg.texture";
+                background-size: 100% 100%;
+                background-lattice: 5.24% 11.21% 28.29% 5.26% 15.52% 67.12%;
+            }
+            left-box {
+                width: 54.81vmax;
+                height: 78.34vmin;
+            }
+            right-box {
+                margin-left: 0.93vmax;
+                width: 27.68vmax;
+                height: 84.34vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/recipe-config/right-box-bg.texture";
+                background-size: 100% 100%;
+            }
+            recipe-ingredients-container {
+                margin-left: 1.07vmax;
+                margin-top: 21.41vmin;
+                width: 88.74%;
+                height: 20vmin;
+            }
+            recipe-results-container {
+                margin-left: 1.07vmax;
+                margin-top: 5.37vmin;
+                width: 88.74%;
+                height: 20vmin;
+            }
+            button-container {
+                width: 100%;
+                height: 17.46vmin;
+                align-items: center;
+            }
+            cancel-button {
+                width: 21.88vmax;
+                height: 13.16vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/recipe-config/cancel.texture";
+                background-size: 100% 100%;
+            }
+            cancel-button:active {
+                background-image: "/pkg/vaststars.resources/ui/textures/recipe-config/cancel-active.texture";
+            }
+        </style>
+        <script type="text/x-lua">
+            local audio = import_package "ant.audio"
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local scrollToItem = ui.scrolltoitem
+            local start = ui_sys.createDataMode(window, ...)
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
+
+            function start.clickClose()
+                ui_sys.close(window)
+            end
+        </script>
+    </head>
+    <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
+        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+
+        <item-detail data-if="item_name ~= ''">
+            <item-name style = "position: absolute; left: 15.20vmax; top: 2.94vmin; width: 13.21vmax; color: rgb(255, 255, 255); text-align: center; font-size: 3.2vmin;" data-if = "item_name ~= ''">{{item_name}}</item-name>
+            <item-desc style = "position: absolute; left: 15.73vmax; top: 9.26vmin; width: 13.21vmax; height: 12.61vmin; word-break: break-word; font-size: 3.00vmin; color: rgb(255, 174, 54);" data-if = "item_desc ~= ''">{{item_desc}}</item-desc>
+            <item-icon style = "position: absolute; left: 2.85vmax; top: 7.91vmin; width: 18.01vmin; height: 18.01vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "item_icon" />
+        </item-detail>
+
+        <item-source data-if="item_name ~= ''">
+            <div style = "position: absolute; left: 1vmax; top: 10.00vmin; width: 30.22vmax; height: 54.66vmin;">
+                <div style = "font-size: 5.00vmin;margin-bottom: 1vmin;">原料明细</div>
+                <div style = "width: 100%; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 3vmin;">
+                    <div style = "width: 50%; flex-direction: row; align-items: center; justify-content: flex-start;" data-for = "item_ingredients">
+                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%;" data-style-background-image = "it.icon" />
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{it.name}}</div>
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">x</div>
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{it.count}}</div>
+                    </div>
+                </div>
+                <div style = "font-size: 5.00vmin;margin-bottom: 1vmin;">生产建筑</div>
+                <div style = "flex-direction: row; align-items: center; justify-content: center;">
+                    <div style = "flex-direction: column; gap: 1.50vmin;" data-for = "item_assembling">
+                        <div style = "width: 14.00vmin; height: 14.00vmin; background-size: 100% 100%; align-items: center; justify-content: flex-end;" data-style-background-image = "it.icon" />
+                        <div style = "text-align: center; font-size: 2.50vmin; color: rgb(246, 142, 14); margin-top: -4vmin;">{{it.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </item-source>
+
+        <div style = "pointer-events: none; margin-top: 12.15vmin; margin-left: 3.98vmax; width: 92%; height: 93%;">
+            <div style = "pointer-events: none; align-items: center;">
+                <flex-row>
+                    <left-box style = "pointer-events: none;" />
+                    <right-box>
+                        <div style = "position: absolute; top: 1.25vmin; left: 2.9vmax; width: 15.57vmin; height: 15.57vmin; justify-content: center; align-items: center;">
+                            <div data-style-background-image = "recipe_icon" style = "width: 14.95vmin; height: 14.95vmin; background-size: 100% 100%;" data-if = "recipe_icon ~= ''" />
+                        </div>
+                        <div style = "position: absolute; top: 1.25vmin; left: 2.9vmax; width: 15.57vmin; height: 15.57vmin; background-image: /pkg/vaststars.resources/ui/textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
+                        <div style = "position: absolute; margin-top: -1.50vmin; margin-left: 0.80vmax; top: 3.70vmin; left: 10.65vmax; width: 16.60vmax; text-align: center; font-size: 3.2vmin; -webkit-text-stroke: 0.1vmin #252525;" data-if = "recipe_name ~= ''">
+                            {{recipe_name}}
+                        </div>
+                        <div style = "position: absolute; top: 14.49vmin; left: 22.00vmax; width: 5vmax; height: 5.12vmin; justify-content: center; align-items: center; font-size: 3.50vmin;">
+                            {{recipe_time}}
+                        </div>
+                        <recipe-ingredients-container>
+                            <div style = "margin-top: -1vmin; font-size: 3.50vmin; color:rgb(241,157,52); -webkit-text-stroke: 0.08vmin rgb(241,157,52);">原料</div>
+                            <line style = "width: 93.88%;" />
+                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
+                                <div data-for = "recipe_ingredients" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickButton('click_item', it.id)">
+                                    <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 7.00vmax; height: 6.94vmin;">
+                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
+                                        <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </recipe-ingredients-container>
+                        <recipe-results-container>
+                            <div style = "margin-top: -1vmin; font-size: 3.50vmin; color:rgb(241,157,52); -webkit-text-stroke: 0.08vmin rgb(241,157,52);">成品</div>
+                            <line style = "width: 93.88%;" />
+                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
+                                <div data-for = "recipe_results" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickButton('click_item', it.id)">
+                                    <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 7.00vmax; height: 6.94vmin;">
+                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff;">{{it.name}}</div>
+                                        <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </recipe-results-container>
+                        <button-container>
+                            <button-confirm style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "confirm" data-event-click = "clickButton('set_recipe')">开始生产</button-confirm>
+                            <cancel-button style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "not confirm and recipe_icon ~= ''" data-event-click = "clickButton('clear_recipe')">结束生产</cancel-button>
+                        </button-container>
+                    </right-box>
+                </flex-row>
+            </div>
+        </div>
+    </body>
+</rml>

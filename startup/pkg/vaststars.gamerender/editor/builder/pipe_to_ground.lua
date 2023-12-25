@@ -117,7 +117,7 @@ local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir
                 end
             end
 
-            if not (fb.fluid_name == "" or State.fluid_name == "" or fb.fluid_name == object.fluid_name) then
+            if not (fb.fluid_name == "" or State.fluid_name == "" or fb.fluid_name == State.fluid_name) then
                 State.succ = false
             else
                 State.fluid_name = fb.fluid_name
@@ -172,7 +172,7 @@ local function _can_replace(object, forward_dir)
     return true
 end
 
-local function __can_be_starting_point(object, forward_dir)
+local function __can_be_starting_point(object)
     if not iprototype.is_pipe(object.prototype_name) and not iprototype.is_pipe_to_ground(object.prototype_name) then
         return false
     end
@@ -235,7 +235,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
 
     elseif iprototype.is_pipe_to_ground(object.prototype_name) then
         -- the pipe to ground can certainly be replaced with the new pipe to ground, promise by _builder_init()
-        if not __can_be_starting_point(object, dir) then
+        if not __can_be_starting_point(object) then
             State.succ = false
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
