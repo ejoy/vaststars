@@ -909,3 +909,75 @@ prototype "特殊浮选器" {
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
+
+prototype "特殊电解厂" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    chest_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}
+
+prototype "特殊熔炼炉" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    chest_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}
+
+prototype "特殊化工厂" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    chest_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}
+
+prototype "特殊水电站" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    chest_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}
+
+prototype "特殊采矿机" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    chest_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}
+
+prototype "特殊蒸馏厂" {
+    type = {"item"},
+    --item_category = "物流",
+    station_limit = 50,
+    chest_limit = 15,
+    backpack_limit = 100,
+    item_order = 106,
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
+    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_description = "损坏飞行器残留的机尾组件",
+}
