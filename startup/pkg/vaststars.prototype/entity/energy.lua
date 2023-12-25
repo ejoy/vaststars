@@ -233,7 +233,7 @@ prototype "换热器I" {
     area = "3x2",
     io_shelf = false,
     rotate_on_build = true,
-    craft_category = {"流体换热处理"},
+    craft_category = {},
     maxslot = 8,
     fluidboxes = {
         input = {
