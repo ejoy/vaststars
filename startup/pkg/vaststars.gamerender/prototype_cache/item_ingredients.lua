@@ -26,13 +26,19 @@ return function()
             table.sort(v, function(a, b) return a.id < b.id end)
         end
 
-        for _, v in pairs(iprototype.each_type "item") do
+        local function cache_item(v)
             if not Item2Recipes[v.name] then
-                goto continue
+                return
             end
             Item2Recipe[v.name] = Item2Recipes[v.name][1]
             Item2Ingredients[v.name] = Item2Recipe[v.name].ingredients
-            ::continue::
+        end
+
+        for _, v in pairs(iprototype.each_type("item")) do
+            cache_item(v)
+        end
+        for _, v in pairs(iprototype.each_type("fluid")) do
+            cache_item(v)
         end
     end
 
