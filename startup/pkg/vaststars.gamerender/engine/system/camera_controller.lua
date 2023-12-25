@@ -79,8 +79,8 @@ local function get_screen_world_position(ce, position_type)
         local ray = {o = iom.get_position(ce), d = math3d.todirection(iom.get_rotation(ce))}
         return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
     elseif position_type == "RIGHT_CENTER" then
-        local vr = irq.view_rect("main_queue")
-        return icamera_controller.screen_to_world(vr.x + vr.w * (3/4), vr.y + vr.h / 2, XZ_PLANE)
+        local vp = world.args.device_size
+        return icamera_controller.screen_to_world(vp.x + vp.w * (3/4), vp.y + vp.h / 2, XZ_PLANE)
     else
         error(("invalid type : %s"):format(position_type))
     end
