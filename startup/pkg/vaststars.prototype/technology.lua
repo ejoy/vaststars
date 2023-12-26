@@ -2289,7 +2289,7 @@ prototype "建筑材料" {
   effects = {
     unlock_item = {"混凝土"},
   },
-  prerequisites = {"玻璃制造"},
+  prerequisites = {"玻璃制造","氨制造"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -2307,7 +2307,7 @@ prototype "地下水净化2" {
     unlock_recipe = {"水电站2","地下水挖掘机2"},
     unlock_item = {"水电站II","地下水挖掘机II"},
   },
-  prerequisites = {"建筑材料"},
+  prerequisites = {"建筑材料","产能提升","效能提升","速度提升"},
   ingredients = {
     {"气候科技包", 1},
     {"机械科技包", 1},
@@ -2324,7 +2324,7 @@ prototype "地热1" {
     unlock_recipe = {"地热井1"},
     unlock_item = {"地热井I"},
   },
-  prerequisites = {"建筑材料"},
+  prerequisites = {"建筑材料","科技大跃进"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
