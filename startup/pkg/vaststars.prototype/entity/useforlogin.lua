@@ -15,6 +15,7 @@ prototype "特殊组装机" {
     priority = "secondary",
     sound = "building/assembling-machine",
     maxslot = 8,
+    ingredients_details = false,
     drone_height = 22,
     craft_category = {"登录配方"},
     fluidboxes = {
@@ -58,6 +59,7 @@ prototype "特殊电解厂" {
     priority = "secondary",
     craft_category = {"登录配方"},
     maxslot = 8,
+    ingredients_details = false,
     drone_height = 22,
     fluidboxes = {
         input = {
@@ -114,6 +116,7 @@ prototype "特殊蒸馏厂" {
     sound = "building/hydro-plant",
     craft_category = {"登录配方"},
     maxslot = 8,
+    ingredients_details = false,
     drone_height = 22,
     fluidboxes = {
         input = {
@@ -179,6 +182,7 @@ prototype "特殊化工厂" {
     sound = "building/hydro-plant",
     priority = "secondary",
     maxslot = 8,
+    ingredients_details = false,
     drone_height = 22,
     craft_category = {"登录配方"},
     fluidboxes = {
@@ -245,6 +249,7 @@ prototype "特殊水电站" {
     priority = "secondary",
     craft_category = {"登录配方"},
     maxslot = 8,
+    ingredients_details = false,
     fluidboxes = {
         input = {
             {
@@ -295,6 +300,7 @@ prototype "特殊熔炼炉" {
     area = "3x3",
     speed = "75%",
     power = "300kW",
+    ingredients_details = false,
     priority = "secondary",
     sound = "building/furnace",
     craft_category = {"登录配方"},
@@ -334,6 +340,7 @@ prototype "特殊采矿机" {
     drone_height = 42,
     assembling_icon = false,
     power = "150kW",
+    ingredients_details = false,
     priority = "secondary",
     mining_area = "5x5",
     sound = "building/miner",
