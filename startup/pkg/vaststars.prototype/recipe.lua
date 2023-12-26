@@ -296,7 +296,7 @@ prototype "石砖" {
     type = { "recipe" },
     recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
-    recipe_order =  100,
+    recipe_order =  20,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/stone-brick.texture",
     ingredients = {
         {"碎石", 2},
@@ -347,7 +347,7 @@ prototype "玻璃1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  60,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/glass.texture",
     ingredients = {
         {"硅", 3},
@@ -363,7 +363,7 @@ prototype "玻璃2" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  62,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/glass.texture",
     ingredients = {
         {"硅", 5},
@@ -381,7 +381,7 @@ prototype "坩埚" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  72,
+    recipe_order =  64,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/crucible.texture",
     ingredients = {
         {"硅", 15},
@@ -466,7 +466,7 @@ prototype "电动机2" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  52,
+    recipe_order =  53,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"钢齿轮", 1},
@@ -485,7 +485,7 @@ prototype "电动机3" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  52,
+    recipe_order =  54,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"钛板", 4},
@@ -501,7 +501,7 @@ prototype "电动机3" {
 
 prototype "铁齿轮T1" {
     type = { "recipe" },
-    recipe_craft_category = "金属小型制造",
+    --recipe_craft_category = "金属小型制造",
     recipe_category =  "金属",
     recipe_order =  15,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-gear.texture",
@@ -641,7 +641,7 @@ prototype "大铁制箱子1" {
 
 prototype "铁制电线杆" {
     type = { "recipe" },
-    recipe_craft_category = "物流中型制造",
+    --recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
     recipe_order =  30,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
@@ -659,7 +659,7 @@ prototype "铁制电线杆" {
 
 prototype "远程电线杆" {
     type = { "recipe" },
-    recipe_craft_category = "物流中型制造",
+    --recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
     recipe_order =  30,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
@@ -677,7 +677,7 @@ prototype "远程电线杆" {
 
 prototype "广域电线杆" {
     type = { "recipe" },
-    recipe_craft_category = "物流中型制造",
+    --recipe_craft_category = "物流中型制造",
     recipe_category =  "物流",
     recipe_order =  30,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
@@ -2733,7 +2733,7 @@ prototype "地质科技包1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  80,
+    recipe_order =  100,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/geology-pack-1.texture",
     ingredients = {
         {"碎石", 2},
@@ -2751,7 +2751,7 @@ prototype "地质科技包2" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  81,
+    recipe_order =  101,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/geology-pack-2.texture",
     ingredients = {
         {"碎石", 1},
@@ -2770,7 +2770,7 @@ prototype "气候科技包1" {
     type = { "recipe" },
     recipe_craft_category = "流体液体处理",
     recipe_category =  "器件",
-    recipe_order =  82,
+    recipe_order =  102,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/climatology-pack-1.texture",
     ingredients = {
         {"空气", 3000},
@@ -2787,7 +2787,7 @@ prototype "气候科技包2" {
     type = { "recipe" },
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
-    recipe_order =  82,
+    recipe_order =  103,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/climatology-pack-1.texture",
     ingredients = {
         {"地热气", 2},
@@ -2805,7 +2805,7 @@ prototype "机械科技包1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  84,
+    recipe_order =  104,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
     ingredients = {
         {"电动机I", 1},
@@ -2820,9 +2820,9 @@ prototype "机械科技包1" {
 
 prototype "机械科技包T1" {
     type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
+    --recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  84,
+    recipe_order =  104,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
     ingredients = {
         {"电动机I", 1},
@@ -2840,7 +2840,7 @@ prototype "机械科技包2" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  84,
+    recipe_order =  106,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
     ingredients = {
         {"电动机III", 2},
@@ -2857,7 +2857,7 @@ prototype "电子科技包1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  85,
+    recipe_order =  108,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrical-pack-1.texture",
     ingredients = {
         {"电容I", 1},
@@ -2875,7 +2875,7 @@ prototype "化学科技包1" {
     type = { "recipe" },
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
-    recipe_order =  85,
+    recipe_order =  110,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemical-pack-1.texture",
     ingredients = {
         {"橡胶", 5},
@@ -2894,7 +2894,7 @@ prototype "物理科技包1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  85,
+    recipe_order =  112,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/chemical-pack-1.texture",
     ingredients = {
         {"科研中心II", 1},
@@ -2989,7 +2989,7 @@ prototype "绝缘线1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  60,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"橡胶", 2},
@@ -3025,7 +3025,7 @@ prototype "电容2" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  72,
+    recipe_order =  74,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"塑料", 15},
@@ -3062,7 +3062,7 @@ prototype "逻辑电路1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  74,
+    recipe_order =  84,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
         {"铝丝", 3},
@@ -3080,7 +3080,7 @@ prototype "运算电路1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  74,
+    recipe_order =  82,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/logic-circuit-1.texture",
     ingredients = {
         {"电容I", 2},
@@ -3099,7 +3099,7 @@ prototype "数据线1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  80,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"绝缘线", 5},
@@ -3116,7 +3116,7 @@ prototype "速度插件1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  90,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"数据线", 3},
@@ -3133,7 +3133,7 @@ prototype "速度插件2" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  91,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"处理器I", 1},
@@ -3150,7 +3150,7 @@ prototype "速度插件3" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  92,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"处理器II", 2},
@@ -3167,7 +3167,7 @@ prototype "效能插件1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  93,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"数据线", 3},
@@ -3184,7 +3184,7 @@ prototype "效能插件2" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  94,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"电池I", 1},
@@ -3201,7 +3201,7 @@ prototype "效能插件3" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  95,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"电池II", 2},
@@ -3218,7 +3218,7 @@ prototype "产能插件1" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  96,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"数据线", 3},
@@ -3236,7 +3236,7 @@ prototype "产能插件2" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  97,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"效能插件II", 1},
@@ -3254,7 +3254,7 @@ prototype "产能插件3" {
     type = { "recipe" },
     recipe_craft_category = "器件小型制造",
     recipe_category =  "器件",
-    recipe_order =  70,
+    recipe_order =  98,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/insulated-wire-1.texture",
     ingredients = {
         {"效能插件III", 1},
