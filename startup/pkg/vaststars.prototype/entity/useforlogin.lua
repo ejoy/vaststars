@@ -348,3 +348,61 @@ prototype "特殊采矿机" {
     speed = "200%",
     maxslot = 8,
 }
+
+prototype "特殊浮选器" {
+    model = "glbs/flotation-cell-1.glb|mesh.prefab",
+    work_status = {work = true},
+    icon = "mem:/pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab config:s,1,3",
+    check_coord = "exclusive",
+    builder = "normal",
+    type = {"building", "consumer", "assembling", "fluidboxes"},
+    area = "4x4",
+    power = "200kW",
+    drone_height = 22,
+    rotate_on_build = true,
+    drain = "6kW",
+    speed = "100%",
+    priority = "secondary",
+    sound = "building/hydro-plant",
+    craft_category = {"登录配方"},
+    maxslot = 8,
+    ingredients_details = false,
+    fluidboxes = {
+        input = {
+            {
+                capacity = 3000,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={0,0,"N"}},
+                }
+            },
+            {
+                capacity = 3000,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={0,0,"W"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={3,3,"S"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={3,3,"E"}},
+                }
+            },
+        },
+    },
+}
