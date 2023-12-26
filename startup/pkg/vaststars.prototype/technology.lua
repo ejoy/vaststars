@@ -2245,7 +2245,7 @@ prototype "氨制造" {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
   sign_desc = {
-    { desc = "用组装机生产5个速度插件I", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+    { desc = "使用化工厂生产500单位的氨气", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
   },
 }
 
