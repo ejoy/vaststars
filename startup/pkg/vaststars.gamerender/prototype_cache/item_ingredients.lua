@@ -26,7 +26,7 @@ return function()
             table.sort(v, function(a, b) return a.id < b.id end)
         end
 
-        local function cache_item(v)
+        local function cache_ingredients(v)
             if not Item2Recipes[v.name] then
                 return
             end
@@ -35,10 +35,10 @@ return function()
         end
 
         for _, v in pairs(iprototype.each_type("item")) do
-            cache_item(v)
+            cache_ingredients(v)
         end
         for _, v in pairs(iprototype.each_type("fluid")) do
-            cache_item(v)
+            cache_ingredients(v)
         end
     end
 
@@ -60,6 +60,10 @@ return function()
 
         for _, v in pairs(iprototype.each_type "building") do
             if not (iprototype.has_type(v.type, "assembling") and v.craft_category )then
+                goto continue
+            end
+
+            if v.ingredients_details == false then
                 goto continue
             end
 
