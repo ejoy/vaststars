@@ -501,8 +501,8 @@ prototype "电动机3" {
 
 prototype "铁齿轮T1" {
     type = { "recipe" },
-    --recipe_craft_category = "金属小型制造",
-    recipe_category =  "金属",
+    recipe_craft_category = "金属小型制造",
+    --recipe_category =  "金属",
     recipe_order =  15,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-gear.texture",
     ingredients = {
@@ -641,8 +641,8 @@ prototype "大铁制箱子1" {
 
 prototype "铁制电线杆" {
     type = { "recipe" },
-    --recipe_craft_category = "物流中型制造",
-    recipe_category =  "物流",
+    recipe_craft_category = "物流中型制造",
+    --recipe_category =  "物流",
     recipe_order =  30,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
     ingredients = {
@@ -659,8 +659,8 @@ prototype "铁制电线杆" {
 
 prototype "远程电线杆" {
     type = { "recipe" },
-    --recipe_craft_category = "物流中型制造",
-    recipe_category =  "物流",
+    recipe_craft_category = "物流中型制造",
+    --recipe_category =  "物流",
     recipe_order =  30,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
     ingredients = {
@@ -677,8 +677,8 @@ prototype "远程电线杆" {
 
 prototype "广域电线杆" {
     type = { "recipe" },
-    --recipe_craft_category = "物流中型制造",
-    recipe_category =  "物流",
+    recipe_craft_category = "物流中型制造",
+    --recipe_category =  "物流",
     recipe_order =  30,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/iron-wire.texture",
     ingredients = {
@@ -2820,8 +2820,8 @@ prototype "机械科技包1" {
 
 prototype "机械科技包T1" {
     type = { "recipe" },
-    --recipe_craft_category = "器件中型制造",
-    recipe_category =  "器件",
+    recipe_craft_category = "器件中型制造",
+    --recipe_category =  "器件",
     recipe_order =  104,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
     ingredients = {
