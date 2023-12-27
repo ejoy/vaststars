@@ -100,7 +100,7 @@ function m:init_world()
 
     local mf
     if template.camera_animation then
-        mf = imodifier.create_srt_modifier_from_file(nil, 0, template.camera_animation, false, true)
+        mf = imodifier.create_modifier_from_file(nil, 0, template.camera_animation, "camera", false, true)
     end
 
     -- replace the default camera

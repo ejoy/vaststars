@@ -35,6 +35,9 @@ system "debug_system"
 system "assembling_system"
     .implement "render_updates/assembling.lua"
 
+system "laboratory_system"
+    .implement "render_updates/laboratory.lua"
+
 system "daynight_system"
     .implement "render_updates/daynight.lua"
 

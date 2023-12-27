@@ -16,7 +16,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot2
+    slot1
 ---
 file: mesh.prefab
 op: add
@@ -29,7 +29,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot3
+    slot2
 ---
 file: mesh.prefab
 op: add
@@ -42,7 +42,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot4
+    slot3
 ---
 file: mesh.prefab
 op: add
@@ -55,7 +55,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot5
+    slot4
 ---
 file: mesh.prefab
 op: add
@@ -68,7 +68,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot6
+    slot5
 ---
 file: mesh.prefab
 op: add
@@ -81,7 +81,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot7
+    slot6
 ---
 file: mesh.prefab
 op: copyfile
@@ -189,7 +189,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot2
+    slot1
   ---
   data:
     scene:
@@ -198,7 +198,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot3
+    slot2
   ---
   data:
     scene:
@@ -207,7 +207,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot4
+    slot3
   ---
   data:
     scene:
@@ -216,7 +216,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot5
+    slot4
   ---
   data:
     scene:
@@ -225,7 +225,7 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot6
+    slot5
   ---
   data:
     scene:
@@ -234,4 +234,4 @@ value:
   policy:
     ant.scene|scene_object
   tag:
-    slot7
+    slot6
