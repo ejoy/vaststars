@@ -35,7 +35,7 @@ prototype "仓库I" {
     check_coord = "exclusive",
     builder = "normal",
     type = {"building", "chest", "depot"},
-    chest_style = "station",
+    chest_style = "depot",
     chest_type = "transit",
     area = "1x1",
     maxslot = 4,

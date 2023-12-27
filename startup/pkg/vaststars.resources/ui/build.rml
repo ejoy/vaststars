@@ -22,7 +22,7 @@
                 position: absolute;
                 left: 5.03vmax;
                 top: 0.62vmin;
-                width: 76.37vmin;
+                width: 74.37vmin;
                 height: 98.52vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/construct/square-grid.texture";
                 background-size: 100% 100%;
@@ -31,19 +31,20 @@
             construct-list {
                 left: 1.86vmin;
                 top: 2.95vmin;
-                width: 75.37vmin;
+                width: 73.00vmin;
                 height: 93.00vmin;
                 margin-left: -1vmax;
+                gap: 2.00vmin;
                 overflow: scroll;
             }
             item {
-                width: 17.40vmin;
-                height: 17.40vmin;
+                width: 16.40vmin;
+                height: 19.00vmin;
                 background-size: 100% 100%;
                 justify-content: center;
                 align-items: center;
-                margin-right: -2.57vmin;
-                margin-bottom: -0.57vmin;
+                margin-right: -2.00vmin;
+                margin-bottom: -2.00vmin;
             }
         </style>
         <script type="text/x-lua" >
@@ -81,12 +82,13 @@
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : construct_list">
                     <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
-                    <div style = "margin-left: 5.58vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
-                    <div style = "flex-direction: row; flex-wrap: wrap;">
-                        <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-style-background-image = "i.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'" data-for = "i, i_index : c.items">
+                    <div style = "margin-left: 3.00vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
+                    <div style = "flex-direction: row; flex-wrap: wrap; margin-top: -1.70vmin;">
+                        <item data-attr-id = "i.id" data-event-click = "clickButton('click_item', c_index, i_index)" data-for = "i, i_index : c.items">
                             <div data-style-background-image = "i.icon" style = "width: 12.50vmin; height: 12.50vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" />
-                            <div style = "position: absolute; width: 12.50vmin; height: 13.80vmin; justify-content: flex-start; align-items: flex-end; font-size: 3.5vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
-                            <div style = "position: absolute; width: 12.50vmin; height: 18.00vmin; justify-content: flex-end; align-items: center; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);">{{i.name}}</div>
+                            <div data-style-background-image = "i.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'" style = "position: absolute; width: 16.40vmin; height: 16.40vmin; background-size: 100% 100%;" />
+                            <div style = "position: absolute; width: 12.50vmin; height: 12.50vmin; justify-content: flex-start; align-items: flex-end; font-size: 3.2vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
+                            <div style = "position: absolute; bottom: 0vmin; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0); text-align: center;">{{i.name}}</div>
                         </item>
                     </div>
                 </div>

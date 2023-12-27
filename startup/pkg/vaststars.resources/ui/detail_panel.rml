@@ -227,6 +227,12 @@
                         <div style = "width: 2.06vmin; height: 2.06vmin; position: absolute; top: 0vmin; left: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/detail/pile.texture; background-size: 100% 100%;" data-if="chest.icon ~= ''"/>
                     </div>
                 </div>
+                <div style="margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='depot'" data-event-longpress="onLongPress(ev, 7)" data-event-click="onClick(ev, 7)">
+                    <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 0.65vmin;" data-style-background-image="chest.icon ~= '' and chest.icon or 'none'" 
+                        data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or ((chest.type == 'demand' or chest.type == 'transit') and '0.3vmin rgb(78, 210, 223);' or '0.2vmin rgb(255, 255, 255);')">
+                        <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin; position:absolute; line-height: 0.7; top: 0vmin; right: 0vmin;" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                    </div>
+                </div>
 
                 <!--箱子中当前物品-->
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='chest'" data-event-longpress="onLongPress(ev, 3)" data-event-click="onClick(ev, 3)">
