@@ -929,7 +929,7 @@ prototype "铜板" {
     item_order = 50,
     item_model = "glbs/stackeditems/copper-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/copper-plate.texture",
-    item_category = "金属",
+    --item_category = "金属",
     item_description = "铜制材料锻造加工成的板状材料",
 }
 prototype "铜丝" {
@@ -940,7 +940,7 @@ prototype "铜丝" {
     item_order = 52,
     item_model = "glbs/stackeditems/copper-wire.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/copper-wire.texture",
-    item_category = "金属",
+    --item_category = "金属",
     item_description = "铜制材料锻造加工成的丝状材料",
 }
 
@@ -964,7 +964,7 @@ prototype "核铀燃料" {
     item_order = 56,
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
-    item_category = "器件",
+    --item_category = "器件",
     item_description = "用于核反应堆产生核能的铀-235",
 }
 
@@ -989,7 +989,7 @@ prototype "海藻" {
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
     item_description = "一种植物",
-    item_category = "器件",
+    --item_category = "器件",
 }
 
 prototype "纤维燃料" {
@@ -1001,5 +1001,5 @@ prototype "纤维燃料" {
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
     item_description = "一种燃料",
-    item_category = "器件",
+    --item_category = "器件",
 }

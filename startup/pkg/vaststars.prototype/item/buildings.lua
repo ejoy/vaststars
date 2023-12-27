@@ -439,7 +439,7 @@ prototype "风力发电机I" {
 
 prototype "轻型风力发电机" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     chest_limit = 15,
     backpack_limit = 20,
@@ -451,7 +451,7 @@ prototype "轻型风力发电机" {
 
 prototype "铁制电线杆" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     chest_limit = 15,
     backpack_limit = 50,
@@ -463,7 +463,7 @@ prototype "铁制电线杆" {
 
 prototype "远程电线杆" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     chest_limit = 15,
     backpack_limit = 20,
@@ -475,7 +475,7 @@ prototype "远程电线杆" {
 
 prototype "广域电线杆" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 8,
     chest_limit = 15,
     backpack_limit = 20,
@@ -798,7 +798,7 @@ prototype "广播塔I" {
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
     item_description = "将插件功效传导到周边其他机器的设施",
-    item_category = "物流",
+    --item_category = "物流",
 }
 
 prototype "广播塔II" {
@@ -810,12 +810,12 @@ prototype "广播塔II" {
     item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
     item_description = "将插件功效传导到周边其他机器的设施",
-    item_category = "物流",
+    --item_category = "物流",
 }
 
 prototype "热管1-X型" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 16,
     chest_limit = 64,
     backpack_limit = 100,
@@ -828,7 +828,7 @@ prototype "热管1-X型" {
 ----------------------------------------
 prototype "机身残骸" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 50,
     chest_limit = 15,
     backpack_limit = 100,
@@ -840,7 +840,7 @@ prototype "机身残骸" {
 
 prototype "机翼残骸" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 50,
     chest_limit = 15,
     backpack_limit = 100,
@@ -852,7 +852,7 @@ prototype "机翼残骸" {
 
 prototype "机头残骸" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 50,
     chest_limit = 15,
     backpack_limit = 100,
@@ -864,7 +864,7 @@ prototype "机头残骸" {
 
 prototype "机尾残骸" {
     type = {"item"},
-    item_category = "物流",
+    --item_category = "物流",
     station_limit = 50,
     chest_limit = 15,
     backpack_limit = 100,
