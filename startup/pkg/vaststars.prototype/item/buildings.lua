@@ -494,7 +494,7 @@ prototype "科研中心I" {
     item_order = 10,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "致力于科学研究和开发活动的设施",
+    item_description = "应用于科学研究和开发活动的设施",
 }
 
 prototype "科研中心II" {
@@ -506,7 +506,7 @@ prototype "科研中心II" {
     item_order = 12,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "致力于科学研究和开发活动的设施",
+    item_description = "应用于科学研究和开发活动的设施",
 }
 
 prototype "科研中心III" {
@@ -518,7 +518,7 @@ prototype "科研中心III" {
     item_order = 14,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "致力于科学研究和开发活动的设施",
+    item_description = "应用于科学研究和开发活动的设施",
 }
 
 prototype "地质科研中心" {
@@ -530,7 +530,7 @@ prototype "地质科研中心" {
     item_order = 10,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
     item_model = "glbs/stackeditems/building.glb|mesh.prefab",
-    item_description = "致力于科学研究和开发活动的设施",
+    item_description = "应用于科学研究和开发活动的设施",
 }
 
 prototype "物流站" {
