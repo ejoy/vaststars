@@ -177,7 +177,7 @@ local function flush()
     for _, outer in ipairs(prepare) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:modifier("start_bone_modifier", {name = "confirm"})
+            vsobject:modifier({name = "confirm"}, true)
 
             local typeobject = iprototype.queryByName(outer.prototype_name)
             local w, h = iprototype.unpackarea(typeobject.area) -- Note: No need to rotate based on direction here
@@ -189,7 +189,7 @@ local function flush()
     for _, outer in ipairs(appear) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            -- vsobject:modifier("start_bone_modifier", {name = "appear", forwards = true})
+            -- vsobject:modifier({name = "appear", forwards = true}, true)
         end
     end
 end

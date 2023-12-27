@@ -122,13 +122,8 @@ hitchEvents["obj_motion"] = function(self, method, ...)
     local e <close> = world:entity(self.tag["hitch"][1])
     iom[method](e, ...)
 end
-hitchEvents["modifier"] = function(self, method, ...)
-    imodifier[method](
-        self.tag["hitch"][1],
-        0,
-        "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab",
-        "Bone",
-        ...)
+hitchEvents["modifier"] = function(self, ...)
+    imodifier.start(imodifier.create_bone_modifier(self.tag["hitch"][1], 0, "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab", "Bone"), ...)
 end
 hitchEvents["attach"] = function(self, slot_name, instance)
     local eid = assert(self.tag[slot_name][1])
