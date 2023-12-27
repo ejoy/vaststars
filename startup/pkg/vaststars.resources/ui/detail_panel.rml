@@ -303,7 +303,7 @@
                         <div class="small-item1" style="margin: 1vmin; width: 15vmin; height: 15vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
                             <div style="font-size: 5.4vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0); position:absolute; top:-1vmin; right:0;" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
-                        <div style='font-size: 3vmin'>{{chest.name}}</div>
+                        <div style='font-size: 3vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{chest.name}}</div>
                     </div>
                 </scroll-item-list>
             </div>
@@ -324,7 +324,7 @@
                                     <div class="item-count-new" style="font-size: 5.4vmin;" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
                                 </div>
                             </div>
-                            <div style='font-size: 3.1vmin'>{{it.name}}</div>
+                            <div style='font-size: 3vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{it.name}}</div>
                         </div>
                     </div>
                 </div>
@@ -375,7 +375,7 @@
                         <div class="small-item1" style="margin: 0.5vmin; width: 14vmin; height: 14vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(23, 176, 240);' or (chest.type == 'demand' and '0.3vmin rgb(254, 98, 124);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
                             <div style="font-size: 5.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0); position:absolute; top:-1vmin; right:0;" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
-                        <div style='font-size: 3vmin'>{{chest.name}}</div>
+                        <div style='font-size: 3vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{chest.name}}</div>
                     </div>
                 </div>
             </div>
@@ -386,7 +386,7 @@
                         <div class="small-item1" style="margin: 0.5vmin; width: 14vmin; height: 14vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
                             <div style="font-size: 5.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0);" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         </div>
-                        <div style='font-size: 3vmin'>{{chest.name}}</div>
+                        <div style='font-size: 3vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{chest.name}}</div>
                     </div>
                 </div>
             </div>
