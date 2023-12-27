@@ -94,7 +94,7 @@ prototype "烟囱I" {
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chimney.texture",
     backpack_limit = 20,
-    item_description = "用于排放工业设施中烟气或废气的设施",
+    item_description = "用于排放工业气体或废气的设施",
 }
 
 prototype "烟囱II" {
@@ -106,7 +106,7 @@ prototype "烟囱II" {
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chimney.texture",
     backpack_limit = 20,
-    item_description = "用于排放工业设施中烟气或废气的设施",
+    item_description = "用于排放工业气体或废气的设施",
 }
 
 prototype "排水口I" {
@@ -118,7 +118,7 @@ prototype "排水口I" {
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/outfall.texture",
     backpack_limit = 20,
-    item_description = "用于排放多余水分或废水的装置",
+    item_description = "用于排放多余液体或废水的装置",
 }
 
 prototype "排水口II" {
@@ -130,7 +130,7 @@ prototype "排水口II" {
     item_model = "glbs/stackeditems/gravel.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/outfall.texture",
     backpack_limit = 20,
-    item_description = "用于排放多余水分或废水的装置",
+    item_description = "用于排放多余液体或废水的装置",
 }
 
 prototype "空气过滤器I" {
