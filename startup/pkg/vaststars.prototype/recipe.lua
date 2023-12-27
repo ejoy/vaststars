@@ -2788,7 +2788,7 @@ prototype "气候科技包2" {
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
     recipe_order =  203,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/climatology-pack-1.texture",
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/climatology-pack-2.texture",
     ingredients = {
         {"地热气", 2},
         {"废水", 40},
@@ -2841,7 +2841,7 @@ prototype "机械科技包2" {
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
     recipe_order =  206,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-2.texture",
     ingredients = {
         {"电动机III", 2},
         {"钢板", 5},
