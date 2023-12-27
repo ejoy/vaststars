@@ -165,7 +165,7 @@ value:
         ---
         event_list:
           ---
-          asset_path: work_start
+          action: work_start
           event_type: Animation
           forwards: true
           name: Animation1
@@ -189,7 +189,7 @@ value:
         ---
         event_list:
           ---
-          asset_path: idle_start
+          action: idle_start
           event_type: Animation
           forwards: true
           name: Animation3
@@ -233,7 +233,7 @@ value:
         ---
         event_list:
           ---
-          asset_path: work_start
+          action: work_start
           event_type: Animation
           forwards: true
           name: Animation2
@@ -257,7 +257,7 @@ value:
         ---
         event_list:
           ---
-          asset_path: idle_start
+          action: idle_start
           event_type: Animation
           forwards: true
           name: Animation2

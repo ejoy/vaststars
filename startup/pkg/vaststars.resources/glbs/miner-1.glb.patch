@@ -102,7 +102,7 @@ value:
         ---
         event_list:
           ---
-          asset_path: work
+          action: work
           event_type: Animation
           name: Animation3
           pause_frame: -1

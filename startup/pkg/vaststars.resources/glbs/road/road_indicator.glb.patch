@@ -10,7 +10,7 @@ value:
         ---
         event_list:
           ---
-          asset_path: Armature.002Action
+          action: Armature.002Action
           event_type: Animation
           forwards: false
           name: Animation4
