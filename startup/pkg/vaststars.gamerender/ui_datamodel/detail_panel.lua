@@ -459,7 +459,7 @@ local last_inputs, last_ouputs
 local preinput
 
 function M.create(object_id)
-    iui.register_leave("/pkg/vaststars.resources/ui/detail_panel.rml")
+    iui.register_leave("/pkg/vaststars.resources/ui/detail_panel.html")
 
     counter = update_interval
     local object = assert(objects:get(object_id))

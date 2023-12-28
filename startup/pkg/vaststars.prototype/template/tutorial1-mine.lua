@@ -53,8 +53,8 @@ return {
     show = true,
     start_tech = "拾取物资",
     init_ui = {
-      "/pkg/vaststars.resources/ui/construct.rml",
-      "/pkg/vaststars.resources/ui/message_pop.rml"
+      "/pkg/vaststars.resources/ui/construct.html",
+      "/pkg/vaststars.resources/ui/message_pop.html"
     },
     init_instances = {
     },

@@ -62,13 +62,13 @@ function M.update(datamodel)
     end
 
     for _ in set_recipe_mb:unpack() do
-        iui.redirect("/pkg/vaststars.resources/ui/recipe_config.rml", "set_recipe")
-        iui.close("/pkg/vaststars.resources/ui/item_source.rml")
+        iui.redirect("/pkg/vaststars.resources/ui/recipe_config.html", "set_recipe")
+        iui.close("/pkg/vaststars.resources/ui/item_source.html")
     end
 
     for _ in clear_recipe_mb:unpack() do
-        iui.redirect("/pkg/vaststars.resources/ui/recipe_config.rml", "clear_recipe")
-        iui.close("/pkg/vaststars.resources/ui/item_source.rml")
+        iui.redirect("/pkg/vaststars.resources/ui/recipe_config.html", "clear_recipe")
+        iui.close("/pkg/vaststars.resources/ui/item_source.html")
     end
 end
 

@@ -135,12 +135,12 @@ function M.update(datamodel)
     for _, _, _, index in click_tech_event:unpack() do
         global.science.tech_picked_flag[datamodel.techitems[index].name] = false
         set_current_tech(datamodel.techitems[index])
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_tech")
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "update_tech")
     end
 
     for _, _, _ in close_techui_event:unpack() do
         gameplay_core.world_update = true
-        iui.close("/pkg/vaststars.resources/ui/science.rml")
+        iui.close("/pkg/vaststars.resources/ui/science.html")
     end
     for _, _, _, list in show_list_event:unpack() do
         local items = get_techlist((list == "todo") and global.science.tech_list or global.science.finish_list)

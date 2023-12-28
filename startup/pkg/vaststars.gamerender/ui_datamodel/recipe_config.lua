@@ -140,7 +140,7 @@ function M.update(datamodel, gameplay_eid)
     end
 
     for _, _, _, item in click_item_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/item_source.rml"}, datamodel.recipe_name, datamodel.recipe_icon, datamodel.recipe_time, datamodel.recipe_ingredients, datamodel.recipe_results, datamodel.confirm, item)
+        iui.open({rml = "/pkg/vaststars.resources/ui/item_source.html"}, datamodel.recipe_name, datamodel.recipe_icon, datamodel.recipe_time, datamodel.recipe_ingredients, datamodel.recipe_results, datamodel.confirm, item)
     end
 
     for _ in set_recipe_mb:unpack() do
@@ -159,7 +159,7 @@ function M.update(datamodel, gameplay_eid)
             itask.update_progress("set_recipe", recipe_name)
         end
 
-        iui.close("/pkg/vaststars.resources/ui/recipe_config.rml")
+        iui.close("/pkg/vaststars.resources/ui/recipe_config.html")
     end
 
     for _ in clear_recipe_mb:unpack() do
@@ -170,7 +170,7 @@ function M.update(datamodel, gameplay_eid)
         datamodel.category_idx = 0
         datamodel.recipe_idx = 0
 
-        iui.close("/pkg/vaststars.resources/ui/recipe_config.rml")
+        iui.close("/pkg/vaststars.resources/ui/recipe_config.html")
     end
 end
 

@@ -64,7 +64,7 @@ local function show(tech_node)
             selected_tips[#selected_tips + 1] = {create_selected_box({"/pkg/vaststars.resources/" .. nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
             iui.leave()
-            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected")
+            iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unselected")
             icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(nd.camera_x, nd.camera_y, nd.w, nd.h)))
         end
     end

@@ -69,7 +69,7 @@ local function init_game(template)
         }
     end
 
-    iRmlUi.open "/pkg/vaststars.resources/ui/login.rml"
+    iRmlUi.open "/pkg/vaststars.resources/ui/login.html"
 end
 
 function m:init()

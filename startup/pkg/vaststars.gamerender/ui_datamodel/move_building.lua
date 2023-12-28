@@ -24,15 +24,15 @@ end
 
 function M.update(datamodel)
     for _ in quit_mb:unpack() do
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "quit")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "quit")
     end
 
     for _ in build_mb:unpack() do
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "build")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "build")
     end
 
     for _ in rotate_mb:unpack() do
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "rotate")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "rotate")
     end
 
     for _, _, _, b in show_confirm_mb:unpack() do

@@ -45,12 +45,12 @@ end
 function M.update(datamodel)
     for _ in save_mb:unpack() do
         if saveload:backup() then
-            iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+            iui.close("/pkg/vaststars.resources/ui/option_pop.html")
         end
     end
 
     for _, _, _, index in restore_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+        iui.close("/pkg/vaststars.resources/ui/option_pop.html")
         local list = archiving.list()
         global.startup_args = {"restore", assert(list[index])}
         window.reboot {
@@ -60,7 +60,7 @@ function M.update(datamodel)
 
     for _ in close_mb:unpack() do
         if saveload.running then
-            iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+            iui.close("/pkg/vaststars.resources/ui/option_pop.html")
         end
     end
 
@@ -68,19 +68,19 @@ function M.update(datamodel)
         local info = not setting.get("info", true)
         setting.set("info", info)
         icanvas.show("icon", info)
-        iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+        iui.close("/pkg/vaststars.resources/ui/option_pop.html")
     end
 
     for _ in debug_mb:unpack() do
         local debug = not setting.get("debug", false)
         setting.set("debug", debug)
         rhwi.set_profie(debug)
-        iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+        iui.close("/pkg/vaststars.resources/ui/option_pop.html")
     end
 
     for _ in back_to_main_menu_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
-        iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
+        iui.close("/pkg/vaststars.resources/ui/option_pop.html")
+        iui.close("/pkg/vaststars.resources/ui/main_menu.html")
         window.reboot {
             feature = {"vaststars.gamerender|login"},
         }
@@ -88,7 +88,7 @@ function M.update(datamodel)
 
     for _ in lock_group_mb:unpack() do
         igroup.lock(not igroup.is_lock())
-        iui.close("/pkg/vaststars.resources/ui/option_pop.rml")
+        iui.close("/pkg/vaststars.resources/ui/option_pop.html")
     end
 
     for _ in change_ratio_mb:unpack() do
