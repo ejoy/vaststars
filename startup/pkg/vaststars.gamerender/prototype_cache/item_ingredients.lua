@@ -13,6 +13,10 @@ return function()
     do
         local Item2Recipes = {}
         for _, v in pairs(iprototype.each_type "recipe") do
+            if v.ingredients_details == false then
+                goto continue
+            end
+
             local ingredients = itypes.items(v.ingredients)
             local results = itypes.items(v.results)
             for _, result in pairs(results) do
@@ -20,6 +24,7 @@ return function()
                 Item2Recipes[typeobject.name] = Item2Recipes[typeobject.name] or {}
                 table.insert(Item2Recipes[typeobject.name], {id = v.id, name = v.name, ingredients = ingredients})
             end
+            ::continue::
         end
 
         for _, v in pairs(iprototype.each_type "recipe") do
