@@ -111,7 +111,7 @@
         <item-source data-if="item_name ~= ''">
             <div style = "position: absolute; left: 1vmax; top: 5.00vmin; width: 30.22vmax; height: 54.66vmin;">
                 <div style = "font-size: 5.50vmin;margin-bottom: 1vmin;">原料明细</div>
-                <div style = "width: 100%; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 1vmin;">
+                <div style = "width: 100%;height: 11vmin; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 1vmin; flex-wrap: wrap;">
                     <div style = "width: 50%; flex-direction: row; align-items: center; justify-content: flex-start;" data-for = "item_ingredients">
                         <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%;" data-style-background-image = "it.icon" />
                         <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{it.name}}</div>
