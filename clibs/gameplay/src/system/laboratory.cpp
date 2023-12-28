@@ -79,7 +79,7 @@ laboratory_next_tech(world& w, component::building& building, component::laborat
 }
 
 static void
-laboratory_update(world& w, ecs_api::entity<component::laboratory, component::chest, component::capacitance, component::building>& v, bool& updated) {
+laboratory_update(world& w, ecs::entity<component::laboratory, component::chest, component::capacitance, component::building>& v, bool& updated) {
     auto& building = v.get<component::building>();
     auto& l = v.get<component::laboratory>();
     auto& c2 = v.get<component::chest>();
@@ -131,7 +131,7 @@ static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
     bool updated = false;
-    for (auto& v : ecs_api::select<component::laboratory, component::chest, component::capacitance, component::building>(w.ecs)) {
+    for (auto& v : ecs::select<component::laboratory, component::chest, component::capacitance, component::building>(w.ecs)) {
         auto& l = v.get<component::laboratory>();
         auto& c2 = v.get<component::chest>();
         uint16_t techid = w.techtree.queue_top();
@@ -143,7 +143,7 @@ lupdate(lua_State *L) {
     }
     if (updated) {
         uint16_t techid = w.techtree.queue_top();
-        for (auto& v : ecs_api::select<component::laboratory, component::chest, component::building>(w.ecs)) {
+        for (auto& v : ecs::select<component::laboratory, component::chest, component::building>(w.ecs)) {
             auto& building = v.get<component::building>();
             auto& l = v.get<component::laboratory>();
             auto& c2 = v.get<component::chest>();

@@ -101,7 +101,7 @@ static int lupdate(lua_State* L) {
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
 	}
-	for (auto& e : ecs_api::select<component::fluidboxes, component::assembling, component::chest>(w.ecs)) {
+	for (auto& e : ecs::select<component::fluidboxes, component::assembling, component::chest>(w.ecs)) {
 		component::assembling& a = e.get<component::assembling>();
 		component::chest& c2 = e.get<component::chest>();
 		if (a.recipe != 0) {

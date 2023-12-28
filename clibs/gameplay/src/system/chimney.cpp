@@ -30,7 +30,7 @@ static bool fluidbox_pickup(world& w, component::fluidbox& f, recipe_items const
 }
 
 static void
-chimney_update(world& w, ecs_api::entity<component::chimney, component::fluidbox>& v) {
+chimney_update(world& w, ecs::entity<component::chimney, component::fluidbox>& v) {
     component::chimney& c = v.get<component::chimney>();
     if (c.recipe == 0) {
         return;
@@ -64,7 +64,7 @@ chimney_update(world& w, ecs_api::entity<component::chimney, component::fluidbox
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<component::chimney, component::fluidbox>(w.ecs)) {
+    for (auto& v : ecs::select<component::chimney, component::fluidbox>(w.ecs)) {
         chimney_update(w, v);
     }
     return 0;

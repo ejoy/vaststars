@@ -45,7 +45,7 @@ uint64_t task::stat_consumption(world& w) const {
 
 uint64_t task::select_entity(world& w) const {
     uint64_t n = 0;
-    for (auto& building : ecs_api::array<component::building>(w.ecs)) {
+    for (auto& building : ecs::array<component::building>(w.ecs)) {
         if (building.prototype == p1) {
             ++n;
         }

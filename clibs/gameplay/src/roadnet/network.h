@@ -24,7 +24,7 @@ namespace roadnet {
     };
     static_assert(sizeof(route_value) == sizeof(uint32_t));
 
-    using lorry_entity = ecs_api::entity<component::lorry>;
+    using lorry_entity = ecs::entity<component::lorry>;
 
     class network {
     public:

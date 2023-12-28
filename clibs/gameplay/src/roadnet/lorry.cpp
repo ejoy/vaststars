@@ -81,7 +81,7 @@ namespace roadnet {
         l.ending = {};
         l.mov2 = {};
     }
-    void lorryUpdate(ecs_api::entity<component::lorry>& e, component::lorry& l) {
+    void lorryUpdate(ecs::entity<component::lorry>& e, component::lorry& l) {
         if (l.progress != 0) {
             --l.progress;
             if (l.progress == 0) {

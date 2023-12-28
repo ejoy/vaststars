@@ -20,7 +20,7 @@ static_assert(std::extent_v<decltype(component::powergrid::generator_efficiency)
 
 static void
 stat_consumer(world& w, std::span<component::powergrid> pg) {
-	for (auto& v : ecs_api::select<component::consumer, component::capacitance, component::building>(w.ecs)) {
+	for (auto& v : ecs::select<component::consumer, component::capacitance, component::building>(w.ecs)) {
 		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -36,7 +36,7 @@ stat_consumer(world& w, std::span<component::powergrid> pg) {
 
 static void
 stat_generator(world& w, std::span<component::powergrid> pg) {
-	for (auto& v : ecs_api::select<component::generator, component::capacitance, component::building>(w.ecs)) {
+	for (auto& v : ecs::select<component::generator, component::capacitance, component::building>(w.ecs)) {
 		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -51,7 +51,7 @@ stat_generator(world& w, std::span<component::powergrid> pg) {
 
 static void
 stat_accumulator(world& w, std::span<component::powergrid> pg) {
-	for (auto& v : ecs_api::select<component::accumulator, component::capacitance, component::building>(w.ecs)) {
+	for (auto& v : ecs::select<component::accumulator, component::capacitance, component::building>(w.ecs)) {
 		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -169,7 +169,7 @@ calc_efficiency(world& w, std::span<component::powergrid> pgs) {
 static void
 powergrid_run(world& w, std::span<component::powergrid> pg) {
 	auto& frame = w.stat.current();
-	for (auto& v : ecs_api::select<component::capacitance, component::building>(w.ecs)) {
+	for (auto& v : ecs::select<component::capacitance, component::building>(w.ecs)) {
 		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0 || !pg[c.network].active) {
 			c.delta = 0;
@@ -261,7 +261,7 @@ linit(lua_State *L) {
 	init.accumulator_efficiency = 0.f;
 	init.active = false;
 	for (size_t i = 0; i < 256; ++i) {
-		ecs_api::create_entity<component::powergrid>(w.ecs, init);
+		ecs::create_entity<component::powergrid>(w.ecs, init);
 	}
 	return 0;
 }
@@ -270,7 +270,7 @@ static int
 lupdate(lua_State *L) {
 	auto& w = getworld(L);
 	// step 1: init component::powergrid runtime struct
-	auto pgs = ecs_api::array<component::powergrid>(w.ecs);
+	auto pgs = ecs::array<component::powergrid>(w.ecs);
 	for (int ii = 1; ii < 256; ++ii) {
 		component::powergrid& pg = pgs[ii];
 		for (size_t i = 0; i < POWER_PRIORITY; ++i) {

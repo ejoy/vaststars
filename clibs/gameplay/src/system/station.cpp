@@ -51,10 +51,10 @@ static void station_lock_mov2(world& w, component::lorry&l, uint16_t mov2) {
 }
 
 static void startTask(world& w, component::lorry& l, market_match const& m) {
-    auto from_e = ecs_api::index_entity<component::endpoint>(w.ecs, m.from);
+    auto from_e = ecs::index_entity<component::endpoint>(w.ecs, m.from);
     auto from_s = from_e.component<component::station>();
     auto from_c = container::index::from(from_s->chest);
-    auto to_e   = ecs_api::index_entity<component::endpoint>(w.ecs, m.to);
+    auto to_e   = ecs::index_entity<component::endpoint>(w.ecs, m.to);
     auto to_s   = to_e.component<component::station>();
     auto to_c   = container::index::from(to_s->chest);
     if (auto s = chest::find_item(w, from_c, m.item)) {
@@ -73,7 +73,7 @@ static void startTask(world& w, component::lorry& l, market_match const& m) {
 }
 
 static void restartTask(world& w, component::lorry& l, uint16_t to) {
-    auto to_e   = ecs_api::index_entity<component::endpoint>(w.ecs, to);
+    auto to_e   = ecs::index_entity<component::endpoint>(w.ecs, to);
     auto to_s   = to_e.component<component::station>();
     auto to_c   = container::index::from(to_s->chest);
     if (auto s = chest::find_item(w, to_c, l.item_prototype)) {
@@ -89,7 +89,7 @@ static int lbuild(lua_State *L) {
     auto& w = getworld(L);
     if (w.dirty & (kDirtyRoadnet | kDirtyPark)) {
         w.market.reset_park();
-        for (auto& v : ecs_api::select<component::park>(w.ecs)) {
+        for (auto& v : ecs::select<component::park>(w.ecs)) {
             int id = v.component_index<component::endpoint>();
             assert(id >= 0);
             w.market.set_park(id);
@@ -98,7 +98,7 @@ static int lbuild(lua_State *L) {
     if (w.dirty & (kDirtyEndpoint | kDirtyStation)) {
         flatmap<roadnet::straightid, uint16_t>         stations;
         flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
-        for (auto& v : ecs_api::select<component::station, component::endpoint>(w.ecs)) {
+        for (auto& v : ecs::select<component::station, component::endpoint>(w.ecs)) {
             auto& station = v.get<component::station>();
             auto& endpoint = v.get<component::endpoint>();
             auto c = container::index::from(station.chest);
@@ -111,7 +111,7 @@ static int lbuild(lua_State *L) {
                 s.lock_space = 0;
             }
         }
-        for (auto& e : ecs_api::select<component::lorry>(w.ecs)) {
+        for (auto& e : ecs::select<component::lorry>(w.ecs)) {
             auto& l = e.get<component::lorry>();
             if (roadnet::lorryInvalid(l)) {
                 continue;
@@ -156,7 +156,7 @@ static int lbuild(lua_State *L) {
             }
         }
         w.market.reset_station();
-        for (auto& v : ecs_api::select<component::station, component::endpoint>(w.ecs)) {
+        for (auto& v : ecs::select<component::station, component::endpoint>(w.ecs)) {
             auto& station = v.get<component::station>();
             auto c = container::index::from(station.chest);
             if (c == container::kInvalidIndex) {
@@ -208,7 +208,7 @@ static int lbuild(lua_State *L) {
                 }
             }
             w.market.match_begin(w);
-            for (auto& e : ecs_api::select<component::lorry>(w.ecs)) {
+            for (auto& e : ecs::select<component::lorry>(w.ecs)) {
                 auto& l = e.get<component::lorry>();
                 if (roadnet::lorryInvalid(l)) {
                     continue;
@@ -227,7 +227,7 @@ static int lbuild(lua_State *L) {
                         startTask(w, l, *res);
                     }
                     else if (auto home = w.market.nearest_park(w, C); home != 0xffff) {
-                        auto endpoints = ecs_api::array<component::endpoint>(w.ecs);
+                        auto endpoints = ecs::array<component::endpoint>(w.ecs);
                         roadnet::lorryGoHome(l, endpoints[home]);
                     }
                     else {
@@ -240,7 +240,7 @@ static int lbuild(lua_State *L) {
                         restartTask(w, l, to);
                     }
                     else if (auto home = w.market.nearest_park(w, C); home != 0xffff) {
-                        auto endpoints = ecs_api::array<component::endpoint>(w.ecs);
+                        auto endpoints = ecs::array<component::endpoint>(w.ecs);
                         roadnet::lorryGoHome(l, endpoints[home]);
                     }
                     else {
@@ -256,7 +256,7 @@ static int lbuild(lua_State *L) {
 
 static int lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<component::station, component::endpoint, component::chest>(w.ecs)) {
+    for (auto& v : ecs::select<component::station, component::endpoint, component::chest>(w.ecs)) {
         auto& endpoint = v.get<component::endpoint>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
@@ -291,7 +291,7 @@ static int lupdate(lua_State *L) {
         }
     }
     w.market.match_begin(w);
-    for (auto& v : ecs_api::select<component::station, component::endpoint, component::chest>(w.ecs)) {
+    for (auto& v : ecs::select<component::station, component::endpoint, component::chest>(w.ecs)) {
         auto& endpoint = v.get<component::endpoint>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
@@ -350,7 +350,7 @@ static int lupdate(lua_State *L) {
                         else if (auto home = w.market.nearest_park(w, endpoint.neighbor); home != 0xffff) {
                             station_s.amount++;
                             station_s.lock_space--;
-                            auto endpoints = ecs_api::array<component::endpoint>(w.ecs);
+                            auto endpoints = ecs::array<component::endpoint>(w.ecs);
                             roadnet::lorryGoHome(l, endpoints[home]);
                             roadnet::endpointSetOut(w, endpoint);
                         }
@@ -370,7 +370,7 @@ static int lupdate(lua_State *L) {
             std::unreachable();
         }
     }
-    for (auto& v : ecs_api::select<component::park, component::endpoint>(w.ecs)) {
+    for (auto& v : ecs::select<component::park, component::endpoint>(w.ecs)) {
         auto& endpoint = v.get<component::endpoint>();
         if (!endpoint.neighbor) {
             continue;
@@ -389,7 +389,7 @@ static int lupdate(lua_State *L) {
             roadnet::endpointSetOut(w, endpoint);
         }
     }
-    for (auto& v : ecs_api::select<component::factory, component::starting, component::chest>(w.ecs)) {
+    for (auto& v : ecs::select<component::factory, component::starting, component::chest>(w.ecs)) {
         auto& starting = v.get<component::starting>();
         if (!starting.neighbor) {
             continue;

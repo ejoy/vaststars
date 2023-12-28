@@ -8,7 +8,7 @@
 #include <math.h>
 #include <algorithm>
 
-using DroneEntity = ecs_api::entity<component::drone>;
+using DroneEntity = ecs::entity<component::drone>;
 
 static uint8_t safe_add(uint8_t a, uint8_t b) {
     if (b > UINT8_C(255) - a)
@@ -173,12 +173,12 @@ static void rebuild(world& w) {
     };
     std::map<uint16_t, mapinfo> globalmap;
     flatset<uint16_t> used_id;
-    for (auto& v : ecs_api::select<component::airport>(w.ecs)) {
+    for (auto& v : ecs::select<component::airport>(w.ecs)) {
         auto& airport = v.get<component::airport>();
         used_id.insert(airport.id);
     }
 
-    for (auto& v : ecs_api::select<component::chest, component::building>(w.ecs)) {
+    for (auto& v : ecs::select<component::chest, component::building>(w.ecs)) {
         auto& chest = v.get<component::chest>();
         auto& building = v.get<component::building>();
         uint16_t area = prototype::get<"area">(w, building.prototype);
@@ -210,7 +210,7 @@ static void rebuild(world& w) {
         }
         return 0;
     };
-    for (auto& v : ecs_api::select<component::airport, component::building, component::capacitance>(w.ecs)) {
+    for (auto& v : ecs::select<component::airport, component::building, component::capacitance>(w.ecs)) {
         auto& airport = v.get<component::airport>();
         auto& building = v.get<component::building>();
         if (airport.id == 0) {
@@ -265,7 +265,7 @@ static void rebuild(world& w) {
     }
     w.airports = std::move(airports);
 
-    for (auto& e : ecs_api::select<component::drone>(w.ecs)) {
+    for (auto& e : ecs::select<component::drone>(w.ecs)) {
         auto& drone = e.get<component::drone>();
         auto status = (drone_status)drone.status;
         switch (status) {
@@ -724,7 +724,7 @@ static void Update(world& w, DroneEntity& e, component::drone& drone) {
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& e : ecs_api::select<component::drone>(w.ecs)) {
+    for (auto& e : ecs::select<component::drone>(w.ecs)) {
         auto& drone = e.get<component::drone>();
         switch ((drone_status)drone.status) {
         case drone_status::at_home:

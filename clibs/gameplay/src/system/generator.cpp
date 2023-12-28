@@ -36,7 +36,7 @@ lupdate(lua_State *L) {
     auto& w = getworld(L);
     w.time++;
     uint8_t efficiency = solar_efficiency(w.time % DayTick) / UPS;
-    for (auto& v : ecs_api::select<component::solar_panel, component::capacitance, component::building>(w.ecs)) {
+    for (auto& v : ecs::select<component::solar_panel, component::capacitance, component::building>(w.ecs)) {
         auto& solar_panel = v.get<component::solar_panel>();
         solar_panel.efficiency = efficiency;
         if (efficiency != 0) {
@@ -45,7 +45,7 @@ lupdate(lua_State *L) {
         }
     }
     
-    for (auto& v : ecs_api::select<component::wind_turbine, component::capacitance, component::building>(w.ecs)) {
+    for (auto& v : ecs::select<component::wind_turbine, component::capacitance, component::building>(w.ecs)) {
         auto generator = get_generator(w, v);
         generator.force_produce();
     }

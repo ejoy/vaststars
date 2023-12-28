@@ -68,7 +68,7 @@ static bool assembling_update(world& w, component::assembling& assembling, compo
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<component::assembling, component::chest, component::building>(w.ecs)) {
+    for (auto& v : ecs::select<component::assembling, component::chest, component::building>(w.ecs)) {
         bool is_consumer = v.component<component::consumer>();
         bool is_generator = v.component<component::generator>();
         component::assembling& assembling = v.get<component::assembling>();

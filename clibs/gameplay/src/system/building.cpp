@@ -34,7 +34,7 @@ building createBuildingCache(world& w, component::building& b, uint16_t chest) {
 
 static void rebuild(world& w) {
     w.buildings.clear();
-    for (auto& v : ecs_api::select<component::chest, component::building>(w.ecs)) {
+    for (auto& v : ecs::select<component::chest, component::building>(w.ecs)) {
         auto& chest = v.get<component::chest>();
         auto c = container::index::from(chest.chest);
         if (c == container::kInvalidIndex) {

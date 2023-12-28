@@ -12,7 +12,7 @@ block(world& w, component::fluidbox const& fb) {
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<component::pump, component::building, component::capacitance, component::fluidbox>(w.ecs)) {
+    for (auto& v : ecs::select<component::pump, component::building, component::capacitance, component::fluidbox>(w.ecs)) {
         auto consumer = get_consumer(w, v);
         if (!consumer.cost_drain() || !consumer.cost_power()) {
             block(w, v.get<component::fluidbox>());
