@@ -1,0 +1,18 @@
+body {
+    font: 100% "阿里巴巴普惠体";
+}
+
+flex-row {
+    flex-direction: row;
+    pointer-events: none;
+}
+
+button-confirm {
+    width: 21.88vmax;
+    height: 13.16vmin;
+    background-image: "/pkg/vaststars.resources/ui/textures/common/button-confirm.texture";
+    background-size: 100% 100%;
+}
+button-confirm:active {
+    background-image: "/pkg/vaststars.resources/ui/textures/common/button-confirm-active.texture";
+}
