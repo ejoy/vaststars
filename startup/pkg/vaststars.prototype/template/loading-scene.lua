@@ -4624,5 +4624,5 @@ return {
       infinite_item = true,
     },
     camera = "/pkg/vaststars.resources/camera_anim.prefab",
-    camera_animation = "/pkg/vaststars.resources/animations/camera.anim",
+    camera_animation = "/pkg/vaststars.resources/animations/camera.ant",
 }
