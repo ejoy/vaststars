@@ -27,41 +27,51 @@ local icoord = ecs.require "coord"
 local ipt = ecs.require "ant.landform|plane_terrain"
 
 local M = {}
-function M.create()
-    local t = {}
+
+local function GID_CACHE() return setmetatable({}, {__index=function(t, gid) local gg = {} t[gid] = gg return gg end}) end
+
+local function create_plane_in_groups()
+    local t = GID_CACHE()
     for x = 0, MAP_WIDTH - 1, MAP_CHUNK_WIDTH do
         for y = 0, MAP_HEIGHT - 1, MAP_CHUNK_HEIGHT do
             local position = assert(icoord.lefttop_position(x, y))
-            local v = {x = position[1], y = position[3] - MAP_CHUNK_SIZE, type = "terrain"}
             local gid = igroup.id(x, y)
 
-            t[gid] = t[gid] or {}
-            t[gid][#t[gid] + 1] = v
+            local tt = t[gid]
+            tt[#tt+1] = {x = position[1], y = position[3] - MAP_CHUNK_SIZE}
         end
     end
 
-    local function add_border(t, x, y)
-        local v = {x = x, y = y, type = "border"}
-        local gid = 0
+    ipt.create_plane_terrain(t, RENDER_LAYER.TERRAIN, MAP_CHUNK_SIZE, TERRAIN_MATERIAL)
+end
 
-        t[gid] = t[gid] or {}
-        t[gid][#t[gid] + 1] = v
-        return t
+local function create_border_in_groups()
+    local b = GID_CACHE()
+
+    local BORDER_GROUP_ID<const> = 0
+    local function add_border(x, y)
+        local bb = b[BORDER_GROUP_ID]
+        bb[#bb + 1] = {x = x, y = y}
     end
 
     -- top and bottom borders
     for x = ORIGIN[1] - MAP_BORDER_CHUNK_WIDTH_SIZE, ORIGIN[1] + (MAP_BORDER_CHUNK_WIDTH_SIZE * (MAP_WIDTH // MAP_BORDER_CHUNK_WIDTH)), MAP_BORDER_CHUNK_WIDTH_SIZE do
-        t = add_border(t, x, ORIGIN[2])  -- top
-        t = add_border(t, x, ORIGIN[2] - (MAP_HEIGHT * TILE_SIZE + MAP_BORDER_CHUNK_HEIGHT_SIZE)) -- bottom
+        add_border(x, ORIGIN[2])  -- top
+        add_border(x, ORIGIN[2] - (MAP_HEIGHT * TILE_SIZE + MAP_BORDER_CHUNK_HEIGHT_SIZE)) -- bottom
     end
 
     -- left and right borders
     for y = ORIGIN[2] - (MAP_HEIGHT * TILE_SIZE), ORIGIN[2] - MAP_BORDER_CHUNK_HEIGHT_SIZE, MAP_BORDER_CHUNK_HEIGHT_SIZE do
-        t = add_border(t, ORIGIN[1] - MAP_BORDER_CHUNK_WIDTH_SIZE, y) -- left
-        t = add_border(t, ORIGIN[1] + MAP_WIDTH * TILE_SIZE, y) -- right
+        add_border(ORIGIN[1] - MAP_BORDER_CHUNK_WIDTH_SIZE, y) -- left
+        add_border(ORIGIN[1] + MAP_WIDTH * TILE_SIZE, y) -- right
     end
 
-    ipt.create_plane_terrain(t, RENDER_LAYER.TERRAIN, MAP_CHUNK_SIZE, MAP_BORDER_CHUNK_SIZE, TERRAIN_MATERIAL, BORDER_MATERIAL)
+    ipt.create_border(b, RENDER_LAYER.TERRAIN, MAP_BORDER_CHUNK_SIZE, BORDER_MATERIAL)
+end
+
+function M.create()
+    create_plane_in_groups()
+    create_border_in_groups()
 end
 
 return M
