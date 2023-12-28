@@ -174,7 +174,7 @@
                             <div data-style-background-image = "i.icon" style = "width: 12.50vmin; height: 12.50vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-event-click = "clickButton('click_item', c_index, i_index)" />
                             <div data-style-background-image = "i.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'" style = "pointer-events: none; position: absolute; width: 16.40vmin; height: 16.40vmin; background-size: 100% 100%;" />
                             <div style = "pointer-events: none; position: absolute; width: 12.50vmin; height: 12.50vmin; justify-content: flex-start; align-items: flex-end; font-size: 3.2vmin; color:rgb(255,255,255); -webkit-text-stroke: 0.26vmin rgb(0,0,0);" data-style-color = " i.count >0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{i.count}}</div>
-                            <div style = "position: absolute; bottom: 0vmin; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0); text-align: center;" data-event-click = "clickButton('click_item', c_index, i_index)">{{i.name}}</div>
+                            <div style = "position: absolute; bottom: 0vmin; width: 13.95vmin; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0); text-align: center;" data-event-click = "clickButton('click_item', c_index, i_index)">{{i.name}}</div>
                         </item>
                     </div>
                 </div>

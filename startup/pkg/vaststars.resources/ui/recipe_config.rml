@@ -184,7 +184,7 @@
                                             <new data-if = "r.new">新</new>
                                         </div>
                                         <div data-style-background-image = "r.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'" style = "pointer-events: none; position: absolute; width: 16.40vmin; height: 16.40vmin; background-size: 100% 100%;" />
-                                        <div style = "position: absolute; bottom: 0vmin; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0); text-align: center;" data-event-click = "clickButton('click_recipe', c_index, r_index)">{{r.name}}</div>
+                                        <div style = "position: absolute; bottom: 0vmin; width: 13.95vmin; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0); text-align: center;" data-event-click = "clickButton('click_recipe', c_index, r_index)">{{r.name}}</div>
                                     </recipe>
                                 </div>
                             </div>
