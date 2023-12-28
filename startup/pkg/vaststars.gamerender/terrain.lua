@@ -46,12 +46,11 @@ local function create_plane_in_groups()
 end
 
 local function create_border_in_groups()
-    local b = GID_CACHE()
 
     local BORDER_GROUP_ID<const> = 0
+    local borderinfo = {}
     local function add_border(x, y)
-        local bb = b[BORDER_GROUP_ID]
-        bb[#bb + 1] = {x = x, y = y}
+        borderinfo[#borderinfo+1] = {x = x, y = y}
     end
 
     -- top and bottom borders
@@ -66,7 +65,7 @@ local function create_border_in_groups()
         add_border(ORIGIN[1] + MAP_WIDTH * TILE_SIZE, y) -- right
     end
 
-    ipt.create_border(b, RENDER_LAYER.TERRAIN, MAP_BORDER_CHUNK_SIZE, BORDER_MATERIAL)
+    ipt.create_borders(borderinfo, RENDER_LAYER.TERRAIN, MAP_BORDER_CHUNK_SIZE, BORDER_MATERIAL)
 end
 
 function M.create()
