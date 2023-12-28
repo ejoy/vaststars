@@ -33,8 +33,6 @@ end
 local imaterial = ecs.require "ant.asset|material"
 
 local function createPrefabInst(prefab, position)
-    prefab = assert(prefab:match("(.*%.glb|).*%.prefab"))
-    prefab = prefab .. "translucent.prefab"
     position = math3d.mark(position)
 
     return world:create_instance {
@@ -78,7 +76,7 @@ return function(position, state)
 
     local M = {}
 
-    M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|mesh.prefab", position)
+    M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|translucent.prefab", position)
     world:instance_message(M.arrow, "material", "set_property", "u_basecolor_factor", arrow_color)
 
     return setmetatable(M, mt)

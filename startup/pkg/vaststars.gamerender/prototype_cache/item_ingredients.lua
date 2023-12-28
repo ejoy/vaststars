@@ -49,6 +49,10 @@ return function()
         local cache = setmetatable({}, mt)
 
         for _, v in pairs(iprototype.each_type "recipe") do
+            if v.ingredients_details == false then
+                goto continue
+            end
+
             if v.recipe_category then
                 local r = {
                     name = v.name,
@@ -56,6 +60,7 @@ return function()
                 }
                 table.insert(cache[v.recipe_craft_category], r)
             end
+            ::continue::
         end
 
         for _, v in pairs(iprototype.each_type "building") do

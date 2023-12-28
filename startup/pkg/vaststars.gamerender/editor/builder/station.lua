@@ -2,6 +2,7 @@ local ecs = ...
 local world = ecs.world
 
 local CONSTANT <const> = require "gameplay.interface.constant"
+local ALL_DIR <const> = CONSTANT.ALL_DIR
 local ROTATORS <const> = CONSTANT.ROTATORS
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
@@ -28,6 +29,7 @@ local gameplay_core = require "gameplay.core"
 local iinventory = require "gameplay.interface.inventory"
 local srt = require "utility.srt"
 local igameplay = ecs.require "gameplay.gameplay_system"
+local ibuilding = ecs.require "render_updates.building"
 
 local function _get_road_entrance_srt(typeobject, dir, position)
     if not typeobject.crossing then
@@ -39,15 +41,14 @@ local function _get_road_entrance_srt(typeobject, dir, position)
     return srt.new {t = math3d.add(position, {ox * TILE_SIZE / 2, 0, oy * TILE_SIZE / 2}), r = ROTATORS[ddir]}
 end
 
-local function __align(prototype_name, dir, position_type)
-    local typeobject = iprototype.queryByName(prototype_name)
+local function _align(w, h, position_type)
     local pos = icamera_controller.get_screen_world_position(position_type)
-    local coord, position = icoord.align(pos, iprototype.rotate_area(typeobject.area, dir))
+    local coord, position = icoord.align(pos, w, h)
     if not coord then
         return
     end
     coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-    position = math3d.vector(icoord.position(coord[1], coord[2], iprototype.rotate_area(typeobject.area, dir)))
+    position = math3d.vector(icoord.position(coord[1], coord[2], w, h))
 
     return position, coord[1], coord[2]
 end
@@ -251,8 +252,6 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
     end
 end
 
-local ROTATORS <const> = CONSTANT.ROTATORS
-
 local function __calc_grid_position(typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = icoord.align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
@@ -260,7 +259,7 @@ local function __calc_grid_position(typeobject, x, y, dir)
     return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
-local function rotate(self, datamodel, dir, delta_vec)
+local function rotate(self, datamodel, dir)
     local pickup_object = assert(self.pickup_object)
 
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
@@ -275,45 +274,71 @@ local function rotate(self, datamodel, dir, delta_vec)
     end
 
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
+    local position, x, y = _align(w, h, self.position_type)
+    if not position then
+        return
+    end
+    pickup_object.x, pickup_object.y = x, y
+    pickup_object.srt.t = position
+
     local self_selected_boxes_position = icoord.position(pickup_object.x, pickup_object.y, w, h)
     self.self_selected_boxes:set_position(self_selected_boxes_position)
     self.self_selected_boxes:set_wh(w, h)
 end
 
+local function _calc_dir(adjacent_coords, x, y, dir)
+    local t = {}
+    for _, v in ipairs(adjacent_coords[dir]) do
+        local dx, dy, ddir = v[1], v[2], v[3]
+        if ibuilding.get(x + dx, y + dy) then
+            t[ddir] = true
+        end
+    end
+    local c = 0
+    for _ in pairs(t) do
+        c = c + 1
+    end
+    if c == 1 then
+        return next(t)
+    end
+    return nil
+end
+
 local function touch_move(self, datamodel, delta_vec)
-    if self.pickup_object then
-        iobject.move_delta(self.pickup_object, delta_vec)
-        local typeobject = iprototype.queryByName(self.pickup_object.prototype_name)
+    local pickup_object = assert(self.pickup_object)
+    iobject.move_delta(pickup_object, delta_vec)
+    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
-        if self.grid_entity then
-            self.grid_entity:set_position(__calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir))
+    if self.grid_entity then
+        self.grid_entity:set_position(__calc_grid_position(typeobject, pickup_object.x, pickup_object.y, pickup_object.dir))
+    end
+
+    local srt = _get_road_entrance_srt(typeobject, pickup_object.dir, pickup_object.srt.t)
+    assert(srt)
+    self.road_entrance:set_srt(srt.s, srt.r, srt.t)
+
+    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    local position, x, y = _align(w, h, self.position_type)
+    if position then
+        local self_selected_boxes_position = icoord.position(x, y, w, h)
+        self.self_selected_boxes:set_position(self_selected_boxes_position)
+        self.self_selected_boxes:set_wh(w, h)
+    end
+
+    __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
+
+    if x % ROAD_SIZE == 0 and y % ROAD_SIZE == 0 and self._check_coord(self.typeobject.name, x, y, w, h) then
+        local dir = _calc_dir(self._adjacent_coords, x, y, pickup_object.dir)
+        if dir and dir ~= pickup_object.dir then
+            self:rotate(datamodel, dir)
         end
-
-        local srt = _get_road_entrance_srt(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
-        assert(srt)
-        self.road_entrance:set_srt(srt.s, srt.r, srt.t)
-
-        local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir, self.position_type)
-        if position then
-            local w, h = iprototype.rotate_area(typeobject.area, self.pickup_object.dir)
-            local self_selected_boxes_position = icoord.position(x, y, w, h)
-            self.self_selected_boxes:set_position(self_selected_boxes_position)
-            self.self_selected_boxes:set_wh(w, h)
-        end
-
-        __show_nearby_buildings_selected_boxes(self, x, y, self.pickup_object.dir, typeobject)
-
-        self.last_position = self.pickup_object.srt.t
     end
 end
 
 local function touch_end(self, datamodel)
-    local pickup_object = self.pickup_object
-    if not pickup_object then
-        return
-    end
-
-    local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir, self.position_type)
+    local pickup_object = assert(self.pickup_object)
+    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    local position, x, y = _align(w, h, self.position_type)
     if not position then
         return
     end
@@ -404,24 +429,6 @@ local function confirm(self, datamodel)
     __new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, position, dir)
 end
 
-local function __is_station_placeable(prototype_name)
-    local typeobject = iprototype.queryByName(prototype_name)
-    if not typeobject then
-        return false
-    end
-
-    return (typeobject.track == "I")
-end
-
-local function __is_straight_road(prototype_name)
-    local typeobject = iprototype.queryByName(prototype_name)
-    if not typeobject then
-        return false
-    end
-
-    return (typeobject.track == "I" or typeobject.track == "L" or typeobject.track == "U")
-end
-
 local function clean(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
@@ -447,14 +454,54 @@ local function clean(self, datamodel)
     end
 end
 
+-- 
+local function _get_adjacent_coords(typeobject)
+    local r = {}
+    for _, dir in ipairs(ALL_DIR) do
+        local t = {}
+        local w, h = iprototype.rotate_area(typeobject.area, dir)
+        assert(w % 2 == 0 and h % 2 == 0)
+
+        -- top
+        for x = 0, w - 1, ROAD_SIZE do
+            for y = -2, -2, -ROAD_SIZE do
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'N'))})
+            end
+        end
+        -- right
+        for x = w, w, ROAD_SIZE do
+            for y = 0, h - 1, ROAD_SIZE do
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'E'))})
+            end
+        end
+        -- bottom
+        for x = 0, w - 1, ROAD_SIZE do
+            for y = h, h, ROAD_SIZE do
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'S'))})
+            end
+        end
+        -- left
+        for x = -2, -2, -ROAD_SIZE do
+            for y = 0, h - 1, ROAD_SIZE do
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'W'))})
+            end
+        end
+
+        r[dir] = t
+    end
+    return r
+end
+
 local function new(self, datamodel, typeobject, position_type)
     self._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
+    self._adjacent_coords = _get_adjacent_coords(typeobject)
 
     self.typeobject = typeobject
     self.position_type = position_type
 
     local dir = DEFAULT_DIR
-    local position, x, y = __align(typeobject.name, dir, position_type)
+    local w, h = iprototype.rotate_area(self.typeobject.area, dir)
+    local position, x, y = _align(w, h, position_type)
     if not x or not y then
         return
     end
