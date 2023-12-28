@@ -64,6 +64,11 @@ local function init_game(template)
 
     if template.research_queue then
         gameplay_world:research_queue(template.research_queue)
+        for _, tech in ipairs(template.research_queue) do
+            local typeobject = iprototype.queryByName(tech)
+            gameplay_world:research_progress(tech, typeobject.count)
+            assert(gameplay_world:is_researched(tech))
+        end
     end
 
     iguide.init(gameplay_world, template.guide)
