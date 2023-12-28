@@ -1,0 +1,63 @@
+local ecs   = ...
+local world = ecs.world
+local w     = world.w
+
+local INV_Z <const> = true
+
+local math3d    = require "math3d"
+local CUSTOM_NEAR_PLANE <const> = math3d.constant("v4", {0, 1, 0, 5})
+local CUSTOM_FAR_PLANE <const>  = math3d.constant("v4", {0, 1, 0, 0})
+
+local mathpkg   = import_package "ant.math"
+local mu        = mathpkg.util
+
+local irq       = ecs.require "ant.render|render_system.renderqueue"
+
+local sb_sys = ecs.system "scene_bounding_system"
+
+local function get_frustum_points_rays(points)
+    local rays = {}
+    if INV_Z then
+        for i = 1, 4 do
+            rays[#rays+1] = mu.create_ray(math3d.array_index(points, i+4), math3d.array_index(points, i))
+        end
+    else
+        for i = 1, 4 do
+            rays[#rays+1] = mu.create_ray(math3d.array_index(points, i), math3d.array_index(points, i+4))
+        end
+    end
+    return rays
+end
+
+local function ray_intersect_nearfar_planes(rays)
+    local p = {}
+    for _, r in ipairs(rays) do
+        local function intersect_plane(plane)
+            local t = math3d.plane_ray(r.o, r.d, plane)
+            if 0 <= t and t <= 1.0 then
+                p[#p+1] =  mu.ray_point(r, t)
+            end
+        end
+        intersect_plane(CUSTOM_NEAR_PLANE)
+        intersect_plane(CUSTOM_FAR_PLANE)
+    end
+
+    return p
+end
+
+function sb_sys:update_camera()
+    local C = irq.main_camera_changed()
+    if not C then
+        return
+    end
+
+    w:extend(C, "camera:in")
+    local sbe = w:first "shadow_bounding:update"
+    local rays = get_frustum_points_rays(math3d.frustum_points(C.camera.viewprojmat))
+    local newaabb = math3d.minmax(ray_intersect_nearfar_planes(rays))
+    math3d.unmark(sbe.shadow_bounding.scene_aabb)
+    sbe.shadow_bounding.scene_aabb = math3d.marked_aabb(newaabb)
+    w:submit(sbe)
+
+end
+
