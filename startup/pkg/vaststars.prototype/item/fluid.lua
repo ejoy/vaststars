@@ -182,7 +182,7 @@ prototype "蒸汽" {
 }
 
 prototype "地热气" {
-    display_name = "地热",
+    mineral_name = "地热",
     type = {"fluid"},
     catagory = {"普通气体"},
     item_icon = "/pkg/vaststars.resources/textures/icons/item/gas-steam.texture",
