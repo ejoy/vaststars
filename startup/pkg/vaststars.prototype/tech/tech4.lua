@@ -28,7 +28,7 @@ local prototype = gameplay.register.prototype
     effects = {
       unlock_item = {"管道1-X型","碎石","石砖"},
     },
-    count = 1,
+    count = 0,
     time = "0s"
   }
 
