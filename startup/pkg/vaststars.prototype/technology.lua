@@ -69,8 +69,8 @@ local prototype = gameplay.register.prototype
     effects = {
       unlock_item = {"碎石","铁矿石","铝矿石"},
     },
-    count = 1,
-    time = "1s"
+    count = 0,
+    time = "0s"
   }
 
   -- prototype "搜索废墟" {
