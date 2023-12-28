@@ -4275,6 +4275,7 @@ prototype "特殊地质科技包" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"碎石", 1},
@@ -4291,6 +4292,7 @@ prototype "特殊铁矿石" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"地质科技包", 1},
@@ -4307,6 +4309,7 @@ prototype "特殊电解" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"铁板", 8},
@@ -4322,6 +4325,7 @@ prototype "特殊电解2" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"铁板", 1},
@@ -4338,6 +4342,7 @@ prototype "特殊电解3" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"铁板", 1},
@@ -4354,6 +4359,7 @@ prototype "特殊化工" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"空气", 100},
@@ -4371,6 +4377,7 @@ prototype "特殊水电" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"空气", 100},
@@ -4388,6 +4395,7 @@ prototype "特殊化工2" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氧气", 100},
@@ -4405,6 +4413,7 @@ prototype "特殊蒸馏" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"空气", 100},
@@ -4421,6 +4430,7 @@ prototype "特殊铁板" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "金属",
     recipe_order =  11,
+    ingredients_details = false,
     recipe_icon = "/pkg/vaststars.resources/textures/icons/recipe/plate-Fe-1.texture",
     ingredients = {
         {"铁矿石", 1},
@@ -4438,6 +4448,7 @@ prototype "特殊化工3" {
     recipe_craft_category = "登录配方",
     --recipe_category =  "化工",
     recipe_order =  118,
+    ingredients_details = false,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"地下卤水", 100},
