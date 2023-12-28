@@ -12,4 +12,4 @@ struct building {
 };
 struct world;
 
-building createBuildingCache(world& w, ecs::building& b, uint16_t chest);
+building createBuildingCache(world& w, component::building& b, uint16_t chest);

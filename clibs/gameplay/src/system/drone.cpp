@@ -8,7 +8,7 @@
 #include <math.h>
 #include <algorithm>
 
-using DroneEntity = ecs_api::entity<ecs::drone>;
+using DroneEntity = ecs_api::entity<component::drone>;
 
 static uint8_t safe_add(uint8_t a, uint8_t b) {
     if (b > UINT8_C(255) - a)
@@ -58,10 +58,10 @@ struct building_rect {
             std::unreachable();
         }
     }
-    building_rect(ecs::building const& b, uint16_t area)
+    building_rect(component::building const& b, uint16_t area)
         : building_rect(b.x, b.y, b.direction, area, area)
     {}
-    building_rect(ecs::building const& b, uint16_t area, uint16_t scale_area)
+    building_rect(component::building const& b, uint16_t area, uint16_t scale_area)
         : building_rect(b.x, b.y, b.direction, area, scale_area)
     {}
     void each(std::function<void(uint8_t,uint8_t)> f) {
@@ -99,11 +99,11 @@ static container::slot* ChestGet(world& w, airport_berth const& berth) {
     return nullptr;
 }
 
-static void SetStatus(ecs::drone& drone, drone_status status) {
+static void SetStatus(component::drone& drone, drone_status status) {
     drone.status = (uint8_t)status;
 }
 
-static void CheckHasHome(world& w, DroneEntity& e, ecs::drone& drone, std::function<void(world&, DroneEntity&, ecs::drone&, airport&)> f) {
+static void CheckHasHome(world& w, DroneEntity& e, component::drone& drone, std::function<void(world&, DroneEntity&, component::drone&, airport&)> f) {
     auto it = w.airports.find(drone.home);
     if (it == w.airports.end()) {
         if (drone.item != 0) {
@@ -111,13 +111,13 @@ static void CheckHasHome(world& w, DroneEntity& e, ecs::drone& drone, std::funct
             drone.item = 0;
         }
         SetStatus(drone, drone_status::has_error);
-        e.enable_tag<ecs::drone_changed>();
+        e.enable_tag<component::drone_changed>();
         return;
     }
     f(w, e, drone, it->second);
 }
 
-static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& info);
+static void GoHome(world& w, DroneEntity& e, component::drone& drone, const airport& info);
 
 struct ChestSearcher {
     struct Node {
@@ -173,14 +173,14 @@ static void rebuild(world& w) {
     };
     std::map<uint16_t, mapinfo> globalmap;
     flatset<uint16_t> used_id;
-    for (auto& v : ecs_api::select<ecs::airport>(w.ecs)) {
-        auto& airport = v.get<ecs::airport>();
+    for (auto& v : ecs_api::select<component::airport>(w.ecs)) {
+        auto& airport = v.get<component::airport>();
         used_id.insert(airport.id);
     }
 
-    for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
-        auto& chest = v.get<ecs::chest>();
-        auto& building = v.get<ecs::building>();
+    for (auto& v : ecs_api::select<component::chest, component::building>(w.ecs)) {
+        auto& chest = v.get<component::chest>();
+        auto& building = v.get<component::building>();
         uint16_t area = prototype::get<"area">(w, building.prototype);
         auto c = container::index::from(chest.chest);
         if (c == container::kInvalidIndex) {
@@ -210,9 +210,9 @@ static void rebuild(world& w) {
         }
         return 0;
     };
-    for (auto& v : ecs_api::select<ecs::airport, ecs::building, ecs::capacitance>(w.ecs)) {
-        auto& airport = v.get<ecs::airport>();
-        auto& building = v.get<ecs::building>();
+    for (auto& v : ecs_api::select<component::airport, component::building, component::capacitance>(w.ecs)) {
+        auto& airport = v.get<component::airport>();
+        auto& building = v.get<component::building>();
         if (airport.id == 0) {
             airport.id = create_airport_id();
             created_airport.insert_or_assign(getxy(building.x, building.y), airport.id);
@@ -223,7 +223,7 @@ static void rebuild(world& w) {
         info.width = homeBuilding.w;
         info.height = homeBuilding.h;
         info.homeBerth = airport_berth { building.x, building.y, 0 };
-        info.capacitance = &v.get<ecs::capacitance>();
+        info.capacitance = &v.get<component::capacitance>();
         std::map<uint16_t, mapinfo> set;
         uint16_t area = prototype::get<"area">(w, building.prototype);
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
@@ -265,8 +265,8 @@ static void rebuild(world& w) {
     }
     w.airports = std::move(airports);
 
-    for (auto& e : ecs_api::select<ecs::drone>(w.ecs)) {
-        auto& drone = e.get<ecs::drone>();
+    for (auto& e : ecs_api::select<component::drone>(w.ecs)) {
+        auto& drone = e.get<component::drone>();
         auto status = (drone_status)drone.status;
         switch (status) {
         case drone_status::has_error:
@@ -274,7 +274,7 @@ static void rebuild(world& w) {
         case drone_status::init:
             if (auto p = created_airport.find(drone.home)) {
                 drone.home = *p;
-                CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
+                CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
                     drone.prev = std::bit_cast<airport_berth>(info.homeBerth);
                     if (info.market.empty()) {
                         SetStatus(drone, drone_status::idle);
@@ -286,10 +286,10 @@ static void rebuild(world& w) {
             else {
                 SetStatus(drone, drone_status::has_error);
             }
-            e.enable_tag<ecs::drone_changed>();
+            e.enable_tag<component::drone_changed>();
             break;
         case drone_status::idle:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
+            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
                 if (drone.prev != info.homeBerth) {
                     GoHome(w, e, drone, info);
                     return;
@@ -300,7 +300,7 @@ static void rebuild(world& w) {
             });
             break;
         case drone_status::at_home:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
+            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
                 if (drone.prev != info.homeBerth) {
                     SetStatus(drone, drone_status::idle);
                     GoHome(w, e, drone, info);
@@ -313,12 +313,12 @@ static void rebuild(world& w) {
             break;
         case drone_status::go_home:
         case drone_status::empty_task:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
+            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
                 // nothing to do, just check home
             });
             break;
         case drone_status::go_mov1:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
+            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
                 auto& mov1 = drone.next;
                 auto& mov2 = drone.mov2;
                 auto slot1 = ChestGet(w, mov1);
@@ -340,7 +340,7 @@ static void rebuild(world& w) {
             });
             break;
         case drone_status::go_mov2:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport const& info) {
+            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
                 auto& mov2 = drone.next;
                 auto slot2 = ChestGet(w, mov2);
                 if (0
@@ -369,9 +369,9 @@ static int lbuild(lua_State* L) {
     return 0;
 }
 
-static void Arrival(world& w, DroneEntity& e, ecs::drone& drone);
+static void Arrival(world& w, DroneEntity& e, component::drone& drone);
 
-static void Move(world& w, DroneEntity& e, ecs::drone& drone, const ChestSearcher::Node& target) {
+static void Move(world& w, DroneEntity& e, component::drone& drone, const ChestSearcher::Node& target) {
     drone.next = std::bit_cast<airport_berth>(target.berth);
     if (drone.prev == drone.next) {
         drone.maxprogress = drone.progress = 0;
@@ -393,10 +393,10 @@ static void Move(world& w, DroneEntity& e, ecs::drone& drone, const ChestSearche
     float z = sqrt(dx*dx+dy*dy);
     auto speed = prototype::get<"speed">(w, drone.prototype);
     drone.maxprogress = drone.progress = uint16_t(z*1000/speed);
-    e.enable_tag<ecs::drone_changed>();
+    e.enable_tag<component::drone_changed>();
 }
 
-static void DoTask(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const ChestSearcher::Node& mov1, const ChestSearcher::Node& mov2) {
+static void DoTask(world& w, DroneEntity& e, component::drone& drone, const airport& info, const ChestSearcher::Node& mov1, const ChestSearcher::Node& mov2) {
     {
         //lock mov1
         auto& chestslot = ChestAt(w, mov1.berth);
@@ -417,7 +417,7 @@ static void DoTask(world& w, DroneEntity& e, ecs::drone& drone, const airport& i
     Move(w, e, drone, mov1);
 }
 
-static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const airport& info, const ChestSearcher::Node& mov2) {
+static void DoTaskOnlyMov2(world& w, DroneEntity& e, component::drone& drone, const airport& info, const ChestSearcher::Node& mov2) {
     {
         //lock mov2
         auto& chestslot = ChestAt(w, mov2.berth);
@@ -429,7 +429,7 @@ static void DoTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, const ai
     Move(w, e, drone, mov2);
 }
 
-static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& info) {
+static void GoHome(world& w, DroneEntity& e, component::drone& drone, const airport& info) {
     assert((drone_status)drone.status != drone_status::at_home);
     SetStatus(drone, drone_status::go_home);
     building homeBuilding {0, 0, info.width, info.height};
@@ -440,7 +440,7 @@ static void GoHome(world& w, DroneEntity& e, ecs::drone& drone, const airport& i
     Move(w, e, drone, node);
 }
 
-static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+static bool FindTask(world& w, DroneEntity& e, component::drone& drone, airport& info) {
     auto consumer = consumer_context {
         *info.capacitance,
         prototype::get<"cost">(w, drone.prototype),
@@ -578,7 +578,7 @@ static bool FindTask(world& w, DroneEntity& e, ecs::drone& drone, airport& info)
     return false;
 }
 
-static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+static bool FindTaskOnlyMov2(world& w, DroneEntity& e, component::drone& drone, airport& info) {
     auto it = info.market.find(drone.item);
     if (it == info.market.end()) {
         return false;
@@ -622,7 +622,7 @@ static bool FindTaskOnlyMov2(world& w, DroneEntity& e, ecs::drone& drone, airpor
     return false;
 }
 
-static void FindTaskNotAtHome(world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+static void FindTaskNotAtHome(world& w, DroneEntity& e, component::drone& drone, airport& info) {
     if (info.market.empty()) {
         GoHome(w, e, drone, info);
         return;
@@ -633,11 +633,11 @@ static void FindTaskNotAtHome(world& w, DroneEntity& e, ecs::drone& drone, airpo
     GoHome(w, e, drone, info);
 }
 
-static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
+static void Arrival(world& w, DroneEntity& e, component::drone& drone) {
     drone.prev = drone.next;
     switch ((drone_status)drone.status) {
     case drone_status::go_mov1: {
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
             auto& slot = ChestAt(w, drone.next);
             assert(slot.item != 0
                 && (slot.type == container::slot::slot_type::supply || slot.type == container::slot::slot_type::transit)
@@ -661,7 +661,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
         break;
     }
     case drone_status::go_mov2: {
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
             auto& slot = ChestAt(w, drone.next);
             assert(slot.item == drone.item
                 && (slot.type == container::slot::slot_type::demand || slot.type == container::slot::slot_type::transit)
@@ -678,7 +678,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
     case drone_status::go_home:
         drone.next = airport_berth {0,0,0};
         drone.maxprogress = 0;
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
             if (drone.prev != info.homeBerth) {
                 GoHome(w, e, drone, info);
                 return;
@@ -694,7 +694,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
         });
         break;
     case drone_status::empty_task:
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
             if (drone.item == 0) {
                 FindTaskNotAtHome(w, e, drone, info);
                 return;
@@ -712,7 +712,7 @@ static void Arrival(world& w, DroneEntity& e, ecs::drone& drone) {
     }
 }
 
-static void Update(world& w, DroneEntity& e, ecs::drone& drone) {
+static void Update(world& w, DroneEntity& e, component::drone& drone) {
     if (drone.progress > 0) {
         drone.progress--;
     }
@@ -724,11 +724,11 @@ static void Update(world& w, DroneEntity& e, ecs::drone& drone) {
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& e : ecs_api::select<ecs::drone>(w.ecs)) {
-        auto& drone = e.get<ecs::drone>();
+    for (auto& e : ecs_api::select<component::drone>(w.ecs)) {
+        auto& drone = e.get<component::drone>();
         switch ((drone_status)drone.status) {
         case drone_status::at_home:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, ecs::drone& drone, airport& info) {
+            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
                 if (info.market.empty()) {
                     SetStatus(drone, drone_status::idle);
                     return;

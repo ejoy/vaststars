@@ -24,7 +24,7 @@ namespace roadnet {
     };
     static_assert(sizeof(route_value) == sizeof(uint32_t));
 
-    using lorry_entity = ecs_api::entity<ecs::lorry>;
+    using lorry_entity = ecs_api::entity<component::lorry>;
 
     class network {
     public:
@@ -37,17 +37,17 @@ namespace roadnet {
         void             updateRemoveLorry(world& w, size_t n);
         road::straight&  StraightRoad(straightid id);
         road::cross&     CrossRoad(crossid id);
-        ecs::lorry&      Lorry(world& w, lorryid id);
-        lorry_entity     LorryEntity(world& w, ecs::lorry& lorry);
+        component::lorry&      Lorry(world& w, lorryid id);
+        lorry_entity     LorryEntity(world& w, component::lorry& lorry);
         lorryid&         LorryInRoad(uint32_t index);
         map_coord        LorryInCoord(uint32_t index) const;
-        lorryid          getLorryId(ecs::lorry& l);
+        lorryid          getLorryId(component::lorry& l);
 
         dynarray<road::cross>           crossAry;
         dynarray<road::straight>        straightAry;
         dynarray<lorryid>               straightLorry;
         dynarray<map_coord>             straightCoord;
-        ecs::lorry*                     lorryAry;
+        component::lorry*                     lorryAry;
         flatmap<route_key, route_value> routeCached;
     };
 }

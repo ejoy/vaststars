@@ -101,11 +101,11 @@ static int lupdate(lua_State* L) {
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
 	}
-	for (auto& e : ecs_api::select<ecs::fluidboxes, ecs::assembling, ecs::chest>(w.ecs)) {
-		ecs::assembling& a = e.get<ecs::assembling>();
-		ecs::chest& c2 = e.get<ecs::chest>();
+	for (auto& e : ecs_api::select<component::fluidboxes, component::assembling, component::chest>(w.ecs)) {
+		component::assembling& a = e.get<component::assembling>();
+		component::chest& c2 = e.get<component::chest>();
 		if (a.recipe != 0) {
-			ecs::fluidboxes& fb = e.get<ecs::fluidboxes>();
+			component::fluidboxes& fb = e.get<component::fluidboxes>();
 			if (a.fluidbox_in != 0) {
 				for (size_t i = 0; i < 4; ++i) {
 					uint16_t fluid = fb.in[i].fluid;

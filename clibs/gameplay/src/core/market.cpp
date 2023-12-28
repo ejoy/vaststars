@@ -107,7 +107,7 @@ void market::add_demand(uint16_t endpointid, uint16_t item) {
 
 void market::match_begin(world& w) {
     impl->matchs.clear();
-    auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+    auto endpoints = ecs_api::array<component::endpoint>(w.ecs);
     for (auto it = impl->items.begin(); it != impl->items.end();) {
         auto& m = *it;
         std::vector<market_path> paths;
@@ -161,7 +161,7 @@ std::optional<market_match> market::match(world& w, roadnet::straightid pos) {
     if (impl->matchs.empty()) {
         return std::nullopt;
     }
-    auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+    auto endpoints = ecs_api::array<component::endpoint>(w.ecs);
     for (auto& m : impl->matchs) {
         if (auto distance = route_distance(w.rw, pos, endpoints[m.from].rev_neighbor)) {
             m.dist2 = m.dist1 + *distance;
@@ -184,7 +184,7 @@ uint16_t market::nearest_park(world& w, roadnet::straightid pos) {
     if (found) {
         return *slot;
     }
-    auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+    auto endpoints = ecs_api::array<component::endpoint>(w.ecs);
     std::vector<market_endpoint> park_sorts;
     park_sorts.reserve(impl->parks.size());
     for (auto id: impl->parks) {
@@ -206,7 +206,7 @@ uint16_t market::nearest_park(world& w, roadnet::straightid pos) {
 bool market::relocate(world& w, uint16_t item, roadnet::straightid pos, uint16_t& to) {
     for (auto& m : impl->items) {
         if (m.item == item) {
-            auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+            auto endpoints = ecs_api::array<component::endpoint>(w.ecs);
             uint16_t min_to;
             uint16_t min_distance = 0xFFFF;
             for (auto const& [to, _] : m.demand) {

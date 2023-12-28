@@ -9,7 +9,7 @@ static uint16_t getxy(uint8_t x, uint8_t y) {
     return ((uint16_t)x << 8) | (uint16_t)y;
 }
 
-building createBuildingCache(world& w, ecs::building& b, uint16_t chest) {
+building createBuildingCache(world& w, component::building& b, uint16_t chest) {
     uint16_t area = prototype::get<"area">(w, b.prototype);
     uint8_t width = area >> 8;
     uint8_t height = area & 0xFF;
@@ -34,13 +34,13 @@ building createBuildingCache(world& w, ecs::building& b, uint16_t chest) {
 
 static void rebuild(world& w) {
     w.buildings.clear();
-    for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
-        auto& chest = v.get<ecs::chest>();
+    for (auto& v : ecs_api::select<component::chest, component::building>(w.ecs)) {
+        auto& chest = v.get<component::chest>();
         auto c = container::index::from(chest.chest);
         if (c == container::kInvalidIndex) {
             continue;
         }
-        auto& b = v.get<ecs::building>();
+        auto& b = v.get<component::building>();
         w.buildings.insert_or_assign(getxy(b.x, b.y), createBuildingCache(w, b, chest.chest));
     }
 }
