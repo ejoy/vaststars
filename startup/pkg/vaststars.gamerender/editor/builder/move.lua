@@ -10,6 +10,7 @@ local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local ALL_DIR <const> = CONSTANT.ALL_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -248,7 +249,7 @@ local function __new_entity(self, datamodel, typeobject)
 
     local object = assert(objects:get(self.move_object_id))
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
+    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
 
     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
 
@@ -547,7 +548,7 @@ local function clean(self, datamodel)
     end
 
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "opaque", color = "null", emissive_color = "null"}
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
 end
 
 local function get_check_coord(object_id)

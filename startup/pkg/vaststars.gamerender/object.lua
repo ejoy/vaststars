@@ -67,6 +67,7 @@ local function new(init)
         state = init.state,
         color = init.color,
         emissive_color = init.emissive_color,
+        render_layer = init.render_layer,
     }
 
     local outer = setmetatable(t, mt)
@@ -144,6 +145,7 @@ local function flush()
                 state = outer.state,
                 color = outer.color,
                 emissive_color = outer.emissive_color,
+                render_layer = outer.render_layer,
             }
         else
             for k in pairs(outer.__change_keys) do

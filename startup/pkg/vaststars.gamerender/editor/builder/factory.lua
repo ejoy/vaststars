@@ -9,6 +9,7 @@ local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -303,7 +304,7 @@ function move_t:new(move_object_id, datamodel, typeobject)
 
     self.move_object_id = move_object_id
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
+    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
 end
 
 local function _get_inner_building_config(inner_buildings, area, dx, dy, dir)
@@ -365,7 +366,7 @@ end
 function move_t:clean(datamodel)
     clean(self, datamodel)
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "opaque", color = "null", emissive_color = "null"}
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
 end
 local move_mt = {__index = move_t}
 

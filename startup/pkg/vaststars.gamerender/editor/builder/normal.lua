@@ -9,6 +9,7 @@ local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -354,7 +355,10 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
         fluid_name = fluid_name,
         group_id = 0,
         recipe = recipe,
-        state = "translucent", color = SPRITE_COLOR.CONSTRUCT_SELF, emissive_color = SPRITE_COLOR.CONSTRUCT_SELF_EMISSIVE
+        state = "translucent",
+        color = SPRITE_COLOR.CONSTRUCT_SELF,
+        emissive_color = SPRITE_COLOR.CONSTRUCT_SELF_EMISSIVE,
+        render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING,
     }
 
     if typeobject.fluid_indicators ~= false and iprototype.has_types(typeobject.type, "chimney", "fluidbox", "fluidboxes") then
