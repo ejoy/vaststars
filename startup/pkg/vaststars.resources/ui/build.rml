@@ -22,7 +22,7 @@
                 position: absolute;
                 left: 5.03vmax;
                 top: 0.62vmin;
-                width: 74.37vmin;
+                width: 71.60vmin;
                 height: 98.52vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/construct/square-grid.texture";
                 background-size: 100% 100%;
@@ -31,7 +31,7 @@
             construct-list {
                 left: 1.86vmin;
                 top: 2.95vmin;
-                width: 73.00vmin;
+                width: 72.00vmin;
                 height: 93.00vmin;
                 margin-left: -1vmax;
                 gap: 2.00vmin;
@@ -43,8 +43,8 @@
                 background-size: 100% 100%;
                 justify-content: center;
                 align-items: center;
-                margin-right: -2.00vmin;
-                margin-bottom: -2.00vmin;
+                margin-right: -2.70vmin;
+                margin-bottom: -2.70vmin;
             }
         </style>
         <script type="text/x-lua" >

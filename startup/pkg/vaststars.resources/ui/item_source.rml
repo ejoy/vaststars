@@ -40,7 +40,7 @@
                 background-lattice: 5.24% 11.21% 28.29% 5.26% 15.52% 67.12%;
             }
             left-box {
-                width: 54.81vmax;
+                width: 55.70vmax;
                 height: 78.34vmin;
             }
             right-box {
@@ -129,7 +129,7 @@
             </div>
         </item-source>
 
-        <div style = "pointer-events: none; margin-top: 12.15vmin; margin-left: 3.98vmax; width: 92%; height: 93%;">
+        <div style = "pointer-events: none; margin-top: 12.25vmin; margin-left: 4.01vmax; width: 92%; height: 93%;">
             <div style = "pointer-events: none; align-items: center;">
                 <flex-row>
                     <left-box style = "pointer-events: none;" />
