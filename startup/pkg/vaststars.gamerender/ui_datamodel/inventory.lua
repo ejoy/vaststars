@@ -70,7 +70,7 @@ local function _power_conversion(n)
         n = n / 1000
         postfix = 'kW'
     end
-    return math.floor(n) .. postfix
+    return math.ceil(n) .. postfix
 end
 
 local function _speed_conversion(n)
