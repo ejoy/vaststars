@@ -2,6 +2,9 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
+local CONSTANT <const> = require "gameplay.interface.constant"
+local UPS <const> = CONSTANT.UPS
+
 local iprototype_cache = ecs.require "prototype_cache"
 local iprototype = require "gameplay.interface.prototype"
 local click_item_mb = mailbox:sub {"click_item"}
@@ -11,6 +14,33 @@ local iui = ecs.require "engine.system.ui_system"
 
 ---------------
 local M = {}
+
+local function _power_conversion(n)
+    if not n then
+        return ""
+    end
+    n = n * UPS
+
+    local postfix = ''
+    if n >= 1000000000 then
+        n = n / 1000000000
+        postfix = 'GW'
+    elseif n >= 1000000 then
+        n = n / 1000000
+        postfix = 'MW'
+    elseif n >= 1000 then
+        n = n / 1000
+        postfix = 'kW'
+    end
+    return math.floor(n) .. postfix
+end
+
+local function _speed_conversion(n)
+    if not n then
+        return ""
+    end
+    return math.floor(n * 100) .. '%'
+end
 
 local function _update_item(datamodel, item)
     local typeobject = assert(iprototype.queryById(item))
@@ -40,6 +70,8 @@ local function _update_item(datamodel, item)
     datamodel.item_icon = typeobject.item_icon
     datamodel.item_ingredients = item_ingredients
     datamodel.item_assembling = item_assembling
+    datamodel.power = _power_conversion(typeobject.power)
+    datamodel.speed = _speed_conversion(typeobject.speed)
 end
 
 function M.create(recipe_name, recipe_icon, recipe_time, recipe_ingredients, recipe_results, confirm, item)

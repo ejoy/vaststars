@@ -110,8 +110,8 @@
 
         <item-source data-if="item_name ~= ''">
             <div style = "position: absolute; left: 1vmax; top: 5.00vmin; width: 30.22vmax; height: 54.66vmin;">
-                <div style = "font-size: 5.50vmin;margin-bottom: 1vmin;">原料明细</div>
-                <div style = "width: 100%;height: 11vmin; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 1vmin; flex-wrap: wrap;">
+                <div style = "font-size: 4.50vmin;margin-bottom: 1vmin;">原料明细:</div>
+                <div style = "width: 100%; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 1vmin; flex-wrap: wrap;">
                     <div style = "width: 50%; flex-direction: row; align-items: center; justify-content: flex-start;" data-for = "item_ingredients">
                         <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%;" data-style-background-image = "it.icon" />
                         <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{it.name}}</div>
@@ -119,8 +119,21 @@
                         <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{it.count}}</div>
                     </div>
                 </div>
-                <div style = "font-size: 5.00vmin;">生产建筑</div>
-                <div style = "flex-direction: row; align-items: center; justify-content: center;">
+                <div style = "width: 96%; height: 0.1vmin; background-color: rgb(106, 103, 99);" />
+                <div style = "font-size: 4.50vmin;" data-if = "speed ~= '' or power ~= ''">机器参数:</div>
+                <div style = "width: 100%; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 1vmin; flex-wrap: wrap;" data-if = "speed ~= '' or power ~= ''">
+                    <div style = "width: 50%; flex-direction: row; align-items: center; justify-content: flex-start;" data-if = "speed ~= ''">
+                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/common/power.texture;" />
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{speed}}</div>
+                    </div>
+                    <div style = "width: 50%; flex-direction: row; align-items: center; justify-content: flex-start;" data-if = "power ~= ''">
+                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/common/time.texture;" />
+                        <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{power}}</div>
+                    </div>
+                </div>
+                <div style = "width: 96%; height: 0.1vmin; background-color: rgb(106, 103, 99);" />
+                <div style = "font-size: 4.50vmin;">生产建筑:</div>
+                <div style = "flex-direction: row; align-items: center; justify-content: center; margin-bottom: 1vmin;">
                     <div style = "flex-direction: column; gap: 1.50vmin;" data-for = "item_assembling">
                         <div style = "width: 14.00vmin; height: 14.00vmin; background-size: 100% 100%; align-items: center; justify-content: flex-end;" data-style-background-image = "it.icon" />
                         <div style = "text-align: center; font-size: 2.50vmin; color: rgb(246, 142, 14); margin-top: -4vmin;">{{it.name}}</div>

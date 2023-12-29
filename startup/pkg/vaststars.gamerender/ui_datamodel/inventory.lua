@@ -3,6 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local ITEM_CATEGORY <const> = ecs.require "vaststars.prototype|item_category"
+local CONSTANT <const> = require "gameplay.interface.constant"
+local UPS <const> = CONSTANT.UPS
 
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
@@ -51,6 +53,33 @@ local function set_item_value(datamodel, category_idx, item_idx, key, value)
     datamodel.inventory[category_idx].items[item_idx][key] = value
 end
 
+local function _power_conversion(n)
+    if not n then
+        return ""
+    end
+    n = n * UPS
+
+    local postfix = ''
+    if n >= 1000000000 then
+        n = n / 1000000000
+        postfix = 'GW'
+    elseif n >= 1000000 then
+        n = n / 1000000
+        postfix = 'MW'
+    elseif n >= 1000 then
+        n = n / 1000
+        postfix = 'kW'
+    end
+    return math.floor(n) .. postfix
+end
+
+local function _speed_conversion(n)
+    if not n then
+        return ""
+    end
+    return math.floor(n * 100) .. '%'
+end
+
 ---------------
 local M = {}
 
@@ -63,6 +92,8 @@ function M.create()
         item_ingredients = {},
         item_assembling = {},
         inventory = get_items(),
+        power = "",
+        speed = "",
     }
 end
 
@@ -77,6 +108,8 @@ function M.update(datamodel)
             datamodel.item_icon = ""
             datamodel.item_ingredients = {}
             datamodel.item_assembling = {}
+            datamodel.power = ""
+            datamodel.speed = ""
         else
             set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
             set_item_value(datamodel, category_idx, item_idx, "selected", true)
@@ -109,6 +142,9 @@ function M.update(datamodel)
                 }
                 datamodel.item_assembling[#datamodel.item_assembling+1] = t
             end
+
+            datamodel.power = _power_conversion(typeobject.power)
+            datamodel.speed = _speed_conversion(typeobject.speed)
         end
     end
 end
