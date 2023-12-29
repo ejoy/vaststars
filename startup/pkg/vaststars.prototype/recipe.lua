@@ -2909,22 +2909,6 @@ prototype "物理科技包1" {
 }
 
 
-prototype "石铁矿挖掘" {
-    type = { "recipe" },
-    recipe_craft_category = "金属冶炼",
-    --recipe_category =  "金属",
-    recipe_order =  20,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/rubber.texture",
-    ingredients = {
-    },
-    results = {
-        {"铁矿石", 1},
-        {"碎石", 1},
-    },
-    time = "3s",
-    description = "采集铁矿石",
-}
-
 prototype "铁矿石挖掘" {
     type = { "recipe" },
     recipe_craft_category = "矿石开采",
@@ -3426,7 +3410,7 @@ prototype "甲烷转石墨" {
     type = { "recipe" },
     recipe_craft_category = "器件基础化工",
     recipe_category =  "器件",
-    recipe_order =  10,
+    recipe_order =  20,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/ch42ethene.texture",
     ingredients = {
         {"甲烷", 50},
@@ -3515,7 +3499,7 @@ prototype "地下卤水电解1" {
     type = { "recipe" },
     recipe_craft_category = "电解",
     recipe_category =  "化工",
-    recipe_order =  15,
+    recipe_order =  10,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/brine-electrolysis-1.texture",
     ingredients = {
         {"地下卤水", 45},
