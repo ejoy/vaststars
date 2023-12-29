@@ -2,7 +2,6 @@
 return {
     {
         "opacity",
-        {"TRANSLUCENT_PLANE"},
         {"BUILDING"},
         {"LORRY_SHADOW", "LORRY", "LORRY_ITEM", "DRONE"},
     },
@@ -10,6 +9,7 @@ return {
         "background",
         {"TERRAIN", "MINERAL"},
         {"ROAD", "GRID"},
+        {"TRANSLUCENT_PLANE"},
         {"TRANSLUCENT_BUILDING"},
         {"ICON"},
         {"ICON_CONTENT", "WIRE"},
