@@ -2287,6 +2287,7 @@ prototype "建筑材料" {
   desc = "研究可以用于建材的新型材料",
   type = { "tech" },
   effects = {
+    unlock_recipe = {"混凝土"},
     unlock_item = {"混凝土"},
   },
   prerequisites = {"玻璃制造","氨制造"},

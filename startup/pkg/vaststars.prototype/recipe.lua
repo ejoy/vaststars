@@ -584,7 +584,7 @@ prototype "混凝土" {
         {"混凝土", 5},
     },
     time = "3s",
-    description = "将水、石头、沙子按照一定比例混合再嵌入钢板加工成混凝土",
+    description = "将水、石头、沙子按照比例混合再注入钢板加工成混凝土",
 }
 
 prototype "小铁制箱子1" {
@@ -3463,7 +3463,7 @@ prototype "氨气" {
     recipe_craft_category = "流体基础化工",
     recipe_category =  "化工",
     recipe_order =  100,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/hydrochloric.texture",
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
     ingredients = {
         {"氮气", 8},
         {"氢气", 24},
