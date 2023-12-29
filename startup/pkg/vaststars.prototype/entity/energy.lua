@@ -325,7 +325,7 @@ prototype "地热井I" {
     rotate_on_build = true,
     io_shelf = false,
     sound = "building/geothermal",
-    mining_category = {"地热处理"},
+    craft_category = {"地热处理"},
     maxslot = 8,
     fluidboxes = {
         input = {
@@ -355,7 +355,7 @@ prototype "地热井II" {
     rotate_on_build = true,
     io_shelf = false,
     sound = "building/geothermal",
-    mining_category = {"地热处理"},
+    craft_category = {"地热处理"},
     maxslot = 8,
     fluidboxes = {
         input = {
@@ -385,7 +385,7 @@ prototype "地热井III" {
     rotate_on_build = true,
     io_shelf = false,
     sound = "building/geothermal",
-    mining_category = {"地热处理"},
+    craft_category = {"地热处理"},
     maxslot = 8,
     fluidboxes = {
         input = {

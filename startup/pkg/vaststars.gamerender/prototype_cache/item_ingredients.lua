@@ -22,13 +22,13 @@ return function()
             for _, result in pairs(results) do
                 local typeobject = assert(iprototype.queryById(result.id))
                 Item2Recipes[typeobject.name] = Item2Recipes[typeobject.name] or {}
-                table.insert(Item2Recipes[typeobject.name], {id = v.id, name = v.name, ingredients = ingredients})
+                table.insert(Item2Recipes[typeobject.name], {id = v.id, name = v.name, ingredients = ingredients, recipe_order = v.recipe_order})
             end
             ::continue::
         end
 
-        for _, v in pairs(iprototype.each_type "recipe") do
-            table.sort(v, function(a, b) return a.id < b.id end)
+        for _, v in pairs(Item2Recipes) do
+            table.sort(v, function(a, b) return a.recipe_order < b.recipe_order end)
         end
 
         local function cache_ingredients(v)
@@ -58,10 +58,10 @@ return function()
                 goto continue
             end
 
-            if v.recipe_category then
+            if v.recipe_craft_category then
                 local r = {
                     name = v.name,
-                    recipe_category = v.recipe_category,
+                    recipe_craft_category = v.recipe_craft_category,
                 }
                 table.insert(cache[v.recipe_craft_category], r)
             end

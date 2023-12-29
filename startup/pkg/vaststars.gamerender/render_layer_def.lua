@@ -5,14 +5,14 @@ return {
         {"TRANSLUCENT_PLANE"},
         {"BUILDING"},
         {"LORRY_SHADOW", "LORRY", "LORRY_ITEM", "DRONE"},
-        {"ICON"},
-        {"ICON_CONTENT", "WIRE"},
     },
     {
         "background",
         {"TERRAIN", "MINERAL"},
         {"ROAD", "GRID"},
         {"TRANSLUCENT_BUILDING"},
+        {"ICON"},
+        {"ICON_CONTENT", "WIRE"},
     },
     {
         "translucent",

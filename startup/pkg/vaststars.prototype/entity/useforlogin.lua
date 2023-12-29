@@ -344,7 +344,7 @@ prototype "特殊采矿机" {
     priority = "secondary",
     mining_area = "5x5",
     sound = "building/miner",
-    mining_category = {"矿石开采"},
+    craft_category = {"矿石开采"},
     speed = "200%",
     maxslot = 8,
 }
