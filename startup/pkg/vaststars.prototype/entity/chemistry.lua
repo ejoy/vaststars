@@ -17,7 +17,7 @@ prototype "化工厂I" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    craft_category = {"器件基础化工","流体基础化工"},
+    craft_category = {"器件基础化工","流体基础化工","环境净化"},
     fluidboxes = {
         input = {
             {
@@ -83,7 +83,7 @@ prototype "化工厂II" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    craft_category = {"器件基础化工","流体基础化工"},
+    craft_category = {"器件基础化工","流体基础化工","环境净化"},
     fluidboxes = {
         input = {
             {
@@ -149,7 +149,7 @@ prototype "化工厂III" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    craft_category = {"器件基础化工","流体基础化工"},
+    craft_category = {"器件基础化工","流体基础化工","环境净化"},
     fluidboxes = {
         input = {
             {

@@ -291,6 +291,19 @@ prototype "四氯化钛" {
     item_description = "一种无色液体,化学式TiCL4",
 }
 
+prototype "净化气" {
+    type = {"fluid"},
+    catagory = {"普通气体"},
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/liquid-hydrochloric.texture",
+    color = {0.75, 0.75, 0.75, 1},
+    heat_capacity = "0.08kJ",
+    default_temperature = 25,
+    max_temperature = 100,
+    item_order = 44,
+    pollution = 150,
+    item_description = "一种被净化过的气体",
+}
+
 -- prototype "火箭燃料" {
 --     type = {"fluid"},
 --     catagory = {"化学液体"},

@@ -1030,6 +1030,32 @@ prototype "电路板" {
     item_description = "由绝缘材料制成并且安装电子元件的板",
 }
 
+prototype "过滤器" {
+    type = {"item"},
+    station_limit = 15,
+    chest_limit = 30,
+    backpack_limit = 100,
+    item_order = 30,
+    pollution = 1000,
+    item_model = "glbs/stackeditems/logic-circuit.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/capacitor.texture",
+    item_category = "器件",
+    item_description = "由绝缘材料制成并且安装电子元件的板",
+}
+
+prototype "用过的过滤器" {
+    type = {"item"},
+    station_limit = 15,
+    chest_limit = 30,
+    backpack_limit = 100,
+    item_order = 31,
+    pollution = 1000,
+    item_model = "glbs/stackeditems/logic-circuit.glb|mesh.prefab",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/capacitor.texture",
+    item_category = "器件",
+    item_description = "由绝缘材料制成并且安装电子元件的板",
+}
+
 prototype "核铀燃料" {
 	type = { "item" },
 	station_limit = 15,

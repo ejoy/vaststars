@@ -4184,6 +4184,72 @@ prototype "地热气发电" {
     description = "地热气发电",
 }
 
+prototype "净化气1" {
+    type = { "recipe" },
+    recipe_craft_category = "环境净化",
+    recipe_category =  "化工",
+    recipe_order =  119,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
+    ingredients = {
+    },
+    results = {
+        {"净化气", 50},
+    },
+    time = "10s",
+    description = "环境过滤生成净化气",
+}
+
+prototype "净化气2" {
+    type = { "recipe" },
+    recipe_craft_category = "环境净化",
+    recipe_category =  "化工",
+    recipe_order =  119,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
+    ingredients = {
+        {"过滤器", 1},
+    },
+    results = {
+        {"净化气", 1000},
+        {"用过的过滤器", 1},
+    },
+    time = "2s",
+    description = "环境过滤生成净化气",
+}
+
+prototype "过滤器1" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  70,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/capacitor-1.texture",
+    ingredients = {
+        {"石墨", 1},
+        {"铁板", 4},
+    },
+    results = {
+        {"过滤器", 1},
+    },
+    time = "2s",
+    description = "使用石墨和铝棒生成过滤器",
+}
+
+prototype "过滤器2" {
+    type = { "recipe" },
+    recipe_craft_category = "器件中型制造",
+    recipe_category =  "器件",
+    recipe_order =  71,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/capacitor-1.texture",
+    ingredients = {
+        {"用过的过滤器", 1},
+        {"纯水", 10},
+    },
+    results = {
+        {"过滤器", 1},
+    },
+    time = "2s",
+    description = "使用纯水净化用够的过滤器",
+}
+
 ---------地下卤水生成矿物配方----------
 prototype "热管1" {
     type = { "recipe" },
