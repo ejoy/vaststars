@@ -17,14 +17,8 @@ local sb_sys = ecs.system "scene_bounding_system"
 
 local function get_frustum_points_rays(points)
     local rays = {}
-    if INV_Z then
-        for i = 1, 4 do
-            rays[#rays+1] = mu.create_ray(math3d.array_index(points, i+4), math3d.array_index(points, i))
-        end
-    else
-        for i = 1, 4 do
-            rays[#rays+1] = mu.create_ray(math3d.array_index(points, i), math3d.array_index(points, i+4))
-        end
+    for i = 1, 4 do
+        rays[#rays+1] = mu.create_ray(math3d.array_index(points, i), math3d.array_index(points, i+4))
     end
     return rays
 end
