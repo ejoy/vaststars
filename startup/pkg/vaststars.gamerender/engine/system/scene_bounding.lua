@@ -39,14 +39,8 @@ local function ray_intersect_nearfar_planes(rays)
 end
 
 local function find_zn_zf(points, Cv)
-    local nc = math3d.mul(0.5, math3d.add(math3d.array_index(points, 2), math3d.array_index(points, 3)))
-    local fc = math3d.mul(0.5, math3d.add(math3d.array_index(points, 6), math3d.array_index(points, 7)))
-
-    local r = mu.create_ray(nc, fc)
-    local znpt = mu.ray_point(r, math3d.plane_ray(r.o, r.d, CUSTOM_NEAR_PLANE))
-    local zfpt = mu.ray_point(r, math3d.plane_ray(r.o, r.d, CUSTOM_FAR_PLANE))
-
-    return math3d.index(math3d.transform(Cv, znpt, 1), 3), math3d.index(math3d.transform(Cv, zfpt, 1), 3)
+    local sceneaabbVS = math3d.minmax(points, Cv)
+    return mu.aabb_minmax_index(sceneaabbVS, 3)
 end
 
 function sb_sys:update_camera()
@@ -57,12 +51,13 @@ function sb_sys:update_camera()
 
     w:extend(C, "camera:in")
     local sbe = w:first "shadow_bounding:update"
-    local points = math3d.frustum_points(C.camera.viewprojmat)
-    local rays = get_frustum_points_rays(points)
-    local newaabb = math3d.minmax(ray_intersect_nearfar_planes(rays))
-    local zn, zf = find_zn_zf(points, C.camera.viewmat)
+    local pointsWS = math3d.frustum_points(C.camera.viewprojmat)
+    local raysWS = get_frustum_points_rays(pointsWS)
+    local intersectpoints = ray_intersect_nearfar_planes(raysWS)
+    local sceneaabbWS = math3d.minmax(intersectpoints)
+    local zn, zf = find_zn_zf(intersectpoints, C.camera.viewmat)
     sbe.shadow_bounding.scene_info = {
-        PSR = math3d.marked_aabb(newaabb),
+        PSR = math3d.marked_aabb(sceneaabbWS),
         zn = zn,
         zf = zf,
     }
