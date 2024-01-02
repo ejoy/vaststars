@@ -153,7 +153,7 @@ prototype "废水" {
     default_temperature = 20,
     max_temperature = 100,
     item_order = 24,
-    pollution = 100,
+    pollution = 150,
     item_description = "工业生产中使用过的水，包含各种污染物",
 }
 
