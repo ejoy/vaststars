@@ -43,7 +43,7 @@ local function find_zn_zf(points, Cv)
     return mu.aabb_minmax_index(sceneaabbVS, 3)
 end
 
-function sb_sys:update_camera()
+function sb_sys:update_camera_bounding()
     local C = irq.main_camera_changed()
     if not C then
         return
