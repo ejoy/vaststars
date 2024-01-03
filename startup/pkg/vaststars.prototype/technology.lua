@@ -1813,6 +1813,21 @@ prototype "铝生产" {
   time = "8s"
 }
 
+prototype "废水处理" {
+  desc = "加工铝矿的工艺",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"废水过滤"},
+  },
+  prerequisites = {"铝生产"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 20,
+  time = "8s"
+}
+
 prototype "硅生产" {
   desc = "将硅加工成硅板的工艺",
   type = { "tech" },
@@ -1868,7 +1883,7 @@ prototype "铝加工" {
     unlock_recipe = {"铝丝1","铝棒1"},
     unlock_item = {"铝丝","铝棒"},
   },
-  prerequisites = {"铝生产","冶金学2"},
+  prerequisites = {"铝生产","冶金学2","废水处理"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},

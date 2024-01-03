@@ -2801,6 +2801,23 @@ prototype "气候科技包2" {
     description = "气候材料制造气候科技包",
 }
 
+prototype "废水过滤" {
+    type = { "recipe" },
+    recipe_craft_category = "流体液体处理",
+    recipe_category =  "化工",
+    recipe_order =  70,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
+    ingredients = {
+        {"废水", 200},
+    },
+    results = {
+        {"地下卤水", 150},
+        {"沙子", 2}
+    },
+    time = "1s",
+    description = "将废水进行过滤处理",
+}
+
 prototype "机械科技包1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
