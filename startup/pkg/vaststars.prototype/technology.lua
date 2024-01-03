@@ -1685,6 +1685,21 @@ prototype "废料回收1" {
   time = "6s"
 }
 
+prototype "废水处理" {
+  desc = "加工铝矿的工艺",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"废水过滤"},
+  },
+  prerequisites = {"废料回收1"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 20,
+  time = "8s"
+}
+
 prototype "石头处理3" {
   desc = "研究可进行高温加工的特殊器皿",
   type = { "tech" },
@@ -1807,21 +1822,6 @@ prototype "铝生产" {
   prerequisites = {"无机化学","冶金学2"},
   ingredients = {
     {"地质科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 20,
-  time = "8s"
-}
-
-prototype "废水处理" {
-  desc = "加工铝矿的工艺",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"废水过滤"},
-  },
-  prerequisites = {"铝生产"},
-  ingredients = {
-    {"气候科技包", 1},
     {"机械科技包", 1},
   },
   count = 20,
