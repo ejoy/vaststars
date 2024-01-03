@@ -51,16 +51,13 @@ function sb_sys:update_camera()
 
     w:extend(C, "camera:in")
     local sbe = w:first "shadow_bounding:update"
+    local sb = sbe.shadow_bounding
+
     local pointsWS = math3d.frustum_points(C.camera.viewprojmat)
     local raysWS = get_frustum_points_rays(pointsWS)
     local intersectpoints = ray_intersect_nearfar_planes(raysWS)
-    local sceneaabbWS = math3d.minmax(intersectpoints)
-    local zn, zf = find_zn_zf(intersectpoints, C.camera.viewmat)
-    sbe.shadow_bounding.scene_info = {
-        PSR = math3d.marked_aabb(sceneaabbWS),
-        zn = zn,
-        zf = zf,
-    }
+    sb.PSR = math3d.minmax(intersectpoints)
+    sb.zn, sb.zf = find_zn_zf(intersectpoints, C.camera.viewmat)
     w:submit(sbe)
 
 end
