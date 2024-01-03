@@ -58,5 +58,6 @@ function sb_sys:update_camera_bounding()
     local intersectpoints = ray_intersect_nearfar_planes(raysWS)
     sb.PSR = math3d.marked_aabb(math3d.minmax(intersectpoints))
     sb.zn, sb.zf = find_zn_zf(intersectpoints, C.camera.viewmat)
+    assert(sb.zn >= 0 and sb.zf > sb.zn)
 end
 
