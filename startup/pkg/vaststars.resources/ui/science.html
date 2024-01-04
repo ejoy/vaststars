@@ -401,7 +401,7 @@
 
             function start.showFinish()
                 start.show_finish = true
-                start.return_title = "已完成科技"
+                start.return_title = "科研历史"
                 start.list:reset_position()
                 ui_sys.pub(window, {"show_list", "finish"})
             end
@@ -446,7 +446,7 @@
         <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
             <div style="width: 60%; flex-direction: row; justify-content: center; align-items: center;">
                 <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
-                <div style='font-size: 6vmin; text-align: center;'>科技研究</div>
+                <div style='font-size: 6vmin; text-align: center;'>{{return_title}}</div>
                 <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
             </div>
             <div style="height: 90%; flex-direction: row; justify-content: center;">

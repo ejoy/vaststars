@@ -49,7 +49,7 @@ function M.update_tech_list(gw)
         end
     end
     table.sort(techlist, comp_tech)
-    table.sort(finishlist, comp_tech)
+    -- table.sort(finishlist, comp_tech)
     global.science.tech_list = techlist
     global.science.finish_list = finishlist
 end
