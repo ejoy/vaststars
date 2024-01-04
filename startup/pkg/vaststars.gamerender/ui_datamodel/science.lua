@@ -37,28 +37,42 @@ local function get_techlist(tech_list)
                 end
             end
         end
-        if value.effects and value.effects.unlock_recipe then
-            local prototypes = iprototype.each_type("recipe")
-            for _, recipe in ipairs(value.effects.unlock_recipe) do
-                local recipe_detail = prototypes[recipe]
-                if recipe_detail then
-                    local input = {}
-                    ingredients = irecipe.get_elements(recipe_detail.ingredients)
-                    for _, ingredient in ipairs(ingredients) do
-                        input[#input + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
+        local item = {}
+        if value.effects then
+            if value.effects.unlock_recipe then
+                local prototypes = iprototype.each_type("recipe")
+                for _, recipe in ipairs(value.effects.unlock_recipe) do
+                    local recipe_detail = prototypes[recipe]
+                    if recipe_detail then
+                        local input = {}
+                        ingredients = irecipe.get_elements(recipe_detail.ingredients)
+                        for _, ingredient in ipairs(ingredients) do
+                            input[#input + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
+                        end
+                        local output = {}
+                        local results = irecipe.get_elements(recipe_detail.results)
+                        for _, ingredient in ipairs(results) do
+                            output[#output + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
+                        end
+                        detail[#detail + 1] = {
+                            name = recipe,
+                            icon = assert(recipe_detail.recipe_icon),
+                            desc = recipe_detail.description,
+                            input = input,
+                            output = output,
+                            time = itypes.time(recipe_detail.time)
+                        }
                     end
-                    local output = {}
-                    local results = irecipe.get_elements(recipe_detail.results)
-                    for _, ingredient in ipairs(results) do
-                        output[#output + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
-                    end
-                    detail[#detail + 1] = {
-                        name = recipe,
-                        icon = assert(recipe_detail.recipe_icon),
-                        desc = recipe_detail.description,
-                        input = input,
-                        output = output,
-                        time = itypes.time(recipe_detail.time)
+                end
+            end
+            if value.effects.unlock_item then
+                local prototypes = iprototype.each_type("item")
+                for _, it in ipairs(value.effects.unlock_item) do
+                    local item_detail = prototypes[it]
+                    item[#item + 1] = {
+                        name = item_detail.name,
+                        icon = item_detail.item_icon,
+                        desc = item_detail.item_description,
                     }
                 end
             end
@@ -74,6 +88,7 @@ local function get_techlist(tech_list)
             sub_desc = sub_desc,
             sign_icon = value.sign_icon,
             detail = detail,
+            item = item,
             ingredients = simple_ingredients,
             count = value.count,
             time = value.time,
