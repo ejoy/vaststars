@@ -294,7 +294,7 @@ prototype "四氯化钛" {
 prototype "净化气" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    item_icon = "/pkg/vaststars.resources/textures/icons/item/liquid-hydrochloric.texture",
+    item_icon = "/pkg/vaststars.resources/textures/icons/item/gas-air.texture",
     color = {0.75, 0.75, 0.75, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
