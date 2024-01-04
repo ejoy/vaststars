@@ -4233,7 +4233,7 @@ prototype "净化气2" {
     description = "环境过滤生成净化气",
 }
 
-prototype "过滤器1" {
+prototype "过滤器" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
@@ -4250,7 +4250,7 @@ prototype "过滤器1" {
     description = "使用石墨和铝棒生成过滤器",
 }
 
-prototype "过滤器2" {
+prototype "过滤器回收" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",

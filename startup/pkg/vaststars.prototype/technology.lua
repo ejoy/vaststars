@@ -1652,6 +1652,22 @@ prototype "化学工程1" {
   time = "10s"
 }
 
+prototype "环境净化1" {
+  desc = "净化环境降低污染值",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"净化气1"},
+  },
+  prerequisites = {"化学工程1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 8,
+  time = "8s"
+}
+
 prototype "无机化学" {
   desc = "使用无机化合物合成物质的工艺",
   type = { "tech" },
@@ -1957,6 +1973,23 @@ prototype "太阳能存储1" {
   },
   count = 20,
   time = "15s"
+}
+
+prototype "环境净化2" {
+  desc = "净化环境降低污染值",
+  type = { "tech" },
+  effects = {
+    unlock_recipe = {"净化气2","过滤器","过滤器回收"},
+    unlock_item = {"过滤器","用过的过滤器"},
+  },
+  prerequisites = {"电子器件1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 30,
+  time = "8s"
 }
 
 prototype "电子研究" {
