@@ -174,7 +174,10 @@
                 ui_sys.pub(window, {"click_tech", index})
             end
             local function clickRecipe(index)
-                ui_sys.pub(window, {"click_recipe", index})
+                local recipe = start.current_tech.detail[index]
+                if recipe then
+                    ui_sys.pub(window, {"click_recipe", recipe.name})
+                end
             end
             
             local select_style_border = "3px rgb(0,255,0)"
@@ -399,18 +402,18 @@
                 },            
             })
 
-            function start.showFinish()
+            function start.showFinish(tech_idx, recipe_idx)
                 start.show_finish = true
-                start.return_title = "科研历史"
+                start.title = "科研历史"
                 start.list:reset_position()
-                ui_sys.pub(window, {"show_list", "finish"})
+                ui_sys.pub(window, {"show_list", "finish", tech_idx})
             end
             local function onclose()
                 unselect_recipe()
                 unselect_tech()
                 if start.show_finish then
                     start.show_finish = false
-                    start.return_title = "科研目标"
+                    start.title = "科研目标"
                     start.list:reset_position()
                     ui_sys.pub(window, {"show_list", "todo"})
                 else
@@ -436,6 +439,15 @@
             end
             function init()
                 inited = true
+                if start.tech_index then
+                    selected_index = start.tech_index
+                end
+                if start.recipe_index then
+                    selected_recipe_index = start.recipe_index
+                end
+                if start.tech_index then
+                    start.showFinish(start.tech_index)
+                end
                 start.list:on_dirty_all(#start.techitems)
                 start.detaillist:on_dirty_all(#start.current_tech.detail + #start.current_tech.item)
             end
@@ -446,7 +458,7 @@
         <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
             <div style="width: 60%; flex-direction: row; justify-content: center; align-items: center;">
                 <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
-                <div style='font-size: 6vmin; text-align: center;'>{{return_title}}</div>
+                <div style='font-size: 6vmin; text-align: center;'>{{title}}</div>
                 <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
             </div>
             <div style="height: 90%; flex-direction: row; justify-content: center;">

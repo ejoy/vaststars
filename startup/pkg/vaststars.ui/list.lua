@@ -62,9 +62,9 @@ end
 --     return self.selected
 -- end
 
--- function list_meta:get_item(index)
---     return self.index_map[index].item
--- end
+function list_meta:get_item(index)
+    return self.index_map[index].item
+end
 
 -- function list_meta:set_list_size(width, height)
 --     self.width = width

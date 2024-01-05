@@ -8,6 +8,7 @@ local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local itypes = require "gameplay.interface.types"
 local click_tech_event = mailbox:sub {"click_tech"}
+local click_recipe_event = mailbox:sub {"click_recipe"}
 local close_techui_event = mailbox:sub {"close_techui"}
 local show_list_event = mailbox:sub {"show_list"}
 local switch_mb = mailbox:sub {"switch"}
@@ -65,17 +66,17 @@ local function get_techlist(tech_list)
                     end
                 end
             end
-            if value.effects.unlock_item then
-                local prototypes = iprototype.each_type("item")
-                for _, it in ipairs(value.effects.unlock_item) do
-                    local item_detail = prototypes[it]
-                    item[#item + 1] = {
-                        name = item_detail.name,
-                        icon = item_detail.item_icon,
-                        desc = item_detail.item_description,
-                    }
-                end
-            end
+            -- if value.effects.unlock_item then
+            --     local prototypes = iprototype.each_type("item")
+            --     for _, it in ipairs(value.effects.unlock_item) do
+            --         local item_detail = prototypes[it]
+            --         item[#item + 1] = {
+            --             name = item_detail.name,
+            --             icon = item_detail.item_icon,
+            --             desc = item_detail.item_description,
+            --         }
+            --     end
+            -- end
         end
         local game_world = gameplay_core.get_world()
         local progress = game_world:research_progress(name) or 0
@@ -111,17 +112,30 @@ local function get_button_str(tech)
     return "开始" .. (tech.task and "任务" or "研究")
 end
 
-function M.create(object_id)
+function M.create(unpicked_recipe)
     local items = get_techlist(global.science.tech_list)
     current_tech = items[1]
     if not current_tech then
         return {}
     end
-
+    local tech_index
+    local recipe_index
+    if unpicked_recipe then
+        local finish_items = get_techlist(global.science.finish_list)
+        for index, value in ipairs(finish_items) do
+            if value.name == unpicked_recipe.tech_name then
+                tech_index = index
+                recipe_index = unpicked_recipe.index
+                break
+            end
+        end
+    end
     return {
         techitems = items,
         show_finish = false,
-        return_title = "科研目标",
+        title = "科研目标",
+        tech_index = tech_index,
+        recipe_index = recipe_index,
         current_tech = current_tech,
         current_desc = current_tech.desc,
         current_icon = current_tech.icon,
@@ -152,17 +166,24 @@ function M.update(datamodel)
         set_current_tech(datamodel.techitems[index])
         iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "update_tech")
     end
-
+    for _, _, _, name in click_recipe_event:unpack() do
+        if global.science.tech_recipe_unpicked[name] then
+            global.science.tech_recipe_unpicked[name] = nil
+            world:pub {"tech_recipe_unpicked_dirty"}
+        end
+    end
     for _, _, _ in close_techui_event:unpack() do
         gameplay_core.world_update = true
         iui.close("/pkg/vaststars.resources/ui/science.html")
     end
-    for _, _, _, list in show_list_event:unpack() do
+    for _, _, _, list, tech_index in show_list_event:unpack() do
         local items = get_techlist((list == "todo") and global.science.tech_list or global.science.finish_list)
         datamodel.techitems = items
-        if items[1] then
-            set_current_tech(items[1])
+        tech_index = tech_index or 1
+        if items[tech_index] then
+            set_current_tech(items[tech_index])
         end
+        
     end
     local game_world = gameplay_core.get_world()
     for _, _, _ in switch_mb:unpack() do

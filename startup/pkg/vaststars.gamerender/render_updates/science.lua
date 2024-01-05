@@ -15,7 +15,8 @@ function science_sys:gameworld_update()
     if science.current_tech then
         if gameplay_world:is_researched(science.current_tech.name) then
             iguide_tips.clear()
-            iscience.update_tech_list(gameplay_world)
+            iscience.update_tech_list(gameplay_world, science.current_tech)
+            world:pub {"tech_recipe_unpicked_dirty"}
             iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "update_tech")
             world:pub {"research_finished", science.current_tech.name}
             science.current_tech = nil

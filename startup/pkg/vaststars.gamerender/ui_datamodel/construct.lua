@@ -50,6 +50,7 @@ local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
+local click_recipe_mb = mailbox:sub {"click_recipe"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
@@ -57,7 +58,7 @@ local itransfer = require "gameplay.interface.transfer"
 local can_build = ecs.require "ui_datamodel.common.can_build"
 local ichest = require "gameplay.interface.chest"
 local inner_building = require "editor.inner_building"
-
+local tech_recipe_unpicked_dirty_mb = world:sub {"tech_recipe_unpicked_dirty"}
 local builder, builder_datamodel, builder_ui
 local selected_obj
 
@@ -112,7 +113,17 @@ end
 
 ---------------
 local M = {}
-
+local function get_recipe_list()
+    local recipe_list = {}
+    for _, recipe in pairs(global.science.tech_recipe_unpicked) do
+        recipe_list[#recipe_list + 1] = recipe
+        --TODO: show 3 recipe
+        if #recipe_list > 3 then
+            break
+        end
+    end
+    return recipe_list
+end
 function M.create()
     return {
         status = "NORMAL",
@@ -131,6 +142,7 @@ function M.create()
         is_task = false,                --是否是任务
         guide_progress = 0,             --引导进度
         focus_building_icon = "",
+        recipe_list = get_recipe_list()
     }
 end
 
@@ -817,6 +829,19 @@ function M.update(datamodel)
             icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)))
             pickupObject(datamodel, math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)), true)
         end
+    end
+
+    for _ in tech_recipe_unpicked_dirty_mb:unpack() do
+        -- print("----tech_recipe_unpicked_dirty_mb----")
+        datamodel.recipe_list = get_recipe_list()
+    end
+
+    for _, _, _, recipe_name in click_recipe_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/science.html"}, global.science.tech_recipe_unpicked[recipe_name])
+        if global.science.tech_recipe_unpicked[recipe_name] then
+            global.science.tech_recipe_unpicked[recipe_name] = nil
+        end
+        datamodel.recipe_list = get_recipe_list()
     end
 
     iobject.flush()
