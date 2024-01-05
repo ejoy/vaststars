@@ -5964,6 +5964,7 @@ return {
     mineral = mineral,
     mountain = mountain,
     order = 9,
+    show = false,
     guide = guide,
     start_tech = "地质研究",
     research_queue = {

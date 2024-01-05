@@ -69,7 +69,7 @@ return {
   mountain = mountain,
   order = 1,
   guide = guide,
-  show = false,
+  show = true,
   start_tech = "登录科技开启",
   init_ui = {
     "/pkg/vaststars.resources/ui/construct.html",

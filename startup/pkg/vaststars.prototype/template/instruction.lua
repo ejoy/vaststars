@@ -412,6 +412,7 @@ return {
   mineral = mineral,
   mountain = mountain,
   order = 2,
+  show = false,
   guide = guide,
   start_tech = "润滑",
   init_ui = {
