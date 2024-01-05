@@ -125,7 +125,6 @@ function M.create()
         show_ingredient = false,
         category_idx = 0,
         item_idx = 0,
-        tech_count = #global.science.tech_list,
         item_bar = {},
         transfer_id = 0,
         show_construct_button = false,
@@ -162,7 +161,6 @@ function M.update_tech(datamodel, tech)
         datamodel.current_tech_progress_detail = tech.progress.."/"..tech.detail.count
     else
         datamodel.show_tech_progress = false
-        datamodel.tech_count = #global.science.tech_list
     end
 end
 
