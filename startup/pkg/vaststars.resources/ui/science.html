@@ -86,15 +86,15 @@
                 height:35%;
             }
             .small-item-new {
-                margin: 0.2vmin;
+                margin: 1.5vmin 2.5vmin 1.5vmin 2.5vmin;
                 /* flex-direction: column; */
                 /* align-items:flex-start; */
                 /* justify-content:flex-start; */
                 /* background-color: rgb(250, 205, 9); */
                 /* border: 1px red; */
                 background-size: cover;
-                width: 6.5vmin;
-                height: 6.5vmin;
+                width: 6vmin;
+                height: 6vmin;
                 /* font-size: 2.00vmin; */
             }
             .small-arrow {
@@ -299,40 +299,41 @@
                 local margin_top = '0'
                 local margin_left = '0'
                 local inoutstr = [[
-                    <div style='flex-direction:row; justify-content: center; align-items: center; width: 32vmin; height: 13vmin; margin-right: 2vmin;'>
-                    <div style='width: 14vmin; height: 14vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>]]
+                    <div style='flex-direction:row; justify-content: center; align-items: center; width: 42vmin; height: 15vmin; margin-right: 2vmin;'>
+                    <div style='width: 18vmin; height: 16vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>]]
                 if #detail.input == 1 then
-                    margin_top = '7vmin'
-                    margin_left = '0.6vmin'
+                    margin_top = '5vmin'
+                    margin_left = '8.6vmin'
                 elseif #detail.input == 2 then
-                    margin_top = '7vmin'
+                    margin_top = '5vmin'
                 end
                 for _, indata in ipairs(detail.input) do
                     inoutstr = inoutstr .. ([[
-                    <div style='flex-direction: column; align-items: center;'>
-                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'/>
-                        <div style='font-size: 1vmin;'>%s</div>
+                    <div style='flex-direction: column; align-items: center; justify-content: center; '>
+                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
+                            <div style='position:absolute; width:6vmin; bottom:-1vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
+                        </div>
                     </div>
                     ]]):format(margin_top, margin_left, indata.icon, indata.name)
                 end
                 inoutstr = inoutstr .. "</div>"
                 inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:flex-start;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
-                inoutstr = inoutstr .. "<div style='width: 14vmin; height: 14vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>"
+                inoutstr = inoutstr .. "<div style='width: 18vmin; height: 16vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>"
                 margin_top = '0'
                 margin_left = '0'
                 if #detail.output == 1 then
-                    margin_top = '7vmin'
-                    margin_left = '0.6vmin'
+                    margin_top = '5vmin'
+                    margin_left = '3.6vmin'
                 elseif #detail.output == 2 then
-                    margin_top = '7vmin'
+                    margin_top = '5vmin'
                 end
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
-                    <div style='flex-direction: column; align-items: center;'>
+                    <div style='flex-direction: column; align-items: center; justify-content: center;'>
                         <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
                             <new data-if = '%s'>新</new>
+                            <div style='position:absolute; bottom:-1.2vmin; width:6vmin;font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
                         </div>
-                        <div style='font-size: 1vmin;'>%s</div>
                     </div>
                     ]]):format(margin_top, margin_left, outdata.icon, outdata.new and 'true' or 'false', outdata.name)
                 end
