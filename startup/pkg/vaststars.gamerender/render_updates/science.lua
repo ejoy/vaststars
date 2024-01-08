@@ -20,7 +20,7 @@ function science_sys:gameworld_update()
             iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "update_tech")
             world:pub {"research_finished", science.current_tech.name}
             science.current_tech = nil
-            iui.open({rml = "/pkg/vaststars.resources/ui/tech_tips.html"}, {left = 170, top = 0.5})
+            iui.open({rml = "/pkg/vaststars.resources/ui/tech_tips.html"}, {left = '170vmin', top = '0.5vmin'})
         end
     end
     local queue = gameplay_world:research_queue()

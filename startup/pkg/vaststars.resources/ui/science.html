@@ -307,10 +307,13 @@
                 elseif #detail.input == 2 then
                     margin_top = '7vmin'
                 end
-                for _, idata in ipairs(detail.input) do
+                for _, indata in ipairs(detail.input) do
                     inoutstr = inoutstr .. ([[
-                    <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'/>
-                    ]]):format(margin_top, margin_left, idata.icon)
+                    <div style='flex-direction: column; align-items: center;'>
+                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'/>
+                        <div style='font-size: 1vmin;'>%s</div>
+                    </div>
+                    ]]):format(margin_top, margin_left, indata.icon, indata.name)
                 end
                 inoutstr = inoutstr .. "</div>"
                 inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:flex-start;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
@@ -325,10 +328,13 @@
                 end
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
-                    <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
-                        <new data-if = '%s'>新</new>
+                    <div style='flex-direction: column; align-items: center;'>
+                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
+                            <new data-if = '%s'>新</new>
+                        </div>
+                        <div style='font-size: 1vmin;'>%s</div>
                     </div>
-                    ]]):format(margin_top, margin_left, outdata.icon, outdata.new and 'true' or 'false')
+                    ]]):format(margin_top, margin_left, outdata.icon, outdata.new and 'true' or 'false', outdata.name)
                 end
                 inoutstr = inoutstr .. "</div></div>"
                 return inoutstr
@@ -351,10 +357,10 @@
                 elseif detail.name then
                     htmlstr = htmlstr .. ([[
                         <div style='margin-top: -4vmin; margin-right: 2vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
-                            <div style='text-align: right; font-size: 3.9vmin; color: rgb(241,157,52);'>解锁%s: %s</div>
+                            <div style='text-align: right; font-size: 3.9vmin; color: rgb(241,157,52);'>解锁配方: %s</div>
                             <div style='text-align: right; font-size: 2.7vmin;'>%s</div>
                         </div>
-                    ]]):format("配方", detail.name, detail.desc)
+                    ]]):format(detail.name, detail.desc)
                 end
                 htmlstr = htmlstr .. '</div>'
                 item.outerHTML = htmlstr

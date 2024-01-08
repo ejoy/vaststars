@@ -40,16 +40,6 @@
             window.setTimeout(function()
                 ui_sys.pub(window, {"close"})
             end, 3000)
-            ui_sys.mapping(start, {
-                {
-                    function(_, left, top)
-                        start.left = ("%0.2fvmin"):format(math.max(left, 0))
-                        start.top = ("%0.2fvmin"):format(math.max(top, 0))
-                    end,
-                    "left",
-                    "top",
-                }           
-            })
         </script>
     </head>
     <body style = "pointer-events: none;">
