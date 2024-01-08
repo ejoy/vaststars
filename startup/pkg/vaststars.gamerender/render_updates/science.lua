@@ -26,9 +26,12 @@ function science_sys:gameworld_update()
     local queue = gameplay_world:research_queue()
     if #queue > 0 then
         if not science.current_tech then
-            science.current_tech = science.tech_tree[queue[1]]
-        end
-        if science.current_tech then
+            local tech_name = queue[1]
+            -- TODO: fix bug: gameplay_world:research_queue() will return finished tech
+            if not gameplay_world:is_researched(tech_name) then
+                science.current_tech = science.tech_tree[tech_name]
+            end
+        else
             science.current_tech.progress = gameplay_world:research_progress(queue[1]) or 0
             iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "update_tech", science.current_tech)
         end

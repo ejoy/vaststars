@@ -831,16 +831,25 @@ function M.update(datamodel)
         end
     end
 
-    for _ in tech_recipe_unpicked_dirty_mb:unpack() do
-        -- print("----tech_recipe_unpicked_dirty_mb----")
+    local function tech_recipe_unpicked_by_name(name)
+        local unpicked = global.science.tech_recipe_unpicked
+        for index, value in ipairs(unpicked) do
+            if value.recipe_name == name then
+                return index, unpicked[index]
+            end
+        end
+    end
+    for _, remove_recipe in tech_recipe_unpicked_dirty_mb:unpack() do
+        if remove_recipe then
+            local index, _ = tech_recipe_unpicked_by_name(remove_recipe)
+            table.remove(global.science.tech_recipe_unpicked, index)
+        end
         datamodel.recipe_list = get_recipe_list()
     end
-
     for _, _, _, recipe_name in click_recipe_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/science.html"}, global.science.tech_recipe_unpicked[recipe_name])
-        if global.science.tech_recipe_unpicked[recipe_name] then
-            global.science.tech_recipe_unpicked[recipe_name] = nil
-        end
+        local index, recipe = tech_recipe_unpicked_by_name(recipe_name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/science.html"}, recipe)
+        table.remove(global.science.tech_recipe_unpicked, index)
         datamodel.recipe_list = get_recipe_list()
     end
 

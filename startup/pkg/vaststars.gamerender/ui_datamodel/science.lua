@@ -167,10 +167,7 @@ function M.update(datamodel)
         iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "update_tech")
     end
     for _, _, _, name in click_recipe_event:unpack() do
-        if global.science.tech_recipe_unpicked[name] then
-            global.science.tech_recipe_unpicked[name] = nil
-            world:pub {"tech_recipe_unpicked_dirty"}
-        end
+        world:pub {"tech_recipe_unpicked_dirty", name}
     end
     for _, _, _ in close_techui_event:unpack() do
         gameplay_core.world_update = true

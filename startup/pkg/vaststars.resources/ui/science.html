@@ -271,20 +271,17 @@
                 if not start.current_tech then
                     return
                 end
-                local is_recipe = (index <= #start.current_tech.detail)
-                local detail = is_recipe and start.current_tech.detail[index] or start.current_tech.item[index - #start.current_tech.detail]
+                local detail = start.current_tech.detail[index]
                 if not detail.name then
                     return
                 end
                 item.className = "item-detail"
-                if is_recipe then
-                    item.removeEventListener('click')
-                    item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
-                end
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
             end
 
             local function select_item_renderer(index)
-                if not start.current_tech or index > #start.current_tech.detail then
+                if not start.current_tech then
                     return ""
                 end
                 local detail = start.current_tech.detail[index]
@@ -331,19 +328,15 @@
                 if not start.current_tech then
                     return
                 end
-                local is_recipe = (index <= #start.current_tech.detail)
                 local selected = (selected_recipe_index == index)
-                item.style.backgroundImage = '/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture'
-                if is_recipe and selected then
-                    item.style.backgroundImage = '/pkg/vaststars.resources/ui/textures/science/right_item_bg1.texture'
-                end
+                item.style.backgroundImage = selected and '/pkg/vaststars.resources/ui/textures/science/right_item_bg1.texture' or '/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture'
                 item.style.height = selected and '15.72vmin' or '12vmin'
-                local detail = is_recipe and start.current_tech.detail[index] or start.current_tech.item[index - #start.current_tech.detail]
+                local detail = start.current_tech.detail[index]
                 if not detail or not detail.name then
                     return
                 end
                 local htmlstr = ([[<div style='width:73.8vmin;flex-direction:row;justify-content:space-between;align-items:center;'><div class="item-bg" style='margin-top: %s; margin-left: 2vmin; width: 9.6vmin; height: 9.6vmin; background-image:"%s";'/>]]):format(selected and '-3.7vmin' or '0vmin', detail.icon)
-                if is_recipe and selected then
+                if selected then
                     htmlstr = htmlstr .. select_item_renderer(index)
                 elseif detail.name then
                     htmlstr = htmlstr .. ([[
@@ -355,10 +348,8 @@
                 end
                 htmlstr = htmlstr .. '</div>'
                 item.outerHTML = htmlstr
-                if is_recipe then
-                    item.removeEventListener('click')
-                    item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
-                end
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
             end
 
             window.customElements.define("detaillist", function(e)
@@ -386,7 +377,7 @@
                             return
                         end
                         unselect_recipe()
-                        start.detaillist:on_dirty_all(#start.current_tech.detail + #start.current_tech.item)
+                        start.detaillist:on_dirty_all(#start.current_tech.detail)
                     end
                 },
                 {
@@ -449,7 +440,7 @@
                     start.showFinish(start.tech_index)
                 end
                 start.list:on_dirty_all(#start.techitems)
-                start.detaillist:on_dirty_all(#start.current_tech.detail + #start.current_tech.item)
+                start.detaillist:on_dirty_all(#start.current_tech.detail)
             end
         </script>
     </head>

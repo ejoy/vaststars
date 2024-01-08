@@ -58,7 +58,7 @@ function M.update_tech_list(gw, finish_tech)
             local prototypes = iprototype.each_type("recipe")
             for index, recipe in ipairs(effects.unlock_recipe) do
                 local recipe_detail = prototypes[recipe]
-                global.science.tech_recipe_unpicked[recipe] = {index = index, tech_name = finish_tech.detail.name, recipe_name = recipe, icon = recipe_detail.recipe_icon}
+                global.science.tech_recipe_unpicked[#global.science.tech_recipe_unpicked + 1] = {index = index, tech_name = finish_tech.detail.name, recipe_name = recipe, icon = recipe_detail.recipe_icon}
             end
         end
     end
