@@ -437,7 +437,7 @@
                     selected_recipe_index = start.recipe_index
                 end
                 if start.tech_index then
-                    start.showFinish(start.tech_index)
+                    start.showFinish(start.tech_index, start.recipe_index)
                 end
                 start.list:on_dirty_all(#start.techitems)
                 start.detaillist:on_dirty_all(#start.current_tech.detail)

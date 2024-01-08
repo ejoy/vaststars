@@ -132,8 +132,8 @@ function M.create(unpicked_recipe)
     end
     return {
         techitems = items,
-        show_finish = false,
-        title = "科研目标",
+        show_finish = tech_index and true or false,
+        title = tech_index and "科研历史" or "科研目标",
         tech_index = tech_index,
         recipe_index = recipe_index,
         current_tech = current_tech,
