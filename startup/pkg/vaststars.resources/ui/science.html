@@ -354,7 +354,7 @@
                             <div style='text-align: right; font-size: 3.9vmin; color: rgb(241,157,52);'>解锁%s: %s</div>
                             <div style='text-align: right; font-size: 2.7vmin;'>%s</div>
                         </div>
-                    ]]):format(is_recipe and "配方" or "物品", detail.name, detail.desc)
+                    ]]):format("配方", detail.name, detail.desc)
                 end
                 htmlstr = htmlstr .. '</div>'
                 item.outerHTML = htmlstr
