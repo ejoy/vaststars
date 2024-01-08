@@ -220,7 +220,7 @@ prototype "烟囱I" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,1,"S"}},
         }
@@ -241,7 +241,7 @@ prototype "烟囱II" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,1,"S"}},
         }
@@ -262,7 +262,7 @@ prototype "排水口I" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,2,"S"}},
         }
@@ -283,7 +283,7 @@ prototype "排水口II" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,2,"S"}},
         }

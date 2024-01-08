@@ -5352,7 +5352,7 @@ local entities = { {
   y = 155
 }, {
   dir = "E",
-  fluid_name = "氢气",
+  fluid_name = "氧气",
   prototype_name = "烟囱I",
   recipe = "氧气排泄",
   x = 77,
