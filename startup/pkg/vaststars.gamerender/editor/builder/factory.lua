@@ -32,7 +32,7 @@ local iinventory = require "gameplay.interface.inventory"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local inner_building = require "editor.inner_building"
 local vsobject_manager = ecs.require "vsobject_manager"
-local show_message = ecs.require "show_message"
+local show_message = ecs.require "show_message".show_message
 
 local function _lefttop_position(pos, dir, host_area, area)
     local hw, hh = (host_area >> 8) - 1, (host_area & 0xFF) - 1

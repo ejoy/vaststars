@@ -57,7 +57,7 @@ local interval_call = ecs.require "engine.interval_call"
 local itransfer = require "gameplay.interface.transfer"
 local ichest = require "gameplay.interface.chest"
 local inner_building = require "editor.inner_building"
-local show_message = ecs.require "show_message"
+local show_message = ecs.require "show_message".show_message
 
 local tech_recipe_unpicked_dirty_mb = world:sub {"tech_recipe_unpicked_dirty"}
 local builder, builder_datamodel, builder_ui

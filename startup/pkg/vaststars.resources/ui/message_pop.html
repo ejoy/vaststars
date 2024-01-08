@@ -121,22 +121,9 @@
             local ui_sys = import_package "vaststars.ui".ui_system
             local start = ui_sys.createDataMode(window, ...)
 
-            local message_div
-            local message
-
-            ui_sys.onMessage(window, {
-                ["message"] = function(...)
-                    local param = ...
+            local events = {
+                ["message"] = function(param)
                     local parent = document.getBody()
-
-                    if message == param.message then
-                        return
-                    end
-
-                    if message_div then
-                        parent.removeChild(message_div)
-                    end
-
                     local child = document.createElement "div"
                     child.className = "message-panel-container"
                     child.style.animation = '2.5s cubic-out 0s show'
@@ -149,15 +136,10 @@
                     ]]):format(param.message)
                     child.addEventListener('animationend', function(event)
                         parent.removeChild(child)
-                        message_div = nil
-                        message = nil
                     end)
                     parent.appendChild(child)
-
-                    message_div = child
-                    message = param.message
                 end,
-                ["item"] = function(...)
+                ["item"] = function(param)
                     local parent = document.getBody()
                     local child = document.createElement "div"
                     child.addEventListener('animationend', function(event)
@@ -165,7 +147,6 @@
                     end)
                     parent.appendChild(child)
                     child.className = "item-collect-panel"
-                    local param = ...
                     child.style.left = (param.left - 80) .. 'px'
                     if param.action == "up" then
                         child.style.animation = '4s cubic-out 0s slideup'
@@ -189,7 +170,9 @@
                         ]]):format(it.icon, it.name, it.count)
                     end
                 end,
-            })
+            }
+
+            events[start.type](start)
         </script>
     </head>
     <body style="pointer-events: none;" />

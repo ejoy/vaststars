@@ -33,7 +33,7 @@ local ichest = require "gameplay.interface.chest"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
 local igameplay = ecs.require "gameplay.gameplay_system"
-local show_message = ecs.require "show_message"
+local show_message = ecs.require "show_message".show_message
 
 local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
     local sprite

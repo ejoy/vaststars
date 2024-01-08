@@ -5972,7 +5972,6 @@ return {
     },
     init_ui = {
       "/pkg/vaststars.resources/ui/construct.html",
-      "/pkg/vaststars.resources/ui/message_pop.html"
     },
     init_instances = {
     },

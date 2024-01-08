@@ -46,7 +46,8 @@ local itask = ecs.require "task"
 local objects = require "objects"
 local handler = ecs.require "ui_datamodel.common.building_menu_handler"
 local transfer_source_box = ecs.require "transfer_source_box"
-local show_message = ecs.require "show_message"
+local show_message = ecs.require "show_message".show_message
+local show_items_mesage = ecs.require "show_message".show_items_mesage
 
 local function _get_transfer_count()
     local count = 0
@@ -345,8 +346,10 @@ function M.update(datamodel, gameplay_eid)
             local typeobject = iprototype.queryById(v.item)
             msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = v.n}
         end
-        local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
-        iui.send("/pkg/vaststars.resources/ui/message_pop.html", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
+        if #msgs > 0 then
+            local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
+            show_items_mesage(sp_x, sp_y, msgs)
+        end
 
         local seid = itransfer.get_source_eid()
         local source = assert(gameplay_core.get_entity(seid))
