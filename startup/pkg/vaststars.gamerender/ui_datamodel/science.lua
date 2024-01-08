@@ -17,6 +17,7 @@ local iguide_tips = ecs.require "guide_tips"
 local M = {}
 local current_tech
 local function get_techlist(tech_list)
+    local check_new_recipe = (tech_list == global.science.finish_list)
     local function get_display_item(technode)
         local name = technode.name
         local value = technode.detail
@@ -52,8 +53,17 @@ local function get_techlist(tech_list)
                         end
                         local output = {}
                         local results = irecipe.get_elements(recipe_detail.results)
+                        local new
+                        if check_new_recipe then
+                            for _, unpick in ipairs(global.science.tech_recipe_unpicked) do
+                                if unpick.recipe_name == recipe then
+                                    new = true
+                                    break
+                                end
+                            end
+                        end
                         for _, ingredient in ipairs(results) do
-                            output[#output + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
+                            output[#output + 1] = {new = new, name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
                         end
                         detail[#detail + 1] = {
                             name = recipe,
@@ -114,14 +124,11 @@ end
 
 function M.create(unpicked_recipe)
     local items = get_techlist(global.science.tech_list)
-    current_tech = items[1]
-    if not current_tech then
-        return {}
-    end
     local tech_index
     local recipe_index
+    local finish_items = {}
     if unpicked_recipe then
-        local finish_items = get_techlist(global.science.finish_list)
+        finish_items = get_techlist(global.science.finish_list)
         for index, value in ipairs(finish_items) do
             if value.name == unpicked_recipe.tech_name then
                 tech_index = index
@@ -130,8 +137,9 @@ function M.create(unpicked_recipe)
             end
         end
     end
+    current_tech = tech_index and finish_items[tech_index] or items[1]
     return {
-        techitems = items,
+        techitems = tech_index and finish_items or items,
         show_finish = tech_index and true or false,
         title = tech_index and "科研历史" or "科研目标",
         tech_index = tech_index,

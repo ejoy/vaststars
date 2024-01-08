@@ -116,7 +116,7 @@ end
 local M = {}
 local function get_recipe_list()
     local recipe_list = {}
-    for _, recipe in pairs(global.science.tech_recipe_unpicked) do
+    for _, recipe in ipairs(global.science.tech_recipe_unpicked) do
         recipe_list[#recipe_list + 1] = recipe
         --TODO: show 3 recipe
         if #recipe_list > 3 then

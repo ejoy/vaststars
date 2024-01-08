@@ -126,6 +126,14 @@
                 width: 0.5vmin;
                 height: 120%;
             }
+            new {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                font-size: 2vmin;
+                color: rgb(0, 255, 21);
+                -webkit-text-stroke: 1px #000;
+            }
             @keyframes scalesize {
                 from {
                     transform: scale(0.85);
@@ -317,8 +325,10 @@
                 end
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
-                    <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'/>
-                    ]]):format(margin_top, margin_left, outdata.icon)
+                    <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
+                        <new data-if = '%s'>新</new>
+                    </div>
+                    ]]):format(margin_top, margin_left, outdata.icon, outdata.new and 'true' or 'false')
                 end
                 inoutstr = inoutstr .. "</div></div>"
                 return inoutstr
@@ -393,7 +403,7 @@
                 },            
             })
 
-            function start.showFinish(tech_idx, recipe_idx)
+            function start.showFinish(tech_idx)
                 start.show_finish = true
                 start.title = "科研历史"
                 start.list:reset_position()
@@ -435,9 +445,6 @@
                 end
                 if start.recipe_index then
                     selected_recipe_index = start.recipe_index
-                end
-                if start.tech_index then
-                    start.showFinish(start.tech_index, start.recipe_index)
                 end
                 start.list:on_dirty_all(#start.techitems)
                 start.detaillist:on_dirty_all(#start.current_tech.detail)
