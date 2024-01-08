@@ -1,5 +1,101 @@
 ---
 file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      t: {14.600000381469727, 15, 0}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf2
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0.5, 0, 0.8660253882408142}
+      t: {13, 15, 8}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf1
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, 0.866025447845459, 0, 0.4999999701976776}
+      t: {13, 15, -8}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf3
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      t: {-14.600000381469727, 15, 0}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf5
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.5, 0, 0.8660253882408142}
+      t: {-13, 15, 8}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf4
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.866025447845459, 0, 0.4999999701976776}
+      t: {-13, 15, -8}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf6
+---
+file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /3/tag
+value:
+  Cylinder.001_P1
+---
+file: mesh.prefab
 op: replace
 path: /2/tag
 value:
@@ -20,90 +116,6 @@ path: idle_start.prefab
 file: mesh.prefab
 op: copyfile
 path: work_start.prefab
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      t: {14.600000381469727, 15, 0}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf1
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, -0.866025447845459, 0, 0.4999999701976776}
-      t: {13, 15, 8}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf2
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, -0.5, 0, 0.8660253882408142}
-      t: {13, 15, -8}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf3
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-      t: {-14.600000381469727, 15, 0}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf4
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0.866025447845459, 0, 0.4999999701976776}
-      t: {-13, 15, 8}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf5
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0.5, 0, 0.8660253882408142}
-      t: {-13, 15, -8}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf6
 ---
 file: mesh.prefab
 op: copyfile
@@ -241,18 +253,8 @@ value:
   ---
   data:
     scene:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {14.600000381469727, 15, 0}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf1
-  ---
-  data:
-    scene:
-      r: {0, -0.866025447845459, 0, 0.4999999701976776}
-      t: {13, 15, 8}
   mount: 1
   policy:
     ant.scene|scene_object
@@ -261,7 +263,17 @@ value:
   ---
   data:
     scene:
-      r: {0, -0.5, 0, 0.8660253882408142}
+      r: {0, 0.5, 0, 0.8660253882408142}
+      t: {13, 15, 8}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf1
+  ---
+  data:
+    scene:
+      r: {0, 0.866025447845459, 0, 0.4999999701976776}
       t: {13, 15, -8}
   mount: 1
   policy:
@@ -271,18 +283,8 @@ value:
   ---
   data:
     scene:
-      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       t: {-14.600000381469727, 15, 0}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    shelf4
-  ---
-  data:
-    scene:
-      r: {0, 0.866025447845459, 0, 0.4999999701976776}
-      t: {-13, 15, 8}
   mount: 1
   policy:
     ant.scene|scene_object
@@ -291,7 +293,17 @@ value:
   ---
   data:
     scene:
-      r: {0, 0.5, 0, 0.8660253882408142}
+      r: {0, -0.5, 0, 0.8660253882408142}
+      t: {-13, 15, 8}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    shelf4
+  ---
+  data:
+    scene:
+      r: {0, -0.866025447845459, 0, 0.4999999701976776}
       t: {-13, 15, -8}
   mount: 1
   policy:
