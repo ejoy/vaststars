@@ -2439,6 +2439,7 @@ prototype "硫磺处理" {
   desc = "加工含硫地热气获得其他化工品的工艺",
   type = { "tech" },
   effects = {
+    unlock_recipe = {"硫酸溶液"},
     unlock_item = {"硫酸"},
   },
   prerequisites = {"太阳能1"},
