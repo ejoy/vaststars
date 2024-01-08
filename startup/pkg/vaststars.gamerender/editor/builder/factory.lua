@@ -32,6 +32,7 @@ local iinventory = require "gameplay.interface.inventory"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local inner_building = require "editor.inner_building"
 local vsobject_manager = ecs.require "vsobject_manager"
+local show_message = ecs.require "show_message"
 
 local function _lefttop_position(pos, dir, host_area, area)
     local hw, hh = (host_area >> 8) - 1, (host_area & 0xFF) - 1
@@ -60,23 +61,23 @@ local function _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
             if i >= sx_min and i <= sx_max and
                j >= sy_min and j <= sy_max then
                 if not ibuilding.get((x + i)//2*2, (y + j)//2*2) then
-                    return false
+                    return false, "needs to be placed above the road"
                 end
             else
                 local object = objects:coord(x + i, y + j)
                 -- building
                 if object then
-                    return false
+                    return false, "cannot place here"
                 end
 
                 -- road
                 if ibuilding.get((x + i)//2*2, (y + j)//2*2) then
-                    return false
+                    return false, "cannot place here"
                 end
 
                 -- mineral
                 if imineral.get(x + i, y + j) then
-                    return false
+                    return false, "cannot place here"
                 end
             end
         end
@@ -218,9 +219,9 @@ local function confirm(self, datamodel)
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
     local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
-    local succ = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
+    local succ, errmsg = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
-        log.info("can not construct") --TODO: show error message
+        show_message(errmsg)
         return
     end
 
@@ -323,9 +324,9 @@ function move_t:confirm(datamodel)
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
     local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
-    local succ = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
+    local succ, errmsg = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
-        log.info("can not construct") --TODO: show error message
+        show_message(errmsg)
         return
     end
 

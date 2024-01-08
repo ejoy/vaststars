@@ -316,7 +316,7 @@ prototype "锅炉I" {
 prototype "地热井I" {
     model = "glbs/geothermal-plant.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
-    check_coord = "mining",
+    check_coord = "geothermal_plant",
     builder = "normal",
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
@@ -346,7 +346,7 @@ prototype "地热井I" {
 prototype "地热井II" {
     model = "glbs/geothermal-plant.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
-    check_coord = "mining",
+    check_coord = "geothermal_plant",
     builder = "normal",
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",
@@ -376,7 +376,7 @@ prototype "地热井II" {
 prototype "地热井III" {
     model = "glbs/geothermal-plant.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
-    check_coord = "mining",
+    check_coord = "geothermal_plant",
     builder = "normal",
     type = {"building", "assembling", "fluidboxes","mining"},
     priority = "secondary",

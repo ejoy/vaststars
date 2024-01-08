@@ -32,7 +32,6 @@ local gameplay_core = require "gameplay.core"
 local work_status_sys = ecs.system "work_status_system"
 local ipower_check = ecs.require "power_check_system"
 local iprototype = require "gameplay.interface.prototype"
-local iefk = ecs.require "ant.efk|efk"
 local itl = ecs.require "ant.timeline|timeline"
 local itimer = ecs.require "utility.timer"
 

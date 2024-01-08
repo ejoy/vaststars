@@ -2,7 +2,7 @@ local iprototype = require "gameplay.interface.prototype"
 
 local mt = {}
 mt.__index = function (t, k)
-    t[k] = setmetatable({}, mt)
+    t[k] = {}
     return t[k]
 end
 
@@ -47,12 +47,16 @@ return function ()
             if iprototype.has_type(v.type, "chimney") and v.craft_category then
                 chimney_recipes[v.name] = {}
                 for _, c in ipairs(v.craft_category) do
-                    table.move(cache_c[c], 1, #cache_c[c], #chimney_recipes[v.name] + 1, chimney_recipes[v.name])
-                end
-                for _, v in pairs(chimney_recipes[v.name]) do
-                    table.sort(v, function(a, b)
-                        return a.recipe_order < b.recipe_order
-                    end)
+                    for _, recipe in ipairs(cache_c[c]) do
+                        local typeobject_recipe = iprototype.queryByName(recipe.name)
+                        local s = typeobject_recipe.ingredients
+                        assert(#s // 4 == 2)
+                        for idx = 2, #s // 4 do
+                            local id = string.unpack("<I2I2", s, 4 * idx - 3)
+                            local typeobject = iprototype.queryById(id) or error(("can not found id `%s`"):format(id))
+                            chimney_recipes[v.name][typeobject.name] = recipe.name
+                        end
+                    end
                 end
             end
         end
@@ -60,6 +64,6 @@ return function ()
 
     return {
         assembling_recipes = assembling_recipes,
-        chimney_recipes = chimney_recipes,
+        chimney_recipes = chimney_recipes, -- [building][ingredient] = recipe
     }
 end

@@ -10,7 +10,7 @@ local gameplay_core = require "gameplay.core"
 local iinventory = require "gameplay.interface.inventory"
 local iprototype = require "gameplay.interface.prototype"
 local click_item_mb = mailbox:sub {"click_item"}
-local can_build = ecs.require "ui_datamodel.common.can_build"
+local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 
 local M = {}
 
@@ -26,7 +26,7 @@ local function get_list()
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
             local count = iinventory.query(gameplay_world, typeobject.id)
-            if not can_build(typeobject.name, count) then
+            if not (item_unlocked(typeobject.name) or count > 0) then
                 goto continue
             end
 

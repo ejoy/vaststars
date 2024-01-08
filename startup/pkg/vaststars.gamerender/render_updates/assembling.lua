@@ -373,14 +373,7 @@ function assembling_sys:gameworld_prebuild()
     for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in REMOVED:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
-        local recipes = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
-        local cache = {}
-        for _, recipe in ipairs(recipes) do
-            local typeobject_recipe = iprototype.queryByName(recipe.name)
-            local ingredients = irecipe.get_elements(typeobject_recipe.ingredients)
-            assert(#ingredients == 1)
-            cache[ingredients[1].name] = recipe.name
-        end
+        local cache = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
         for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
             local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
             if neighbor_fluid_name then

@@ -77,11 +77,6 @@ local function pickup(world, item, amount)
     return true
 end
 
-local function place(world, item, amount)
-    assert(is_valid_item(item))
-    return ichest.place(world, get_entity(world), item, amount)
-end
-
 local function get_capacity(world, item)
     if not is_valid_item(item) then
         return 0
@@ -94,6 +89,15 @@ local function get_capacity(world, item)
         return get_limit(item)
     end
     return math_max(slot.limit - slot.amount, 0)
+end
+
+local function place(world, item, amount)
+    if get_capacity(world, item) < amount then
+        return false
+    end
+    assert(is_valid_item(item))
+    ichest.place(world, get_entity(world), item, amount)
+    return true
 end
 
 local function all(world)

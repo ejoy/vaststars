@@ -46,6 +46,7 @@ local itask = ecs.require "task"
 local objects = require "objects"
 local handler = ecs.require "ui_datamodel.common.building_menu_handler"
 local transfer_source_box = ecs.require "transfer_source_box"
+local show_message = ecs.require "show_message"
 
 local function _get_transfer_count()
     local count = 0
@@ -84,7 +85,6 @@ function M.create(gameplay_eid, longpress)
     local transfer_source = false
     local set_transfer_source = false
     local transfer = false
-    local transfer_count = 0
     local set_item = false
     local remove_lorry = false
     local move = false
@@ -99,7 +99,9 @@ function M.create(gameplay_eid, longpress)
         lorry_factory_inc_lorry = (e.factory == true)
         transfer_source = itransfer.get_source_eid() == e.eid
         set_transfer_source = not transfer_source and e.chest ~= nil
-        transfer = e.chest ~= nil
+        if itransfer.get_source_eid() then
+            transfer = e.chest ~= nil
+        end
         set_item = e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
         remove_lorry = (e.lorry ~= nil)
         move = true
@@ -333,6 +335,10 @@ function M.update(datamodel, gameplay_eid)
             tt[#tt+1] = {item = item, n = v.n, idx = v.idx}
         end
         table.sort(tt, function(a, b) return a.idx < b.idx end)
+
+        if #tt == 0 then
+            show_message("transfer nothing")
+        end
 
         local msgs = {}
         for _, v in ipairs(tt) do

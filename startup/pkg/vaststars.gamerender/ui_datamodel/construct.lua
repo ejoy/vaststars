@@ -55,9 +55,10 @@ local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
 local itransfer = require "gameplay.interface.transfer"
-local can_build = ecs.require "ui_datamodel.common.can_build"
 local ichest = require "gameplay.interface.chest"
 local inner_building = require "editor.inner_building"
+local show_message = ecs.require "show_message"
+
 local tech_recipe_unpicked_dirty_mb = world:sub {"tech_recipe_unpicked_dirty"}
 local builder, builder_datamodel, builder_ui
 local selected_obj
@@ -645,7 +646,9 @@ function M.update(datamodel)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         -- the building directly go into the backpack
-        iinventory.place(gameplay_core.get_world(), iprototype.item(typeobject).id, 1)
+        if not iinventory.place(gameplay_core.get_world(), iprototype.item(typeobject).id, 1) then
+            show_message("backpack is full")
+        end
     end
 
     for _, _, _, object_id in move_md:unpack() do
@@ -699,8 +702,8 @@ function M.update(datamodel)
         local typeobject = iprototype.queryByName(name)
         local gameplay_world = gameplay_core.get_world()
         local count = iinventory.query(gameplay_world, typeobject.id)
-        if not can_build(typeobject.name, count) then
-            print("item not unlocked or not enough") --TODO: show error message
+        if count <= 0 then
+            show_message("item not enough")
             goto continue
         end
 

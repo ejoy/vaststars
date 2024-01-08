@@ -30,15 +30,15 @@ local iinventory = require "gameplay.interface.inventory"
 local srt = require "utility.srt"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local ibuilding = ecs.require "render_updates.building"
+local prefab_slots = require("engine.prefab_parser").slots
 
-local function _get_road_entrance_srt(typeobject, dir, position)
-    if not typeobject.crossing then
-        return
-    end
+local function _get_road_entrance_srt(typeobject, building_srt)
+    local slots = prefab_slots("/pkg/vaststars.resources/" .. typeobject.model)
+    local slot_srt = slots["slot_indicator"].scene
 
-    local conn  = typeobject.crossing.connections[1]
-    local ox, oy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-    return srt.new {t = math3d.add(position, {ox * TILE_SIZE / 2, 0, oy * TILE_SIZE / 2}), r = ROTATORS[ddir]}
+    local mat = math3d.mul(math3d.matrix(building_srt), math3d.matrix(slot_srt))
+    local s, r, t = math3d.srt(mat)
+    return srt.new {s = s, r = r, t = t}
 end
 
 local function _align(w, h, position_type)
@@ -196,8 +196,7 @@ end
 
 local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
     iobject.remove(self.pickup_object)
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
-    if not self._check_coord(self.typeobject.name, x, y, w, h) then
+    if not self._check_coord(x, y, dir, self.typeobject) then
         datamodel.show_confirm = false
         datamodel.show_rotate = true
     else
@@ -220,7 +219,7 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
 
     __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
-    local srt = _get_road_entrance_srt(typeobject, dir, self.pickup_object.srt.t)
+    local srt = _get_road_entrance_srt(typeobject, self.pickup_object.srt)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local self_selected_boxes_position = icoord.position(x, y, w, h)
     if srt then
@@ -234,7 +233,7 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
                 self.self_selected_boxes = create_selected_boxes({
                     "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
                     "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab"
-                }, self_selected_boxes_position, COLOR_GREEN, w+1, h+1)
+                }, self_selected_boxes_position, COLOR_GREEN, w, h)
             end
         else
             if not self.road_entrance then
@@ -268,7 +267,7 @@ local function rotate(self, datamodel, dir)
     pickup_object.dir = iprototype.dir_tostring(dir)
     pickup_object.srt.r = ROTATORS[pickup_object.dir]
 
-    local srt = _get_road_entrance_srt(typeobject, pickup_object.dir, pickup_object.srt.t)
+    local srt = _get_road_entrance_srt(typeobject, pickup_object.srt)
     if srt then
         self.road_entrance:set_srt(srt.s, srt.r, srt.t)
     end
@@ -313,7 +312,7 @@ local function touch_move(self, datamodel, delta_vec)
         self.grid_entity:set_position(__calc_grid_position(typeobject, pickup_object.x, pickup_object.y, pickup_object.dir))
     end
 
-    local srt = _get_road_entrance_srt(typeobject, pickup_object.dir, pickup_object.srt.t)
+    local srt = _get_road_entrance_srt(typeobject, pickup_object.srt)
     assert(srt)
     self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
@@ -327,7 +326,7 @@ local function touch_move(self, datamodel, delta_vec)
 
     __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
 
-    if x % ROAD_SIZE == 0 and y % ROAD_SIZE == 0 and self._check_coord(self.typeobject.name, x, y, w, h) then
+    if x % ROAD_SIZE == 0 and y % ROAD_SIZE == 0 and self._check_coord(x, y, pickup_object.dir, self.typeobject) then
         local dir = _calc_dir(self._adjacent_coords, x, y, pickup_object.dir)
         if dir and dir ~= pickup_object.dir then
             self:rotate(datamodel, dir)
@@ -348,7 +347,7 @@ local function touch_end(self, datamodel)
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
 
-    if not self._check_coord(self.typeobject.name, x, y, w, h) then
+    if not self._check_coord(x, y, pickup_object.dir, self.typeobject) then
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -364,7 +363,7 @@ local function touch_end(self, datamodel)
         end
     end
 
-    local srt= _get_road_entrance_srt(typeobject, self.pickup_object.dir, self.pickup_object.srt.t)
+    local srt= _get_road_entrance_srt(typeobject, self.pickup_object.srt)
     assert(srt)
     self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
@@ -397,7 +396,7 @@ local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
 
-    local succ = self._check_coord(self.typeobject.name, pickup_object.x, pickup_object.y, w, h)
+    local succ = self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject)
     if not succ then
         log.info("can not construct") --TODO: show error message
         return
