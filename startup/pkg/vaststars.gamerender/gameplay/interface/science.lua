@@ -9,12 +9,12 @@ local function comp_tech(a, b)
 end
 local function comp_finish_tech(a, b)
     if not a.detail.order then
-        return true
-    end
-    if not b.detail.order then
         return false
     end
-    return a.detail.order < b.detail.order
+    if not b.detail.order then
+        return true
+    end
+    return a.detail.order > b.detail.order
 end
 function M.update_tech_list(gw, finish_tech)
     assert(global.science.tech_tree)
