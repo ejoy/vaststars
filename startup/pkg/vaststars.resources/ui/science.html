@@ -86,7 +86,7 @@
                 height:35%;
             }
             .small-item-new {
-                margin: 1.5vmin 2.5vmin 1.5vmin 2.5vmin;
+                margin: 1.5vmin 1vmin 1.5vmin 1vmin;
                 /* flex-direction: column; */
                 /* align-items:flex-start; */
                 /* justify-content:flex-start; */
@@ -128,8 +128,8 @@
             }
             new {
                 position: absolute;
-                right: 0;
-                bottom: 0;
+                left: 0;
+                top: 0;
                 font-size: 2vmin;
                 color: rgb(0, 255, 21);
                 -webkit-text-stroke: 1px #000;
@@ -233,7 +233,7 @@
                 local item_icon = item_data.task and "/pkg/vaststars.resources/ui/textures/science/task.texture" or "/pkg/vaststars.resources/ui/textures/science/tech.texture"
                 local font_color = item_data.running and 'rgb(0,255,0)' or 'rgb(255, 255, 255)'
                 local percent = (item_data.progress * 100) // item_data.count
-                local highlight = selected_index == index and [[<div style='position:absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
+                local highlight = selected_index == index and [[<div style='position : absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
                 -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
                 item.outerHTML = ([[
                     <div style="flex-direction: row; align-items:center;">
@@ -299,11 +299,11 @@
                 local margin_top = '0'
                 local margin_left = '0'
                 local inoutstr = [[
-                    <div style='flex-direction:row; justify-content: center; align-items: center; width: 42vmin; height: 15vmin; margin-right: 2vmin;'>
-                    <div style='width: 18vmin; height: 16vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>]]
+                    <div style='flex-direction:row; justify-content: center; align-items:center; width: 40vmin; height: 15vmin; margin-right: 2vmin;'>
+                    <div style='width: 18vmin; height: 16vmin; flex-direction:row; justify-content:center; align-items:center;flex-wrap: wrap;'>]]
                 if #detail.input == 1 then
                     margin_top = '5vmin'
-                    margin_left = '8.6vmin'
+                    margin_left = '6vmin'
                 elseif #detail.input == 2 then
                     margin_top = '5vmin'
                 end
@@ -317,13 +317,13 @@
                     ]]):format(margin_top, margin_left, indata.icon, indata.name)
                 end
                 inoutstr = inoutstr .. "</div>"
-                inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:flex-start;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
-                inoutstr = inoutstr .. "<div style='width: 18vmin; height: 16vmin; flex-direction:row;justify-content:flex-start;align-items:center;flex-wrap: wrap;'>"
+                inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:center ;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
+                inoutstr = inoutstr .. "<div style='width:18vmin; height: 16vmin; flex-direction:row; justify-content:center; align-items:center; flex-wrap:wrap;'>"
                 margin_top = '0'
                 margin_left = '0'
                 if #detail.output == 1 then
                     margin_top = '5vmin'
-                    margin_left = '3.6vmin'
+                    margin_left = '-4vmin'
                 elseif #detail.output == 2 then
                     margin_top = '5vmin'
                 end
@@ -331,11 +331,11 @@
                     inoutstr = inoutstr .. ([[
                     <div style='flex-direction: column; align-items: center; justify-content: center;'>
                         <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
+                            <div style='position:absolute; bottom:-1.2vmin; width:6vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
                             <new data-if = '%s'>新</new>
-                            <div style='position:absolute; bottom:-1.2vmin; width:6vmin;font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
                         </div>
                     </div>
-                    ]]):format(margin_top, margin_left, outdata.icon, outdata.new and 'true' or 'false', outdata.name)
+                    ]]):format(margin_top, margin_left, outdata.icon,outdata.name, outdata.new and 'true' or 'false')
                 end
                 inoutstr = inoutstr .. "</div></div>"
                 return inoutstr
