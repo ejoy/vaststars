@@ -403,4 +403,5 @@ return {
       "设置物流站的{/g 收货}和{/g 出货}物品",
       "增加{/g 运输车辆}加大物流运力",
     },
+    tutorial_background = "/pkg/vaststars.resources/ui/textures/tutorial-list/3.texture",
 }

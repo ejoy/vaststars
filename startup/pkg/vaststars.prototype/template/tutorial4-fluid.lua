@@ -378,4 +378,5 @@ return {
     "放置{/g 液罐}存储更多流体",
     "使用{/g 烟囱}或{/g 排水口}排放多余流体",
   },
+  tutorial_background = "/pkg/vaststars.resources/ui/textures/tutorial-list/4.texture",
 }

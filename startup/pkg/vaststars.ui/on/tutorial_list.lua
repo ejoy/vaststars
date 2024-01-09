@@ -20,6 +20,7 @@ return function (window)
                 template = "template." .. path:stem():string(),
                 desc = f.tutorial_desc or "",
                 details = f.tutorial_details or {},
+                background = f.tutorial_background or "",
             }
             ::continue::
         end

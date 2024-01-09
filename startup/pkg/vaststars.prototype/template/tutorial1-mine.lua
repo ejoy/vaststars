@@ -70,4 +70,5 @@ return {
       "仓库{/g 设置物品}选择开采矿物",
       "放置{/g 无人机平台}运输开采矿物至仓库",
     },
+    tutorial_background = "/pkg/vaststars.resources/ui/textures/tutorial-list/1.texture",
 }

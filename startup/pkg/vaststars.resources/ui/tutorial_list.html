@@ -68,7 +68,7 @@
                 height: 46.73vmin;
                 background-image: "/pkg/vaststars.resources/ui/textures/tutorial-list/detail-square-grid.texture";
                 background-size: 100% 100%;
-                background-lattice: 39.38% 14.33% 20.05% 14.17% 65.74% 49.71%;
+                background-lattice: 50.17% 18.68% 34.96% 25.05% 58.51% 42.31%; /* 165x88; 282x208; 328.91x471.04; */
             }
             button {
                 -webkit-text-stroke: 0.5vmin rgb(40, 40, 40);
@@ -112,6 +112,7 @@
             </tab>
         </left-box>
         <frame data-for = "tutorials" data-if = "name == it.name">
+            <div style = "position: absolute; border-radius: 8.00vmin; overflow: hidden; width: 100%; height: 100%; background-size: 100% 100%;" data-style-background-image = "it.background" data-if = "it.background ~= ''" />
             <div style = "font-size: 4.67vmin; flex-direction: row; color: rgb(0, 195, 255); -webkit-text-stroke: 0.2px #fff;">
                 <div style = "background-image: /pkg/vaststars.resources/ui/textures/tutorial-list/icon.texture; width: 8.49vmin; height: 6.54vmin; background-size: 100% 100%;"/>
                 {{it.desc}}

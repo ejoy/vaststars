@@ -151,4 +151,5 @@ return {
       "制造并铺设{/g 太阳能板}提供额外供电",
       "放置{/g 蒸汽发电机}满足更多供电需求",
     },
+    tutorial_background = "/pkg/vaststars.resources/ui/textures/tutorial-list/2.texture",
 }
