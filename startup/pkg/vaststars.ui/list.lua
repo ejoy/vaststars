@@ -7,7 +7,6 @@ function list_meta.create(document, e, item_init, item_update, detail_renderer, 
         width       = e.getAttribute("width"),
         height      = e.getAttribute("height"),
         item_count  = 0,
-        pos         = 0,
         drag        = {mouse_pos = 0, anchor = 0, delta = 0},
         item_init   = item_init,
         item_update = item_update,
@@ -16,7 +15,7 @@ function list_meta.create(document, e, item_init, item_update, detail_renderer, 
         data_for    = data_for
     }
     setmetatable(list, list_meta)
-    e.style.overflow = 'hidden'
+    e.style.overflow = 'scroll'
     e.style.width = list.width
     e.style.height = list.height
     local panel
@@ -77,15 +76,20 @@ end
 --     self:on_dirty()
 -- end
 function list_meta:reset_position()
-    self.pos = 0
-    local oldClassName = self.panel.className
-    self.panel.className = self.panel.className .. " notransition"
+    -- local oldClassName = self.panel.className
+    -- self.panel.className = self.panel.className .. " notransition"
+    -- if self.direction == 0 then
+    --     self.panel.style.left = '0px'
+    -- else
+    --     self.panel.style.top = '0px'
+    -- end
+    -- self.panel.className = oldClassName
+    local e = self.view
     if self.direction == 0 then
-        self.panel.style.left = '0px'
+        e.scrollLeft = 0
     else
-        self.panel.style.top = '0px'
+        e.scrollTop = 0
     end
-    self.panel.className = oldClassName
 end
 
 function list_meta:on_dirty(index)
@@ -124,8 +128,6 @@ function list_meta:on_dirty_all(item_count)
     end
     self.index_map = index_map
     self.item_count = item_count
-    self.min_pos = nil
-    self.pos = 0
 end
 
 function list_meta:show_detail(it, show)
@@ -157,90 +159,33 @@ function list_meta:show_detail(it, show)
         end
     end
 end
-local last_x
-local last_y
+
 function list_meta:on_pan(event)
-    -- if event.state == 'began' then
-    --     self:on_panbegan(event)
-    -- elseif event.state == 'changed' then
-    --     self:on_panchanged(event)
-    -- elseif event.state == 'ended' then
-    --     self:on_panended(event)
-    -- end
-    if event.state == 'began' or event.state == 'ended' then
-        last_x, last_y = event.x, event.y
-        return
-    end
-    -- local target_pos = (self.direction == 0) and event.x or event.y
-    local target_pos = (self.direction == 0) and (self.pos + (event.x - last_x)) or (self.pos + (event.y - last_y))
-    last_x, last_y = event.x, event.y
-    if not self.min_pos then
-        self.min_pos = (self.direction == 0) and (self.view.clientWidth - self.panel.clientWidth) or self.view.clientHeight - self.panel.clientHeight 
-    end
-    if target_pos > 0 or target_pos < self.min_pos then
-        return
-    end
-    self.pos = target_pos
-    local e = self.panel
     if self.direction == 0 then
-        e.style.left = tostring(math.floor(self.pos)) .. 'px'
+        if event.state == 'began' then
+            self.last_x = event.x
+            return
+        end
+        local detla = event.x - self.last_x
+        if detla == 0 then
+            return
+        end
+        self.last_x = event.x
+        local e = self.view
+        e.scrollLeft = e.scrollLeft - 2 * detla
     else
-        e.style.top = tostring(math.floor(self.pos)) .. 'px'
+        if event.state == 'began' then
+            self.last_y = event.y
+            return
+        end
+        local detla = event.y - self.last_y
+        if detla == 0 then
+            return
+        end
+        self.last_y = event.y
+        local e = self.view
+        e.scrollTop = e.scrollTop - 2*detla
     end
 end
-
--- function list_meta:on_panbegan(event)
---     if not self.item_width then
---         local childNodes = self.panel.childNodes
---         self.item_count = #childNodes
---         for _, it in ipairs(childNodes) do
---             if not self.item_width then
---                 self.item_width = it.clientWidth
---                 self.item_height = it.clientHeight
---                 break
---             end
---         end
---     end
---     self.drag.mouse_pos = ((self.direction == 0) and event.x or event.y)
---     self.drag.anchor = self.pos
---     self.oldClassName = self.panel.className
---     self.panel.className = self.panel.className .. " notransition"
--- end
-
--- function list_meta:on_panended(event)
---     local item_count = self.item_count
---     local min = (self.direction == 0) and (self.view.clientWidth - item_count * self.item_width) or (self.view.clientHeight - item_count * self.item_height)
---     if min > 0 then
---         min = 0
---     end
---     local adjust = false
---     if self.pos > 0 then
---         self.pos = 0
---         adjust = true  
---     elseif self.pos < min then
---         self.pos = min
---         adjust = true
---     end
---     self.panel.className = self.oldClassName
---     if adjust then
---         if self.direction == 0 then
---             self.panel.style.left = tostring(self.pos) .. 'px'
---         else
---             self.panel.style.top = tostring(self.pos) .. 'px'
---         end
---     end
--- end
-
--- function list_meta:on_panchanged(event)
---     local pos = (self.direction == 0) and event.x or event.y
---     self.drag.delta = pos - self.drag.mouse_pos
---     self.pos = self.drag.anchor + self.drag.delta
---     local e = self.panel
---     if self.direction == 0 then
---         e.style.left = tostring(math.floor(self.pos)) .. 'px'
---     else
---         e.style.top = tostring(math.floor(self.pos)) .. 'px'
---     end
--- end
 
 return list_meta

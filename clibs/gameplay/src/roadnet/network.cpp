@@ -251,10 +251,10 @@ namespace roadnet {
         loction mov2;
     };
     struct startingStatus {
-        ecs::starting* starting;
+        component::starting* starting;
     };
     struct endpointStatus {
-        ecs::endpoint* endpoint;
+        component::endpoint* endpoint;
         bool changed;
     };
 
@@ -452,7 +452,7 @@ namespace roadnet {
 
     static void insertLorry01(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
         assert(z == map_index::w0 || z == map_index::w1);
-        lorryid lorryId {uint16_t(l.get_index<ecs::lorry>())};
+        lorryid lorryId {uint16_t(l.get_index<component::lorry>())};
         if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, z)) {
             if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)(1-(uint8_t)z))) {
                 nw.destroyLorry(w, l);
@@ -462,7 +462,7 @@ namespace roadnet {
 
     static void insertLorry10(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
         assert(z == map_index::w0 || z == map_index::w1);
-        lorryid lorryId {uint16_t(l.get_index<ecs::lorry>())};
+        lorryid lorryId {uint16_t(l.get_index<component::lorry>())};
         if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, z)) {
             if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)(1-(uint8_t)z))) {
                 nw.destroyLorry(w, l);
@@ -470,23 +470,23 @@ namespace roadnet {
         }
     }
 
-    lorryid network::getLorryId(ecs::lorry& l) {
+    lorryid network::getLorryId(component::lorry& l) {
         return lorryid {uint16_t(&l - lorryAry)};
     }
 
     void network::refresh(world& w, bool check) {
-        if (check && ecs_api::count<ecs::lorry>(w.ecs) == 0) {
-            auto e = ecs_api::create_entity<ecs::lorry>(w.ecs);
+        if (check && ecs::count<component::lorry>(w.ecs) == 0) {
+            auto e = ecs::create_entity<component::lorry>(w.ecs);
             assert(!e.invalid());
-            lorryInit(e.get<ecs::lorry>());
-            e.enable_tag<ecs::lorry_free>();
+            lorryInit(e.get<component::lorry>());
+            e.enable_tag<component::lorry_free>();
         }
-        auto view = ecs_api::array<ecs::lorry>(w.ecs);
+        auto view = ecs::array<component::lorry>(w.ecs);
         assert(!view.empty());
         lorryAry = view.data();
     }
 
-    static loction buildingLoction(world& world, ecs::building& b, loction l) {
+    static loction buildingLoction(world& world, component::building& b, loction l) {
         uint16_t area = prototype::get<"area">(world, b.prototype);
         uint8_t w = area >> 8;
         uint8_t h = area & 0xFF;
@@ -540,8 +540,8 @@ namespace roadnet {
 
         // step.1
         updateMapStatus status;
-        for (auto& e : ecs_api::select<ecs::road, ecs::building>(w.ecs)) {
-            auto& building = e.get<ecs::building>();
+        for (auto& e : ecs::select<component::road, component::building>(w.ecs)) {
+            auto& building = e.get<component::building>();
             for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
                 auto loc = buildingLoction(w, building, {pt.x, pt.y});
                 uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
@@ -550,9 +550,9 @@ namespace roadnet {
                 *slot = mask;
             }
         }
-        for (auto& e : ecs_api::select<ecs::starting, ecs::building>(w.ecs)) {
-            auto& starting = e.get<ecs::starting>();
-            auto& building = e.get<ecs::building>();
+        for (auto& e : ecs::select<component::starting, component::building>(w.ecs)) {
+            auto& starting = e.get<component::starting>();
+            auto& building = e.get<component::building>();
             starting.neighbor = 0xffff;
             {
                 uint16_t l = prototype::get<"starting">(w, building.prototype);
@@ -573,9 +573,9 @@ namespace roadnet {
                 }
             }
         }
-        for (auto& e : ecs_api::select<ecs::endpoint, ecs::building>(w.ecs)) {
-            auto& endpoint = e.get<ecs::endpoint>();
-            auto& building = e.get<ecs::building>();
+        for (auto& e : ecs::select<component::endpoint, component::building>(w.ecs)) {
+            auto& endpoint = e.get<component::endpoint>();
+            auto& building = e.get<component::building>();
             endpoint.neighbor = 0xffff;
             endpoint.rev_neighbor = 0xffff;
             {
@@ -584,13 +584,13 @@ namespace roadnet {
                 auto [found, slot] = status.endpointMap.find_or_insert(loc);
                 assert(!found);
                 slot->endpoint = &endpoint;
-                if (e.component<ecs::building_new>()) {
+                if (e.component<component::building_new>()) {
                     slot->changed = true;
                 }
-                else if (e.component<ecs::building_changed>()) {
+                else if (e.component<component::building_changed>()) {
                     slot->changed = true;
                 }
-                else if (e.component<ecs::station_changed>()) {
+                else if (e.component<component::station_changed>()) {
                     slot->changed = true;
                 }
             }
@@ -606,8 +606,8 @@ namespace roadnet {
                 }
             }
         }
-        status.lorryStatusAry.reset(ecs_api::count<ecs::lorry>(w.ecs));
-        for (auto& lorry : ecs_api::array<ecs::lorry>(w.ecs)) {
+        status.lorryStatusAry.reset(ecs::count<component::lorry>(w.ecs));
+        for (auto& lorry : ecs::array<component::lorry>(w.ecs)) {
             if (lorryInvalid(lorry)) {
                 continue;
             }
@@ -788,8 +788,8 @@ namespace roadnet {
         straightLorry.reset(status.genStraightLorryOffset);
 
         // step.6
-        for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
-            auto& lorry = e.get<ecs::lorry>();
+        for (auto& e : ecs::select<component::lorry>(w.ecs)) {
+            auto& lorry = e.get<component::lorry>();
             if (lorryInvalid(lorry)) {
                 continue;
             }
@@ -888,37 +888,37 @@ namespace roadnet {
 
     lorryid network::createLorry(world& w, uint16_t classid) {
         {
-            auto e = ecs_api::first_entity<ecs::lorry_free, ecs::lorry>(w.ecs);
+            auto e = ecs::first_entity<component::lorry_free, component::lorry>(w.ecs);
             if (!e.invalid()) {
-                auto& l = e.get<ecs::lorry>();
-                e.disable_tag<ecs::lorry_free>();
+                auto& l = e.get<component::lorry>();
+                e.disable_tag<component::lorry_free>();
                 lorryInit(l, w, classid);
                 return getLorryId(l);
             }
         }
         {
-            auto e = ecs_api::create_entity<ecs::lorry>(w.ecs);
+            auto e = ecs::create_entity<component::lorry>(w.ecs);
             assert(!e.invalid());
-            auto& l = e.get<ecs::lorry>();
+            auto& l = e.get<component::lorry>();
             lorryInit(l, w, classid);
             refresh(w, false);
             return getLorryId(l);
         }
     }
     void network::destroyLorry(world& w, lorry_entity& l) {
-        l.enable_tag<ecs::lorry_changed>();
-        l.enable_tag<ecs::lorry_removed>();
-        lorryDestroy(l.get<ecs::lorry>(), w);
+        l.enable_tag<component::lorry_changed>();
+        l.enable_tag<component::lorry_removed>();
+        lorryDestroy(l.get<component::lorry>(), w);
     }
     void network::updateRemoveLorry(world& w, size_t n) {
         flatset<lorryid> lorryWillRemove;
         flatmap<straightid, uint8_t> endpointWillReset;
         lorryWillRemove.reserve(n);
         endpointWillReset.reserve(n);
-        for (auto& e : ecs_api::select<ecs::lorry_willremove, ecs::lorry>(w.ecs)) {
-            auto& lorry = e.get<ecs::lorry>();
-            e.enable_tag<ecs::lorry_changed>();
-            e.enable_tag<ecs::lorry_removed>();
+        for (auto& e : ecs::select<component::lorry_willremove, component::lorry>(w.ecs)) {
+            auto& lorry = e.get<component::lorry>();
+            e.enable_tag<component::lorry_changed>();
+            e.enable_tag<component::lorry_removed>();
             lorryDestroy(lorry, w);
             lorryWillRemove.insert(getLorryId(lorry));
             auto [found, slot] = endpointWillReset.find_or_insert(lorry.ending);
@@ -930,7 +930,7 @@ namespace roadnet {
             }
         }
 
-        for (auto& endpoint : ecs_api::array<ecs::endpoint>(w.ecs)) {
+        for (auto& endpoint : ecs::array<component::endpoint>(w.ecs)) {
             if (endpoint.rev_neighbor) {
                 endpointWillReset.erase(endpoint.rev_neighbor);
             }
@@ -955,19 +955,19 @@ namespace roadnet {
             }
         }
 
-        ecs_api::clear_type<ecs::lorry_willremove>(w.ecs);
+        ecs::clear_type<component::lorry_willremove>(w.ecs);
     }
     void network::update(world& w, uint64_t ti) {
-        for (auto& e : ecs_api::select<ecs::lorry_removed>(w.ecs)) {
-            e.enable_tag<ecs::lorry_free>();
+        for (auto& e : ecs::select<component::lorry_removed>(w.ecs)) {
+            e.enable_tag<component::lorry_free>();
         }
-        ecs_api::clear_type<ecs::lorry_removed>(w.ecs);
-        auto n = ecs_api::count<ecs::lorry_willremove>(w.ecs);
+        ecs::clear_type<component::lorry_removed>(w.ecs);
+        auto n = ecs::count<component::lorry_willremove>(w.ecs);
         if (n > 0) {
             updateRemoveLorry(w, n);
         }
-        for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
-            auto& lorry = e.get<ecs::lorry>();
+        for (auto& e : ecs::select<component::lorry>(w.ecs)) {
+            auto& lorry = e.get<component::lorry>();
             if (lorryInvalid(lorry)) {
                 continue;
             }
@@ -986,13 +986,13 @@ namespace roadnet {
         assert(id.get_index() < crossAry.size());
         return crossAry[id.get_index()];
     }
-    ecs::lorry& network::Lorry(world& w, lorryid id) {
+    component::lorry& network::Lorry(world& w, lorryid id) {
         assert(id != lorryid::invalid());
-        assert(id.get_index() < ecs_api::count<ecs::lorry>(w.ecs));
+        assert(id.get_index() < ecs::count<component::lorry>(w.ecs));
         return lorryAry[id.get_index()];
     }
-    lorry_entity network::LorryEntity(world& w, ecs::lorry& lorry) {
-        return ecs_api::index_entity<ecs::lorry>(w.ecs, uint16_t(&lorry - lorryAry));
+    lorry_entity network::LorryEntity(world& w, component::lorry& lorry) {
+        return ecs::index_entity<component::lorry>(w.ecs, uint16_t(&lorry - lorryAry));
     }
     lorryid& network::LorryInRoad(uint32_t index) {
         return straightLorry[index];

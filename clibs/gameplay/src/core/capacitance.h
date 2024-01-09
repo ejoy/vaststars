@@ -5,7 +5,7 @@
 #include "util/prototype.h"
 
 struct consumer_context {
-    ecs::capacitance& c;
+    component::capacitance& c;
     uint32_t power;
     uint32_t drain;
     uint32_t capacitance;
@@ -43,7 +43,7 @@ struct consumer_context {
 };
 
 
-inline consumer_context get_consumer(world& w, uint16_t prototype, ecs::capacitance& c) {
+inline consumer_context get_consumer(world& w, uint16_t prototype, component::capacitance& c) {
     uint32_t power = prototype::get<"power">(w, prototype);
     uint32_t drain = prototype::get<"drain">(w, prototype);
     uint32_t capacitance = prototype::get<"capacitance">(w, prototype);
@@ -53,19 +53,19 @@ inline consumer_context get_consumer(world& w, uint16_t prototype, ecs::capacita
 }
 
 template <class Entity>
-consumer_context get_consumer(world& w, Entity& v, ecs::capacitance& c) {
-    ecs::building& building = v.template get<ecs::building>();
+consumer_context get_consumer(world& w, Entity& v, component::capacitance& c) {
+    component::building& building = v.template get<component::building>();
     return get_consumer(w, building.prototype, c);
 }
 
 template <class Entity>
 consumer_context get_consumer(world& w, Entity& v) {
-    ecs::capacitance& c = v.template get<ecs::capacitance>();
+    component::capacitance& c = v.template get<component::capacitance>();
     return get_consumer(w, v, c);
 }
 
 struct generator_context {
-    ecs::capacitance& c;
+    component::capacitance& c;
     uint32_t power;
     uint32_t capacitance;
     inline bool produce() {
@@ -95,8 +95,8 @@ struct generator_context {
 };
 
 template <class Entity>
-generator_context get_generator(world& w, Entity& v, ecs::capacitance& c) {
-    ecs::building& building = v.template get<ecs::building>();
+generator_context get_generator(world& w, Entity& v, component::capacitance& c) {
+    component::building& building = v.template get<component::building>();
     uint32_t power = prototype::get<"power">(w, building.prototype);
     uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
     return {
@@ -106,6 +106,6 @@ generator_context get_generator(world& w, Entity& v, ecs::capacitance& c) {
 
 template <class Entity>
 generator_context get_generator(world& w, Entity& v) {
-    ecs::capacitance& c = v.template get<ecs::capacitance>();
+    component::capacitance& c = v.template get<component::capacitance>();
     return get_generator(w, v, c);
 }

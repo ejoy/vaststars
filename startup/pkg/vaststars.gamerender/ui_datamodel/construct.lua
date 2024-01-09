@@ -50,14 +50,16 @@ local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
+local click_recipe_mb = mailbox:sub {"click_recipe"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
 local itransfer = require "gameplay.interface.transfer"
-local can_build = ecs.require "ui_datamodel.common.can_build"
 local ichest = require "gameplay.interface.chest"
 local inner_building = require "editor.inner_building"
+local show_message = ecs.require "show_message".show_message
 
+local tech_recipe_unpicked_dirty_mb = world:sub {"tech_recipe_unpicked_dirty"}
 local builder, builder_datamodel, builder_ui
 local selected_obj
 
@@ -94,7 +96,7 @@ local function __clean(datamodel, unlock)
     itransfer.set_dest_eid(nil)
     selected_obj = nil
 
-    iui.close("/pkg/vaststars.resources/ui/build.rml")
+    iui.close("/pkg/vaststars.resources/ui/build.html")
     iui.leave()
 
     LockAxisStatus = {
@@ -112,7 +114,17 @@ end
 
 ---------------
 local M = {}
-
+local function get_recipe_list()
+    local recipe_list = {}
+    for _, recipe in ipairs(global.science.tech_recipe_unpicked) do
+        recipe_list[#recipe_list + 1] = recipe
+        --TODO: show 3 recipe
+        if #recipe_list > 3 then
+            break
+        end
+    end
+    return recipe_list
+end
 function M.create()
     return {
         status = "NORMAL",
@@ -125,13 +137,13 @@ function M.create()
         show_ingredient = false,
         category_idx = 0,
         item_idx = 0,
-        tech_count = #global.science.tech_list,
         item_bar = {},
         transfer_id = 0,
         show_construct_button = false,
         is_task = false,                --是否是任务
         guide_progress = 0,             --引导进度
         focus_building_icon = "",
+        recipe_list = get_recipe_list()
     }
 end
 
@@ -162,15 +174,14 @@ function M.update_tech(datamodel, tech)
         datamodel.current_tech_progress_detail = tech.progress.."/"..tech.detail.count
     else
         datamodel.show_tech_progress = false
-        datamodel.tech_count = #global.science.tech_list
     end
 end
 
 local function _construct_entity(typeobject, position_type)
     idetail.unselected()
     gameplay_core.world_update = false
-    builder_ui = "/pkg/vaststars.resources/ui/construct_building.rml"
-    builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.rml")
+    builder_ui = "/pkg/vaststars.resources/ui/construct_building.html"
+    builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.html")
 
     local create_builder = ecs.require("editor.builder." .. typeobject.builder)
     builder = create_builder("build")
@@ -225,7 +236,7 @@ local function pickupObjectOnBuild(datamodel, position, blur)
     local o = ipick_object.pick(coord[1], coord[2], blur)
     if o and o.class == CLASS.Lorry then
         local typeobject = iprototype.queryByName(o.name)
-        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
         local lorry = assert(ilorry.get(o.id))
         lorry:show_arrow(true)
@@ -244,7 +255,7 @@ local function pickupObjectOnBuild(datamodel, position, blur)
             return
         end
 
-        iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
+        iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.html"}, object.id)
 
         local e = assert(gameplay_core.get_entity(object.gameplay_eid))
         local typeobject = iprototype.queryById(e.building.prototype)
@@ -254,7 +265,7 @@ local function pickupObjectOnBuild(datamodel, position, blur)
 
     elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
         local typeobject = iprototype.queryByName(o.name)
-        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
 
         if o.x and o.y and o.w and o.h then
             show_selectbox(o.x, o.y, o.w, o.h)
@@ -263,7 +274,7 @@ local function pickupObjectOnBuild(datamodel, position, blur)
 
     elseif o and o.class == CLASS.Mineral then
         local typeobject = iprototype.queryByName(o.name)
-        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
         show_selectbox(o.x, o.y, o.w, o.h)
         return
@@ -289,7 +300,7 @@ local function pickupObject(datamodel, position, blur)
 
     if o and o.class == CLASS.Lorry then
         local typeobject = iprototype.queryByName(o.name)
-        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
         local e = gameplay_core.get_entity(o.id)
         local item_name = e.lorry.item_prototype == 0 and "" or iprototype.queryById(e.lorry.item_prototype).name
@@ -309,7 +320,7 @@ local function pickupObject(datamodel, position, blur)
         datamodel.focus_building_icon = typeobject.item_icon
         datamodel.status = "FOCUS"
 
-        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id, false)
+        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, o.id, false)
 
         audio.play "event:/ui/click"
 
@@ -320,7 +331,7 @@ local function pickupObject(datamodel, position, blur)
             return
         end
 
-        iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.rml"}, object.id)
+        iui.open({rml = "/pkg/vaststars.resources/ui/detail_panel.html"}, object.id)
 
         local gameplay_eid = object.gameplay_eid
         local e = assert(gameplay_core.get_entity(gameplay_eid))
@@ -333,7 +344,7 @@ local function pickupObject(datamodel, position, blur)
         datamodel.focus_building_icon = iprototype.item(typeobject).item_icon
         datamodel.status = "FOCUS"
 
-        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, gameplay_eid, false)
+        iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, gameplay_eid, false)
 
         audio.play "event:/ui/click"
 
@@ -341,7 +352,7 @@ local function pickupObject(datamodel, position, blur)
 
     elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
         local typeobject = iprototype.queryByName(o.name)
-        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, iprototype.display_name(typeobject), o.eid)
 
         show_selectbox(o.x, o.y, o.w, o.h)
 
@@ -351,14 +362,14 @@ local function pickupObject(datamodel, position, blur)
         datamodel.status = "FOCUS"
 
         if o.class == CLASS.Road then
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, o.id, false)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, o.id, false)
         end
 
         audio.play "event:/ui/click"
 
     elseif o and o.class == CLASS.Mineral then
         local typeobject = iprototype.queryByName(o.name)
-        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.rml"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
 
         show_selectbox(o.x, o.y, o.w, o.h)
 
@@ -466,7 +477,7 @@ function M.update(datamodel)
 
     for _ in click_techortaskicon_mb:unpack() do
         gameplay_core.world_update = false
-        iui.open({rml = "/pkg/vaststars.resources/ui/science.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/science.html"})
     end
 
     local dragdrop_delta
@@ -635,7 +646,9 @@ function M.update(datamodel)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         -- the building directly go into the backpack
-        iinventory.place(gameplay_core.get_world(), iprototype.item(typeobject).id, 1)
+        if not iinventory.place(gameplay_core.get_world(), iprototype.item(typeobject).id, 1) then
+            show_message("backpack is full")
+        end
     end
 
     for _, _, _, object_id in move_md:unpack() do
@@ -650,8 +663,8 @@ function M.update(datamodel)
             gameplay_core.world_update = false
 
             idetail.unselected()
-            builder_ui = "/pkg/vaststars.resources/ui/move_building.rml"
-            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/move_building.rml"}, object.prototype_name)
+            builder_ui = "/pkg/vaststars.resources/ui/move_building.html"
+            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/move_building.html"}, object.prototype_name)
 
             if typeobject.builder == "factory" then
                 local create_builder = ecs.require("editor.builder." .. typeobject.builder)
@@ -689,8 +702,8 @@ function M.update(datamodel)
         local typeobject = iprototype.queryByName(name)
         local gameplay_world = gameplay_core.get_world()
         local count = iinventory.query(gameplay_world, typeobject.id)
-        if not can_build(typeobject.name, count) then
-            print("item not unlocked or not enough") --TODO: show error message
+        if count <= 0 then
+            show_message("item not enough")
             goto continue
         end
 
@@ -700,7 +713,7 @@ function M.update(datamodel)
         icamera_controller.focus_on_position("RIGHT_CENTER", position)
         toggle_view("construct", position, function()
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"}, typeobject.id)
+            iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, typeobject.id)
             gameplay_core.world_update = false
 
             assert(builder == nil)
@@ -718,7 +731,7 @@ function M.update(datamodel)
         icamera_controller.focus_on_position("RIGHT_CENTER", pos)
         toggle_view("construct", pos, function()
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/build.rml"})
+            iui.open({rml = "/pkg/vaststars.resources/ui/build.html"})
             gameplay_core.world_update = false
         end)
     end
@@ -785,10 +798,10 @@ function M.update(datamodel)
             if typeobject.teardown == false then
                 goto continue
             end
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, selected_obj.object.gameplay_eid, true)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, selected_obj.object.gameplay_eid, true)
         elseif selected_obj.class == CLASS.Lorry or selected_obj.class == CLASS.Road then
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.rml"}, selected_obj.id, true)
+            iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, selected_obj.id, true)
         end
         ::continue::
     end
@@ -809,7 +822,7 @@ function M.update(datamodel)
     end
 
     for _ in settings_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/main_menu.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/main_menu.html"})
     end
 
     for _ in focus_transfer_source_mb:unpack() do
@@ -819,6 +832,28 @@ function M.update(datamodel)
             icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)))
             pickupObject(datamodel, math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)), true)
         end
+    end
+
+    local function tech_recipe_unpicked_by_name(name)
+        local unpicked = global.science.tech_recipe_unpicked
+        for index, value in ipairs(unpicked) do
+            if value.recipe_name == name then
+                return index, unpicked[index]
+            end
+        end
+    end
+    for _, remove_recipe in tech_recipe_unpicked_dirty_mb:unpack() do
+        if remove_recipe then
+            local index, _ = tech_recipe_unpicked_by_name(remove_recipe)
+            table.remove(global.science.tech_recipe_unpicked, index)
+        end
+        datamodel.recipe_list = get_recipe_list()
+    end
+    for _, _, _, recipe_name in click_recipe_mb:unpack() do
+        local index, recipe = tech_recipe_unpicked_by_name(recipe_name)
+        iui.open({rml = "/pkg/vaststars.resources/ui/science.html"}, recipe)
+        table.remove(global.science.tech_recipe_unpicked, index)
+        datamodel.recipe_list = get_recipe_list()
     end
 
     iobject.flush()

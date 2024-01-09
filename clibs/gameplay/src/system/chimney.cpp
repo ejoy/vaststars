@@ -11,7 +11,7 @@ extern "C" {
 #define STATUS_DONE 1
 #define STATUS_WORKING 2
 
-static bool fluidbox_pickup(world& w, ecs::fluidbox& f, recipe_items const& r) {
+static bool fluidbox_pickup(world& w, component::fluidbox& f, recipe_items const& r) {
     if (r.n != 1 || r.items[0].item != f.fluid) {
         return false;
     }
@@ -30,25 +30,28 @@ static bool fluidbox_pickup(world& w, ecs::fluidbox& f, recipe_items const& r) {
 }
 
 static void
-chimney_update(world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
-    ecs::chimney& c = v.get<ecs::chimney>();
+chimney_update(world& w, ecs::entity<component::chimney, component::fluidbox>& v) {
+    component::chimney& c = v.get<component::chimney>();
     if (c.recipe == 0) {
         return;
     }
 
     while (c.progress <= 0) {
         if (c.status == STATUS_DONE) {
-            //recipe_items* r = (recipe_items*)pt_results(&recipe);
-            //if (false) {
-            //    //TODO
-            //    return;
-            //}
+            auto& pollution = w.state->pollution;
+            auto const& results = prototype::get<"results", recipe_items>(w, c.recipe);
+            for (size_t i = 0; i < results.n; ++i) {
+                pollution += prototype::get<"pollution">(w, results.items[i].item) * results.items[i].amount;
+            }
+            if (pollution < 0) {
+                pollution = 0;
+            }
             w.stat.finish_recipe(w, c.recipe);
             c.status = STATUS_IDLE;
         }
         if (c.status == STATUS_IDLE) {
             auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, c.recipe);
-            ecs::fluidbox& f = v.get<ecs::fluidbox>();
+            component::fluidbox& f = v.get<component::fluidbox>();
             if (!fluidbox_pickup(w, f, ingredients)) {
                 return;
             }
@@ -64,7 +67,7 @@ chimney_update(world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
 static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<ecs::chimney, ecs::fluidbox>(w.ecs)) {
+    for (auto& v : ecs::select<component::chimney, component::fluidbox>(w.ecs)) {
         chimney_update(w, v);
     }
     return 0;

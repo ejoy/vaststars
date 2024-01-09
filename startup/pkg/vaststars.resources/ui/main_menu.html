@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            button-pic-container {
+                width: 26.40vmin;
+                height: 26.32vmin;
+                align-items: center;
+                justify-content: center;
+            }
+            button-pic {
+                width: 19.94vmin;
+                height: 19.94vmin;
+                background-size: 100% 100%;
+            }
+            button-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: /pkg/vaststars.resources/ui/textures/main-menu/normal.texture;
+                background-size: 100% 100%;
+            }
+            button-overlay:active {
+                background-image: /pkg/vaststars.resources/ui/textures/main-menu/selected.texture;
+            }
+            button-text {
+                justify-content: center;
+                align-items: center;
+                font-size: 4.44vmin;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
+        </script>
+    </head>
+    <body>
+        <div style="background-color: rgba(0, 0, 0, 240); flex-direction: row; justify-content: center; align-items: center; width: 100%; height: 100%; gap: 13.00vmax;" data-event-click = "clickButton('quit')">
+            <!-- <button-container data-event-click = "clickButton('statistical_data')">
+                <button-pic-container>
+                    <button-pic style = "background-image: /pkg/vaststars.resources/ui/textures/main-menu/statistical-data.texture;" />
+                    <button-overlay />
+                </button-pic-container>
+                <button-text>统计数据</button-text>
+            </button-container> -->
+
+            <button-container data-event-click = "clickButton('game_settings')">
+                <button-pic-container>
+                    <button-pic style = "background-image: /pkg/vaststars.resources/ui/textures/main-menu/game-settings.texture;" />
+                    <button-overlay />
+                </button-pic-container>
+                <button-text>游戏设置</button-text>
+            </button-container>
+        </div>
+    </body>
+</html>

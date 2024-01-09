@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+                align-items: center;
+                justify-content: center;
+            }
+
+            .message-panel-container {
+                display: flex;
+                flex-direction: row;
+                height: 12.73vmin;
+            }
+
+            .message-panel-left {
+                background-image: "/pkg/vaststars.resources/ui/textures/message_pop/left.texture";
+                width: 11.07vmin;
+                background-size: 100% 100%;
+            }
+
+            .message-panel-center {
+                background-image: "/pkg/vaststars.resources/ui/textures/message_pop/center.texture";
+                width: auto;
+                background-size: 100% 100%;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .message-panel-right {
+                background-image: "/pkg/vaststars.resources/ui/textures/message_pop/right.texture";
+                width: 5.97vmin;
+                background-size: 100% 100%;
+            }
+
+            .item-collect-panel {
+                pointer-events: none;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+            .materials {
+                pointer-events: none;
+                flex-direction: row;
+            }
+            .materials-item {
+                pointer-events: none;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .materials-icon {
+                pointer-events: none;
+                width: 4.67vmin;
+                height: 4.67vmin;
+                background-color: rgb(250, 205, 9);
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                background-size: cover;
+            }
+            .materials-name {
+                pointer-events: none;
+                padding-bottom: 0.3em;
+                padding-left: 0.2em;
+                padding-right:0.2em;
+                font-size: 4.73vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.15vmin #000;
+            }
+            .materials-num {
+                pointer-events: none;
+                padding-bottom: 0.3em;
+                padding-right:1em;
+                font-size: 4.73vmin;
+                text-align: left;
+                color: rgb(79, 250, 0);
+                -webkit-text-stroke: 0.15vmin #000;
+            }
+            @keyframes slideup {
+                0% {
+                     transform: translateY(0px); 
+                     opacity: 1;
+                }
+                50% {
+                     transform: translateY(-200px); 
+                     opacity: 1;
+                }
+                100% { 
+                    transform: translateY(-200px); 
+                    opacity: 0;
+                }
+            }
+            @keyframes slidedown {
+                0% {
+                     transform: translateY(0px); 
+                     opacity: 1;
+                }
+                50% {
+                     transform: translateY(200px); 
+                     opacity: 1;
+                }
+                100% { 
+                    transform: translateY(200px); 
+                    opacity: 0;
+                }
+            }
+            @keyframes show {
+                0% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% { 
+                    opacity: 0;
+                }
+            }
+        </style>
+        <style path = "/pkg/vaststars.resources/ui/common/building_style.css"/>
+        <script type="text/x-lua" >
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+
+            local events = {
+                ["message"] = function(param)
+                    local parent = document.getBody()
+                    local child = document.createElement "div"
+                    child.className = "message-panel-container"
+                    child.style.animation = '2.5s cubic-out 0s show'
+                    child.outerHTML = ([[
+                        <div class="message-panel-left" />
+                        <div class="message-panel-center">
+                            <div style = "max-width: 63vmin; word-break: break-word; color: rgb(254, 174, 1); -webkit-text-stroke: 0.1vmin rgb(149, 45, 9); font-weight: bold; font-size: 3vmin;">%s</div>
+                        </div>
+                        <div class="message-panel-right" />
+                    ]]):format(param.message)
+                    child.addEventListener('animationend', function(event)
+                        parent.removeChild(child)
+                    end)
+                    parent.appendChild(child)
+                end,
+                ["item"] = function(param)
+                    local parent = document.getBody()
+                    local child = document.createElement "div"
+                    child.addEventListener('animationend', function(event)
+                        parent.removeChild(child)
+                    end)
+                    parent.appendChild(child)
+                    child.className = "item-collect-panel"
+                    child.style.left = (param.left - 80) .. 'px'
+                    if param.action == "up" then
+                        child.style.animation = '4s cubic-out 0s slideup'
+                        child.style.top = (param.top - #param.items * 50) .. 'px'
+                    elseif param.action == "down" then
+                        child.style.animation = '4s cubic-out 0s slidedown'
+                        child.style.top = (param.top - #param.items * 50 - 200) .. 'px'
+                    end
+                    child.style.position = 'absolute'
+                    for _, it in ipairs(param.items) do
+                        local item = document.createElement "div"
+                        child.appendChild(item)
+                        item.outerHTML = ([[
+                            <div class = "materials">
+                                <div class = "materials-item">
+                                    <div class = "materials-icon" style='background-image: %s;'/>
+                                    <div class = "materials-name">%s</div>
+                                </div>
+                                <div class = "materials-num">X %d</div>
+                            </div>
+                        ]]):format(it.icon, it.name, it.count)
+                    end
+                end,
+            }
+
+            events[start.type](start)
+        </script>
+    </head>
+    <body style="pointer-events: none;" />
+</html>

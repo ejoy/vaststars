@@ -17,7 +17,7 @@ prototype "化工厂I" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    craft_category = {"器件基础化工","流体基础化工"},
+    craft_category = {"器件基础化工","流体基础化工","环境净化"},
     fluidboxes = {
         input = {
             {
@@ -34,6 +34,14 @@ prototype "化工厂I" {
                 base_level = -100,
                 connections = {
                     {type="input", position={2,0,"N"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={0,1,"W"}},
                 }
             },
         },
@@ -56,10 +64,9 @@ prototype "化工厂I" {
             },
             {
                 capacity = 500,
-                height = 150,
-                base_level = -100,
+                height = 100,
+                base_level = 150,
                 connections = {
-                    {type="input-output", position={0,1,"W"}},
                     {type="input-output", position={2,1,"E"}},
                 }
             },
@@ -83,7 +90,7 @@ prototype "化工厂II" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    craft_category = {"器件基础化工","流体基础化工"},
+    craft_category = {"器件基础化工","流体基础化工","环境净化"},
     fluidboxes = {
         input = {
             {
@@ -100,6 +107,14 @@ prototype "化工厂II" {
                 base_level = -100,
                 connections = {
                     {type="input", position={2,0,"N"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={0,1,"W"}},
                 }
             },
         },
@@ -122,10 +137,9 @@ prototype "化工厂II" {
             },
             {
                 capacity = 500,
-                height = 150,
-                base_level = -100,
+                height = 100,
+                base_level = 150,
                 connections = {
-                    {type="input-output", position={0,1,"W"}},
                     {type="input-output", position={2,1,"E"}},
                 }
             },
@@ -149,7 +163,7 @@ prototype "化工厂III" {
     priority = "secondary",
     maxslot = 8,
     drone_height = 22,
-    craft_category = {"器件基础化工","流体基础化工"},
+    craft_category = {"器件基础化工","流体基础化工","环境净化"},
     fluidboxes = {
         input = {
             {
@@ -166,6 +180,14 @@ prototype "化工厂III" {
                 base_level = -100,
                 connections = {
                     {type="input", position={2,0,"N"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input-output", position={0,1,"W"}},
                 }
             },
         },
@@ -188,10 +210,9 @@ prototype "化工厂III" {
             },
             {
                 capacity = 500,
-                height = 150,
-                base_level = -100,
+                height = 100,
+                base_level = 150,
                 connections = {
-                    {type="input-output", position={0,1,"W"}},
                     {type="input-output", position={2,1,"E"}},
                 }
             },

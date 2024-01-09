@@ -5964,14 +5964,14 @@ return {
     mineral = mineral,
     mountain = mountain,
     order = 9,
+    show = false,
     guide = guide,
     start_tech = "地质研究",
     research_queue = {
       "登录科技开启",
     },
     init_ui = {
-      "/pkg/vaststars.resources/ui/construct.rml",
-      "/pkg/vaststars.resources/ui/message_pop.rml"
+      "/pkg/vaststars.resources/ui/construct.html",
     },
     init_instances = {
     },

@@ -13,7 +13,11 @@ local function scrollToItem(document, tagName, elementId)
                 return
             end
 
-            list.scrollTop = clientTop
+            if clientTop < list.scrollTop then
+                list.scrollTop = clientTop
+            else
+                list.scrollTop = clientTop + item.clientHeight - list.clientHeight
+            end
         end
     end
 end

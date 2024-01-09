@@ -412,11 +412,11 @@ return {
   mineral = mineral,
   mountain = mountain,
   order = 2,
+  show = false,
   guide = guide,
   start_tech = "润滑",
   init_ui = {
-    "/pkg/vaststars.resources/ui/construct.rml",
-    "/pkg/vaststars.resources/ui/message_pop.rml"
+    "/pkg/vaststars.resources/ui/construct.html",
   },
   init_instances = {
   },

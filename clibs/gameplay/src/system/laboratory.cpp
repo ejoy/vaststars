@@ -12,7 +12,7 @@
 #define STATUS_INVALID 2
 
 static void
-laboratory_set_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
+laboratory_set_tech(world& w, component::building& building, component::laboratory& l, component::chest& c2, uint16_t techid) {
     l.tech = techid;
     auto c = container::index::from(c2.chest);
     auto n = chest::size(w, c);
@@ -34,7 +34,7 @@ laboratory_set_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::
 }
 
 static void
-laboratory_next_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
+laboratory_next_tech(world& w, component::building& building, component::laboratory& l, component::chest& c2, uint16_t techid) {
     if (l.tech == techid) {
         return;
     }
@@ -79,10 +79,10 @@ laboratory_next_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs:
 }
 
 static void
-laboratory_update(world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::capacitance, ecs::building>& v, bool& updated) {
-    auto& building = v.get<ecs::building>();
-    auto& l = v.get<ecs::laboratory>();
-    auto& c2 = v.get<ecs::chest>();
+laboratory_update(world& w, ecs::entity<component::laboratory, component::chest, component::capacitance, component::building>& v, bool& updated) {
+    auto& building = v.get<component::building>();
+    auto& l = v.get<component::laboratory>();
+    auto& c2 = v.get<component::chest>();
     auto consumer = get_consumer(w, v);
 
     // step.1
@@ -131,22 +131,22 @@ static int
 lupdate(lua_State *L) {
     auto& w = getworld(L);
     bool updated = false;
-    for (auto& v : ecs_api::select<ecs::laboratory, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
-        auto& l = v.get<ecs::laboratory>();
-        auto& c2 = v.get<ecs::chest>();
+    for (auto& v : ecs::select<component::laboratory, component::chest, component::capacitance, component::building>(w.ecs)) {
+        auto& l = v.get<component::laboratory>();
+        auto& c2 = v.get<component::chest>();
         uint16_t techid = w.techtree.queue_top();
         if (techid != l.tech) {
-            ecs::building& building = v.get<ecs::building>();
+            component::building& building = v.get<component::building>();
             laboratory_next_tech(w, building, l, c2, techid);
         }
         laboratory_update(w, v, updated);
     }
     if (updated) {
         uint16_t techid = w.techtree.queue_top();
-        for (auto& v : ecs_api::select<ecs::laboratory, ecs::chest, ecs::building>(w.ecs)) {
-            auto& building = v.get<ecs::building>();
-            auto& l = v.get<ecs::laboratory>();
-            auto& c2 = v.get<ecs::chest>();
+        for (auto& v : ecs::select<component::laboratory, component::chest, component::building>(w.ecs)) {
+            auto& building = v.get<component::building>();
+            auto& l = v.get<component::laboratory>();
+            auto& c2 = v.get<component::chest>();
             laboratory_next_tech(w, building, l, c2, techid);
         }
     }

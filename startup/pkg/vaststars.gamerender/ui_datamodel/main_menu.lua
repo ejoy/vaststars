@@ -15,16 +15,16 @@ end
 
 function M.update(datamodel)
     for _ in statistical_data_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/statistics.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/statistics.html"})
     end
 
     for _ in game_settings_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/option_pop.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/option_pop.html"})
     end
 
     for _ in quit_mb:unpack() do
         gameplay_core.world_update = true
-        iui.close("/pkg/vaststars.resources/ui/main_menu.rml")
+        iui.close("/pkg/vaststars.resources/ui/main_menu.html")
     end
 end
 

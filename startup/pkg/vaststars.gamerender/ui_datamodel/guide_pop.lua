@@ -31,11 +31,11 @@ function M.update(datamodel)
             end
             datamodel.count = count
         else
-            iui.close("/pkg/vaststars.resources/ui/guide_pop.rml")
+            iui.close("/pkg/vaststars.resources/ui/guide_pop.html")
 
             local chapter_text = guide_desc.narrative_end.pop_chapter
             if chapter_text then
-                iui.open({rml = "/pkg/vaststars.resources/ui/chapter_pop.rml"}, chapter_text)
+                iui.open({rml = "/pkg/vaststars.resources/ui/chapter_pop.html"}, chapter_text)
             end
             local task = guide_desc.narrative_end.task
             local game_world = gameplay_core.get_world()

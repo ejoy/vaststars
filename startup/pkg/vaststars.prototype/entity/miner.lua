@@ -15,7 +15,7 @@ prototype "采矿机I" {
     priority = "secondary",
     mining_area = "5x5",
     sound = "building/miner",
-    mining_category = {"矿石开采"},
+    craft_category = {"矿石开采"},
     speed = "100%",
     maxslot = 8,
 }
@@ -34,7 +34,7 @@ prototype "采矿机II" {
     priority = "secondary",
     mining_area = "5x5",
     sound = "building/miner",
-    mining_category = {"矿石开采"},
+    craft_category = {"矿石开采"},
     speed = "200%",
     maxslot = 8,
 }
@@ -53,7 +53,7 @@ prototype "采矿机III" {
     priority = "secondary",
     mining_area = "5x5",
     sound = "building/miner",
-    mining_category = {"矿石开采"},
+    craft_category = {"矿石开采"},
     speed = "300%",
     maxslot = 8,
 }
@@ -72,7 +72,7 @@ prototype "轻型采矿机" {
     priority = "secondary",
     mining_area = "5x5",
     sound = "building/miner",
-    mining_category = {"矿石开采"},
+    craft_category = {"矿石开采"},
     speed = "100%",
     maxslot = 8,
 }

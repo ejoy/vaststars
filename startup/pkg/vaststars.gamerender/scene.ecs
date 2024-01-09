@@ -12,7 +12,6 @@ import_feature "ant.starsky"
 import_feature "ant.polyline"
 import_feature "ant.terrain|canvas"
 import_feature "ant.shadow_bounding"
-import_feature "ant.shadow_bounding|scene_bounding_pack"
 import_feature "ant.timeline"
 
 component "loop_timeline"
@@ -23,8 +22,8 @@ system "ui_system"
 system "camera_controller"
     .implement "engine/system/camera_controller.lua"
 
-system "camera_bounding_pack_system"
-    .implement "engine/system/camera_bounding_pack_system.lua"
+system "scene_bounding"
+    .implement "engine/system/scene_bounding.lua"
 
 system "efk"
     .implement "engine/system/efk.lua"

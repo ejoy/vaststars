@@ -28,7 +28,8 @@ local prototype = gameplay.register.prototype
     effects = {
       unlock_item = {"管道1-X型","碎石","石砖"},
     },
-    count = 1,
+    count = 0,
+    order = 400,
     time = "0s"
   }
 
@@ -39,6 +40,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "管道1-X型", count = 30,},
     count = 30,
+    order = 401,
     effects = {},
     prerequisites = {},
     tips_pic = {
@@ -82,6 +84,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "液罐I", fluids = {"地下卤水"}},
     count = 1,
+    order = 402,
     effects = {
       unlock_item = {"地下管1-JI型"},
       unlock_recipe = {"地下管1"},
@@ -156,6 +159,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "地下管1"},
     count = 1,
+    order = 403,
     prerequisites = {"连接液罐"},
     guide_focus = {
       {
@@ -188,6 +192,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "地下管1-JI型", count = 2,},          
     count = 2,
+    order = 404,
     prerequisites = {"地下管生产设置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -204,6 +209,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "水电站I", fluids = {"地下卤水"}},
     count = 1,
+    order = 405,
     prerequisites = {"获取地下管"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -286,6 +292,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "气候科技包"},
     count = 1,
+    order = 406,
     prerequisites = {"地下管连接"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -302,6 +309,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "水电站I", fluids = {"地下卤水","空气"}},
     count = 2,
+    order = 407,
     prerequisites = {"气候科技包生产"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -349,6 +357,7 @@ local prototype = gameplay.register.prototype
       {"气候科技包", 1},
     },
     count = 5,
+    order = 408,
     time = "4s"
   }
 
@@ -358,6 +367,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "液罐I", count = 2,},
     count = 2,
+    order = 409,
     prerequisites = {"液罐制造工艺"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -394,6 +404,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "地下卤水电解1"},
     count = 1,
+    order = 410,
     prerequisites = {"液罐获取"},
     guide_focus = {
       {
@@ -429,6 +440,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "电解厂I", fluids = {"地下卤水"}},
     count = 1,
+    order = 411,
     prerequisites = {"电解厂配方设置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -462,6 +474,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "烟囱I", fluids = {"氯气"}},
     count = 1,
+    order = 412,
     effects = {
       unlock_recipe = {"空气分离1"},
     },
@@ -516,6 +529,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "液罐I", fluids = {"氢气"}},
     prerequisites = {"连接烟囱"},
     count = 1,
+    order = 413,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
@@ -569,6 +583,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "空气分离1"},
     count = 1,
+    order = 414,
     prerequisites = {"氢气存储"},
     guide_focus = {
       {
@@ -602,6 +617,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "蒸馏厂I", fluids = {"空气"}},
     count = 1,
+    order = 415,
     prerequisites = {"蒸馏厂配方设置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -636,6 +652,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "液罐I", fluids = {"二氧化碳"}},
     prerequisites = {"连接空气净化器"},
     count = 1,
+    order = 416,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
@@ -674,6 +691,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "烟囱I", fluids = {"氮气"}},
     count = 1,
+    order = 417,
     prerequisites = {"二氧化碳存储"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -707,6 +725,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "二氧化碳转甲烷"},
     count = 1,
+    order = 418,
     prerequisites = {"氮气清除"},
     guide_focus = {
       {
@@ -742,6 +761,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "化工厂I", fluids = {"二氧化碳","氢气"}},
     prerequisites = {"化工厂配方设置"},
     count = 1,
+    order = 419,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
@@ -786,6 +806,7 @@ local prototype = gameplay.register.prototype
     task = {"stat_production", 0, "甲烷"}, 
     prerequisites = {"化工厂原料添加"},
     count = 300,
+    order = 420,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
@@ -817,6 +838,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"甲烷生产"},
     count = 1,
+    order = 421,
     tips_pic = {
       "",
     },

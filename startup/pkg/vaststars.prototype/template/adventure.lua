@@ -130,8 +130,7 @@ return {
     "登录科技开启",
   },
   init_ui = {
-    "/pkg/vaststars.resources/ui/construct.rml",
-    "/pkg/vaststars.resources/ui/message_pop.rml"
+    "/pkg/vaststars.resources/ui/construct.html",
   },
   init_instances = {
   },

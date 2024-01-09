@@ -4912,8 +4912,7 @@ return {
   show = true,
   start_tech = "拾取物资1",
   init_ui = {
-    "/pkg/vaststars.resources/ui/construct.rml",
-    "/pkg/vaststars.resources/ui/message_pop.rml"
+    "/pkg/vaststars.resources/ui/construct.html",
   },
   init_instances = {
   },
@@ -4930,4 +4929,5 @@ return {
     "铺设{/g 液网}向需求建筑供应流体原料",
     "制造{/g 发电设施}满足基地供电需求",
   },
+  tutorial_background = "/pkg/vaststars.resources/ui/textures/tutorial-list/5.texture",
 }

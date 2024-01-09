@@ -215,18 +215,4 @@ function M.is_road(prototype_name)
     return M.has_type(typeobject.type, "road")
 end
 
-local function __check_types(prototype_name, types)
-    local typeobject = assert(M.queryByName(prototype_name))
-    for _, t in ipairs(types) do
-        if M.has_type(typeobject.type, t) then
-            return true
-        end
-    end
-    return false
-end
-
-function M.check_types(...)
-    return __check_types(...)
-end
-
 return M

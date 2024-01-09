@@ -163,6 +163,11 @@ mainkey "debris" {
     "uint16 prototype",
 }
 
+component "global_state" {
+    "int32 pollution",
+    "uint16 consumer_multiplier",
+}
+
 tag "wind_turbine"
 tag "base"
 

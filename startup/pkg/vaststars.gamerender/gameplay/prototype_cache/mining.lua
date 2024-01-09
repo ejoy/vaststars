@@ -11,9 +11,9 @@ return function()
 
     local mining_recipe = {}
     for _, typeobject in pairs(iprototype.each_type("building", "mining")) do
-        assert(typeobject.mining_category, "mining entity should have mining_category")
+        assert(typeobject.craft_category, "mining entity should have craft_category")
         mining_recipe[typeobject.name] = {}
-        for _, category in ipairs(typeobject.mining_category) do
+        for _, category in ipairs(typeobject.craft_category) do
             local recipes = recipe_category[category]
             if not recipes then
             error(("can not find recipe category `%s`"):format(category))

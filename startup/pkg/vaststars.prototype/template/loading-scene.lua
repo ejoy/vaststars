@@ -4609,7 +4609,7 @@ return {
     start_tech = "登录科技",
     canvas_icon = false,
     init_ui = {
-      "/pkg/vaststars.resources/ui/login.rml",
+      "/pkg/vaststars.resources/ui/login.html",
     },
     init_instances = {
       "/pkg/vaststars.resources/effects/login.prefab",
@@ -4624,5 +4624,5 @@ return {
       infinite_item = true,
     },
     camera = "/pkg/vaststars.resources/camera_anim.prefab",
-    camera_animation = "/pkg/vaststars.resources/animations/camera.anim",
+    camera_animation = "/pkg/vaststars.resources/animations/camera.ant",
 }

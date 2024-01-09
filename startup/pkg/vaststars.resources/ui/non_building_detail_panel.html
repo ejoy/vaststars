@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            div {
+                font: 120% "阿里巴巴普惠体";
+            }
+            .panel1 {
+                width: 87%;
+                height: 100%;
+                pointer-events: none;
+                animation: 0.5s linear 0s pannelmovement;
+            }
+            @keyframes pannelmovement {
+                0% {
+                    left: -10vmin;
+                    opacity: 0;
+                }
+                100% {
+                    left: 0vmin;
+                    opacity: 1;
+                }
+            }
+            @keyframes enlarge3 {
+                0% {
+                    transform: scale(0.97);
+                }
+                100% {
+                    transform: scale(1.03);
+                }
+            }
+            .small-item1 {
+                margin:0 0.075vmin;
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-end;
+                background-color: rgb(61, 61, 61);
+                border: 0.2vmin rgb(251, 177, 61);
+                background-size:cover;
+                width: 5.70vmin;
+                height: 5.70vmin;
+                font-size: 3.00vmin;
+            }
+        </style>
+        <style path = "/pkg/vaststars.resources/ui/common/building_style.css"/>
+        <script type="text/x-lua" >
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+        </script>
+    </head>
+    <body style = "pointer-events: none; justify-content: center; align-items: center;">
+        <div class="panel1" style="flex-direction: column; justify-content:flex-start;">
+            <!-- detail panel begin -->
+            <div style = 'overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-lattice: 32.98% 11.50% 32.98% 11.50% 49.22% 49.22%; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%; flex-direction: column; justify-content: flex-start;'>
+                <!-- title -->
+                <div style = "flex-direction: row; justify-content: center; align-items: center;">
+                    <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" />
+                </div>
+                <div style = "text-align: center; top: -3.0vmin; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
+
+                <!-- property list -->
+                <div style = "margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d; padding-top: 20vmin;" />
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: center; align-items: center;" data-if = "item_icon ~= ''">
+                    <div style="flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="small-item1" style="margin: 0.5vmin; height: 8vmin; width: 8vmin; margin-top: 8vmin;" data-style-background-image="item_icon" />
+                        <div style="text-align: center; font-size: 3.5vmin;">{{item_name}}</div>
+                    </div>
+                </div>
+                <div style="height:65%; padding-top: 2vmin;">
+                </div>
+            </div>
+            <!-- detail panel end -->
+        </div>
+    </body>
+</html>

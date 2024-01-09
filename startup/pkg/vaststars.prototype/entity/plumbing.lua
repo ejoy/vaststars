@@ -210,7 +210,7 @@ prototype "烟囱I" {
     model = "glbs/chimney-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
-    check_coord = "exclusive",
+    check_coord = "chimney",
     builder = "normal",
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
     area = "2x2",
@@ -220,7 +220,7 @@ prototype "烟囱I" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,1,"S"}},
         }
@@ -231,7 +231,7 @@ prototype "烟囱II" {
     model = "glbs/chimney-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
-    check_coord = "exclusive",
+    check_coord = "chimney",
     builder = "normal",
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
     area = "2x2",
@@ -241,7 +241,7 @@ prototype "烟囱II" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,1,"S"}},
         }
@@ -252,7 +252,7 @@ prototype "排水口I" {
     model = "glbs/mars-outfall.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab config:s,1,3",
-    check_coord = "exclusive",
+    check_coord = "outfall",
     builder = "normal",
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
     area = "3x3",
@@ -262,7 +262,7 @@ prototype "排水口I" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,2,"S"}},
         }
@@ -273,7 +273,7 @@ prototype "排水口II" {
     model = "glbs/mars-outfall.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab config:s,1,3",
-    check_coord = "exclusive",
+    check_coord = "outfall",
     builder = "normal",
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
     area = "3x3",
@@ -283,7 +283,7 @@ prototype "排水口II" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 10,
+        base_level = -10,
         connections = {
             {type="input", position={1,2,"S"}},
         }

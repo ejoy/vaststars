@@ -10,7 +10,7 @@ local interval_call = ecs.require "engine.interval_call"
 local M = {}
 
 function M.create(icon, name, gameplay_eid)
-    iui.register_leave("/pkg/vaststars.resources/ui/non_building_detail_panel.rml")
+    iui.register_leave("/pkg/vaststars.resources/ui/non_building_detail_panel.html")
 
     local item_icon = ""
     local item_name = ""

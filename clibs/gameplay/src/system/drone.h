@@ -31,5 +31,5 @@ struct airport {
     uint8_t width;
     uint8_t height;
     uint16_t prototype;
-    ecs::capacitance* capacitance;
+    component::capacitance* capacitance;
 };

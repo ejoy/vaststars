@@ -9,6 +9,7 @@ local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -32,6 +33,7 @@ local ichest = require "gameplay.interface.chest"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
 local igameplay = ecs.require "gameplay.gameplay_system"
+local show_message = ecs.require "show_message".show_message
 
 local function __create_self_sprite(typeobject, x, y, dir, sprite_color)
     local sprite
@@ -295,8 +297,7 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
 
     local sprite_color
     local valid
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
-    if not self._check_coord(self.typeobject.name, x, y, w, h) then
+    if not self._check_coord(x, y, dir, self.typeobject) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -354,7 +355,10 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
         fluid_name = fluid_name,
         group_id = 0,
         recipe = recipe,
-        state = "translucent", color = SPRITE_COLOR.CONSTRUCT_SELF, emissive_color = SPRITE_COLOR.CONSTRUCT_SELF_EMISSIVE
+        state = "translucent",
+        color = SPRITE_COLOR.CONSTRUCT_SELF,
+        emissive_color = SPRITE_COLOR.CONSTRUCT_SELF_EMISSIVE,
+        render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING,
     }
 
     if typeobject.fluid_indicators ~= false and iprototype.has_types(typeobject.type, "chimney", "fluidbox", "fluidboxes") then
@@ -417,7 +421,7 @@ local function touch_move(self, datamodel, delta_vec)
     local valid
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-    if not self._check_coord(self.typeobject.name, x, y, w, h) then
+    if not self._check_coord(x, y, pickup_object.dir, self.typeobject) then
         datamodel.show_confirm = false
         valid = false
 
@@ -500,9 +504,9 @@ local function confirm(self, datamodel)
     end
 
     local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-    local succ = self._check_coord(self.typeobject.name, pickup_object.x, pickup_object.y, w, h)
+    local succ, msg = self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject)
     if not succ then
-        log.info("can not construct") --TODO: show error message
+        show_message(msg)
         return
     end
 
@@ -556,9 +560,7 @@ local function rotate(self, datamodel, dir, delta_vec)
     end
     local sprite_color
     local valid
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-
-    if not self._check_coord(typeobject.name, pickup_object.x, pickup_object.y, w, h) then
+    if not self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, typeobject) then
         valid = false
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID

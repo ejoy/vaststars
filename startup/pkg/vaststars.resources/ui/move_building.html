@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            .button-container {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-end;
+                height: 100%;
+                gap: 1.50vmin;
+            }
+            button {
+                text-align: center;
+                font-size: 4.00vmin;
+                transition: transform 0.15s elastic-out;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+
+            start.buttons = {}
+            start.buttons[#start.buttons+1] = {name = "旋转", show_var = "show_rotate", show = false, param = "rotate", background_image = "/pkg/vaststars.resources/ui/textures/construct/rotate.texture"}
+            start.buttons[#start.buttons+1] = {name = "确认", show_var = "show_confirm", show = false, param = "build", background_image = "/pkg/vaststars.resources/ui/textures/construct/confirm.texture"}
+            start("buttons")
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
+
+            local function getMappingParam(var)
+                local function getButton(var)
+                    for i = 1, #start.buttons do
+                        if start.buttons[i].show_var == var then
+                            return start.buttons[i]
+                        end
+                    end
+                end
+                return function(_, v)
+                    local button = getButton(var)
+                    if button then
+                        button.show = v
+                        start("buttons")
+                    end
+                end, var
+            end
+            --
+            ui_sys.mapping(start, {
+                {getMappingParam("show_confirm")},
+                {getMappingParam("show_rotate")},
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none;">
+        <div class="button-container" style = "pointer-events: none;">
+            <button style="margin-bottom: 11.37vmin; width: 14.95vmin; height: 21.42vmin;" data-event-click="clickButton(it.param)" data-for = "it : buttons" data-if = "it.show">
+                <div style="width: 14.95vmin; height: 14.95vmin; background-size:cover;" data-style-background-image = "it.background_image" />
+                <div style="margin-top: 1.25vmin; font-size: 3.86vmin; -webkit-text-stroke: 0.3vmin rgb(63, 60, 63);">{{it.name}}</div>
+            </button>
+        </div>
+    </body>
+</html>

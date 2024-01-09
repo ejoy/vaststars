@@ -361,8 +361,7 @@ return {
     "登录科技4",
   },
   init_ui = {
-    "/pkg/vaststars.resources/ui/construct.rml",
-    "/pkg/vaststars.resources/ui/message_pop.rml"
+    "/pkg/vaststars.resources/ui/construct.html",
   },
   init_instances = {
   },
@@ -379,4 +378,5 @@ return {
     "放置{/g 液罐}存储更多流体",
     "使用{/g 烟囱}或{/g 排水口}排放多余流体",
   },
+  tutorial_background = "/pkg/vaststars.resources/ui/textures/tutorial-list/4.texture",
 }

@@ -392,6 +392,12 @@ namespace lua_world {
         w->P = prototype::create_cache(L);
         lua_setiuservalue(L, -2, 1);
 
+        auto state_span = ecs::array<component::global_state>(w->ecs);
+        if (state_span.empty()) {
+            return luaL_error(L, "component `global_state` is missing.");
+        }
+        w->state = state_span.data();
+    
         if (luaL_newmetatable(L, "gameplay::world")) {
             lua_pushvalue(L, -1);
             lua_setfield(L, -2, "__index");

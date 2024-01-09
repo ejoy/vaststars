@@ -28,6 +28,7 @@ local prototype = gameplay.register.prototype
     task_params = {ui = "set_transfer_source", building = "机身残骸"},
     prerequisites = {"物流教学"},
     count = 1,
+    order = 380,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -61,6 +62,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "指挥中心", item = "砖石公路-X型", count = 1,},
     prerequisites = {"废墟搜索"},
     count = 1,
+    order = 381,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -99,6 +101,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"放置物资"},
     count = 1,
+    order = 382,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -148,6 +151,7 @@ local prototype = gameplay.register.prototype
     task_params = {items = {"supply|碎石", "supply|铁矿石"}},
     prerequisites = {"道路维修"},
     count = 1,
+    order = 383,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -181,6 +185,7 @@ local prototype = gameplay.register.prototype
     task_params = {items = {"demand|碎石", "demand|铁矿石"}},
     prerequisites = {"物流站发货设置"},
     count = 1,
+    order = 384,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -213,6 +218,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 2},                          
     prerequisites = {"物流站收货设置"},
     count = 2,
+    order = 385,
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -251,6 +257,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "石砖"},
     count = 3,
+    order = 386,
     prerequisites = {"派遣运输车"},
     effects = {
       unlock_recipe = {"砖石公路打印"},
@@ -269,6 +276,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "砖石公路-X型", count = 15,},
     count = 15,
+    order = 387,
     prerequisites = {"石砖大生产"},
     effects = {
       unlock_recipe = {"铁板1"},
@@ -287,6 +295,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "铁板"},
     count = 3,
+    order = 388,
     prerequisites = {"更多公路"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -306,6 +315,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "运输车辆I", count = 1,},
     count = 1,
+    order = 389,
     prerequisites = {"铁板大生产"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -322,6 +332,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 2},                          
     prerequisites = {"制造运输车"},
     count = 3,
+    order = 390,
     effects = {
       unlock_recipe = {"轻型采矿机"},
     },
@@ -360,6 +371,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "轻型采矿机", count = 1,},
     count = 1,
+    order = 391,
     prerequisites = {"更多运输车"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -376,6 +388,7 @@ local prototype = gameplay.register.prototype
     task = {"select_entity", 0, "轻型采矿机"},
     prerequisites = {"制造采矿机"},
     count = 3,
+    order = 392,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -443,6 +456,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
     count = 3,
+    order = 393,
     prerequisites = {"铝矿石开采"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -460,6 +474,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 5,
+    order = 394,
     time = "1s"
   }
 
@@ -472,6 +487,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"完成科技研究"},
     count = 1,
+    order = 395,
     tips_pic = {
       "",
     },

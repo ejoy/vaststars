@@ -51,7 +51,7 @@ end
 -- v = {rml = xx, datamodel = xx}
 local function open(v, ...)
     local rml = v.rml
-    local datamodel = v.datamodel or rml:gsub("^.*/(.*)%.rml$", "%1.lua")
+    local datamodel = v.datamodel or rml:gsub("^.*/(.*)%.html$", "%1.lua")
 
     closeWindows[rml] = nil
 

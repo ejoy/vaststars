@@ -259,6 +259,21 @@ return {
         "copy",
         "teardown",
     },
+    ["地热井I"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
+    ["地热井II"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
+    ["地热井III"] = {
+        "move",
+        "copy",
+        "teardown",
+    },
     -- 公路仅保留复制和拆除
     ["砖石公路-I型"] = {
         "copy",
@@ -300,15 +315,6 @@ return {
 
     -- 只有拆除
     ["热管1-X型"] = {
-        "teardown",
-    },
-    ["地热井I"] = {
-        "teardown",
-    },
-    ["地热井II"] = {
-        "teardown",
-    },
-    ["地热井III"] = {
         "teardown",
     },
     ["压力泵I"] = {

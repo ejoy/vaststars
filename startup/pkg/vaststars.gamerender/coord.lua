@@ -92,6 +92,15 @@ function coord.position2coord(position)
     return _position2coord(position)
 end
 
+function coord.posxy2coord_nocheck(posx, posy)
+    return {math.floor((posx - ORIGIN[1]) // TILE_SIZE), math.floor((ORIGIN[2] - posy) // TILE_SIZE)}
+end
+
+function coord.position2coord_nocheck(position)
+    local posx, posz = math3d.index(position, 1, 3)
+    return coord.posxy2coord_nocheck(posx, posz)
+end
+
 function coord.align(position, w, h)
     local c = _position2coord(position)
     if not c then

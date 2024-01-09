@@ -13,7 +13,7 @@ local create_selected_box = ecs.require "selected_boxes"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
 local iui = ecs.require "engine.system.ui_system"
-local itl = ecs.require "ant.timeline|timeline"
+local iani = ecs.require "ant.anim_ctrl|state_machine"
 
 local selected_tips = {}
 local excluded_pickup_id
@@ -36,17 +36,12 @@ local function show(tech_node)
                     prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
                     on_ready = function(self)
                         for _, eid in ipairs(self.tag['*']) do
-                            local e <close> = world:entity(eid, "render_object?in timeline?in loop_timeline?out")
+                            local e <close> = world:entity(eid, "render_object?in anim_ctrl?in")
                             if e.render_object then
                                 irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
                             end
-                            if e.timeline then
-                                e.timeline.eid_map = self.tag
-                                itl:start(e)
-
-                                if e.timeline.loop == true then
-                                    e.loop_timeline = true
-                                end
+                            if e.anim_ctrl then
+                                iani.play(eid, {name = "Armature.001Action", loop = true, speed = 1.0, manual = false}) --TODO: remove hardcode
                             end
                         end
 
@@ -64,7 +59,7 @@ local function show(tech_node)
             selected_tips[#selected_tips + 1] = {create_selected_box({"/pkg/vaststars.resources/" .. nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
             iui.leave()
-            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected")
+            iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unselected")
             icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(nd.camera_x, nd.camera_y, nd.w, nd.h)))
         end
     end

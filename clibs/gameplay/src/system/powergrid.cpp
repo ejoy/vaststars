@@ -13,21 +13,26 @@ enum class power_priority: uint8_t {
 };
 
 static constexpr size_t POWER_PRIORITY = enum_count_v<power_priority>;
-static_assert(std::extent_v<decltype(ecs::powergrid::consumer_power)> == POWER_PRIORITY);
-static_assert(std::extent_v<decltype(ecs::powergrid::generator_power)> == POWER_PRIORITY);
-static_assert(std::extent_v<decltype(ecs::powergrid::consumer_efficiency)> == POWER_PRIORITY);
-static_assert(std::extent_v<decltype(ecs::powergrid::generator_efficiency)> == POWER_PRIORITY);
+static_assert(std::extent_v<decltype(component::powergrid::consumer_power)> == POWER_PRIORITY);
+static_assert(std::extent_v<decltype(component::powergrid::generator_power)> == POWER_PRIORITY);
+static_assert(std::extent_v<decltype(component::powergrid::consumer_efficiency)> == POWER_PRIORITY);
+static_assert(std::extent_v<decltype(component::powergrid::generator_efficiency)> == POWER_PRIORITY);
+
+static uint32_t consumer_power(world& w, int classid) {
+	uint32_t power = prototype::get<"power">(w, classid);
+	return (uint32_t)((uint64_t)power * w.state->consumer_multiplier / 100);
+}
 
 static void
-stat_consumer(world& w, std::span<ecs::powergrid> pg) {
-	for (auto& v : ecs_api::select<ecs::consumer, ecs::capacitance, ecs::building>(w.ecs)) {
-		ecs::capacitance& c = v.get<ecs::capacitance>();
+stat_consumer(world& w, std::span<component::powergrid> pg) {
+	for (auto& v : ecs::select<component::consumer, component::capacitance, component::building>(w.ecs)) {
+		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
-		ecs::building& building = v.get<ecs::building>();
+		component::building& building = v.get<component::building>();
 		auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
-		uint32_t power = prototype::get<"power">(w, building.prototype);
+		uint32_t power = consumer_power(w, building.prototype);
 		uint32_t charge = c.shortage < power ? c.shortage : power;
 		pg[c.network].consumer_power[std::to_underlying(priority)] += charge;
 		pg[c.network].active = true;
@@ -35,13 +40,13 @@ stat_consumer(world& w, std::span<ecs::powergrid> pg) {
 }
 
 static void
-stat_generator(world& w, std::span<ecs::powergrid> pg) {
-	for (auto& v : ecs_api::select<ecs::generator, ecs::capacitance, ecs::building>(w.ecs)) {
-		ecs::capacitance& c = v.get<ecs::capacitance>();
+stat_generator(world& w, std::span<component::powergrid> pg) {
+	for (auto& v : ecs::select<component::generator, component::capacitance, component::building>(w.ecs)) {
+		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
-		ecs::building& building = v.get<ecs::building>();
+		component::building& building = v.get<component::building>();
 		auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
 		uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
 		pg[c.network].generator_power[std::to_underlying(priority)] += capacitance - c.shortage;
@@ -50,13 +55,13 @@ stat_generator(world& w, std::span<ecs::powergrid> pg) {
 }
 
 static void
-stat_accumulator(world& w, std::span<ecs::powergrid> pg) {
-	for (auto& v : ecs_api::select<ecs::accumulator, ecs::capacitance, ecs::building>(w.ecs)) {
-		ecs::capacitance& c = v.get<ecs::capacitance>();
+stat_accumulator(world& w, std::span<component::powergrid> pg) {
+	for (auto& v : ecs::select<component::accumulator, component::capacitance, component::building>(w.ecs)) {
+		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
-		ecs::building& building = v.get<ecs::building>();
+		component::building& building = v.get<component::building>();
 		uint32_t power = prototype::get<"power">(w, building.prototype);
 		if (c.shortage == 0) {
 			// battery is full
@@ -73,10 +78,10 @@ stat_accumulator(world& w, std::span<ecs::powergrid> pg) {
 }
 
 static void
-calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
+calc_efficiency(world& w, std::span<component::powergrid> pgs) {
 	auto& frame = w.stat.current();
 	for (int ii = 1; ii < 256; ++ii) {
-		ecs::powergrid& pg = pgs[ii];
+		component::powergrid& pg = pgs[ii];
 		if (!pg.active) {
 			break;
 		}
@@ -167,23 +172,23 @@ calc_efficiency(world& w, std::span<ecs::powergrid> pgs) {
 }
 
 static void
-powergrid_run(world& w, std::span<ecs::powergrid> pg) {
+powergrid_run(world& w, std::span<component::powergrid> pg) {
 	auto& frame = w.stat.current();
-	for (auto& v : ecs_api::select<ecs::capacitance, ecs::building>(w.ecs)) {
-		ecs::capacitance& c = v.get<ecs::capacitance>();
+	for (auto& v : ecs::select<component::capacitance, component::building>(w.ecs)) {
+		component::capacitance& c = v.get<component::capacitance>();
 		if (c.network == 0 || !pg[c.network].active) {
 			c.delta = 0;
 			continue;
 		}
-		ecs::building& building = v.get<ecs::building>();
-		if (v.component<ecs::consumer>()) {
+		component::building& building = v.get<component::building>();
+		if (v.component<component::consumer>()) {
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {
 				auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
 				float eff = pg[c.network].consumer_efficiency[std::to_underlying(priority)];
 				if (eff > 0) {
 					// charge
-					uint32_t power = prototype::get<"power">(w, building.prototype);
+					uint32_t power = consumer_power(w, building.prototype);
 					if (c.shortage <= power) {
 						if (eff >= 1.0f) {
 							power = c.shortage;	// full charge
@@ -200,7 +205,7 @@ powergrid_run(world& w, std::span<ecs::powergrid> pg) {
 				}
 			}
 		}
-		else if (v.component<ecs::generator>()) {
+		else if (v.component<component::generator>()) {
 			// It's a generator, and must be not a consumer
 			auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
 			float eff = pg[c.network].generator_efficiency[std::to_underlying(priority)];
@@ -213,7 +218,7 @@ powergrid_run(world& w, std::span<ecs::powergrid> pg) {
 				continue;
 			}
 		}
-		else if (pg[c.network].accumulator_efficiency != 0 && v.component<ecs::accumulator>()) {
+		else if (pg[c.network].accumulator_efficiency != 0 && v.component<component::accumulator>()) {
 			float eff = pg[c.network].accumulator_efficiency;
 			if (eff > 0) {
 				// discharge
@@ -249,7 +254,7 @@ powergrid_run(world& w, std::span<ecs::powergrid> pg) {
 static int
 linit(lua_State *L) {
 	auto& w = getworld(L);
-	struct ecs::powergrid init;
+	struct component::powergrid init;
 	for (size_t i = 0; i < POWER_PRIORITY; ++i) {
 		init.consumer_power[i] = 0;
 		init.generator_power[i] = 0;
@@ -261,7 +266,7 @@ linit(lua_State *L) {
 	init.accumulator_efficiency = 0.f;
 	init.active = false;
 	for (size_t i = 0; i < 256; ++i) {
-		ecs_api::create_entity<ecs::powergrid>(w.ecs, init);
+		ecs::create_entity<component::powergrid>(w.ecs, init);
 	}
 	return 0;
 }
@@ -269,10 +274,10 @@ linit(lua_State *L) {
 static int
 lupdate(lua_State *L) {
 	auto& w = getworld(L);
-	// step 1: init ecs::powergrid runtime struct
-	auto pgs = ecs_api::array<ecs::powergrid>(w.ecs);
+	// step 1: init component::powergrid runtime struct
+	auto pgs = ecs::array<component::powergrid>(w.ecs);
 	for (int ii = 1; ii < 256; ++ii) {
-		ecs::powergrid& pg = pgs[ii];
+		component::powergrid& pg = pgs[ii];
 		for (size_t i = 0; i < POWER_PRIORITY; ++i) {
 			pg.consumer_power[i] = 0;
 			pg.generator_power[i] = 0;
@@ -281,7 +286,7 @@ lupdate(lua_State *L) {
 		pg.accumulator_input = 0;
 		pg.active = false;
 	}
-	// step 2: stat consumers in ecs::powergrid
+	// step 2: stat consumers in component::powergrid
 	stat_consumer(w, pgs);
 	// step 3: stat generators
 	stat_generator(w, pgs);
@@ -289,7 +294,7 @@ lupdate(lua_State *L) {
 	stat_accumulator(w, pgs);
 	// step 5: calc efficiency
 	calc_efficiency(w, pgs);
-	// step 6: ecs::powergrid charge consumers' capacitance, and consume generators' capacitance
+	// step 6: component::powergrid charge consumers' capacitance, and consume generators' capacitance
 	powergrid_run(w, pgs);
 	return 0;
 }

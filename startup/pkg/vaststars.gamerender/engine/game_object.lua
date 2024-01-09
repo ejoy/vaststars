@@ -197,6 +197,8 @@ function igame_object.create(init)
             self.data.render_layer
         )
         world:instance_message(self.instance, "group", hitch_group_id)
+
+        self.hitch_group_id = hitch_group_id
     end
     local function send(self, ...)
         world:instance_message(self.instance, ...)
@@ -215,6 +217,7 @@ function igame_object.create(init)
         data = init,
         group_id = init.group_id,
         instance = instance,
+        hitch_group_id = hitch_group_id,
     }
     outer.modifier = modifier
     outer.remove = remove

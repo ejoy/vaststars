@@ -134,8 +134,7 @@ return {
     show = true,
     start_tech = "检查废墟",
     init_ui = {
-      "/pkg/vaststars.resources/ui/construct.rml",
-      "/pkg/vaststars.resources/ui/message_pop.rml"
+      "/pkg/vaststars.resources/ui/construct.html",
     },
     init_instances = {
     },
@@ -152,4 +151,5 @@ return {
       "制造并铺设{/g 太阳能板}提供额外供电",
       "放置{/g 蒸汽发电机}满足更多供电需求",
     },
+    tutorial_background = "/pkg/vaststars.resources/ui/textures/tutorial-list/2.texture",
 }

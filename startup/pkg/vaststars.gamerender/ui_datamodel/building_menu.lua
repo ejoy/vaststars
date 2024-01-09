@@ -46,6 +46,8 @@ local itask = ecs.require "task"
 local objects = require "objects"
 local handler = ecs.require "ui_datamodel.common.building_menu_handler"
 local transfer_source_box = ecs.require "transfer_source_box"
+local show_message = ecs.require "show_message".show_message
+local show_items_mesage = ecs.require "show_message".show_items_mesage
 
 local function _get_transfer_count()
     local count = 0
@@ -69,7 +71,7 @@ end
 ---------------
 local M = {}
 function M.create(gameplay_eid, longpress)
-    iui.register_leave("/pkg/vaststars.resources/ui/building_menu.rml")
+    iui.register_leave("/pkg/vaststars.resources/ui/building_menu.html")
 
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     local typeobject
@@ -84,7 +86,6 @@ function M.create(gameplay_eid, longpress)
     local transfer_source = false
     local set_transfer_source = false
     local transfer = false
-    local transfer_count = 0
     local set_item = false
     local remove_lorry = false
     local move = false
@@ -99,7 +100,9 @@ function M.create(gameplay_eid, longpress)
         lorry_factory_inc_lorry = (e.factory == true)
         transfer_source = itransfer.get_source_eid() == e.eid
         set_transfer_source = not transfer_source and e.chest ~= nil
-        transfer = e.chest ~= nil
+        if itransfer.get_source_eid() then
+            transfer = e.chest ~= nil
+        end
         set_item = e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
         remove_lorry = (e.lorry ~= nil)
         move = true
@@ -234,18 +237,18 @@ function M.update(datamodel, gameplay_eid)
     for _ in move_mb:unpack() do
         iui.leave()
         local object = assert(objects:coord(e.building.x, e.building.y))
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "move", object.id)
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "move", object.id)
     end
 
     for _ in copy_md:unpack() do
         assert(e.building)
         local typeobject = iprototype.queryById(e.building.prototype)
         local pos = math3d.vector(icoord.position(e.building.x, e.building.y, iprototype.rotate_area(typeobject.area, e.building.direction)))
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "copy", iprototype.item(typeobject).name, math3d.mark(pos))
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "copy", iprototype.item(typeobject).name, math3d.mark(pos))
     end
 
     for _ in set_recipe_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/recipe_config.rml"}, gameplay_eid)
+        iui.open({rml = "/pkg/vaststars.resources/ui/recipe_config.html"}, gameplay_eid)
     end
 
     for _ in set_item_mb:unpack() do
@@ -261,7 +264,7 @@ function M.update(datamodel, gameplay_eid)
             interface.remove_item = chest_remove_item
             interface.show_add = true
         end
-        iui.open({rml = "/pkg/vaststars.resources/ui/item_config.rml"}, gameplay_eid, interface)
+        iui.open({rml = "/pkg/vaststars.resources/ui/item_config.html"}, gameplay_eid, interface)
     end
 
     for _ in lorry_factory_inc_lorry_mb:unpack() do
@@ -334,13 +337,19 @@ function M.update(datamodel, gameplay_eid)
         end
         table.sort(tt, function(a, b) return a.idx < b.idx end)
 
+        if #tt == 0 then
+            show_message("transfer nothing")
+        end
+
         local msgs = {}
         for _, v in ipairs(tt) do
             local typeobject = iprototype.queryById(v.item)
             msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = v.n}
         end
-        local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
-        iui.send("/pkg/vaststars.resources/ui/message_pop.rml", "item", {action = "down", left = sp_x, top = sp_y, items = msgs})
+        if #msgs > 0 then
+            local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
+            show_items_mesage(sp_x, sp_y, msgs)
+        end
 
         local seid = itransfer.get_source_eid()
         local source = assert(gameplay_core.get_entity(seid))
@@ -371,15 +380,15 @@ function M.update(datamodel, gameplay_eid)
     for _ in remove_lorry_mb:unpack() do
         e.lorry_willremove = true
         iui.leave()
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected")
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unselected")
     end
 
     for _ in inventory_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/inventory.rml"})
+        iui.open({rml = "/pkg/vaststars.resources/ui/inventory.html"})
     end
 
     for _ in teardown_mb:unpack() do
-        iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "teardown", gameplay_eid)
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "teardown", gameplay_eid)
     end
 end
 

@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <style path = "/pkg/vaststars.resources/ui/common.css"/>
+        <style>
+            main-button {
+                width: 29.90vmin;
+                height: 29.90vmin;
+            }
+            main-button:active {
+                transform: scale(1.2);
+            }
+            main-button-icon {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 50%;
+                background-size: 100% 100%;
+                width: 58.49%;
+                height: 58.49%;
+            }
+            tool-button {
+                width: 16.00vmin;
+                height: 16.00vmin;
+            }
+            tool-button:active {
+                transform: scale(1.2);
+            }
+            item-bar {
+                position: absolute;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+                left: -4.97vmax;
+                top: -0.15vmin;
+                width: 100vmax;
+                height: 11.14vmin;
+                gap: 1.50vmin;
+                overflow: hidden;
+            }
+            tech-or-task-bar {
+                position: absolute;
+                left: 69.13vmax;
+                top: 1.17vmin;
+                width: 53.12vmin;
+                height: 16.28vmin;
+                background-image: /pkg/vaststars.resources/ui/textures/construct/tech-or-task-bg.texture;
+                background-size: 100% 100%;
+            }
+            @keyframes enlarge {
+                0% {
+                    transform: scale(0.7);
+                    opacity: 0.8;
+                }
+                60% {
+                    transform: scale(1.2);
+                    opacity: 0.95;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            @keyframes enlarge1 {
+                0% {
+                    transform: scale(0.1);
+                    opacity: 0.8;
+                }
+                60% {
+                    transform: scale(1.3);
+                    opacity: 0.95;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            @keyframes enlarge2 {
+                0% {
+                    transform: scale(0.92);
+                }
+                100% {
+                    transform: scale(1.08);
+                }
+            }
+        </style>
+        <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
+
+            ui_sys.mapping(start, {
+                {
+                    function(_)
+                        for _, e in ipairs(document.getElementsByTagName "item-bar-button") do
+                            e.style.animation = "0.75s sine-in-out 0s enlarge"
+                        end
+                        window.setTimeout(function()
+                            for _, e in ipairs(document.getElementsByTagName "item-bar-button") do
+                                e.style.animation = "none";
+                            end
+                        end, 750);
+                    end,
+                    "transfer_id",
+                }
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;">
+        <div style = "width: 10vmin; height: 10vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/settings.texture;" data-event-click = "clickButton('settings')" />
+        <item-bar data-if = "status ~= 'BUILD'" style = "pointer-events: none;">
+            <item-bar-button data-for = "item_bar" style = "flex-direction: row;" data-event-click = "clickButton('focus_transfer_source')">
+                <div style = "width: 10.67vmin; height: 10.67vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'">
+                    <div style = "position:absolute; top:-0.5vmin;right:0; font-size:4.5vmin; text-align: center; -webkit-text-stroke: 0.2vmin #000;" data-style-color = "it.count > 0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{it.count}}</div>
+                </div>  
+            </item-bar-button>
+        </item-bar>
+
+        <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "status ~= 'BUILD' and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
+            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and '/pkg/vaststars.resources/ui/textures/construct/task-icon.texture' or '/pkg/vaststars.resources/ui/textures/construct/tech-icon.texture'" />
+            <div style = "width: 23.00vmin; height: 15.90vmin; flex-direction: column;">
+                <div style = "width: 100%; height: 33.33%; font-size: 4.0vmin; justify-content: center; align-items: center;">{{current_tech_name}}</div>
+                <div style = "width: 100%; height: 33.33%;">
+                    <div style="position: absolute; width: 100%; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/tech-or-task-progress-bg.texture; background-size: 100% 100%;" />
+                    <div style="position: absolute; height: 100%; overflow: hidden;" data-style-width = "current_tech_progress">
+                        <div style="position: absolute; width: 23.00vmin; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/tech-or-task-progress.texture; background-size: 100% 100%;" />
+                    </div>
+                    <div style="position: absolute; width: 100%; height: 100%; font-size: 3.0vmin; -webkit-text-stroke: 0.2vmin rgb(0, 0, 0); justify-content: center; align-items: center;">{{current_tech_progress_detail}}</div>
+                </div>
+                <div style = "width: 100%; height: 33.33%; flex-direction: row; align-items: center;">
+                    <div style = "width: 4.8vmin; height: 4.8vmin; background-size: 100% 100%;" data-style-background-image = "it.icon" data-for = "ingredient_icons"/>
+                </div>
+            </div>
+        </tech-or-task-bar>
+        <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin; left: 83.13vmax;" data-if = "not(status ~= 'BUILD' and show_tech_progress)" data-event-click="clickButton('click_techortaskicon', is_task)">
+            <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/tech-icon.texture;" />
+            <div style = "position: absolute; left: 11vmin; top: 1vmin; width: 4vmin; height: 4vmin; background-color: rgb(234, 75, 26); font-size: 3.25vmin; border-radius: 50%;" />
+        </tech-or-task-bar>
+
+        <div data-for = "it, it_index : recipe_list" style="margin-bottom: 1vmin;">
+            <div style = "position: absolute; right: 0.5vmin; width: 10vmin; height: 10vmin; background-size: 100% 100%; animation :1s sine-in-out 0s enlarge1;" data-style-top="(it_index*10.5)..'vmin'" data-style-background-image="it.icon" data-event-click="clickButton('click_recipe', it.recipe_name)">
+                <div style = "position: absolute;left:-3vmin;top:1.5vmin; width:3vmin; height:7.4vmin; background-size: cover; animation :0.5s linear 0s infinite alternate enlarge2; background-image: /pkg/vaststars.resources/ui/textures/common/exclamation2.texture;"/>
+            </div>
+        </div>
+        <main-button style = "position: absolute; right: 0vmax; bottom: 7.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;" data-event-click = "clickButton('build_mode')" 
+            data-if = "show_construct_button and guide_progress > 5"
+            >
+            <main-button-icon style = "background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-construct.texture;" />
+        </main-button>
+
+        <main-button style = "position: absolute; right: 0vmax; bottom: 7.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;"
+            data-event-click = "clickButton('main_button_tap')"
+            data-event-longpress = "clickButton('main_button_longpress')"
+            data-if = "focus_building_icon ~= ''"
+            >
+            <main-button-icon data-style-background-image = "focus_building_icon" />
+            <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-active.texture;" />
+        </main-button>
+
+        <div style = "position: absolute; pointer-events: none; left: 50%; width: 35%; top: 80vmin; justify-content: center; align-items: center;">
+            <tool-button style="background-size:cover; background-image: /pkg/vaststars.resources/ui/textures/construct/rotate.texture;" data-event-click="clickButton('rotate')" data-if = "show_rotate" />
+        </div>
+    </body>
+</html>

@@ -133,6 +133,7 @@ function debug_sys:ui_update()
                     {
                         gameplay_eid = %d,
                         group_id = %s,
+                        hitch_group_id = %s,
                         id = %d,
                         prototype_name = "%s",
                         dir = "%s",
@@ -145,6 +146,7 @@ function debug_sys:ui_update()
                     ]]):format(
                         object.gameplay_eid,
                         game_object.group_id,
+                        game_object.hitch_group_id,
                         object.id,
                         object.prototype_name,
                         object.dir,

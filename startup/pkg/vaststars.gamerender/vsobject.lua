@@ -43,6 +43,7 @@ local function update(self, t)
         color = t.color,
         work_status = t.work_status,
         emissive_color = t.emissive_color,
+        render_layer = t.render_layer,
     }
 end
 
@@ -79,7 +80,7 @@ return function (init)
         slot = nil,
         state = init.state,
         emissive_color = init.emissive_color,
-
+        render_layer = init.render_layer,
     }))
 
     local vsobject = {

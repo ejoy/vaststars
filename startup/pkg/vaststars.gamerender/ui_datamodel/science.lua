@@ -8,6 +8,7 @@ local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local itypes = require "gameplay.interface.types"
 local click_tech_event = mailbox:sub {"click_tech"}
+local click_recipe_event = mailbox:sub {"click_recipe"}
 local close_techui_event = mailbox:sub {"close_techui"}
 local show_list_event = mailbox:sub {"show_list"}
 local switch_mb = mailbox:sub {"switch"}
@@ -16,6 +17,7 @@ local iguide_tips = ecs.require "guide_tips"
 local M = {}
 local current_tech
 local function get_techlist(tech_list)
+    local check_new_recipe = (tech_list == global.science.finish_list)
     local function get_display_item(technode)
         local name = technode.name
         local value = technode.detail
@@ -37,31 +39,54 @@ local function get_techlist(tech_list)
                 end
             end
         end
-        if value.effects and value.effects.unlock_recipe then
-            local prototypes = iprototype.each_type("recipe")
-            for _, recipe in ipairs(value.effects.unlock_recipe) do
-                local recipe_detail = prototypes[recipe]
-                if recipe_detail then
-                    local input = {}
-                    ingredients = irecipe.get_elements(recipe_detail.ingredients)
-                    for _, ingredient in ipairs(ingredients) do
-                        input[#input + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
+        local item = {}
+        if value.effects then
+            if value.effects.unlock_recipe then
+                local prototypes = iprototype.each_type("recipe")
+                for _, recipe in ipairs(value.effects.unlock_recipe) do
+                    local recipe_detail = prototypes[recipe]
+                    if recipe_detail then
+                        local input = {}
+                        ingredients = irecipe.get_elements(recipe_detail.ingredients)
+                        for _, ingredient in ipairs(ingredients) do
+                            input[#input + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
+                        end
+                        local output = {}
+                        local results = irecipe.get_elements(recipe_detail.results)
+                        local new
+                        if check_new_recipe then
+                            for _, unpick in ipairs(global.science.tech_recipe_unpicked) do
+                                if unpick.recipe_name == recipe then
+                                    new = true
+                                    break
+                                end
+                            end
+                        end
+                        for _, ingredient in ipairs(results) do
+                            output[#output + 1] = {new = new, name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
+                        end
+                        detail[#detail + 1] = {
+                            name = recipe,
+                            icon = assert(recipe_detail.recipe_icon),
+                            desc = recipe_detail.description,
+                            input = input,
+                            output = output,
+                            time = itypes.time(recipe_detail.time)
+                        }
                     end
-                    local output = {}
-                    local results = irecipe.get_elements(recipe_detail.results)
-                    for _, ingredient in ipairs(results) do
-                        output[#output + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
-                    end
-                    detail[#detail + 1] = {
-                        name = recipe,
-                        icon = assert(recipe_detail.recipe_icon),
-                        desc = recipe_detail.description,
-                        input = input,
-                        output = output,
-                        time = itypes.time(recipe_detail.time)
-                    }
                 end
             end
+            -- if value.effects.unlock_item then
+            --     local prototypes = iprototype.each_type("item")
+            --     for _, it in ipairs(value.effects.unlock_item) do
+            --         local item_detail = prototypes[it]
+            --         item[#item + 1] = {
+            --             name = item_detail.name,
+            --             icon = item_detail.item_icon,
+            --             desc = item_detail.item_description,
+            --         }
+            --     end
+            -- end
         end
         local game_world = gameplay_core.get_world()
         local progress = game_world:research_progress(name) or 0
@@ -74,6 +99,7 @@ local function get_techlist(tech_list)
             sub_desc = sub_desc,
             sign_icon = value.sign_icon,
             detail = detail,
+            item = item,
             ingredients = simple_ingredients,
             count = value.count,
             time = value.time,
@@ -96,17 +122,28 @@ local function get_button_str(tech)
     return "开始" .. (tech.task and "任务" or "研究")
 end
 
-function M.create(object_id)
+function M.create(unpicked_recipe)
     local items = get_techlist(global.science.tech_list)
-    current_tech = items[1]
-    if not current_tech then
-        return {}
+    local tech_index
+    local recipe_index
+    local finish_items = {}
+    if unpicked_recipe then
+        finish_items = get_techlist(global.science.finish_list)
+        for index, value in ipairs(finish_items) do
+            if value.name == unpicked_recipe.tech_name then
+                tech_index = index
+                recipe_index = unpicked_recipe.index
+                break
+            end
+        end
     end
-
+    current_tech = tech_index and finish_items[tech_index] or items[1]
     return {
-        techitems = items,
-        show_finish = false,
-        return_title = "科研任务",
+        techitems = tech_index and finish_items or items,
+        show_finish = tech_index and true or false,
+        title = tech_index and "科研历史" or "科研目标",
+        tech_index = tech_index,
+        recipe_index = recipe_index,
         current_tech = current_tech,
         current_desc = current_tech.desc,
         current_icon = current_tech.icon,
@@ -135,19 +172,23 @@ function M.update(datamodel)
     for _, _, _, index in click_tech_event:unpack() do
         global.science.tech_picked_flag[datamodel.techitems[index].name] = false
         set_current_tech(datamodel.techitems[index])
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.rml", "update_tech")
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "update_tech")
     end
-
+    for _, _, _, name in click_recipe_event:unpack() do
+        world:pub {"tech_recipe_unpicked_dirty", name}
+    end
     for _, _, _ in close_techui_event:unpack() do
         gameplay_core.world_update = true
-        iui.close("/pkg/vaststars.resources/ui/science.rml")
+        iui.close("/pkg/vaststars.resources/ui/science.html")
     end
-    for _, _, _, list in show_list_event:unpack() do
+    for _, _, _, list, tech_index in show_list_event:unpack() do
         local items = get_techlist((list == "todo") and global.science.tech_list or global.science.finish_list)
         datamodel.techitems = items
-        if items[1] then
-            set_current_tech(items[1])
+        tech_index = tech_index or 1
+        if items[tech_index] then
+            set_current_tech(items[tech_index])
         end
+        
     end
     local game_world = gameplay_core.get_world()
     for _, _, _ in switch_mb:unpack() do

@@ -1,0 +1,323 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            .title-block {
+                background-color: rgb(250, 133, 0);
+                border: 0.2vmin rgb(89, 73, 39);
+                width: 100%;
+                height: 5%;
+                justify-content: center;
+                flex-direction: row;
+                font-size: 4vmin;
+                text-align: center;
+                align-items: center;
+            }
+            .graph-block {
+                width: 100%;
+                height: 60%;
+                flex-direction: row;
+            }
+            .graph-content-pic {
+                background-size:cover;
+                background-image:"<statistic_chart>";
+                border: 2px rgb(0, 255, 0);
+                width: 100%;
+                height: 88%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .building-block {
+                width: 100%;
+                height: 35%;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+            .building-sub-block {
+                width: 100%;
+                height: 30%;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+            .building-sub-content {
+                height: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .indicator {
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: flex-end;
+                width: 3vmin;
+                height: 12vmin;
+                background-color: rgb(0, 255, 34);
+                border: 1px #fff;
+            }
+            .building-content {
+                width: 19vmin;
+                flex-direction: row;
+                align-items: flex-end;
+            }
+            .time-content {
+                height: 12vmin;
+                width: 12vmin;
+                font-size: 5vmin;
+                align-items: center;
+                flex-direction: row;
+                justify-content: center;
+                text-align: center;
+                background-color: rgb(49, 245, 0);
+                margin-right: 0.8vmin;
+            }
+            .tab-block {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                width:100%;
+                height: 100%;
+            }
+            .tab-style {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 1vmin;
+                border: 0.3vmin #fff; 
+                width:90%; 
+                height:10%; 
+                font-size: 3.5vmin; 
+                background-color: brown; 
+            }
+            .y-axis {
+                width:97%;
+                height: 95%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+                font-size: 3vmin;
+                position: absolute;
+                right: 0;
+                top:0;
+            }
+            .x-axis {
+                width:97%;
+                height: 92.5%;
+                flex-direction: row;
+                font-size: 3vmin;
+                justify-content: space-evenly;
+                align-items: center;
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+            .y-indicator {
+                border-bottom: 1px #fff;
+                height: 10%;
+                width: 100%;
+            }
+            .x-indicator {
+                border-left: 1px #fff;
+                width: 10%;
+                height: 100%;
+            }
+            .y-text-block {
+                flex-direction: column;
+                justify-content: flex-end;
+                height:100%;
+                width:6%;
+            }
+            .x-text-block {
+                flex-direction: row;
+                justify-content: flex-start;
+                height:12%;
+                width:100%;
+            }
+            .x-text {
+                font-size: 4.5vmin;
+                text-align: left;
+            }
+            .y-text {
+                font-size: 2.8vmin;
+                text-align: right;
+            }
+            .total-power {
+                width: 94%; 
+                height: 5%; 
+                flex-direction: row; 
+                justify-content: flex-start;
+                text-align: center;
+                font-size: 3vmin;
+                background-color: dimgray;
+                border: 1px #fff;
+            }
+            .total-power-indicator {
+                flex-direction: row;
+                justify-content: flex-start;
+                height: 100%;
+                background-color: rgb(253, 236, 0);
+            }
+            .total-power-num {
+                position: absolute;
+                bottom:0.15vmin;
+                font-size: 4vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.2vmin #000;
+            }
+        </style>
+        <style path = "/pkg/vaststars.resources/ui/common/building_style.css" />
+        <script type="text/x-lua">
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+            print(window.getName())
+
+            function start.ClickBuilding()
+                start.show = not start.show
+            end
+
+            function start.ClickBack()
+                start.show_item_info = false
+                start.show = false
+            end
+
+            local function update_category()
+                -- <!-- tag page begin -->
+                start.page:on_dirty_all(#start.items)
+                -- <!-- tag page end -->
+            end
+
+            function start.clickReturn()
+                ui_sys.close(window)
+            end
+
+            function start.onFilterType(type)
+                ui_sys.pub(window, {"statistics", "filter_type", type})
+            end
+
+            function start.onChartType(type)
+                ui_sys.pub(window, {"statistics", "chart_type", type})
+            end
+
+            -- <!-- tag page begin -->
+            local function page_item_update(item, index)
+                -- item.removeEventListener('click')
+                if index > #start.items then
+                    return
+                else
+                    if start.total <= 0 then
+                        return
+                    end
+                    local itemdata = start.items[index]
+                    item.outerHTML = ([[
+                        <div class="building-sub-content">
+                            <div class="building-content">
+                                <div class="indicator" style="height: %d%%; background-color: rgb(%d, %d, %d);"/>
+                                <div class="item" style='background-image: %s; background-color: rgb(%d, %d, %d);'>
+                                    <div class="item-count">%s</div>
+                                </div>
+                            </div>
+                        </div>
+                    ]]):format(math.floor(itemdata.power / start.total * 100), itemdata.color[1], itemdata.color[2], itemdata.color[3], itemdata.icon, itemdata.bc[1], itemdata.bc[2], itemdata.bc[3], itemdata.count)
+                    -- item.outerHTML = ([[
+                    --     <div class="single-item-block">
+                    --         <div class="single-item">
+                    --             <div class="single-item-icon" style = "background-image: %s;" />
+                    --             <div class="single-item-title">%s</div>
+                    --         </div>
+                    --         <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X %s</div>
+                    --     </div>
+                    -- ]]):format(start.items[index].icon, start.items[index].name, start.items[index].count)
+                    -- if select_item_index ~= index then
+                    --     item.style.border = unselect_style_border
+                    -- else
+                    --     item.style.border = select_style_border
+                    -- end
+                    item.addEventListener('click', function(event)
+                        ui_sys.pub(window, {"statistics", "item_click", start.items[index].name})
+                    end)
+                end
+            end
+
+            local page_item_init = page_item_update
+
+            local pageclass = import_package "vaststars.ui".page
+            window.customElements.define("page", function(e)
+                start.page = pageclass.create(document, e, page_item_init, page_item_update)
+            end)
+            -- <!-- tag page end -->
+
+            ui_sys.mapping(start, {
+                {
+                    function()
+                        update_category()
+                    end,
+                    "items"
+                }
+            })
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region">
+            <!-- 左边面板 begin -->
+            <div class="panel" style="width: 75%;">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="clickReturn()"/>
+                    <div class = "menu-title" style="width: 70%;">统计</div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="column" style="width: 100%; height: 88%; align-items: flex-end;">
+                    <!-- 总功率显示 -->
+                    <div class="total-power">
+                        <div class="total-power-indicator" data-style-width="percent_str"/>
+                        <div class="total-power-num" style="right: 0;">{{total_str}}</div>
+                        <div class="total-power-num" style="left: -8vmin; font-size: 2.7vmin; color: darkorange;">{{total_label}}</div>
+                    </div>
+
+                    <!-- 图表显示 -->
+                    <div class="graph-block">
+                        <div class="y-text-block">
+                            <div style="height: 11%;" data-for="label : label_y">
+                                <div class="y-text">{{label}}</div>
+                            </div>
+                            <div style="height: 16%;"/>
+                        </div>
+                        <div style="width: 94%;">
+                            <div class="graph-content-pic"/>
+                            <div class="x-text-block">
+                                <div style="width: 10%;" data-for="label : label_x">
+                                    <div class="x-text">{{label}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-container" style="width: 100%; height: 35%;">
+                        <page width = "100%" height = "28vmin" footerheight = "3.00vmin" row = "2" col = "7" />   
+                    </div>
+                </div>
+            </div>
+            <!-- 左边面板 end -->
+
+            <!-- 右边面板 begin -->
+            <div class="panel" style="width: 15%;">
+                <div class="header" style="justify-content: flex-end; align-items: center;">
+                    <div class = "menu-title" style="flex-direction: row;align-items: center;height:100%;">
+                        <button class="time-content" data-event-click="onFilterType('5s')">5s</button>
+                        <button class="time-content" data-event-click="onFilterType('1m')">1m</button>
+                        <button class="time-content" data-event-click="onFilterType('10m')">10m</button>
+                        <button class="time-content" data-event-click="onFilterType('1h')">1h</button>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="tab-block">
+                    <button class="tab-style" data-event-click="onChartType(0)">耗电图表</button>
+                    <button class="tab-style" data-event-click="onChartType(1)">发电图表</button>
+                    <button class="tab-style" data-event-click="onChartType(2)">生产图表</button>
+                </div>
+            </div>       
+        </div>
+    </body>
+</html>

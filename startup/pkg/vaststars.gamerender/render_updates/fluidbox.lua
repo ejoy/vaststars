@@ -241,4 +241,6 @@ function ifluidbox.get(x, y, dir)
     return FluidboxCache[pack(x, y, DIRECTION[dir])]
 end
 
+ifluidbox.rotate = rotate
+
 return ifluidbox

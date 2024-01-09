@@ -8,7 +8,7 @@
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
 
-static bool station_valid_mov1(world& w, ecs::lorry&l, uint16_t mov1) {
+static bool station_valid_mov1(world& w, component::lorry&l, uint16_t mov1) {
     for (auto& s : chest::array_slice(w, container::index::from(mov1))) {
         if (s.item == l.item_prototype && s.type == container::slot::slot_type::supply) {
             if (s.amount > s.lock_item) {
@@ -20,7 +20,7 @@ static bool station_valid_mov1(world& w, ecs::lorry&l, uint16_t mov1) {
     return false;
 }
 
-static void station_lock_mov1(world& w, ecs::lorry&l, uint16_t mov1) {
+static void station_lock_mov1(world& w, component::lorry&l, uint16_t mov1) {
     for (auto& s : chest::array_slice(w, container::index::from(mov1))) {
         if (s.item == l.item_prototype && s.type == container::slot::slot_type::supply) {
             s.lock_item++;
@@ -29,7 +29,7 @@ static void station_lock_mov1(world& w, ecs::lorry&l, uint16_t mov1) {
     }
 }
 
-static bool station_valid_mov2(world& w, ecs::lorry&l, uint16_t mov2) {
+static bool station_valid_mov2(world& w, component::lorry&l, uint16_t mov2) {
     for (auto& s : chest::array_slice(w, container::index::from(mov2))) {
         if (s.item == l.item_prototype && s.type == container::slot::slot_type::demand) {
             if (s.limit > s.amount + s.lock_space) {
@@ -41,7 +41,7 @@ static bool station_valid_mov2(world& w, ecs::lorry&l, uint16_t mov2) {
     return false;
 }
 
-static void station_lock_mov2(world& w, ecs::lorry&l, uint16_t mov2) {
+static void station_lock_mov2(world& w, component::lorry&l, uint16_t mov2) {
     for (auto& s : chest::array_slice(w, container::index::from(mov2))) {
         if (s.item == l.item_prototype && s.type == container::slot::slot_type::demand) {
             s.lock_space++;
@@ -50,12 +50,12 @@ static void station_lock_mov2(world& w, ecs::lorry&l, uint16_t mov2) {
     }
 }
 
-static void startTask(world& w, ecs::lorry& l, market_match const& m) {
-    auto from_e = ecs_api::index_entity<ecs::endpoint>(w.ecs, m.from);
-    auto from_s = from_e.component<ecs::station>();
+static void startTask(world& w, component::lorry& l, market_match const& m) {
+    auto from_e = ecs::index_entity<component::endpoint>(w.ecs, m.from);
+    auto from_s = from_e.component<component::station>();
     auto from_c = container::index::from(from_s->chest);
-    auto to_e   = ecs_api::index_entity<ecs::endpoint>(w.ecs, m.to);
-    auto to_s   = to_e.component<ecs::station>();
+    auto to_e   = ecs::index_entity<component::endpoint>(w.ecs, m.to);
+    auto to_s   = to_e.component<component::station>();
     auto to_c   = container::index::from(to_s->chest);
     if (auto s = chest::find_item(w, from_c, m.item)) {
         s->lock_item++;
@@ -69,12 +69,12 @@ static void startTask(world& w, ecs::lorry& l, market_match const& m) {
     else {
         assert(false);
     }
-    roadnet::lorryGoMov1(l, m.item, from_e.get<ecs::endpoint>(), to_e.get<ecs::endpoint>());
+    roadnet::lorryGoMov1(l, m.item, from_e.get<component::endpoint>(), to_e.get<component::endpoint>());
 }
 
-static void restartTask(world& w, ecs::lorry& l, uint16_t to) {
-    auto to_e   = ecs_api::index_entity<ecs::endpoint>(w.ecs, to);
-    auto to_s   = to_e.component<ecs::station>();
+static void restartTask(world& w, component::lorry& l, uint16_t to) {
+    auto to_e   = ecs::index_entity<component::endpoint>(w.ecs, to);
+    auto to_s   = to_e.component<component::station>();
     auto to_c   = container::index::from(to_s->chest);
     if (auto s = chest::find_item(w, to_c, l.item_prototype)) {
         s->lock_space++;
@@ -82,15 +82,15 @@ static void restartTask(world& w, ecs::lorry& l, uint16_t to) {
     else {
         assert(false);
     }
-    roadnet::lorryGoMov2(l, to_e.get<ecs::endpoint>().rev_neighbor, l.item_amount);
+    roadnet::lorryGoMov2(l, to_e.get<component::endpoint>().rev_neighbor, l.item_amount);
 }
 
 static int lbuild(lua_State *L) {
     auto& w = getworld(L);
     if (w.dirty & (kDirtyRoadnet | kDirtyPark)) {
         w.market.reset_park();
-        for (auto& v : ecs_api::select<ecs::park>(w.ecs)) {
-            int id = v.component_index<ecs::endpoint>();
+        for (auto& v : ecs::select<component::park>(w.ecs)) {
+            int id = v.component_index<component::endpoint>();
             assert(id >= 0);
             w.market.set_park(id);
         }
@@ -98,9 +98,9 @@ static int lbuild(lua_State *L) {
     if (w.dirty & (kDirtyEndpoint | kDirtyStation)) {
         flatmap<roadnet::straightid, uint16_t>         stations;
         flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
-        for (auto& v : ecs_api::select<ecs::station, ecs::endpoint>(w.ecs)) {
-            auto& station = v.get<ecs::station>();
-            auto& endpoint = v.get<ecs::endpoint>();
+        for (auto& v : ecs::select<component::station, component::endpoint>(w.ecs)) {
+            auto& station = v.get<component::station>();
+            auto& endpoint = v.get<component::endpoint>();
             auto c = container::index::from(station.chest);
             if (c == container::kInvalidIndex) {
                 continue;
@@ -111,8 +111,8 @@ static int lbuild(lua_State *L) {
                 s.lock_space = 0;
             }
         }
-        for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
-            auto& l = e.get<ecs::lorry>();
+        for (auto& e : ecs::select<component::lorry>(w.ecs)) {
+            auto& l = e.get<component::lorry>();
             if (roadnet::lorryInvalid(l)) {
                 continue;
             }
@@ -156,8 +156,8 @@ static int lbuild(lua_State *L) {
             }
         }
         w.market.reset_station();
-        for (auto& v : ecs_api::select<ecs::station, ecs::endpoint>(w.ecs)) {
-            auto& station = v.get<ecs::station>();
+        for (auto& v : ecs::select<component::station, component::endpoint>(w.ecs)) {
+            auto& station = v.get<component::station>();
             auto c = container::index::from(station.chest);
             if (c == container::kInvalidIndex) {
                 continue;
@@ -169,12 +169,12 @@ static int lbuild(lua_State *L) {
                 switch (s.type) {
                 case container::slot::slot_type::supply:
                     for (uint16_t i = s.lock_item; i < s.amount; ++i) {
-                        w.market.add_supply(v.get_index<ecs::endpoint>(), s.item);
+                        w.market.add_supply(v.get_index<component::endpoint>(), s.item);
                     }
                     break;
                 case container::slot::slot_type::demand:
                     for (uint16_t i = s.amount + s.lock_space; i < s.limit; ++i) {
-                        w.market.add_demand(v.get_index<ecs::endpoint>(), s.item);
+                        w.market.add_demand(v.get_index<component::endpoint>(), s.item);
                     }
                     break;
                 default:
@@ -208,8 +208,8 @@ static int lbuild(lua_State *L) {
                 }
             }
             w.market.match_begin(w);
-            for (auto& e : ecs_api::select<ecs::lorry>(w.ecs)) {
-                auto& l = e.get<ecs::lorry>();
+            for (auto& e : ecs::select<component::lorry>(w.ecs)) {
+                auto& l = e.get<component::lorry>();
                 if (roadnet::lorryInvalid(l)) {
                     continue;
                 }
@@ -227,7 +227,7 @@ static int lbuild(lua_State *L) {
                         startTask(w, l, *res);
                     }
                     else if (auto home = w.market.nearest_park(w, C); home != 0xffff) {
-                        auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+                        auto endpoints = ecs::array<component::endpoint>(w.ecs);
                         roadnet::lorryGoHome(l, endpoints[home]);
                     }
                     else {
@@ -240,7 +240,7 @@ static int lbuild(lua_State *L) {
                         restartTask(w, l, to);
                     }
                     else if (auto home = w.market.nearest_park(w, C); home != 0xffff) {
-                        auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+                        auto endpoints = ecs::array<component::endpoint>(w.ecs);
                         roadnet::lorryGoHome(l, endpoints[home]);
                     }
                     else {
@@ -256,13 +256,13 @@ static int lbuild(lua_State *L) {
 
 static int lupdate(lua_State *L) {
     auto& w = getworld(L);
-    for (auto& v : ecs_api::select<ecs::station, ecs::endpoint, ecs::chest>(w.ecs)) {
-        auto& endpoint = v.get<ecs::endpoint>();
+    for (auto& v : ecs::select<component::station, component::endpoint, component::chest>(w.ecs)) {
+        auto& endpoint = v.get<component::endpoint>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
-        auto& station = v.get<ecs::station>();
-        auto& chest = v.get<ecs::chest>();
+        auto& station = v.get<component::station>();
+        auto& chest = v.get<component::chest>();
         auto station_c = container::index::from(station.chest);
         auto chest_c = container::index::from(chest.chest);
         if (station_c == container::kInvalidIndex || chest_c == container::kInvalidIndex) {
@@ -277,27 +277,27 @@ static int lupdate(lua_State *L) {
                     if (chest_s.amount >= chest_s.limit && station_s.amount < station_s.limit) {
                         chest_s.amount -= chest_s.limit;
                         station_s.amount++;
-                        w.market.add_supply(v.get_index<ecs::endpoint>(), chest_s.item);
+                        w.market.add_supply(v.get_index<component::endpoint>(), chest_s.item);
                     }
                 }
                 else if (chest_s.type == container::slot::slot_type::supply) {
                     if (chest_s.amount == 0 && station_s.amount > 0) {
                         chest_s.amount += chest_s.limit;
                         station_s.amount--;
-                        w.market.add_demand(v.get_index<ecs::endpoint>(), chest_s.item);
+                        w.market.add_demand(v.get_index<component::endpoint>(), chest_s.item);
                     }
                 }
             }
         }
     }
     w.market.match_begin(w);
-    for (auto& v : ecs_api::select<ecs::station, ecs::endpoint, ecs::chest>(w.ecs)) {
-        auto& endpoint = v.get<ecs::endpoint>();
+    for (auto& v : ecs::select<component::station, component::endpoint, component::chest>(w.ecs)) {
+        auto& endpoint = v.get<component::endpoint>();
         if (!endpoint.neighbor || !endpoint.rev_neighbor) {
             continue;
         }
-        auto& station = v.get<ecs::station>();
-        auto& chest = v.get<ecs::chest>();
+        auto& station = v.get<component::station>();
+        auto& chest = v.get<component::chest>();
         auto station_c = container::index::from(station.chest);
         auto chest_c = container::index::from(chest.chest);
         if (station_c == container::kInvalidIndex || chest_c == container::kInvalidIndex) {
@@ -350,7 +350,7 @@ static int lupdate(lua_State *L) {
                         else if (auto home = w.market.nearest_park(w, endpoint.neighbor); home != 0xffff) {
                             station_s.amount++;
                             station_s.lock_space--;
-                            auto endpoints = ecs_api::array<ecs::endpoint>(w.ecs);
+                            auto endpoints = ecs::array<component::endpoint>(w.ecs);
                             roadnet::lorryGoHome(l, endpoints[home]);
                             roadnet::endpointSetOut(w, endpoint);
                         }
@@ -370,8 +370,8 @@ static int lupdate(lua_State *L) {
             std::unreachable();
         }
     }
-    for (auto& v : ecs_api::select<ecs::park, ecs::endpoint>(w.ecs)) {
-        auto& endpoint = v.get<ecs::endpoint>();
+    for (auto& v : ecs::select<component::park, component::endpoint>(w.ecs)) {
+        auto& endpoint = v.get<component::endpoint>();
         if (!endpoint.neighbor) {
             continue;
         }
@@ -389,12 +389,12 @@ static int lupdate(lua_State *L) {
             roadnet::endpointSetOut(w, endpoint);
         }
     }
-    for (auto& v : ecs_api::select<ecs::factory, ecs::starting, ecs::chest>(w.ecs)) {
-        auto& starting = v.get<ecs::starting>();
+    for (auto& v : ecs::select<component::factory, component::starting, component::chest>(w.ecs)) {
+        auto& starting = v.get<component::starting>();
         if (!starting.neighbor) {
             continue;
         }
-        auto& chest = v.get<ecs::chest>();
+        auto& chest = v.get<component::chest>();
         auto c = container::index::from(chest.chest);
         if (c == container::kInvalidIndex) {
             continue;

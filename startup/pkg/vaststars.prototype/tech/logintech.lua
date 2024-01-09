@@ -11,6 +11,7 @@ local prototype = gameplay.register.prototype
         {"机械科技包", 1},
     },
     count = 65000,
+    order = 300,
     time = "5s"
   }
 
@@ -23,6 +24,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"登录科技"},
     count = 1,
+    order = 301,
     tips_pic = {
       "",
     },

@@ -20,7 +20,7 @@ end
 function M.update(datamodel)
     for _ in close_mb:unpack() do
         iguide.set_running(true)
-        iui.close("/pkg/vaststars.resources/ui/tech_tips.rml")
+        iui.close("/pkg/vaststars.resources/ui/tech_tips.html")
     end
 end
 

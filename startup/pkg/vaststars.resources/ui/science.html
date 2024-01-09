@@ -1,0 +1,495 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+             /*标题栏和返回按键  */
+            .item-research {
+                margin: 0.5vmin 0;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                background-image:"/pkg/vaststars.resources/ui/textures/science/item_bg_dark.texture"; 
+                background-size: 100% 100%;
+                width: 70vmin;
+                height: 11vmin;
+                font-size: 3.40vmin;
+            }
+            .item-detail {
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                /* border: 2px red; */
+                background-image: "/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture";
+                background-size: 100% 100%;
+                /* width: 61.5vmin;
+                height: 10vmin; */
+                width: 73.8vmin;
+                height: 12vmin;
+            }
+            .item-bg {
+                width: 9vmin;
+                height: 9vmin;
+                background-size: cover;
+            }
+            .item-title-new {
+                text-align: right;
+                border-radius: 0.67vmin;
+                color:rgb(255, 255, 255);
+                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
+                width: 85%;
+                word-break: break-all;
+                font-size: 3vmin;
+            }
+            .item-recipe-info {
+                margin: auto;
+                background-image:"/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture"; 
+                width: 13.07vmin;  
+                height: 13.07vmin;  
+                background-size:cover;
+            }
+            .research-req-container {
+                border: 0.13vmin rgb(89, 73, 39); 
+                width: 100%; 
+                height: 50%; 
+                justify-content: flex-start;
+                flex-direction: column;
+                align-items: center;
+            }
+            .recipe-des-text {
+                width: 90%;
+                /* height: 10%; */
+                font-size: 4vmin;
+                text-align: left;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+                word-break: break-all;
+            }
+            .icon-researching {
+                position:absolute;
+                bottom:0.05vmin;
+                left:0.5vmin;
+                font-size: 3.5vmin;
+                text-align: center;
+                color: rgb(237, 125, 49);
+                -webkit-text-stroke: 1px rgb(0, 0, 0);
+                animation:0.65s linear 0s infinite alternate scalesize;
+            }
+            .research-req {
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                /* position:absolute;
+                right:1vmin;
+                top:0.2vmin; */
+                width:50%;
+                height:35%;
+            }
+            .small-item-new {
+                margin: 1.5vmin 1vmin 1.5vmin 1vmin;
+                /* flex-direction: column; */
+                /* align-items:flex-start; */
+                /* justify-content:flex-start; */
+                /* background-color: rgb(250, 205, 9); */
+                /* border: 1px red; */
+                background-size: cover;
+                width: 6vmin;
+                height: 6vmin;
+                /* font-size: 2.00vmin; */
+            }
+            .small-arrow {
+                width: 5vmin;
+                height: 2.5vmin;
+                /* margin:0 0.5vmin; */
+                background-image: "/pkg/vaststars.resources/ui/textures/science/dir.texture";
+                background-size: cover;
+            }
+            .recipe-time {
+                /* position:absolute; 
+                left: 3.5vmin; 
+                top: 1.7vmin;  */
+                text-align: center; 
+                font-size: 3.5vmin; 
+            }
+            .progress_bar {
+                align-self: flex-start;
+                background-image: "/pkg/vaststars.resources/ui/textures/science/progress_bar.texture";
+                background-size: cover;
+                width: 100%;
+                height: 100%;
+            }
+            .indicator {
+                align-self: flex-start;
+                background-image: "/pkg/vaststars.resources/ui/textures/science/indicator.texture";
+                background-size: 100% 100%;
+                top: -110%;
+                width: 0.5vmin;
+                height: 120%;
+            }
+            new {
+                position: absolute;
+                left: 0;
+                top: 0;
+                font-size: 2vmin;
+                color: rgb(0, 255, 21);
+                -webkit-text-stroke: 1px #000;
+            }
+            @keyframes scalesize {
+                from {
+                    transform: scale(0.85);
+                }
+                to {
+                    transform: scale(1.1);
+                }
+            }
+            
+        </style>
+        <style path = "/pkg/vaststars.resources/ui/common.css"/>
+        <style path = "/pkg/vaststars.resources/ui/common/building_style.css" />
+        <style path = "/pkg/vaststars.resources/ui/common/listpage_style.css"/>
+        <script type="text/x-lua" >
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local start = ui_sys.createDataMode(window, ...)
+            local selected_index = 0
+            local selected_recipe_index = 0
+
+            local function unselect_tech()
+                if selected_index > 0 then
+                    local index = selected_index
+                    selected_index = 0
+                    if index > 0 then
+                        start.list:on_dirty(index)
+                    end
+                end
+            end
+
+            local function unselect_recipe()
+                if selected_recipe_index > 0 then
+                    local index = selected_recipe_index
+                    selected_recipe_index = -1
+                    if index > 0 then
+                        start.detaillist:on_dirty(index)
+                    end
+                end
+            end
+
+            local function clickTech(index)
+                ui_sys.pub(window, {"click_tech", index})
+            end
+            local function clickRecipe(index)
+                local recipe = start.current_tech.detail[index]
+                if recipe then
+                    ui_sys.pub(window, {"click_recipe", recipe.name})
+                end
+            end
+            
+            local select_style_border = "3px rgb(0,255,0)"
+            function start.click_tech_item(item, index)
+                if selected_index == index then
+                    return
+                end
+                unselect_tech()
+                clickTech(index)
+                selected_index = index
+                if start.techitems[index].new then
+                    start.techitems[index].new = false
+                end
+                start.list:on_dirty(index)
+            end
+
+            local function tech_item_init(item, index)
+                item.className = "item-research"
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
+            end
+            local function tech_item_update(item, index)
+                local item_data = start.techitems[index]
+                if not item_data then
+                    return
+                end
+                local ingredient_items = ""
+                local ingredient_count = 0
+                if not item_data.task then
+                    for _, ingredient in ipairs(item_data.ingredients) do
+                        if ingredient_count == 0 then
+                            ingredient_count = ingredient.count
+                        end
+                        ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
+                    end
+                    if ingredient_count > 0 then
+                        ingredient_items = [[<div class="research-req" style='margin-top: 1vmin;'>]] .. ingredient_items .. "</div>"--([[<div style="padding-bottom:0.5vmin; font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
+                    end
+                --else
+                --    ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin; width: 4vmin; height: 4vmin;'/>]]
+                end
+                local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
+                local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: 100% 100%; width: 4.46vmin; height: 4vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
+                local item_icon = item_data.task and "/pkg/vaststars.resources/ui/textures/science/task.texture" or "/pkg/vaststars.resources/ui/textures/science/tech.texture"
+                local font_color = item_data.running and 'rgb(0,255,0)' or 'rgb(255, 255, 255)'
+                local percent = (item_data.progress * 100) // item_data.count
+                local highlight = (selected_index == index) and [[<div style='position : absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
+                -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
+                item.outerHTML = ([[
+                    <div style="flex-direction: row; align-items:center;">
+                        %s
+                        <div class="item-bg" style='width: 14%%; background-image:"%s";'/>
+                        <div style="margin-left: 1vmin; margin-right: 1vmin; width: 75%%; flex-direction: column; align-items:center;">
+                            <div style="margin-right: 0vmin; height: 45%%; flex-direction: row;">
+                                <div style="width: 50%%; font-size: 4vmin; text-align: left;" data-style-color = "'%s'">%s</div>
+                                <div style="width: 50%%; flex-direction: row; justify-content: flex-end;">
+                                    %s
+                                </div>
+                            </div>
+                            <div style="width: 95%%; height: 45%%; flex-direction: column;">
+                                <div class="progress_bar" style="height: 4.5vmin; width: %d%%;"/>
+                                <div class="indicator" style='top: -4.5vmin; height: 4.5vmin; width: 1vmin; left: %d%%;'/>
+                                <div style="text-align: center; font-size: 4vmin; top: -9vmin; -webkit-text-stroke:0.2vmin #000;" data-style-color = " %d == %d and 'rgb(0,255,0)' or 'rgb(255,255,255)' ">%d/%d</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icon-researching" style="color: rgb(0, 255, 34);" data-if="%s">新</div>
+                    %s
+                ]]):format(sign, item_icon, font_color, item_data.name, ingredient_items, percent, percent, item_data.progress, item_data.count, item_data.progress, item_data.count, tostring(item_data.new), highlight)
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
+            end
+            window.customElements.define("list", function(e)
+                start.list = ui.list.create(document, e, tech_item_init, tech_item_update)
+            end)
+
+            function start.click_detail_item(item, index)
+                if selected_recipe_index == index then
+                    unselect_recipe()
+                    return
+                end
+                unselect_recipe()
+                selected_recipe_index = index
+                start.detaillist:on_dirty(index)
+                clickRecipe(index)
+            end
+
+            local function detail_item_init(item, index)
+                if not start.current_tech then
+                    return
+                end
+                local detail = start.current_tech.detail[index]
+                if not detail.name then
+                    return
+                end
+                item.className = "item-detail"
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
+            end
+
+            local function select_item_renderer(index)
+                if not start.current_tech then
+                    return ""
+                end
+                local detail = start.current_tech.detail[index]
+                if not detail or not detail.input or not detail.output then
+                    return ""
+                end
+                local margin_top = '0'
+                local margin_left = '0'
+                local inoutstr = [[
+                    <div style='flex-direction:row; justify-content: center; align-items:center; width: 40vmin; height: 15vmin; margin-right: 2vmin;'>
+                    <div style='width: 18vmin; height: 16vmin; flex-direction:row; justify-content:center; align-items:center;flex-wrap: wrap;'>]]
+                if #detail.input == 1 then
+                    margin_top = '5vmin'
+                    margin_left = '6vmin'
+                elseif #detail.input == 2 then
+                    margin_top = '5vmin'
+                end
+                for _, indata in ipairs(detail.input) do
+                    inoutstr = inoutstr .. ([[
+                    <div style='flex-direction: column; align-items: center; justify-content: center; '>
+                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
+                            <div style='position:absolute; width:6vmin; bottom:-1vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
+                        </div>
+                    </div>
+                    ]]):format(margin_top, margin_left, indata.icon, indata.name)
+                end
+                inoutstr = inoutstr .. "</div>"
+                inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:center ;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
+                inoutstr = inoutstr .. "<div style='width:18vmin; height: 16vmin; flex-direction:row; justify-content:center; align-items:center; flex-wrap:wrap;'>"
+                margin_top = '0'
+                margin_left = '0'
+                if #detail.output == 1 then
+                    margin_top = '5vmin'
+                    margin_left = '-4vmin'
+                elseif #detail.output == 2 then
+                    margin_top = '5vmin'
+                end
+                for _, outdata in ipairs(detail.output) do
+                    inoutstr = inoutstr .. ([[
+                    <div style='flex-direction: column; align-items: center; justify-content: center;'>
+                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
+                            <div style='position:absolute; bottom:-1.2vmin; width:6vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
+                            <new data-if = '%s'>新</new>
+                        </div>
+                    </div>
+                    ]]):format(margin_top, margin_left, outdata.icon,outdata.name, outdata.new and 'true' or 'false')
+                end
+                inoutstr = inoutstr .. "</div></div>"
+                return inoutstr
+            end
+
+            local function detail_item_update(item, index)
+                if not start.current_tech then
+                    return
+                end
+                local selected = (selected_recipe_index == index)
+                item.style.backgroundImage = selected and '/pkg/vaststars.resources/ui/textures/science/right_item_bg1.texture' or '/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture'
+                item.style.height = selected and '15.72vmin' or '12vmin'
+                local detail = start.current_tech.detail[index]
+                if not detail or not detail.name then
+                    return
+                end
+                local htmlstr = ([[<div style='width:73.8vmin;flex-direction:row;justify-content:space-between;align-items:center;'><div class="item-bg" style='margin-top: %s; margin-left: 2vmin; width: 9.6vmin; height: 9.6vmin; background-image:"%s";'/>]]):format(selected and '-3.7vmin' or '0vmin', detail.icon)
+                if selected then
+                    htmlstr = htmlstr .. select_item_renderer(index)
+                elseif detail.name then
+                    htmlstr = htmlstr .. ([[
+                        <div style='margin-top: -4vmin; margin-right: 2vmin; flex-direction: column; justify-content: flex-start; align-items: flex-end;'>
+                            <div style='text-align: right; font-size: 3.9vmin; color: rgb(241,157,52);'>解锁配方: %s</div>
+                            <div style='text-align: right; font-size: 2.7vmin;'>%s</div>
+                        </div>
+                    ]]):format(detail.name, detail.desc)
+                end
+                htmlstr = htmlstr .. '</div>'
+                item.outerHTML = htmlstr
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
+            end
+
+            window.customElements.define("detaillist", function(e)
+                start.detaillist = ui.list.create(document, e, detail_item_init, detail_item_update)
+            end)
+
+            local inited = false
+            ui_sys.mapping(start, {
+                {
+                    "techitems",
+                    function()
+                        if not inited then
+                            return
+                        end
+                        if start.tech_index then
+                            selected_index = start.tech_index and start.tech_index or 0
+                            start.tech_index = nil
+                        else
+                            unselect_tech()
+                        end
+                        start.list:on_dirty_all(#start.techitems)
+                    end
+                },
+                {
+                    "current_tech",
+                    function()
+                        if not inited then
+                            return
+                        end
+                        if start.recipe_index then
+                            selected_recipe_index = start.recipe_index and start.recipe_index or 0
+                            start.recipe_index = nil
+                        else
+                            unselect_recipe()
+                        end
+                        start.detaillist:on_dirty_all(#start.current_tech.detail)
+                    end
+                },
+                {
+                    "current_progress",
+                    function()
+                        if not inited then
+                            return
+                        end
+                        unselect_recipe()
+                        unselect_tech()
+                        start.list:on_dirty(start.current_tech.index)
+                    end
+                },            
+            })
+
+            function start.showFinish(tech_idx)
+                start.show_finish = true
+                start.title = "科研历史"
+                start.list:reset_position()
+                ui_sys.pub(window, {"show_list", "finish", tech_idx})
+            end
+            local function onclose()
+                unselect_recipe()
+                unselect_tech()
+                if start.show_finish then
+                    start.show_finish = false
+                    start.title = "科研目标"
+                    start.list:reset_position()
+                    ui_sys.pub(window, {"show_list", "todo"})
+                else
+                    inited = false
+                    ui_sys.pub(window, {"close_techui"})
+                end
+            end
+            function start.clickReturn(event)
+                if event.target == event.current then
+                    onclose()
+                end
+            end
+            function start.startSwitch()
+                ui_sys.pub(window, {"switch"})
+                if not start.current_running then
+                    if selected_index < 1 then
+                        -- clear new flag
+                        clickTech(1)
+                        start.techitems[1].new = false
+                    end
+                    onclose()
+                end
+            end
+            function init()
+                inited = true
+            end
+        </script>
+    </head>
+    <body onload = "init()">
+        <!--div style='position: absolute; width: 100%; height: 100%; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn()"/-->
+        <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
+            <div style="width: 60%; flex-direction: row; justify-content: center; align-items: center;">
+                <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
+                <div style='font-size: 6vmin; text-align: center;'>{{title}}</div>
+                <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
+            </div>
+            <div style="height: 90%; flex-direction: row; justify-content: center;">
+                <div style="margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%;">
+                    <div style='margin: 1vmin; width: 100%; height: 90%; background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture"; background-size: 100% 100%; background-lattice: 4.28% 4.28% 4.28% 4.28% 49.22% 49.22%;'>
+                        <!-- 科技条目 start -->
+                        <list direction='1' width='100%' height='95%' style="margin-top: 1vmin; margin-bottom: 1vmin;"/>
+                        <!-- 科技条目 end -->
+                    </div>
+                </div>
+                <div style='margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%; background-image: "/pkg/vaststars.resources/ui/textures/science/right_panel_bg.texture"; background-size: cover;'>
+                    <div style="flex-direction: column; justify-content: flex-start; height: 88%;">
+                        <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
+                        <div class="recipe-des-text" style="margin-left: 2vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
+                        <div style="margin-left: 2vmin; flex-direction: row; justify-content: flex-start; align-items: center;">
+                            <!-- div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/ -->
+                            <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
+                        </div>
+                        <div style='margin-top: 1vmin; margin-left: 2%; margin-right: 2%; width: 96%; height: 0.1vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
+                        <div style="margin-top: 1vmin; flex-direction: column; width:100%; height:100%;">
+                            <detaillist direction='1' width='100%' height='100%'/>
+                        </div>
+                    </div>
+                    <button-confirm data-if="not current_running and not show_finish" style="width: 40vmin; height: 10vmin; align-self: flex-end;" data-event-click="startSwitch()">
+                        <div style="margin-top: 1.5vmin; font-size: 6vmin; text-align: center;">{{current_button_str}}</div>
+                    </button-confirm>
+                    <div style="position:absolute;left:1vmin; bottom:1vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-event-click="showFinish()">
+                        <div style='width: 5vmin; height: 5vmin; background-size: cover; background-image: "/pkg/vaststars.resources/ui/textures/science/history.texture";'/>
+                        <div style="margin-left: 1vmin; font-size: 5vmin;">科研历史</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -227,6 +227,20 @@ value:
   tag:
     slot8
 ---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      r: {0, -0.9999619126319885, 0, 0.008726561442017555}
+      t: {-1.20, 3.299999952316284, -9.199999809265137}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    slot_indicator
+---
 file: images/small-warehouse2_normal.texture
 op: add
 path: /maxsize
@@ -431,3 +445,13 @@ value:
     ant.scene|scene_object
   tag:
     slot8
+  ---
+  data:
+    scene:
+      r: {0, -0.9999619126319885, 0, 0.008726561442017555}
+      t: {-1.20, 3.299999952316284, -9.199999809265137}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    slot_indicator

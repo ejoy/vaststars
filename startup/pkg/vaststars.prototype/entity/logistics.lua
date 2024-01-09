@@ -275,6 +275,7 @@ prototype "物流站" {
     icon = "mem:/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab config:s,1,3",
     check_coord = "exclusive",
     builder = "station",
+    road_dir = "S",  -- station builder special
     type = {"building", "station"},
     lorry_track = {
         {0, 0, "4x2", "station"},

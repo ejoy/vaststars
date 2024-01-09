@@ -10,6 +10,7 @@ local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 local ALL_DIR <const> = CONSTANT.ALL_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -233,7 +234,7 @@ local function __new_entity(self, datamodel, typeobject)
     local building_positon = icoord.position(x, y, w, h)
 
     local sprite_color
-    if not self._check_coord(self.typeobject.name, x, y, w, h, self.move_object_id) then
+    if not self._check_coord(x, y, dir, self.typeobject, self.move_object_id) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -248,7 +249,7 @@ local function __new_entity(self, datamodel, typeobject)
 
     local object = assert(objects:get(self.move_object_id))
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF}
+    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
 
     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
 
@@ -372,7 +373,7 @@ local function touch_move(self, datamodel, delta_vec)
     local sprite_color
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-    if not self._check_coord(self.typeobject.name, lx, ly, w, h, self.move_object_id) then -- TODO
+    if not self._check_coord(lx, ly, pickup_object.dir, self.typeobject, self.move_object_id) then -- TODO
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -487,10 +488,9 @@ local function rotate(self, datamodel, dir, delta_vec)
     end
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
 
     local sprite_color
-    if not self._check_coord(self.typeobject.name, pickup_object.x, pickup_object.y, w, h, self.move_object_id) then
+    if not self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject, self.move_object_id) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -547,7 +547,7 @@ local function clean(self, datamodel)
     end
 
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "opaque", color = "null", emissive_color = "null"}
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
 end
 
 local function get_check_coord(object_id)

@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            .recipe-panel {
+                background-color: rgb(44, 32, 18);
+                border: 0.27vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
+                width: 25%;
+                height: 100%;
+            }
+            .recipe-name-block {
+                background-color: rgb(203, 118, 24);
+                width: 100%;
+                height:5%;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border: 0.10vmin rgb(89, 73, 39);
+            }
+            .recipe-change-block {
+                width: 100%;
+                height:100%;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                background-color: rgb(44, 32, 18);
+            }
+            .recipe-name-text {
+                padding-bottom: 0.15em;
+                font-size: 3.73vmin;
+                text-align: center;
+                align-items: center;
+            }
+            .button-style {
+                margin-bottom: 1vmin;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 35.00vmin;
+                height:12.00vmin;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size: cover;
+            }
+        </style>
+        <style path = "/pkg/vaststars.resources/ui/common/building_style.css"/>
+        <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+            start.show_archival_files = false
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
+
+            function init()
+                for _, e in ipairs(document.getElementsByTagName "archival-list") do
+                    e.scrollInsets(0, 0, 0, 200)
+
+                    local last_y
+                    e.addEventListener("pan", function(param)
+                        if last_y and param.state == "changed" then
+                            e.scrollTop = e.scrollTop - (param.y - last_y)
+                        end
+                        last_y = param.y
+                    end)
+                end
+            end
+        </script>
+    </head>
+    <body style = "background-color: black; align-items: center;" onload="init()">
+        <div style = "position: absolute; width: 100%; height: 100%;" data-event-click = "clickButton('close')"/>
+        <div style = "flex-direction: row;">
+            <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
+                <!-- 标题栏 -->
+                <div class = "recipe-name-block">
+                    <div class = "recipe-name-text" style="-webkit-text-stroke:0.2vmin #000; font-size: 5vmin;">设置</div>
+                </div>
+                <div style="width: 100%; height:95%; flex-direction: column; justify-content: center; align-items: center;">
+                    <div class = "recipe-change-block">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('save')">
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">保存游戏</div>
+                        </button>
+                        <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "show_archival_files = not show_archival_files">
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">读取游戏</div>
+                        </button> 
+                        <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickButton('info')">
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false and '提示开启' or '提示关闭'}}</div>
+                        </button>
+                        <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickButton('debug')">
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{debug == false and '调试开启' or '调试关闭'}}</div>
+                        </button>
+                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('back_to_main_menu')">
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">重新登录</div>
+                        </button> 
+                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickButton('lock_group')">
+                            <div class = "recipe-name-text" style="font-size: 4.73vmin;">{{lock_group and 'UnLock Group' or 'Lock Group'}}</div>
+                        </button>
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickButton('change_ratio')">
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{"ratio: " .. scene_ratio}}</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="recipe-panel" style = "flex-direction: column; height: 100%;" data-if = "show_archival_files">
+                <!-- 标题栏 -->
+                <div class = "recipe-name-block">
+                    <div class = "recipe-name-text">存档</div>
+                </div>
+                <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
+                    <archival-list class = "recipe-change-block" style = "justify-content: center; align-items: center; overflow: scroll;">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "archival_files" data-event-click = "clickButton('restore', it_index)">
+                            <div class = "recipe-name-text" style="font-size: 3.73vmin;">{{it_index}}</div>
+                            <div class = "recipe-name-text" style="font-size: 2.73vmin;">{{it}}</div>
+                        </button>
+                    </archival-list>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

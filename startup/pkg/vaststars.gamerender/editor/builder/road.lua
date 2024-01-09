@@ -43,7 +43,7 @@ local iinventory = require "gameplay.interface.inventory"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
-local itl = ecs.require "ant.timeline|timeline"
+local iani = ecs.require "ant.anim_ctrl|state_machine"
 
 local function isValidRoadCoord(x, y)
     for i = 0, ROAD_SIZE - 1 do
@@ -171,14 +171,9 @@ local function _new_entity(self, datamodel, typeobject, x, y)
                 iom.set_rotation(root, ROTATORS[self.forward_dir])
 
                 for _, eid in ipairs(instance.tag["*"]) do
-                    local e <close> = world:entity(eid, "timeline?in loop_timeline?out")
-                    if e.timeline then
-                        e.timeline.eid_map = instance.tag
-                        itl:start(e)
-
-                        if e.timeline.loop == true then
-                            e.loop_timeline = true
-                        end
+                    local e <close> = world:entity(eid, "anim_ctrl?in")
+                    if e.anim_ctrl then
+                        iani.play(eid, {name = "Armature.002Action", loop = true, speed = 1.0, manual = false}) --TODO: remove hardcode
                     end
                 end
             end,

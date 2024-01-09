@@ -1,0 +1,246 @@
+<html>
+    <head>
+        <style path = "/pkg/vaststars.resources/ui/common.css"/>
+        <style>
+            body::before {
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                left: -4.97vmax;
+                top: -1.32vmin;
+                background-image: /pkg/vaststars.resources/ui/textures/recipe-config/bg.texture;
+                background-size: 100% 100%;
+            }
+            caption-container {
+                height: 17.50vmin;
+                width: 100%;
+                pointer-events: none;
+            }
+            caption-line {
+                height: 0.15vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture";
+                background-size: 100% 100%;
+            }
+            caption {
+                height: 0.15vmin;
+                width: 111.44vmin;
+            }
+            left-box {
+                width: 55.70vmax;
+                height: 78.34vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 4.22% 6.27% 4.22% 6.27% 49.22% 49.22%;
+                align-items: center;
+            }
+            recipe {
+                width: 16.40vmin;
+                height: 19.00vmin;
+                background-size: 100% 100%;
+                justify-content: center;
+                align-items: center;
+                margin-right: -2.70vmin;
+                margin-bottom: -2.70vmin;
+            }
+            new {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                font-size: 4vmin;
+                color: rgb(0, 255, 21);
+                -webkit-text-stroke: 1px #000;
+            }
+            recipe-list {
+                left: 1.00vmin;
+                top: 3.00vmin;
+                width: 99.00%;
+                height: 94.00%;
+                margin-left: -1vmax;
+                gap: 2.00vmin;
+                overflow: scroll;
+            }
+            recipe-category {
+                margin-top: 6.50vmin;
+                width: 100%;
+                height: 2.00vmin;
+                align-items: center;
+            }
+            recipe-category-text {
+                margin-right: 4vmin;
+            }
+            recipe-category-text:last-child {
+                margin-right: 0vmin;
+            }
+            right-box {
+                margin-left: 0.93vmax;
+                width: 27.68vmax;
+                height: 84.34vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/recipe-config/right-box-bg.texture";
+                background-size: 100% 100%;
+            }
+            recipe-ingredients-container {
+                margin-left: 1.07vmax;
+                margin-top: 21.41vmin;
+                width: 88.74%;
+                height: 20vmin;
+            }
+            recipe-results-container {
+                margin-left: 1.07vmax;
+                margin-top: 5.37vmin;
+                width: 88.74%;
+                height: 20vmin;
+            }
+            button-container {
+                width: 100%;
+                height: 17.46vmin;
+                align-items: center;
+            }
+            cancel-button {
+                width: 21.88vmax;
+                height: 13.16vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/recipe-config/cancel.texture";
+                background-size: 100% 100%;
+            }
+            cancel-button:active {
+                background-image: "/pkg/vaststars.resources/ui/textures/recipe-config/cancel-active.texture";
+            }
+            ingredients-button {
+            }
+            ingredients-button:active {
+                transform: scale(1.2);
+            }
+        </style>
+        <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
+            local ui = import_package "vaststars.ui"
+            local ui_sys = ui.ui_system
+            local scrollToItem = ui.scrolltoitem
+            local start = ui_sys.createDataMode(window, ...)
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
+
+            function start.clickClose()
+                ui_sys.close(window)
+            end
+
+            function start.clickClearRecipe()
+                ui_sys.pub(window, {"clear_recipe"})
+            end
+
+            function start.clickConfirm()
+                ui_sys.pub(window, {"set_recipe"})
+            end
+
+            function start.clickItem(id)
+                ui_sys.pub(window, {"click_item", id})
+            end
+
+            function init()
+                local e = assert(document.getElementById "recipe-list")
+                e.scrollInsets(0, 0, 0, 200)
+
+                local last_y
+                e.addEventListener("pan", function(param)
+                    if last_y and param.state == "changed" then
+                        e.scrollTop = e.scrollTop - (param.y - last_y)
+                    end
+                    last_y = param.y
+                end)
+            end
+
+            ui_sys.mapping(start, {
+                {
+                    function(start)
+                        window.flush()
+                        scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
+                    end,
+                    "category_idx", "recipe_idx",
+                }
+            })
+        </script>
+    </head>
+    <body style = "margin: 1.32vmin 3.995vmax 0 4.97vmax; justify-content: center; align-items: center;" onload="init()">
+        <caption-container>
+            <caption-line style = "pointer-events: none; position: absolute; left: 24.26vmax; top: 12.89vmin; width: 15.34vmax;" />
+            <caption style = "pointer-events: none; position: absolute; left: 41.18vmax; top: 7.89vmin; width: 17.58vmax; height: 10vmin; font-size: 6.50vmin; justify-content: center; align-items: center;">生 产 预 览</caption>
+            <caption-line style = "pointer-events: none; position: absolute; left: 60.54vmax; top: 12.89vmin; width: 15.34vmax;" />
+        </caption-container>
+        <div style = "position: absolute; margin-left: -4.97vmax; margin-top: -1.32vmin; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+        <div style = "pointer-events: none; width: 92%; height: 93%;">
+            <div style = "pointer-events: none; align-items: center;">
+                <flex-row>
+                    <left-box>
+                        <recipe-list id = "recipe-list">
+                            <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : recipes">
+                                <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                                <div style = "margin-left: 3.00vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
+                                <div style = "flex-direction: row; flex-wrap: wrap; margin-top: -1.70vmin;">
+                                    <recipe style = "pointer-events: none;" data-attr-id = "r.id" data-for = "r, r_index : c.recipes">
+                                        <div data-style-background-image = "r.icon" style = "width: 12.50vmin; height: 12.50vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-event-click = "clickButton('click_recipe', c_index, r_index)">
+                                            <new data-if = "r.new">新</new>
+                                        </div>
+                                        <div data-style-background-image = "r.selected and '/pkg/vaststars.resources/ui/textures/item-config/item-active.texture' or 'none'" style = "pointer-events: none; position: absolute; width: 16.40vmin; height: 16.40vmin; background-size: 100% 100%;" />
+                                        <div style = "position: absolute; bottom: 0vmin; width: 13.95vmin; font-size: 2.15vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0); text-align: center;" data-event-click = "clickButton('click_recipe', c_index, r_index)">{{r.name}}</div>
+                                    </recipe>
+                                </div>
+                            </div>
+                        </recipe-list>
+                        <recipe-category>
+                            <flex-row>
+                                <recipe-category-text style = "font-size: 3vmin;" data-for = "c : recipes">
+                                    {{c.category}}
+                                </recipe-category-text>
+                            </flex-row>
+                        </recipe-category>
+                    </left-box>
+                    <right-box>
+                        <div style = "position: absolute; top: 1.25vmin; left: 2.9vmax; width: 15.57vmin; height: 15.57vmin; justify-content: center; align-items: center;">
+                            <div data-style-background-image = "recipe_icon" style = "width: 14.95vmin; height: 14.95vmin; background-size: 100% 100%;" data-if = "recipe_icon ~= ''" />
+                        </div>
+                        <div style = "position: absolute; top: 1.25vmin; left: 2.9vmax; width: 15.57vmin; height: 15.57vmin; background-image: /pkg/vaststars.resources/ui/textures/recipe-config/icon-frame.texture; background-size: 100% 100%;" />
+                        <div style = "position: absolute; margin-top: -1.50vmin; margin-left: 0.80vmax; top: 3.70vmin; left: 10.65vmax; width: 16.60vmax; text-align: center; font-size: 3.2vmin; -webkit-text-stroke: 0.1vmin #252525;" data-if = "recipe_name ~= ''">
+                            {{recipe_name}}
+                        </div>
+                        <div style = "position: absolute; top: 14.49vmin; left: 22.00vmax; width: 5vmax; height: 5.12vmin; justify-content: center; align-items: center; font-size: 3.50vmin;">
+                            {{recipe_time}}
+                        </div>
+                        <recipe-ingredients-container>
+                            <div style = "margin-top: -1vmin; font-size: 3.50vmin; color:rgb(241,157,52); -webkit-text-stroke: 0.08vmin rgb(241,157,52);">原料</div>
+                            <line style = "width: 93.88%;" />
+                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
+                                <ingredients-button data-for = "recipe_ingredients" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickItem(it.id)">
+                                    <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 7.00vmax; height: 6.94vmin;">
+                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff; text-decoration: underline;">{{it.name}}</div>
+                                        <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
+                                    </div>
+                                </ingredients-button>
+                            </div>
+                        </recipe-ingredients-container>
+                        <recipe-results-container>
+                            <div style = "margin-top: -1vmin; font-size: 3.50vmin; color:rgb(241,157,52); -webkit-text-stroke: 0.08vmin rgb(241,157,52);">成品</div>
+                            <line style = "width: 93.88%;" />
+                            <div style = "width: 100%; height: 9.00vmax; flex-direction: row; flex-wrap: wrap;">
+                                <ingredients-button data-for = "recipe_results" style = "margin-left: 0.31vmax; margin-top: 0.31vmax; flex-direction: row;" data-event-click = "clickItem(it.id)">
+                                    <div data-style-background-image = "it.icon" style = "width: 7.47vmin; height: 7.47vmin; background-size: 100% 100%;" />
+                                    <div style = "width: 7.00vmax; height: 6.94vmin;">
+                                        <div style = "width: 100%; font-size: 3.00vmin; -webkit-text-stroke: 0.08vmin #fff; text-decoration: underline;">{{it.name}}</div>
+                                        <div style = "width: 100%; font-size: 2.80vmin;">x {{it.count}}</div>
+                                    </div>
+                                </ingredients-button>
+                            </div>
+                        </recipe-results-container>
+                        <button-container>
+                            <button-confirm style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "confirm" data-event-click = "clickConfirm()">开始生产</button-confirm>
+                            <cancel-button style = "margin-top: 4.5vmin; justify-content: center; align-items: center; font-size: 5.80vmin;" data-if = "not confirm and recipe_icon ~= ''" data-event-click = "clickClearRecipe()">结束生产</cancel-button>
+                        </button-container>
+                    </right-box>
+                </flex-row>
+            </div>
+        </div>
+    </body>
+</html>

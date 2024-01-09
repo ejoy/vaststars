@@ -51,7 +51,7 @@ local check_debris = interval_call(300, function(gameplay_world, gameplay_ecs)
             igameplay.destroy_entity(e.eid)
             itransfer.set_source_eid(nil)
             iui.leave()
-            iui.redirect("/pkg/vaststars.resources/ui/construct.rml", "unselected", e.eid)
+            iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unselected", e.eid)
 
             transfer_source_box.remove()
         end
