@@ -7,6 +7,7 @@ local iguide = require "gameplay.interface.guide"
 local story_click_mb = mailbox:sub {"story_click"}
 local gameplay_core = require "gameplay.core"
 local iguide_tips = ecs.require "guide_tips"
+local iRmlUi = ecs.require "ant.rmlui|rmlui_system"
 
 local M = {}
 local guide_desc
@@ -33,9 +34,10 @@ function M.update(datamodel)
         else
             iui.close("/pkg/vaststars.resources/ui/guide_pop.html")
 
-            local chapter_text = guide_desc.narrative_end.pop_chapter
-            if chapter_text then
-                iui.open({rml = "/pkg/vaststars.resources/ui/chapter_pop.html"}, chapter_text)
+            local pop_chapter = guide_desc.narrative_end.pop_chapter
+            if pop_chapter then
+                local url = pop_chapter[1]
+                iRmlUi.open(url, url, pop_chapter[2])
             end
             local task = guide_desc.narrative_end.task
             local game_world = gameplay_core.get_world()

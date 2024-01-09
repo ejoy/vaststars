@@ -23,7 +23,7 @@ local guide = {
             {"哔哩..开采星球资源需要大量物资，附近的{/color:4bd0ff 废墟堆}寻找{/g 有用物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            pop_chapter = {"序章","迫降P4031"},
+            pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "序章", sub_text = "迫降P4031"}},
             task = {
                 "地质研究",
             },
@@ -272,7 +272,7 @@ local guide = {
             --{"记得建造{/g 无人机平台I}来存储生产出来地{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-1.texture"},
         },
         narrative_end = {
-            pop_chapter = {"第一章","自动生产"},
+            pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "第一章", sub_text = "自动生产"}},
             guide_progress = 35,--10
             task = {
                 "石头处理1",
@@ -408,7 +408,7 @@ local guide = {
             {"让我们正式进入化工生产..哔哩..哔哩..(高兴）", "/pkg/vaststars.resources/ui/textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            pop_chapter = {"第二章","化工生产"},
+            pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "第二章", sub_text = "化工生产"}},
             guide_progress = 60,
             task = {
             }

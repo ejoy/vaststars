@@ -6,9 +6,8 @@
             }
             .banner {
                 animation:3.5s linear 0s invisible;
-                pointer-events: none;
                 position: absolute; 
-                width:100%; 
+                width: 100%; 
                 text-align: center; 
                 top: 26.50vmin; 
                 background-color: rgba(50, 50, 50, 160);
@@ -49,21 +48,18 @@
                 }
             }
         </style>
-        <style path = "/pkg/vaststars.resources/ui/common/building_style.css"/>
-        <script type="text/x-lua" >
-            local ui_sys = import_package "vaststars.ui".ui_system
-            local start = ui_sys.createDataMode(window, ...)
-            window.setTimeout(function() ui_sys.close(window) end, 3500)
+        <script type="text/x-lua">
+            window.createModel(...)
+            window.setTimeout(function()
+                window.close()
+            end, 3500)
         </script>
     </head>
     <body>
-        <div style="pointer-events: none;">
-            <!-- 显示 -->
-            <div class="banner">
-                <div class="chapter">
-                    <div style="font-size: 10.25vmin;color: rgb(180, 180, 180); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">{{main_text}}</div>
-                    <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">{{sub_text}}</div> 
-                </div>
+        <div class="banner">
+            <div class="chapter">
+                <div style="width: 100%; font-size: 10.25vmin; color: rgb(180, 180, 180); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">{{main_text}}</div>
+                <div style="width: 100%; font-size: 16.25vmin; color: rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">{{sub_text}}</div> 
             </div>
         </div>
     </body>

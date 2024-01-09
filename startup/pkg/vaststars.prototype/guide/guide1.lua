@@ -6,7 +6,7 @@ local guide1 = {
             {"哔哩..检查附近的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            pop_chapter = {"教学","开采矿物"},
+            pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "教学", sub_text = "开采矿物"}},
             task = {
                 "拾取物资",
             },
@@ -184,7 +184,7 @@ local guide1 = {
             {"哔哩..恭喜你结束了{/g 挖矿教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            pop_chapter = {"祝贺","教学完成"},
+            pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "祝贺", sub_text = "教学完成"}},
             task = {
                 "挖矿教学结束",
             },
