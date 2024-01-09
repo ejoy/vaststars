@@ -7,7 +7,6 @@ function list_meta.create(document, e, item_init, item_update, detail_renderer, 
         width       = e.getAttribute("width"),
         height      = e.getAttribute("height"),
         item_count  = 0,
-        pos         = 0,
         drag        = {mouse_pos = 0, anchor = 0, delta = 0},
         item_init   = item_init,
         item_update = item_update,
@@ -62,9 +61,9 @@ end
 --     return self.selected
 -- end
 
-function list_meta:get_item(index)
-    return self.index_map[index].item
-end
+-- function list_meta:get_item(index)
+--     return self.index_map[index].item
+-- end
 
 -- function list_meta:set_list_size(width, height)
 --     self.width = width
@@ -77,15 +76,20 @@ end
 --     self:on_dirty()
 -- end
 function list_meta:reset_position()
-    self.pos = 0
-    local oldClassName = self.panel.className
-    self.panel.className = self.panel.className .. " notransition"
+    -- local oldClassName = self.panel.className
+    -- self.panel.className = self.panel.className .. " notransition"
+    -- if self.direction == 0 then
+    --     self.panel.style.left = '0px'
+    -- else
+    --     self.panel.style.top = '0px'
+    -- end
+    -- self.panel.className = oldClassName
+    local e = self.view
     if self.direction == 0 then
-        self.panel.style.left = '0px'
+        e.scrollLeft = 0
     else
-        self.panel.style.top = '0px'
+        e.scrollTop = 0
     end
-    self.panel.className = oldClassName
 end
 
 function list_meta:on_dirty(index)
@@ -124,8 +128,6 @@ function list_meta:on_dirty_all(item_count)
     end
     self.index_map = index_map
     self.item_count = item_count
-    self.min_pos = nil
-    self.pos = 0
 end
 
 function list_meta:show_detail(it, show)
