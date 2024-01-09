@@ -331,6 +331,7 @@ local prototype = gameplay.register.prototype
       { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture"},
     },
     sign_icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture",
+    order = 1,
 }
   
   -- prototype "仓库设置2" {
@@ -429,7 +430,8 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 4,
-    time = "3s"
+    time = "3s",
+    order = 2,
   }
 
   -- prototype "生产石砖" {
@@ -459,6 +461,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 5,
+    order = 3,
     time = "4s"
   }
   
@@ -511,6 +514,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 8,
+    order = 4,
     time = "3s"
   }
 
@@ -526,6 +530,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 6,
+    order = 5,
     time = "4s"
   }
 
@@ -560,6 +565,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 5,
+    order = 6,
     time = "3s"
   }
 
@@ -609,6 +615,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 8,
+    order = 7,
     time = "4s"
   }
 
@@ -669,6 +676,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 8,
+    order = 8,
     time = "4s"
   }
 
@@ -728,6 +736,7 @@ prototype "气候研究1" {
   },
   sign_icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture",
   count = 8,
+  order = 9,
   time = "5s"
 }
 
@@ -743,6 +752,7 @@ prototype "建筑维修2" {
       {"地质科技包", 1},
   },
   count = 10,
+  order = 10,
   time = "4s"
 }
 
@@ -758,6 +768,7 @@ prototype "管道系统1" {
       {"地质科技包", 1},
   },
   count = 10,
+  order = 11,
   time = "4s"
 }
 
@@ -889,6 +900,7 @@ prototype "排放1" {
     {"气候科技包", 1},
   },
   count = 3,
+  order = 12,
   time = "2s"
 }
 
@@ -918,6 +930,7 @@ prototype "电解水" {
       {"气候科技包", 1},
   },
   count = 4,
+  order = 13,
   time = "4s"
 }
 
@@ -934,6 +947,7 @@ prototype "建筑维修3" {
       {"气候科技包", 1},
   },
   count = 6,
+  order = 14,
   time = "4s"
 }
 
@@ -948,6 +962,7 @@ prototype "空气分离工艺1" {
       {"气候科技包", 1},
   },
   count = 4,
+  order = 15,
   time = "5s"
 }
 
@@ -963,6 +978,7 @@ prototype "碳处理1" {
       {"气候科技包", 1},
   },
   count = 5,
+  order = 16,
   time = "4s"
 }
 
@@ -1073,6 +1089,7 @@ prototype "加热卤水发电" {
       {"气候科技包", 1},
   },
   count = 10,
+  order = 17,
   time = "3s"
 }
 
@@ -1090,6 +1107,7 @@ prototype "建筑维修4" {
       {"气候科技包", 1},
   },
   count = 8,
+  order = 18,
   time = "4s"
 }
 
@@ -1107,6 +1125,7 @@ prototype "碳处理2" {
 
   },
   count = 8,
+  order = 19,
   time = "2s"
 }
 
@@ -1123,6 +1142,7 @@ prototype "冶金学1" {
     {"地质科技包", 1},
   },
   count = 12,
+  order = 20,
   time = "4s"
 }
 
@@ -1170,6 +1190,7 @@ prototype "有机化学1" {
     {"气候科技包", 1},
   },
   count = 6,
+  order = 21,
   time = "10s"
 }
 
@@ -1216,6 +1237,7 @@ prototype "电磁学1" {
     {"气候科技包", 1},
   },
   count = 6,
+  order = 22,
   time = "5s"
 }
 
@@ -1233,6 +1255,7 @@ prototype "机械研究" {
     {"气候科技包", 1},
   },
   count = 8,
+  order = 23,
   time = "5s",
   sign_desc = {
     { desc = "该科技是一项前沿科技，可引导其他的科技研究", icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture"},
@@ -1247,6 +1270,7 @@ prototype "生产机械科技包" {
   task = {"stat_production", 0, "机械科技包"},
   prerequisites = {"机械研究"},
   count = 3,
+  order = 24,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -1269,6 +1293,7 @@ prototype "挖掘1" {
     {"气候科技包", 1},
   },
   count = 8,
+  order = 25,
   time = "5s"
 }
 
@@ -1284,6 +1309,7 @@ prototype "仓库存储" {
     {"机械科技包", 1},
   },
   count = 5,
+  order = 26,
   time = "12s"
 }
 
@@ -1298,6 +1324,7 @@ prototype "无人机运输1" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 27,
   time = "15s"
 }
 
@@ -1314,6 +1341,7 @@ prototype "蒸馏1" {
     {"机械科技包", 1},
   },
   count = 6,
+  order = 28,
   time = "5s"
 }
 
@@ -1330,6 +1358,7 @@ prototype "泵系统1" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 29,
   time = "6s"
 }
 
@@ -1345,6 +1374,7 @@ prototype "自动化1" {
     {"机械科技包", 1},
   },
   count = 6,
+  order = 30,
   time = "8s"
 }
 
@@ -1360,6 +1390,7 @@ prototype "物流车站1" {
     {"机械科技包", 1},
   },
   count = 6,
+  order = 31,
   time = "10s"
 }
 
@@ -1375,6 +1406,7 @@ prototype "物流中心研究" {
     {"机械科技包", 1},
   },
   count = 10,
+  order = 32,
   time = "10s"
 }
 
@@ -1392,6 +1424,7 @@ prototype "地下水净化1" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 33,
   time = "8s"
 }
 
@@ -1408,6 +1441,7 @@ prototype "过滤1" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 34,
   time = "10s"
 }
 
@@ -1425,6 +1459,7 @@ prototype "炼钢" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 35,
   time = "10s"
 }
 
@@ -1435,6 +1470,7 @@ prototype "大炼钢铁" {
   task = {"stat_production", 0, "钢板"},
   prerequisites = {"炼钢"},
   count = 20,
+  order = 36,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -1456,6 +1492,7 @@ prototype "矿物处理1" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 37,
   time = "10s"
 }
 
@@ -1466,6 +1503,7 @@ prototype "矿石粉碎" {
   task = {"stat_production", 0, "沙子"},
   prerequisites = {"矿物处理1"},
   count = 20,
+  order = 38,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -1484,6 +1522,7 @@ prototype "地质研究2" {
       {"地质科技包", 1},
   },
   count = 20,
+  order = 39,
   time = "5s",
   prerequisites = {"矿物处理1"},
   sign_desc = {
@@ -1505,6 +1544,7 @@ prototype "钢加工" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 40,
   time = "8s"
 }
 
@@ -1521,6 +1561,7 @@ prototype "发电机1" {
     {"机械科技包", 1},
   },
   count = 4,
+  order = 41,
   time = "15s"
 }
 
@@ -1531,6 +1572,7 @@ prototype "打造钢齿轮" {
   task = {"stat_production", 0, "钢齿轮"},
   prerequisites = {"钢加工"},
   count = 20,
+  order = 42,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -1553,6 +1595,7 @@ prototype "浮选1" {
     {"机械科技包", 1},
   },
   count = 5,
+  order = 43,
   time = "8s"
 }
 
@@ -1569,6 +1612,7 @@ prototype "硅处理" {
     {"机械科技包", 1},
   },
   count = 5,
+  order = 44,
   time = "8s"
 }
 
@@ -1584,6 +1628,7 @@ prototype "铁矿熔炼2" {
       {"机械科技包", 1},
   },
   count = 4,
+  order = 45,
   time = "8s"
 }
 
@@ -1600,6 +1645,7 @@ prototype "电解1" {
       {"机械科技包", 1},
   },
   count = 5,
+  order = 46,
   time = "12s"
 }
 
@@ -1615,6 +1661,7 @@ prototype "有机化学2" {
       {"机械科技包", 1},
   },
   count = 8,
+  order = 47,
   time = "8s"
 }
 
@@ -1632,6 +1679,7 @@ prototype "管道系统2" {
       {"机械科技包", 1},
   },
   count = 6,
+  order = 48,
   time = "10s"
 }
 
@@ -1649,6 +1697,7 @@ prototype "化学工程1" {
       {"机械科技包", 1},
   },
   count = 6,
+  order = 49,
   time = "10s"
 }
 
@@ -1665,6 +1714,7 @@ prototype "环境净化1" {
     {"机械科技包", 1},
   },
   count = 8,
+  order = 50,
   time = "8s"
 }
 
@@ -1682,6 +1732,7 @@ prototype "无机化学" {
       {"机械科技包", 1},
   },
   count = 10,
+  order = 51,
   time = "5s"
 }
 
@@ -1698,6 +1749,7 @@ prototype "废料回收1" {
       {"机械科技包", 1},
   },
   count = 10,
+  order = 52,
   time = "6s"
 }
 
@@ -1713,6 +1765,7 @@ prototype "废水处理" {
     {"机械科技包", 1},
   },
   count = 20,
+  order = 53,
   time = "8s"
 }
 
@@ -1730,6 +1783,7 @@ prototype "石头处理3" {
     {"机械科技包", 1},
   },
   count = 8,
+  order = 54,
   time = "8s"
 }
 
@@ -1740,6 +1794,7 @@ prototype "坩埚制造" {
   task = {"stat_production", 0, "坩埚"},
   prerequisites = {"石头处理3"},
   count = 10,
+  order = 55,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -1762,6 +1817,7 @@ prototype "锅炉制造" {
     {"机械科技包", 1},
   },
   count = 10,
+  order = 56,
   time = "6s"
 }
 
@@ -1778,6 +1834,7 @@ prototype "有机化学3" {
       {"机械科技包", 1},
   },
   count = 12,
+  order = 57,
   time = "8s"
 }
 
@@ -1793,6 +1850,7 @@ prototype "物流学2" {
       {"机械科技包", 1},
   },
   count = 20,
+  order = 58,
   time = "5s"
 }
 
@@ -1809,6 +1867,7 @@ prototype "无人机运输2" {
       {"机械科技包", 1},
   },
   count = 20,
+  order = 59,
   time = "8s"
 }
 
@@ -1825,6 +1884,7 @@ prototype "冶金学2" {
     {"机械科技包", 1},
   },
   count = 20,
+  order = 60,
   time = "6s"
 }
 
@@ -1841,6 +1901,7 @@ prototype "铝生产" {
     {"机械科技包", 1},
   },
   count = 20,
+  order = 61,
   time = "8s"
 }
 
@@ -1857,6 +1918,7 @@ prototype "硅生产" {
     {"机械科技包", 1},
   },
   count = 20,
+  order = 62,
   time = "6s"
 }
 
@@ -1867,6 +1929,7 @@ prototype "硅板制造" {
   task = {"stat_production", 0, "硅板"},
   prerequisites = {"硅生产"},
   count = 30,
+  order = 63,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -1889,6 +1952,7 @@ prototype "润滑" {
     {"机械科技包", 1},
   },
   count = 20,
+  order = 64,
   time = "5s"
 }
 
@@ -1906,6 +1970,7 @@ prototype "铝加工" {
     {"机械科技包", 1},
   },
   count = 25,
+  order = 65,
   time = "8s"
 }
 
@@ -1916,6 +1981,7 @@ prototype "铝丝制造" {
   task = {"stat_production", 0, "铝丝"},
   prerequisites = {"铝加工"},
   count = 40,
+  order = 66,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -1938,6 +2004,7 @@ prototype "沸腾实验" {
     {"机械科技包", 1},
   },
   count = 15,
+  order = 67,
   time = "5s"
 }
 
@@ -1955,6 +2022,7 @@ prototype "电子器件1" {
     {"机械科技包", 1},
   },
   count = 30,
+  order = 68,
   time = "5s"
 }
 
@@ -1972,6 +2040,7 @@ prototype "太阳能存储1" {
     {"机械科技包", 1},
   },
   count = 20,
+  order = 69,
   time = "15s"
 }
 
@@ -1989,6 +2058,7 @@ prototype "环境净化2" {
     {"机械科技包", 1},
   },
   count = 30,
+  order = 70,
   time = "8s"
 }
 
@@ -2010,6 +2080,7 @@ prototype "电子研究" {
   },
   sign_icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture",
   count = 50,
+  order = 71,
   time = "4s"
 }
 
@@ -2029,6 +2100,7 @@ prototype "电磁学2" {
     {"电子科技包", 1},
   },
   count = 30,
+  order = 72,
   time = "10s"
 }
 
@@ -2047,6 +2119,7 @@ prototype "研究设施1" {
     {"电子科技包", 1},
   },
   count = 15,
+  order = 73,
   time = "10s"
 }
 
@@ -2058,6 +2131,7 @@ prototype "科技大跃进" {
   task = {"stat_production", 0, "科研中心I"},
   prerequisites = {"研究设施1"},
   count = 3,
+  order = 74,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2080,6 +2154,7 @@ prototype "信号处理" {
     {"电子科技包", 1},
   },
   count = 30,
+  order = 75,
   time = "15s"
 }
   
@@ -2097,6 +2172,7 @@ prototype "计算元件" {
     {"电子科技包", 1},
   },
   count = 70,
+  order = 76,
   time = "10s"
 }
 
@@ -2113,6 +2189,7 @@ prototype "电解2" {
     {"电子科技包", 1},
   },
   count = 80,
+  order = 77,
   time = "15s"
 }
 
@@ -2130,6 +2207,7 @@ prototype "挖掘2" {
     {"电子科技包", 1},
   },
   count = 50,
+  order = 78,
   time = "15s"
 }
 
@@ -2147,6 +2225,7 @@ prototype "自动化2" {
     {"电子科技包", 1},
   },
   count = 60,
+  order = 79,
   time = "15s"
 }
 
@@ -2164,6 +2243,7 @@ prototype "发电机2" {
     {"电子科技包", 1},
   },
   count = 70,
+  order = 80,
   time = "25s"
 }
 
@@ -2182,6 +2262,7 @@ prototype "优化1" {
     {"电子科技包", 1},
   },
   count = 60,
+  order = 81,
   time = "20s"
 }
 
@@ -2209,6 +2290,7 @@ prototype "效能提升" {
   task = {"stat_production", 0, "效能插件I"},
   prerequisites = {"优化1"},
   count = 5,
+  order = 82,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2224,6 +2306,7 @@ prototype "速度提升" {
   task = {"stat_production", 0, "速度插件I"},
   prerequisites = {"优化1"},
   count = 5,
+  order = 83,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2239,6 +2322,7 @@ prototype "产能提升" {
   task = {"stat_production", 0, "产能插件I"},
   prerequisites = {"优化1"},
   count = 5,
+  order = 84,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2261,6 +2345,7 @@ prototype "矿物处理2" {
     {"电子科技包", 1},
   },
   count = 60,
+  order = 85,
   time = "25s"
 }
 
@@ -2279,6 +2364,7 @@ prototype "氮化学" {
     {"电子科技包", 1},
   },
   count = 80,
+  order = 86,
   time = "15s"
 }
 
@@ -2289,6 +2375,7 @@ prototype "氨制造" {
   task = {"stat_production", 0, "氨气"},
   prerequisites = {"氮化学"},
   count = 500,
+  order = 87,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2311,6 +2398,7 @@ prototype "气候研究2" {
     {"电子科技包", 1},
   },
   count = 100,
+  order = 88,
   time = "15s"
 }
 
@@ -2328,6 +2416,7 @@ prototype "玻璃制造" {
     {"电子科技包", 1},
   },
   count = 90,
+  order = 89,
   time = "15s"
 }
 
@@ -2346,6 +2435,7 @@ prototype "建筑材料" {
     {"电子科技包", 1},
   },
   count = 120,
+  order = 90,
   time = "15s"
 }
 
@@ -2363,6 +2453,7 @@ prototype "地下水净化2" {
     {"电子科技包", 1},
   },
   count = 160,
+  order = 91,
   time = "20s"
 }
 
@@ -2381,6 +2472,7 @@ prototype "地热1" {
     {"电子科技包", 1},
   },
   count = 120,
+  order = 92,
   time = "20s"
 }
 
@@ -2399,6 +2491,7 @@ prototype "太阳能1" {
     {"电子科技包", 1},
   },
   count = 150,
+  order = 93,
   time = "30s"
 }
 
@@ -2409,6 +2502,7 @@ prototype "铺设太阳能板" {
   task = {"select_entity", 0, "太阳能板I"},
   prerequisites = {"太阳能1"},
   count = 20,
+  order = 94,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
   },
@@ -2432,6 +2526,7 @@ prototype "蒸馏2" {
     {"电子科技包", 1},
   },
   count = 120,
+  order = 95,
   time = "30s"
 }
 
@@ -2449,6 +2544,7 @@ prototype "硫磺处理" {
     {"机械科技包", 1},
   },
   count = 120,
+  order = 96,
   time = "30s"
 }
 
@@ -2459,6 +2555,7 @@ prototype "硫酸生产" {
   task = {"stat_production", 0, "硫酸"},
   prerequisites = {"硫磺处理"},
   count = 500,
+  order = 97,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2482,6 +2579,7 @@ prototype "过滤2" {
     {"电子科技包", 1},
   },
   count = 150,
+  order = 98,
   time = "30s"
 }
 
@@ -2500,6 +2598,7 @@ prototype "浮选2" {
     {"电子科技包", 1},
   },
   count = 160,
+  order = 99,
   time = "30s"
 }
 
@@ -2518,6 +2617,7 @@ prototype "化学工程2" {
     {"电子科技包", 1},
   },
   count = 200,
+  order = 100,
   time = "30s"
 }
 
@@ -2540,6 +2640,7 @@ prototype "化学研究" {
   },
   sign_icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture",
   count = 250,
+  order = 101,
   time = "30s"
 }
 
@@ -2562,6 +2663,7 @@ prototype "钠处理" {
     {"化学科技包", 1},
   },
   count = 150,
+  order = 102,
   time = "30s"
 }
 
@@ -2580,6 +2682,7 @@ prototype "空气分离工艺2" {
     {"化学科技包", 1},
   },
   count = 160,
+  order = 103,
   time = "30s"
 }
 
@@ -2590,6 +2693,7 @@ prototype "氦气生产" {
   task = {"stat_production", 0, "氦气"},
   prerequisites = {"空气分离工艺2"},
   count = 500,
+  order = 104,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2614,6 +2718,7 @@ prototype "排放2" {
     {"化学科技包", 1},
   },
   count = 250,
+  order = 105,
   time = "30s"
 }
 
@@ -2633,6 +2738,7 @@ prototype "钛生产1" {
     {"化学科技包", 1},
   },
   count = 300,
+  order = 106,
   time = "30s"
 }
 
@@ -2650,6 +2756,7 @@ prototype "高温分解" {
     {"化学科技包", 1},
   },
   count = 200,
+  order = 107,
   time = "30s"
 }
 
@@ -2669,6 +2776,7 @@ prototype "电池存储1" {
     {"化学科技包", 1},
   },
   count = 300,
+  order = 108,
   time = "30s"
 }
 
@@ -2679,6 +2787,7 @@ prototype "电池制造" {
   task = {"stat_production", 0, "电池I"},
   prerequisites = {"电池存储1"},
   count = 20,
+  order = 109,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2702,6 +2811,7 @@ prototype "复合材料" {
     {"化学科技包", 1},
   },
   count = 450,
+  order = 110,
   time = "30s"
 }
 
@@ -2721,6 +2831,7 @@ prototype "太阳能存储2" {
     {"化学科技包", 1},
   },
   count = 320,
+  order = 111,
   time = "30s"
 }
 
@@ -2740,6 +2851,7 @@ prototype "钛生产2" {
     {"化学科技包", 1},
   },
   count = 350,
+  order = 112,
   time = "30s"
 }
 
@@ -2750,6 +2862,7 @@ prototype "钛板生产" {
   task = {"stat_production", 0, "钛板"},
   prerequisites = {"钛生产2"},
   count = 30,
+  order = 113,
   tips_pic = {
     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_plastic.texture",
   },
@@ -2774,6 +2887,7 @@ prototype "无人机运输3" {
     {"化学科技包", 1},
   },
   count = 350,
+  order = 114,
   time = "30s"
 }
 
@@ -2793,6 +2907,7 @@ prototype "自动化3" {
     {"化学科技包", 1},
   },
   count = 350,
+  order = 115,
   time = "30s"
 }
 
@@ -2812,6 +2927,7 @@ prototype "挖掘3" {
     {"化学科技包", 1},
   },
   count = 350,
+  order = 116,
   time = "30s"
 }
 
@@ -2831,6 +2947,7 @@ prototype "电子器件2" {
     {"化学科技包", 1},
   },
   count = 360,
+  order = 117,
   time = "30s"
 }
 
@@ -2869,6 +2986,7 @@ prototype "优化2" {
     {"化学科技包", 1},
   },
   count = 400,
+  order = 118,
   time = "30s"
 }
 
@@ -2888,6 +3006,7 @@ prototype "矿物处理3" {
     {"化学科技包", 1},
   },
   count = 420,
+  order = 119,
   time = "30s"
 }
 
@@ -2907,6 +3026,7 @@ prototype "太阳能2" {
     {"化学科技包", 1},
   },
   count = 420,
+  order = 120,
   time = "30s"
 }
 
@@ -2925,6 +3045,7 @@ prototype "管道系统3" {
     {"化学科技包", 1},
   },
   count = 420,
+  order = 121,
   time = "30s"
 }
 
@@ -2944,6 +3065,7 @@ prototype "地热2" {
     {"化学科技包", 1},
   },
   count = 500,
+  order = 122,
   time = "30s"
 }
 
@@ -2963,6 +3085,7 @@ prototype "研究设施2" {
     {"化学科技包", 1},
   },
   count = 550,
+  order = 123,
   time = "30s"
 }
 
@@ -2982,6 +3105,7 @@ prototype "高温防护" {
     {"化学科技包", 1},
   },
   count = 600,
+  order = 124,
   time = "35s"
 }
 
@@ -3001,6 +3125,7 @@ prototype "物理研究" {
     {"化学科技包", 1},
   },
   count = 800,
+  order = 125,
   time = "40s"
 }
 
@@ -3022,6 +3147,7 @@ prototype "电磁学3" {
     {"物理科技包", 1},
   },
   count = 500,
+  order = 126,
   time = "40s"
 }
 
@@ -3042,6 +3168,7 @@ prototype "研究设施3" {
     {"物理科技包", 1},
   },
   count = 500,
+  order = 127,
   time = "40s"
 }
 
@@ -3058,6 +3185,7 @@ prototype "机械研究2" {
     {"物理科技包", 1},
   },
   count = 500,
+  order = 128,
   time = "40s"
 }
 
@@ -3078,6 +3206,7 @@ prototype "石墨分离" {
     {"物理科技包", 1},
   },
   count = 800,
+  order = 129,
   time = "40s"
 }
 
@@ -3098,6 +3227,7 @@ prototype "地下水净化3" {
     {"物理科技包", 1},
   },
   count = 800,
+  order = 130,
   time = "40s"
 }
 
@@ -3118,6 +3248,7 @@ prototype "过滤3" {
     {"物理科技包", 1},
   },
   count = 800,
+  order = 131,
   time = "40s"
 }
 
@@ -3138,6 +3269,7 @@ prototype "冶金学3" {
     {"物理科技包", 1},
   },
   count = 900,
+  order = 132,
   time = "40s"
 }
 
@@ -3158,6 +3290,7 @@ prototype "浮选3" {
     {"物理科技包", 1},
   },
   count = 900,
+  order = 133,
   time = "40s"
 }
 
@@ -3178,6 +3311,7 @@ prototype "蒸馏3" {
     {"物理科技包", 1},
   },
   count = 1000,
+  order = 134,
   time = "40s"
 }
 
@@ -3198,6 +3332,7 @@ prototype "发电机3" {
     {"物理科技包", 1},
   },
   count = 1000,
+  order = 135,
   time = "40s"
 }
 
@@ -3218,6 +3353,7 @@ prototype "微型化" {
     {"物理科技包", 1},
   },
   count = 1000,
+  order = 136,
   time = "40s"
 }
 
@@ -3238,6 +3374,7 @@ prototype "电池存储2" {
     {"物理科技包", 1},
   },
   count = 1100,
+  order = 137,
   time = "40s"
 }
 
@@ -3258,6 +3395,7 @@ prototype "电解3" {
     {"物理科技包", 1},
   },
   count = 1100,
+  order = 138,
   time = "40s"
 }
 
@@ -3278,6 +3416,7 @@ prototype "电子器件3" {
     {"物理科技包", 1},
   },
   count = 1200,
+  order = 139,
   time = "40s"
 }
 
@@ -3298,6 +3437,7 @@ prototype "地热3" {
     {"物理科技包", 1},
   },
   count = 1200,
+  order = 140,
   time = "40s"
 }
 
@@ -3318,6 +3458,7 @@ prototype "化学工程3" {
     {"物理科技包", 1},
   },
   count = 1200,
+  order = 141,
   time = "40s"
 }
 
@@ -3338,6 +3479,7 @@ prototype "太阳能3" {
     {"物理科技包", 1},
   },
   count = 1300,
+  order = 142,
   time = "40s"
 }
 
@@ -3358,6 +3500,7 @@ prototype "优化3" {
     {"物理科技包", 1},
   },
   count = 1400,
+  order = 142,
   time = "45s"
 }
 
@@ -3378,6 +3521,7 @@ prototype "太阳能存储3" {
     {"物理科技包", 1},
   },
   count = 1400,
+  order = 143,
   time = "45s"
 }
 
@@ -3418,6 +3562,7 @@ prototype "碳纳米科技" {
     {"物理科技包", 1},
   },
   count = 1400,
+  order = 144,
   time = "45s"
 }
 
@@ -3438,6 +3583,7 @@ prototype "太空电梯牵引" {
     {"物理科技包", 1},
   },
   count = 1500,
+  order = 145,
   time = "45s"
 }
 
@@ -3458,6 +3604,7 @@ prototype "太空电梯承重" {
     {"物理科技包", 1},
   },
   count = 1500,
+  order = 146,
   time = "45s"
 }
 
@@ -3478,6 +3625,7 @@ prototype "太空电梯装载" {
     {"物理科技包", 1},
   },
   count = 1500,
+  order = 147,
   time = "45s"
 }
 
@@ -3498,6 +3646,7 @@ prototype "空间站" {
     {"物理科技包", 1},
   },
   count = 1500,
+  order = 148,
   time = "45s"
 }
 
