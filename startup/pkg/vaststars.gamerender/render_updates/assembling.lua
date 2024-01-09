@@ -44,6 +44,7 @@ local math3d = require "math3d"
 local vsobject_manager = ecs.require "vsobject_manager"
 local icoord = require "coord"
 local iworld = require "gameplay.interface.world"
+local igameplay_fluidbox = gameplay.interface "fluidbox"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -296,7 +297,7 @@ local function create_consumer_icon(object_id, building_srt)
     }
 end
 
-local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
+local function _find_neighbor_fluid(gameplay_world, x, y, dir, ground)
     local succ, dx, dy = false, x, y
     for i = 1, ground or 1 do
         succ, dx, dy = icoord.move(dx, dy, dir, 1)
@@ -347,16 +348,9 @@ function assembling_sys:gameworld_prebuild()
     for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update REMOVED:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
-        local recipes = iprototype_cache.get("recipe_config").assembling_recipes[typeobject.name]
-        local cache = {}
-        for _, recipe in ipairs(recipes) do
-            local typeobject_recipe = iprototype.queryByName(recipe.name)
-            local ingredients = irecipe.get_elements(typeobject_recipe.ingredients)
-            assert(#ingredients == 1)
-            cache[ingredients[1].name] = recipe.name
-        end
+        local cache = iprototype_cache.get("recipe_config").assembling_recipes_2[typeobject.name]
         for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
+            local neighbor_fluid_name = _find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
             if neighbor_fluid_name then
                 local recipe_name = cache[neighbor_fluid_name]
                 if recipe_name then
@@ -370,18 +364,23 @@ function assembling_sys:gameworld_prebuild()
         end
     end
 
-    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in REMOVED:absent" do
+    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in fluidbox:update REMOVED:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         local cache = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
         for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
+            local neighbor_fluid_name = _find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
             if neighbor_fluid_name then
                 local recipe_name = cache[neighbor_fluid_name]
                 if recipe_name then
-                    local pt = iprototype.queryByName(recipe_name)
-                    if pt.id ~= e.chimney.recipe then
+                    local pt_recipe = iprototype.queryByName(recipe_name)
+                    if pt_recipe.id ~= e.chimney.recipe then
                         igameplay_chimney.set_recipe(e, recipe_name)
+                    end
+
+                    local pt_fluid = iprototype.queryByName(neighbor_fluid_name)
+                    if pt_fluid.id ~= e.fluidbox.fluid then
+                        igameplay_fluidbox.update_fluidbox(gameplay_world, e, pt_fluid.id)
                     end
                     break
                 end
