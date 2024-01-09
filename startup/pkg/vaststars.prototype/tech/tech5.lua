@@ -25,6 +25,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "指挥中心", item = "运输车辆I", count = 30,},
     prerequisites = {"自动化教学"},
     count = 1,
+    order = 450,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -74,6 +75,7 @@ local prototype = gameplay.register.prototype
       unlock_item = {"碎石","铁矿石","铝矿石"},
     },
     count = 1,
+    order = 451,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -116,6 +118,7 @@ local prototype = gameplay.register.prototype
     task_params = {items = {"supply|铝矿石"}},
     prerequisites = {"修复道路"},
     count = 1,
+    order = 452,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -149,6 +152,7 @@ local prototype = gameplay.register.prototype
     task_params = {items = {"demand|铝矿石"}},
     prerequisites = {"铝矿石发货设置"},
     count = 1,
+    order = 453,
     effects = {
       unlock_item = {"地质科技包"},
       unlock_recipe = {"地质科技包1"},
@@ -185,6 +189,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 2},                          
     prerequisites = {"铝矿石收货设置"},
     count = 4,
+    order = 454,
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -212,6 +217,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
     count = 3,
+    order = 455,
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -298,6 +304,7 @@ local prototype = gameplay.register.prototype
     },
     sign_icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture",
     count = 5,
+    order = 456,
     time = "5s"
   }
   
@@ -306,6 +313,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "气候科技包"},
     count = 3,
+    order = 457,
     prerequisites = {"气候研究"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -360,6 +368,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "锅炉I", fluids = {"地下卤水"}},
     count = 1,
+    order = 458,
     prerequisites = {"气候科技包量产"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -407,6 +416,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 5,
+    order = 459,
     time = "5s"
   }
 
@@ -423,6 +433,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 3,
+    order = 460,
     time = "5s"
   }
 
@@ -438,6 +449,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 8,
+    order = 461,
     time = "5s"
   }
 
@@ -446,6 +458,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "碾碎铁矿石"},
     count = 10,
+    order = 462,
     prerequisites = {"铁矿石加工"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -483,6 +496,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 4,
+    order = 463,
     time = "4s"
   }
 
@@ -497,6 +511,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 6,
+    order = 464,
     time = "5s"
   }
 
@@ -512,6 +527,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 8,
+    order = 465,
     time = "5s"
   }
 
@@ -520,6 +536,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "一氧化碳"},
     count = 500,
+    order = 466,
     prerequisites = {"碳处理工艺"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -578,6 +595,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "石墨"},
     count = 8,
+    order = 467,
     prerequisites = {"一氧化碳量产"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -615,6 +633,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 12,
+    order = 468,
     time = "4s"
   }
 
@@ -623,6 +642,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "乙烯"},
     count = 500,
+    order = 469,
     prerequisites = {"碳化学研究"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -644,6 +664,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 20,
+    order = 470,
     time = "3s"
   }
 
@@ -652,6 +673,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "塑料"},
     count = 8,
+    order = 471,
     prerequisites = {"化工塑料"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -690,6 +712,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 12,
+    order = 472,
     time = "4s"
   }
 
@@ -700,6 +723,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 2},                          
     prerequisites = {"铁加工"},
     count = 15,
+    order = 473,
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -727,6 +751,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "铁板"},
     count = 6,
+    order = 474,
     prerequisites = {"铁加工"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -766,6 +791,7 @@ local prototype = gameplay.register.prototype
         {"气候科技包", 1},
     },
     count = 6,
+    order = 475,
     time = "5s"
   }
 
@@ -781,6 +807,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 16,
+    order = 476,
     time = "4s"
   }
 
@@ -789,6 +816,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "铁齿轮"},
     count = 6,
+    order = 477,
     prerequisites = {"铁制品工艺"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -827,6 +855,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 20,
+    order = 478,
     time = "4s"
   }
 
@@ -835,6 +864,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "电动机I"},
     count = 4,
+    order = 479,
     prerequisites = {"机械加工"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -878,6 +908,7 @@ local prototype = gameplay.register.prototype
     },
     sign_icon = "/pkg/vaststars.resources/ui/textures/science/key_sign.texture",
     count = 12,
+    order = 480,
     time = "6"
   }
   
@@ -886,6 +917,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "机械科技包"},
     count = 6,
+    order = 481,
     prerequisites = {"机械工程"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -905,6 +937,7 @@ local prototype = gameplay.register.prototype
         {"机械科技包", 1},
     },
     count = 15,
+    order = 482,
     time = "3s"
   }
 
@@ -917,6 +950,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"自动化科技"},
     count = 1,
+    order = 483,
     tips_pic = {
       "",
     },

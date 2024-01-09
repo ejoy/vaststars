@@ -70,6 +70,7 @@ local prototype = gameplay.register.prototype
     task_params = {ui = "set_transfer_source", building = "机身残骸"},
     prerequisites = {"采矿教学"},
     count = 1,
+    order = 311,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -103,6 +104,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "指挥中心", item = "采矿机I", count = 3,},
     prerequisites = {"拾取物资"},
     count = 1,
+    order = 312,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -135,6 +137,7 @@ local prototype = gameplay.register.prototype
     task = {"select_entity", 0, "采矿机I"},
     prerequisites = {"放置指挥中心"},
     count = 3,
+    order = 313,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -185,6 +188,7 @@ local prototype = gameplay.register.prototype
     task = {"select_entity", 0, "仓库I"},
     prerequisites = {"采矿机放置"},
     count = 1,
+    order = 314,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -220,6 +224,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 8},
     task_params = {items = {"transit|碎石", "transit|铁矿石","transit|铝矿石"}},
     count = 1,
+    order = 315,
     prerequisites = {"仓库放置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -241,6 +246,7 @@ local prototype = gameplay.register.prototype
     task_params = {ui = "set_transfer_source", building = "采矿机I"},
     prerequisites = {"收货设置1"},
     count = 1,
+    order = 316,
     guide_focus = {
       {
         prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -274,6 +280,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "仓库I", item = "碎石"},
     prerequisites = {"获取碎石"},
     count = 6,
+    order = 317,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -289,6 +296,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "地质科技包1"},
     count = 1,
+    order = 318,
     prerequisites = {"仓库存储矿石"},
     guide_focus = {
       {
@@ -322,6 +330,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 5},                          
     task_params = {item = "地质科技包"},
     count = 1,
+    order = 319,
     prerequisites = {"组装机配方设置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -340,6 +349,7 @@ local prototype = gameplay.register.prototype
     task = {"stat_production", 0, "地质科技包"},
     prerequisites = {"收货设置2"},
     count = 3,
+    order = 320,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack3.texture",
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack4.texture",
@@ -360,6 +370,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"科技包生产"},
     count = 1,
+    order = 321,
     tips_pic = {
       "",
     },

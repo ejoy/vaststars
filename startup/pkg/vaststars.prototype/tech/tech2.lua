@@ -27,6 +27,7 @@ local prototype = gameplay.register.prototype
     task_params = {ui = "set_transfer_source", building = "机身残骸"},
     prerequisites = {"电网教学"},
     count = 1,
+    order = 350,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -60,6 +61,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "指挥中心", item = "采矿机I", count = 3,},
     prerequisites = {"检查废墟"},
     count = 1,
+    order = 351,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -92,6 +94,7 @@ local prototype = gameplay.register.prototype
     task = {"select_entity", 0, "采矿机I"},
     prerequisites = {"放置资源"},
     count = 3,
+    order = 352,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -145,6 +148,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 10},
     task_params = {building = "采矿机I"},
     count = 3,
+    order = 353,
     effects = {
       unlock_item = {"轻质石砖"},
       unlock_recipe = {"轻质石砖"},
@@ -173,6 +177,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3},                          
     task_params = {recipe = "轻质石砖"},
     count = 1,
+    order = 354,
     prerequisites = {"风力发电机放置"},
     guide_focus = {
       {
@@ -215,6 +220,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 8},
     task_params = {items = {"transit|碎石", "transit|铁矿石","transit|铝矿石","transit|轻质石砖"}},
     count = 1,
+    order = 355,
     prerequisites = {"生产设置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -249,6 +255,7 @@ local prototype = gameplay.register.prototype
     task_params = {building = "仓库I", item = "铝矿石"},
     prerequisites = {"新仓库设置"},
     count = 10,
+    order = 356,
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -288,6 +295,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "轻质石砖"},
     count = 2,
+    order = 357,
     prerequisites = {"仓库互转"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -304,6 +312,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 7},
     task_params = {building = "指挥中心", item = "轻型太阳能板", count = 1,},
     count = 1,
+    order = 358,
     prerequisites = {"生产轻质石砖"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -337,6 +346,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 10},
     task_params = {building = "轻型太阳能板"},
     count = 1,
+    order = 359,
     prerequisites = {"太阳能板获取"},
     effects = {
       unlock_item = {"铁板"},
@@ -357,6 +367,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 10},
     task_params = {building = "蓄电池I"},
     count = 4,
+    order = 360,
     prerequisites = {"太阳能板铺设"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -387,6 +398,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3}, 
     task_params = {recipe = "铁板1"},
     count = 1,
+    order = 361,
     prerequisites = {"蓄电池铺设"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -437,6 +449,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"power_generator", 3},
     count = 600,
+    order = 362,
     prerequisites = {"太阳能板制造"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -453,6 +466,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 6},
     task_params = {ui = "set_transfer_source", building = "机尾残骸"},
     count = 1,
+    order = 363,
     prerequisites = {"太阳能发电"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -485,6 +499,7 @@ local prototype = gameplay.register.prototype
     type = {"task" },
     task = {"select_entity", 0, "锅炉I"},
     count = 1,
+    order = 364,
     effects = {
       unlock_recipe = {"卤水沸腾"},
     },
@@ -503,6 +518,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 3}, 
     task_params = {recipe = "卤水沸腾"},
     count = 1,
+    order = 365,
     prerequisites = {"锅炉放置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -519,6 +535,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "锅炉I", fluids = {"地下卤水"}},
     count = 1,
+    order = 366,
     prerequisites = {"锅炉设置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -538,6 +555,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 11},
     task_params = {building = "蒸汽发电机I", fluids = {"蒸汽"}},
     count = 1,
+    order = 367,
     prerequisites = {"地下水挖掘机放置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -556,6 +574,7 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"stat_production", 0, "地质科技包"},
     count = 3,
+    order = 368,
     prerequisites = {"发电机放置"},
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
@@ -573,6 +592,7 @@ local prototype = gameplay.register.prototype
         {"地质科技包", 1},
     },
     count = 5,
+    order = 369,
     time = "1s"
   }
 
@@ -585,6 +605,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"启动科技研究"},
     count = 1,
+    order = 370,
     tips_pic = {
       "",
     },
