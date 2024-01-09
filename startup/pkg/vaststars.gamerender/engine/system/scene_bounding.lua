@@ -59,7 +59,7 @@ function sb_sys:update_camera_bounding()
     local zn, zf = find_zn_zf(intersectpoints, C.camera.viewmat)
     assert(zn >= 0 and zf > zn)
     sb.scene_info = {
-        PSR = math3d.marked_aabb(math3d.minmax(intersectpoints)),
+        PSR = math3d.minmax(intersectpoints),
         zn = zn, zf = zf,
     }
 end
