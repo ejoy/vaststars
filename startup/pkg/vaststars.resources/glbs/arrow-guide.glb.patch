@@ -1,26 +1,15 @@
 ---
 file: mesh.prefab
-op: add
-path: /-
+op: replace
+path: /1/tag
 value:
-  data:
-    timeline:
-      duration: 2
-      key_event:
-        ---
-        event_list:
-          ---
-          action: Armature.001Action
-          event_type: Animation
-          name: Animation2
-          pause_frame: -1
-        tick: 0
-        time: 0
-      loop: true
-  policy:
-    ant.timeline|timeline
-  tag:
-    timeline1
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /3/tag
+value:
+  Cylinder_P1
 ---
 file: mesh.prefab
 op: replace
@@ -38,19 +27,6 @@ file: mesh.prefab
 op: replace
 path: /3/data/visible_state
 value: main_view|selectable
----
-file: mesh.prefab
-op: replace
-path: /2/data/anim_ctrl
-value:
-  play_state:
-    forwards: true
-    loop: true
-    manual_update: false
-    play: true
-    previous_ratio: 0
-    ratio: 0
-    speed: 1
 ---
 file: mesh.prefab
 op: createfile

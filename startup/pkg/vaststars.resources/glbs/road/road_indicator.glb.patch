@@ -1,27 +1,21 @@
 ---
 file: mesh.prefab
-op: add
-path: /-
+op: replace
+path: /1/tag
 value:
-  data:
-    timeline:
-      duration: 0.8333333333333334
-      key_event:
-        ---
-        event_list:
-          ---
-          action: Armature.002Action
-          event_type: Animation
-          forwards: false
-          name: Animation4
-          pause_frame: -1
-        tick: 0
-        time: 0
-      loop: true
-  policy:
-    ant.timeline|timeline
-  tag:
-    timeline2
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  anim_ctrl
+---
+file: mesh.prefab
+op: replace
+path: /3/tag
+value:
+  Plane.003_P1
 ---
 file: mesh.prefab
 op: replace
