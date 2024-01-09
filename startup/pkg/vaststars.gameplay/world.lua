@@ -48,6 +48,12 @@ return function ()
         assert(id == i)
     end
 
+    ecs:new {
+        global_state = {
+            pollution = 0,
+            consumer_multiplier = 100,
+        }
+    }
     local context = ecs:context()
     local cworld = cWorld.create_world(context)
     world.ecs = ecs

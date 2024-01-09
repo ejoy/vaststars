@@ -276,6 +276,7 @@ namespace prototype {
     PROTOTYPE(supply_area, uint16_t)
     PROTOTYPE(starting, uint16_t)
     PROTOTYPE(endpoint, uint16_t)
+    PROTOTYPE(pollution, int16_t)
     PROTOTYPE(road, std::string_view)
     PROTOTYPE(ingredients, std::string_view)
     PROTOTYPE(results, std::string_view)

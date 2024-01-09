@@ -43,6 +43,7 @@ struct world {
     uint64_t time = 0;
     uint64_t dirty = 0;
     uint32_t drone_time = 0;
+    component::global_state* state;
 };
 
 struct world& getworld(lua_State* L);

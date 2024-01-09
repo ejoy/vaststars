@@ -285,12 +285,17 @@ namespace lua_world {
         w.P = prototype::create_cache(L);
         lua_setiuservalue(L, 1, 1);
 
+        w.fluidflows.clear();
+        auto state_span = ecs::array<component::global_state>(w.ecs);
+        if (state_span.empty()) {
+            return luaL_error(L, "component `global_state` is missing.");
+        }
+        w.state = state_span.data();
+
         FILE* f = createfile(L, 2, filemode::read);
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);
 
-        w.fluidflows.clear();
-    
         restore_scope(L, f, "time", [&](){
             file_read(f, w.time);
         }, [&](){

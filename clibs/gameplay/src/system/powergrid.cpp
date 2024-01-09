@@ -18,6 +18,11 @@ static_assert(std::extent_v<decltype(component::powergrid::generator_power)> == 
 static_assert(std::extent_v<decltype(component::powergrid::consumer_efficiency)> == POWER_PRIORITY);
 static_assert(std::extent_v<decltype(component::powergrid::generator_efficiency)> == POWER_PRIORITY);
 
+static uint32_t consumer_power(world& w, int classid) {
+	uint32_t power = prototype::get<"power">(w, classid);
+	return (uint32_t)((uint64_t)power * w.state->consumer_multiplier / 100);
+}
+
 static void
 stat_consumer(world& w, std::span<component::powergrid> pg) {
 	for (auto& v : ecs::select<component::consumer, component::capacitance, component::building>(w.ecs)) {
@@ -27,7 +32,7 @@ stat_consumer(world& w, std::span<component::powergrid> pg) {
 		}
 		component::building& building = v.get<component::building>();
 		auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
-		uint32_t power = prototype::get<"power">(w, building.prototype);
+		uint32_t power = consumer_power(w, building.prototype);
 		uint32_t charge = c.shortage < power ? c.shortage : power;
 		pg[c.network].consumer_power[std::to_underlying(priority)] += charge;
 		pg[c.network].active = true;
@@ -183,7 +188,7 @@ powergrid_run(world& w, std::span<component::powergrid> pg) {
 				float eff = pg[c.network].consumer_efficiency[std::to_underlying(priority)];
 				if (eff > 0) {
 					// charge
-					uint32_t power = prototype::get<"power">(w, building.prototype);
+					uint32_t power = consumer_power(w, building.prototype);
 					if (c.shortage <= power) {
 						if (eff >= 1.0f) {
 							power = c.shortage;	// full charge
