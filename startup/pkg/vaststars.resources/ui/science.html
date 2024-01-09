@@ -249,13 +249,13 @@
                             <div style="width: 95%%; height: 45%%; flex-direction: column;">
                                 <div class="progress_bar" style="height: 4.5vmin; width: %d%%;"/>
                                 <div class="indicator" style='top: -4.5vmin; height: 4.5vmin; width: 1vmin; left: %d%%;'/>
-                                <div style="text-align: center; font-size: 4vmin; top: -9vmin;">%d/%d</div>
+                                <div style="text-align: center; font-size: 4vmin; top: -9vmin; -webkit-text-stroke:0.2vmin #000;" data-style-color = " %d == %d and 'rgb(0,255,0)' or 'rgb(255,255,255)' ">%d/%d</div>
                             </div>
                         </div>
                     </div>
                     <div class="icon-researching" style="color: rgb(0, 255, 34);" data-if="%s">新</div>
                     %s
-                ]]):format(sign, item_icon, font_color, item_data.name, ingredient_items, percent, percent, item_data.progress, item_data.count, tostring(item_data.new), highlight)
+                ]]):format(sign, item_icon, font_color, item_data.name, ingredient_items, percent, percent, item_data.progress, item_data.count, item_data.progress, item_data.count, tostring(item_data.new), highlight)
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
