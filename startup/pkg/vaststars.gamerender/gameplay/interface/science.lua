@@ -7,7 +7,15 @@ local M = {}
 local function comp_tech(a, b)
     return a.detail.name < b.detail.name
 end
-
+local function comp_finish_tech(a, b)
+    if not a.detail.order then
+        return true
+    end
+    if not b.detail.order then
+        return false
+    end
+    return a.detail.order < b.detail.order
+end
 function M.update_tech_list(gw, finish_tech)
     assert(global.science.tech_tree)
 
@@ -63,7 +71,7 @@ function M.update_tech_list(gw, finish_tech)
         end
     end
     table.sort(techlist, comp_tech)
-    -- table.sort(finishlist, comp_tech)
+    table.sort(finishlist, comp_finish_tech)
     global.science.tech_list = techlist
     global.science.finish_list = finishlist
 end
