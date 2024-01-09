@@ -25,7 +25,7 @@ local guide = {
         narrative_end = {
             pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "序章", sub_text = "迫降P4031"}},
             task = {
-                "地质研究",
+                -- "地质研究",
             },
             guide_progress = 10,
         },
@@ -275,7 +275,7 @@ local guide = {
             pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "第一章", sub_text = "自动生产"}},
             guide_progress = 35,--10
             task = {
-                "石头处理1",
+                -- "石头处理1",
             }
         },
         prerequisites = {
