@@ -1,7 +1,7 @@
 ---
 data:
   material: /pkg/vaststars.resources/materials/sky/star_sky.material
-  render_layer: foreground
+  render_layer: background
   scene: {}
   simplemesh: true
   starsky: true
