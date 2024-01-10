@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            frame {
+                width: 55.08vmax;
+                height: 44.47vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/tutorial-end/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 18.43% 36.43% 48.30% 11.38% 27.57% 75.64%;
+            }
+
+            continue-button {
+                -webkit-text-stroke: 0.5vmin rgb(40, 40, 40);
+                background-image: /pkg/vaststars.resources/ui/textures/common/button-blue-grid.texture;
+                width: 36.84vmin;
+                height: 9.97vmin;
+                background-size: 100% 100%;
+                background-lattice: 13.53% 50.00% 13.11% 48.44% 50.00% 50.00%
+                margin: 3.90vmin 0 0 4.00vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 6.00vmin;
+            }
+            continue-button:active {
+                background-image: /pkg/vaststars.resources/ui/textures/common/button-blue-grid-active.texture;
+                width: 36.84vmin;
+                height: 9.97vmin;
+                background-size: 100% 100%;
+                background-lattice: 13.53% 50.00% 13.11% 48.44% 50.00% 50.00%
+                margin: 3.90vmin 0 0 4.00vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 6.00vmin;
+            }
+
+            exit-button {
+                -webkit-text-stroke: 0.5vmin rgb(40, 40, 40);
+                background-image: /pkg/vaststars.resources/ui/textures/common/button-green-grid.texture;
+                width: 36.84vmin;
+                height: 9.97vmin;
+                background-size: 100% 100%;
+                background-lattice: 13.53% 50.00% 13.11% 48.44% 50.00% 50.00%
+                margin: 3.90vmin 0 0 4.00vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 6.00vmin;
+            }
+            exit-button:active {
+                background-image: /pkg/vaststars.resources/ui/textures/common/button-green-grid-active.texture;
+                width: 36.84vmin;
+                height: 9.97vmin;
+                background-size: 100% 100%;
+                background-lattice: 13.53% 50.00% 13.11% 48.44% 50.00% 50.00%
+                margin: 3.90vmin 0 0 4.00vmax;
+                align-items: center;
+                justify-content: center;
+                font-size: 6.00vmin;
+            }
+        </style>
+        <script type="text/x-lua">
+            local ui = import_package "vaststars.ui"
+            ui.on.tutorial_end(window, ...)
+        </script>
+    </head>
+    <body style = "align-items: center; justify-content: center;">
+        <frame>
+            <div style = "top: 2vmin; width: 100%; height: 13vmin; font-size: 10.00vmin; -webkit-text-stroke: 0.2vmin rgb(238, 130, 0); font-weight: bold; color: rgb(238, 130, 0); text-align: center;">
+                祝贺!
+            </div>
+            <div style = "width: 100%; height: 14.50vmin; text-align: center; font-size: 6.00vmin; justify-content: center;">
+                {{text}}
+            </div>
+            <div style = "width: 100%; height: 14.50vmin; justify-content: center; align-items: center; flex-direction: row; gap: 10vmin;">
+                <continue-button style = "text-align: center; font-size: 6.00vmin; justify-content: center;" data-event-click = "onClickContinue()">继续游戏</continue-button>
+                <exit-button style = "text-align: center; font-size: 6.00vmin; justify-content: center;" data-event-click = "onClickReLogin()">退出教学</exit-button>
+            </div>
+        </frame>
+    </body>
+</html>

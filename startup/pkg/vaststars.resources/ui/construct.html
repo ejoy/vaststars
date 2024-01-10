@@ -155,7 +155,7 @@
         <main-button style = "position: absolute; right: 0vmax; bottom: 7.00vmin; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture; background-size: 100% 100%;"
             data-event-click = "clickButton('main_button_tap')"
             data-event-longpress = "clickButton('main_button_longpress')"
-            data-if = "focus_building_icon ~= ''"
+            data-if = "focus_building_icon ~= '' and status ~= 'BUILD'"
             >
             <main-button-icon data-style-background-image = "focus_building_icon" />
             <div style = "position: absolute; background-size: 100% 100%; width: 100%; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/construct/main-button-active.texture;" />

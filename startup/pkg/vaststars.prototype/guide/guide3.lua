@@ -299,7 +299,7 @@ local guide2 = {
             {"哔哩..恭喜你结束了{/g 物流教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "祝贺", sub_text = "教学完成"}},
+            pop_chapter = {"/pkg/vaststars.resources/ui/tutorial_end.html", {text = "物流教学结束"}},
             task = {
                 "物流教学结束",
             },

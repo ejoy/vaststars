@@ -43,7 +43,6 @@ local function init_game(template)
 
     imineral.init(template.mineral)
     imountain:init(template.mountain)
-    iscience.update_tech_list(gameplay_world)
 
     rhwi.set_profie(setting.get("debug", false))
 
@@ -67,6 +66,7 @@ local function init_game(template)
             assert(gameplay_world:is_researched(tech))
         end
     end
+    iscience.update_tech_list(gameplay_world)
 
     for _, prefab in ipairs(template.init_instances) do
         world:create_instance {

@@ -46,7 +46,6 @@ local function init_game(template)
 
     imineral.init(template.mineral)
     imountain:init(template.mountain)
-    iscience.update_tech_list(gameplay_world)
 
     rhwi.set_profie(setting.get("debug", false))
 
@@ -85,6 +84,7 @@ local function init_game(template)
         gameplay_core.get_storage().guide_id = #template.guide + 1
     end
     iui.set_guide_progress(iguide.get_progress())
+    iscience.update_tech_list(gameplay_world)
 
     for _, prefab in ipairs(template.init_instances) do
         world:create_instance {
