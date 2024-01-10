@@ -37,7 +37,7 @@ return function (x, y, dir, typeobject, exclude_object_id)
     else
         local succ, mineral = imineral.can_place(x, y, w, h)
         if not succ then
-            return false, "unknown"
+            return false, "needs to be placed above a resource mine"
         end
         local r = imining.get_mineral_recipe(typeobject.name, mineral) ~= nil
         if r then

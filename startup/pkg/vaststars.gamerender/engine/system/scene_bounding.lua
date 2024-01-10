@@ -58,9 +58,15 @@ function sb_sys:update_camera_bounding()
     local intersectpoints = ray_intersect_nearfar_planes(raysWS)
     local zn, zf = find_zn_zf(intersectpoints, C.camera.viewmat)
     assert(zn >= 0 and zf > zn)
+
+    local Lv = assert(sb.light_info).Lv
+    local PSR = math3d.minmax(intersectpoints)
+    local PSRLS = math3d.minmax(intersectpoints, Lv)
+    local ln, lf = mu.aabb_minmax_index(PSRLS, 3)
     sb.scene_info = {
-        PSR = math3d.minmax(intersectpoints),
+        PSR = PSR,
         zn = zn, zf = zf,
+        PSR_ln = ln, PSR_lf = lf
     }
 end
 
