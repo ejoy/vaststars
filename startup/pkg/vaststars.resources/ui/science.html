@@ -306,10 +306,10 @@
                     <div style='flex-direction: column; align-items: center; justify-content: center;'>
                         <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
                             <div style='position:absolute; width:6vmin; bottom:-1vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div>
-                            <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x300</div>    
+                            <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x%d</div>    
                         </div>
                     </div>
-                    ]]):format(margin_top, margin_left, indata.icon, indata.name)
+                    ]]):format(margin_top, margin_left, indata.icon, indata.name, indata.count)
                 end
                 inoutstr = inoutstr .. "</div>"
                 inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:center ;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
@@ -327,11 +327,11 @@
                     <div style='flex-direction: column; align-items: center; justify-content: center;'>
                         <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
                             <div style='position:absolute; bottom:-1.2vmin; width:6vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div> 
-                            <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x300</div>   
+                            <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x%d</div>   
                             <new data-if = '%s'>新</new>
                         </div>
                     </div>
-                    ]]):format(margin_top, margin_left, outdata.icon,outdata.name, outdata.new and 'true' or 'false')
+                    ]]):format(margin_top, margin_left, outdata.icon,outdata.name, outdata.count, outdata.new and 'true' or 'false')
                 end
                 inoutstr = inoutstr .. "</div></div>"
                 return inoutstr
@@ -398,7 +398,7 @@
                         else
                             unselect_recipe()
                         end
-                        start.detaillist:on_dirty_all(#start.current_tech.detail)
+                        start.detaillist:on_dirty_all(start.current_tech and #start.current_tech.detail or 0)
                     end
                 },
                 {
@@ -471,12 +471,12 @@
                     </div>
                 </div>
                 <div style='margin: 1.5vmin; flex-direction: column; width: 42%; height: 100%; background-image: "/pkg/vaststars.resources/ui/textures/science/right_panel_bg.texture"; background-size: cover;'>
-                    <div style="flex-direction: column; justify-content: flex-start; height: 88%;">
+                    <div data-if="#techitems > 0" style="flex-direction: column; justify-content: flex-start; height: 88%;">
                         <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
                         <div class="recipe-des-text" style="margin-left: 2vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
                         <div style="margin-left: 2vmin; flex-direction: row; justify-content: flex-start; align-items: center;">
-                            <!-- div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="sub_icon"/ -->
-                            <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{sub_desc}}</div>
+                            <!-- div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="current_tech.sub_icon"/ -->
+                            <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{current_tech.sub_desc}}</div>
                         </div>
                         <div style='margin-top: 1vmin; margin-left: 2%; margin-right: 2%; width: 96%; height: 0.1vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
                         <div style="margin-top: 1vmin; flex-direction: column; width:100%; height:100%;">
