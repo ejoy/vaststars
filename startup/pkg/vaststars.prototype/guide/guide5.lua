@@ -181,7 +181,7 @@ local guide5 = {
             {"哔哩..恭喜你结束了{/g 自动化教学结束}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
-            pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "祝贺", sub_text = "教学完成"}},
+            pop_chapter = {"/pkg/vaststars.resources/ui/tutorial_end.html", {text = "自动化结束"}},
             task = {
                 "自动化结束",
             },
