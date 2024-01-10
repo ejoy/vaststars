@@ -303,9 +303,10 @@
                 end
                 for _, indata in ipairs(detail.input) do
                     inoutstr = inoutstr .. ([[
-                    <div style='flex-direction: column; align-items: center; justify-content: center; '>
+                    <div style='flex-direction: column; align-items: center; justify-content: center;'>
                         <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
-                            <div style='position:absolute; width:6vmin; bottom:-1vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
+                            <div style='position:absolute; width:6vmin; bottom:-1vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div>
+                            <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x300</div>    
                         </div>
                     </div>
                     ]]):format(margin_top, margin_left, indata.icon, indata.name)
@@ -325,7 +326,8 @@
                     inoutstr = inoutstr .. ([[
                     <div style='flex-direction: column; align-items: center; justify-content: center;'>
                         <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
-                            <div style='position:absolute; bottom:-1.2vmin; width:6vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div>  
+                            <div style='position:absolute; bottom:-1.2vmin; width:6vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200);'>%s</div> 
+                            <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x300</div>   
                             <new data-if = '%s'>新</new>
                         </div>
                     </div>
