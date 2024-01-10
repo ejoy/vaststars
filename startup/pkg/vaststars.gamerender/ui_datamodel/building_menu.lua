@@ -8,7 +8,9 @@ local CHEST_TYPE_CONVERT <const> = {
     [2] = "demand",
     [3] = "transit",
 }
-
+local mathpkg = import_package "ant.math"
+local mu, mc = mathpkg.util, mathpkg.constant
+local iviewport = ecs.require "ant.render|viewport.state"
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_STATION <const> = CONSTANT.CHANGED_FLAG_STATION
 local CHANGED_FLAG_DEPOT <const> = CONSTANT.CHANGED_FLAG_DEPOT
@@ -348,6 +350,7 @@ function M.update(datamodel, gameplay_eid)
         end
         if #msgs > 0 then
             local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
+            sp_x, sp_y= mu.convert_screen_to_device_coord(iviewport.device_size, iviewport.viewrect, sp_x, sp_y)
             show_items_mesage(sp_x, sp_y, msgs)
         end
 
