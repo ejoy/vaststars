@@ -76,4 +76,9 @@ file: materials/Material.001.material
 op: replace
 path: /fx/setting/lighting
 value: on
+---
+file: materials/Material.001.material
+op: add
+path: /fx/setting/no_predepth
+value: true
 

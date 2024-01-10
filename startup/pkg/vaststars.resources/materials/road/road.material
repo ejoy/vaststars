@@ -8,6 +8,7 @@ fx:
     cast_shadow: off
     receive_shadow: on
     subsurface: off
+    no_predepth: true
   varyings:
     a_position: vec3
     a_texcoord0: vec2
