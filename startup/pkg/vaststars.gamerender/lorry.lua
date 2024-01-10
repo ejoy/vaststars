@@ -25,6 +25,7 @@ local function create(prefab, s, r, t)
         group_id = 0,
         parent = motion_entity,
         render_layer = RENDER_LAYER.LORRY,
+        dynamic = true,
     }
     local shadow_minv, shadow_maxv = 1, 0
     local shadow_x, shadow_z = -5, -5

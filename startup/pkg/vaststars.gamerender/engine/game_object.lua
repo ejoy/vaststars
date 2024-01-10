@@ -48,7 +48,7 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
     local cache = {}
     local NEXT_HITCH_GROUP = 1
 
-    function get_hitch_group_id(prefab, color, work_status, emissive_color, render_layer)
+    function get_hitch_group_id(prefab, color, work_status, emissive_color, render_layer, dynamic_mesh)
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
         if cache[hash] then
@@ -63,7 +63,8 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
             group = hitch_group_id,
             on_ready = function (self)
                 for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update timeline?in loop_timeline?out")
+                    local e <close> = world:entity(eid, "render_object?update timeline?in loop_timeline?out dynamic_mesh?out")
+                    e.dynamic_mesh = dynamic_mesh
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end
@@ -154,12 +155,13 @@ init = {
     render_layer,
 }
 --]]
+
 function igame_object.create(init)
     local prefab = RESOURCES_BASE_PATH:format(init.prefab)
     local glb = assert(prefab:match("^(.*%.glb)|.*%.prefab$"))
     -- log.info(("hitch prefab: %s, group_id: %s"):format(hitchPrefab, init.group_id))
 
-    local hitch_group_id = get_hitch_group_id(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer)
+    local hitch_group_id = get_hitch_group_id(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer, init.dynamic)
     local srt = init.srt or {}
 
     local instance = world:create_instance {
