@@ -145,9 +145,8 @@ local prototype = gameplay.register.prototype
     desc = "放置1座轻型风力发电机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"unknown", 0, 10},
-    task_params = {building = "采矿机I"},
-    count = 3,
+    task = {"select_entity", 0, "轻型风力发电机"},
+    count = 1,
     order = 353,
     effects = {
       unlock_item = {"轻质石砖"},
