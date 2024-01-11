@@ -40,6 +40,7 @@
                 top: 0;
                 width: 100%;
                 align-items: center;
+                pointer-events: none;
             }
             top-bar {
                 top: 0;
@@ -49,6 +50,7 @@
                 background-size: 100% 100%;
                 flex-direction: row;
                 justify-content: center;
+                pointer-events: none;
             }
             bottom-bar {
                 position: absolute;
@@ -96,6 +98,27 @@
         </script>
     </head>
     <body style = "pointer-events: none;">
+        <top-bar-container>
+            <top-bar>
+                <div style = "height: 9.50vmin; width: 10.00vmax; flex-direction: row; align-items: center; margin-top: -0.8vmin;">
+                    <div style = "margin-left: 1.15vmin; width: 4.05vmin; height: 4.05vmin; background-image: '/pkg/vaststars.resources/ui/textures/construct/electricity.texture'; background-size: 100% 100%; flex-grow: 0;" />
+                    <div style = "height: 100%; flex-grow: 1; flex-direction: row; align-items: center; justify-content: center;">
+                        <div style = "font-size: 4.14vmin;">{{electricity}}</div>
+                        <div style = "font-size: 3.14vmin;">{{electricity_unit}}</div>
+                    </div>
+                </div>
+                <div style = "height: 9.50vmin; width: 5.50vmax; align-items: center;">
+                    <div style = "background-size: 100% 100%; width: 5.30vmin; height: 5.30vmin; top: 1vmin;" data-style-background-image = "daynight" data-if = "daynight ~= ''" />
+                </div>
+                <div style = "height: 9.50vmin; width: 10.00vmax; flex-direction: row; align-items: center; margin-top: -0.8vmin;">
+                    <div style = "margin-left: 1.15vmin; width: 4.05vmin; height: 4.05vmin; background-image: '/pkg/vaststars.resources/ui/textures/construct/pollution.texture'; background-size: 100% 100%; flex-grow: 0;" />
+                    <div style = "height: 100%; flex-grow: 1; flex-direction: row; align-items: center; justify-content: center;">
+                        <div style = "font-size: 4.14vmin;">{{pollution}}</div>
+                    </div>
+                </div>
+            </top-bar>
+        </top-bar-container>
+
         <div style = "top: 1.32vmin; left: 4.97vmax; width: 10vmin; height: 10vmin; background-size: 100% 100%; background-image: '/pkg/vaststars.resources/ui/textures/construct/settings.texture';" data-event-click = "clickButton('settings')" />
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "status ~= 'BUILD' and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
             <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and '/pkg/vaststars.resources/ui/textures/construct/task-icon.texture' or '/pkg/vaststars.resources/ui/textures/construct/tech-icon.texture'" />
@@ -142,27 +165,6 @@
         <div style = "position: absolute; pointer-events: none; left: 50%; width: 35%; top: 80vmin; justify-content: center; align-items: center;">
             <tool-button style="background-size:cover; background-image: '/pkg/vaststars.resources/ui/textures/construct/rotate.texture';" data-event-click="clickButton('rotate')" data-if = "show_rotate" />
         </div>
-
-        <top-bar-container>
-            <top-bar>
-                <div style = "height: 9.50vmin; width: 10.00vmax; flex-direction: row; align-items: center; margin-top: -0.8vmin;">
-                    <div style = "margin-left: 1.15vmin; width: 4.05vmin; height: 4.05vmin; background-image: '/pkg/vaststars.resources/ui/textures/construct/electricity.texture'; background-size: 100% 100%; flex-grow: 0;" />
-                    <div style = "height: 100%; flex-grow: 1; flex-direction: row; align-items: center; justify-content: center;">
-                        <div style = "font-size: 4.14vmin;">{{electricity}}</div>
-                        <div style = "font-size: 3.14vmin;">{{electricity_unit}}</div>
-                    </div>
-                </div>
-                <div style = "height: 9.50vmin; width: 5.50vmax; align-items: center;">
-                    <div style = "background-size: 100% 100%; width: 5.30vmin; height: 5.30vmin; top: 1vmin;" data-style-background-image = "daynight" data-if = "daynight ~= ''" />
-                </div>
-                <div style = "height: 9.50vmin; width: 10.00vmax; flex-direction: row; align-items: center; margin-top: -0.8vmin;">
-                    <div style = "margin-left: 1.15vmin; width: 4.05vmin; height: 4.05vmin; background-image: '/pkg/vaststars.resources/ui/textures/construct/pollution.texture'; background-size: 100% 100%; flex-grow: 0;" />
-                    <div style = "height: 100%; flex-grow: 1; flex-direction: row; align-items: center; justify-content: center;">
-                        <div style = "font-size: 4.14vmin;">{{pollution}}</div>
-                    </div>
-                </div>
-            </top-bar>
-        </top-bar-container>
 
         <bottom-bar data-if = "status ~= 'BUILD' and #item_bar > 0">
             <item-bar-button data-for = "item_bar" style = "flex-direction: row; justify-content: center; top: 0.5vmin;" data-event-click = "clickButton('focus_transfer_source')">
