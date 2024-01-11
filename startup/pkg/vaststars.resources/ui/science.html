@@ -379,7 +379,6 @@
                         end
                         if start.tech_index then
                             selected_index = start.tech_index and start.tech_index or 0
-                            start.tech_index = nil
                         else
                             unselect_tech()
                         end
@@ -394,7 +393,6 @@
                         end
                         if start.recipe_index then
                             selected_recipe_index = start.recipe_index and start.recipe_index or 0
-                            start.recipe_index = nil
                         else
                             unselect_recipe()
                         end
@@ -423,7 +421,7 @@
             local function onclose()
                 unselect_recipe()
                 unselect_tech()
-                if start.show_finish then
+                if start.show_finish and not start.tech_index then
                     start.show_finish = false
                     start.title = "科研目标"
                     start.list:reset_position()
