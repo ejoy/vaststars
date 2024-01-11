@@ -29,8 +29,14 @@ local daynight_update; do
         end
     else
         function daynight_update(gameplayWorld)
+            -- 0, 0.15 dawn
+            -- 0.15, 0.55 day
+            -- 0.55, 0.7 dusk
+            -- 0.7, 0.85 night
+            -- 0.85, 1 dawn
             local dne = assert(w:first "daynight:in")
-            idn.update_cycle(dne, (gameplayWorld:now() % DayTick)/DayTick)
+            local t = (gameplayWorld:now() % DayTick)/DayTick
+            idn.update_cycle(dne, (t + 0.55) % 1) -- begin from dusk
         end
     end
 end

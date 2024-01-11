@@ -8,13 +8,13 @@
                 flex-direction: row-reverse;
                 align-items: flex-start;
                 transform-origin: 100% 100%;
-                width: 37.08%;
-                height: 65.27%;
+                right: 3.995vmax;
+                bottom: 7vmin;
+                width: 69.00vmin;
+                height: 69.00vmin;
                 padding: 0vmin;
                 margin: 0vmin;
                 position: absolute;
-                top: 34.73%;
-                left: 62.92%;
                 pointer-events: none;
             }
             .building-button {
@@ -48,15 +48,13 @@
             end
         </script>
     </head>
-    <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div class = "layout">
-            <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
-                <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                    <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it)">
-                        <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
-                        <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%; background-image: /pkg/vaststars.resources/ui/textures/building-menu/selected.texture" data-if = "it.selected" />
-                        <div data-if = "it.number ~= ''" style = "position: absolute; top: 57.00%; left: 36.00%; width: 22.00%; font-size: 2.50vmin; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "(it.number == '' or it.number == '+') and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>
-                    </div>
+    <body style = "pointer-events: none; justify-content: center; align-items: center; margin-top: -10vmin;">
+        <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
+            <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
+                <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it)">
+                    <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
+                    <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%; background-image: '/pkg/vaststars.resources/ui/textures/building-menu/selected.texture'" data-if = "it.selected" />
+                    <div data-if = "it.number ~= ''" style = "position: absolute; top: 57.00%; left: 36.00%; width: 22.00%; font-size: 2.50vmin; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "(it.number == '' or it.number == '+') and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>
                 </div>
             </div>
         </div>

@@ -167,7 +167,7 @@
         <construct-box>
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : inventory">
-                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: /pkg/vaststars.resources/ui/textures/item-config/category-bg.texture; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
+                    <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: '/pkg/vaststars.resources/ui/textures/item-config/category-bg.texture'; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />
                     <div style = "margin-left: 3.00vmin; margin-top: 2.58vmin; width: 100%; flex-direction: row; font-size: 4.20vmin;">{{c.category}}</div>
                     <div style = "flex-direction: row; flex-wrap: wrap; margin-top: -1.70vmin;">
                         <item style = "pointer-events: none;" data-attr-id = "i.id" data-for = "i, i_index : c.items">
@@ -202,11 +202,11 @@
                 <div style = "font-size: 4.50vmin;" data-if = "speed ~= '' or power ~= ''">工作参数:</div>
                 <div style = "width: 100%; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 1vmin; flex-wrap: wrap;" data-if = "speed ~= '' or power ~= ''">
                     <div style = "width: 50%; flex-direction: row; align-items: center; justify-content: flex-start;" data-if = "speed ~= ''">
-                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/common/time.texture;" />
+                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%; background-image: '/pkg/vaststars.resources/ui/textures/common/time.texture';" />
                         <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{speed}}</div>
                     </div>
                     <div style = "width: 50%; flex-direction: row; align-items: center; justify-content: flex-start;" data-if = "power ~= ''">
-                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%; background-image: /pkg/vaststars.resources/ui/textures/common/power.texture;" />
+                        <div style = "width: 5.00vmin; height: 5.00vmin; background-size: 100% 100%; background-image: '/pkg/vaststars.resources/ui/textures/common/power.texture';" />
                         <div style = "margin-left: 1.00vmin; font-size: 3.00vmin;">{{power}}</div>
                     </div>
                 </div>

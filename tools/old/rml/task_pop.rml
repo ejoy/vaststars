@@ -120,7 +120,7 @@
                 else
                     local icon = start.items[index].icon
                     if icon then
-                        item.outerHTML = ([[<div style = "width:61.7vmin; height:45.7vmin; background-size: cover; background-image: %s;" />]]):format(icon)
+                        item.outerHTML = ([[<div style = "width:61.7vmin; height:45.7vmin; background-size: cover; background-image: '%s';" />]]):format(icon)
                     else
                         item.outerHTML = [[<div style = "width:61.7vmin; height:45.7vmin;" />]]
                     end

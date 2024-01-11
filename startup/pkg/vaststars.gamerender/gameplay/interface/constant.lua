@@ -50,10 +50,10 @@ M.FPS = 30
 M.UPS = 30
 M.DELTA_TIME = 1000 / M.UPS
 
-M.DuskTick   = 100 * M.UPS;
-M.NightTick  =  50 * M.UPS + M.DuskTick;
-M.DawnTick   = 100 * M.UPS + M.NightTick;
-M.DayTick    = 250 * M.UPS + M.DawnTick;
+M.DuskTick   = 100 * M.UPS
+M.NightTick  =  50 * M.UPS + M.DuskTick
+M.DawnTick   = 100 * M.UPS + M.NightTick
+M.DayTick    = 250 * M.UPS + M.DawnTick
 
 M.CHANGED_FLAG_ASSEMBLING = 1 << 0
 M.CHANGED_FLAG_BUILDING   = 1 << 1

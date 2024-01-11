@@ -112,6 +112,45 @@ local function __clean(datamodel, unlock)
     log.info("unlock axis")
 end
 
+local function _get_daynight_image(gameplay_world)
+    local time = gameplay_world:now() % CONSTANT.DayTick
+    if time < CONSTANT.DuskTick then
+        return "/pkg/vaststars.resources/ui/textures/construct/daynight/dusk.texture"
+    elseif time < CONSTANT.NightTick then
+        return "/pkg/vaststars.resources/ui/textures/construct/daynight/night.texture"
+    elseif time < CONSTANT.DawnTick then
+        return "/pkg/vaststars.resources/ui/textures/construct/daynight/dawn.texture"
+    else
+        return "/pkg/vaststars.resources/ui/textures/construct/daynight/day.texture"
+    end
+end
+
+local function _get_electricity(gameplay_world)
+    local consumer = 0
+    local generator = 0
+
+    for i = 1, 255 do
+        local pg = gameplay_world.ecs:object("powergrid", i+1)
+        if pg.active == 0 then
+            break
+        end
+        consumer = consumer + pg.consumer_power1 + pg.consumer_power2
+        generator = generator + pg.generator_power1 + pg.generator_power2
+    end
+
+    local electricity = generator - consumer
+    local negative = electricity < 0
+    electricity = math.abs(electricity)
+
+    if electricity > 1000000 then
+        return negative and -(electricity // 1000000) or electricity // 1000000, "mw"
+    elseif electricity > 1000 then
+        return negative and -(electricity // 1000) or electricity // 1000, "kw"
+    else
+        return negative and -electricity or electricity, "w"
+    end
+end
+
 ---------------
 local M = {}
 local function get_recipe_list()
@@ -126,6 +165,7 @@ local function get_recipe_list()
     return recipe_list
 end
 function M.create()
+    local gameplay_world = gameplay_core.get_world()
     return {
         status = "NORMAL",
         show_tech_progress = false,
@@ -143,7 +183,11 @@ function M.create()
         is_task = false,                --是否是任务
         guide_progress = 0,             --引导进度
         focus_building_icon = "",
-        recipe_list = get_recipe_list()
+        recipe_list = get_recipe_list(),
+        pollution = 0,
+        daynight = _get_daynight_image(gameplay_world),
+        electricity = 0,
+        electricity_unit = "w",
     }
 end
 
@@ -402,14 +446,18 @@ end
 local update = interval_call(300, function(datamodel)
     datamodel.transfer_id = itransfer.get_source_eid() or 0
 
+    local gameplay_world = gameplay_core.get_world()
+    local e = assert(gameplay_world.ecs:first("global_state:in"))
+    datamodel.pollution = e.global_state.pollution
+    datamodel.daynight = _get_daynight_image(gameplay_world)
+    datamodel.electricity, datamodel.electricity_unit = _get_electricity(gameplay_world)
+
     if not itransfer.get_source_eid() then
         if #datamodel.item_bar > 0 then
             datamodel.item_bar = {}
         end
         return
     end
-
-    local gameplay_world = gameplay_core.get_world()
 
     local item_bar = {}
     local info = itransfer.get_transfer_info(gameplay_world)

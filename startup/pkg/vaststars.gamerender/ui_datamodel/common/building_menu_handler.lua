@@ -6,7 +6,7 @@ local ICONS <const> = ecs.require "vaststars.prototype|building_menu.icons"
 local CUSTOM_COMMANDS <const> = ecs.require "vaststars.prototype|building_menu.custom_commands"
 local AUDIOS <const> = ecs.require "vaststars.prototype|building_menu.audios"
 
-local TRANSFORM_DELTA <const> = 18
+local TRANSFORM_DELTA <const> = 16.5
 local BUILDING_MENU_POSITIONS = {}
 for i = 1, 5 do
     BUILDING_MENU_POSITIONS[i] = {
