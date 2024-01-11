@@ -132,6 +132,7 @@ function M.create(gameplay_eid, longpress)
     return {
         status = status,
         buttons = buttons,
+        desc = "",
     }
 end
 

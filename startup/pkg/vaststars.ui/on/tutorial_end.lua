@@ -8,7 +8,7 @@ return function (window, ...)
     function start.onClickReLogin()
         local audio = import_package "ant.audio"
         audio.play "event:/ui/button1"
-        window.callMessage("relogin")
+        window.callMessage("reboot", "new_game", "template.tutorial-end")
         window.close()
     end
 end

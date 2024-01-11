@@ -24,11 +24,25 @@
             .building-button:active {
                 transform: scale(1.2);
             }
-            .layout {
+            desc-container {
                 width: 100%;
                 height: 100%;
-                position: absolute;
                 pointer-events: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            desc {
+                width: 30.67vmax;
+                height: 13.08vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/building-menu/square-grid.texture";
+                background-size: 100% 100%;
+                background-lattice: 3.99% 20.24% 3.76% 19.05% 50.00% 50.00%; /* 34x34 68x68 852x168 */
+                justify-content: center;
+                align-items: center;
+                font-size: 4.67vmin;
+                -webkit-text-stroke: 0.2vmin rgb(249, 111, 0);
+                color: rgb(255, 187, 41);
             }
         </style>
         <script type="text/x-lua" >
@@ -46,12 +60,23 @@
                 ui_sys.pub(window, {button.command})
                 ui_sys.pub(window, {"ui_click", button.command})
             end
+
+            function start.onLongPress(ev, desc)
+                if ev.state == "began" then
+                    start.desc = desc
+                elseif ev.state == "ended" then
+                    start.desc = ""
+                end
+            end
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center; margin-top: -10vmin;">
+        <desc-container>
+            <desc data-if = "desc ~= ''">{{desc}}</desc>
+        </desc-container>
         <div class = "building-button-container" data-style-transform = "it.outer_transform" data-for = "buttons">
             <div class = "building-button" style = "pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it)">
+                <div class = "building-button" style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it)" data-event-longpress="onLongPress(ev, it.desc)">
                     <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
                     <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%; background-image: '/pkg/vaststars.resources/ui/textures/building-menu/selected.texture'" data-if = "it.selected" />
                     <div data-if = "it.number ~= ''" style = "position: absolute; top: 57.00%; left: 36.00%; width: 22.00%; font-size: 2.50vmin; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "(it.number == '' or it.number == '+') and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>

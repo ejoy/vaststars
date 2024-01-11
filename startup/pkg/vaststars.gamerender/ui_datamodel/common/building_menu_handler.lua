@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local ICONS <const> = ecs.require "vaststars.prototype|building_menu.icons"
+local DESC <const> = ecs.require "vaststars.prototype|building_menu.desc"
 local CUSTOM_COMMANDS <const> = ecs.require "vaststars.prototype|building_menu.custom_commands"
 local AUDIOS <const> = ecs.require "vaststars.prototype|building_menu.audios"
 
@@ -57,6 +58,7 @@ local function create_button(command)
         number = "", -- can have a value of either a digit or '+', '' 
         selected = false,
         audio = AUDIOS[command],
+        desc = DESC[command] or "",
     }
 end
 

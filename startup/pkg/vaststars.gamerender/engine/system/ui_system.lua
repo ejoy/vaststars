@@ -263,11 +263,4 @@ irmlui.onMessage("reboot", function(...)
     }
 end)
 
-irmlui.onMessage("relogin", function(...)
-    local window = import_package "ant.window"
-    window.reboot {
-        feature = {"vaststars.gamerender|login"},
-    }
-end)
-
 return iui
