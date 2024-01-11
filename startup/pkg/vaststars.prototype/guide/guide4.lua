@@ -338,7 +338,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..恭喜你结束了{/g 液网教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..恭喜你结束了{/g 液网教学}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"/pkg/vaststars.resources/ui/tutorial_end.html", {text = "流体教学结束"}},

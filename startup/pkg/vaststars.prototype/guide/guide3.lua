@@ -3,7 +3,7 @@ local guide2 = {
         name = "",
 		narrative = {
             {"哔哩..欢迎进入{/g 物流教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..检查地面上的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..检查地面上的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "教学", sub_text = "物流搭建"}},
@@ -34,7 +34,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..将获得{/color:4bd0ff 建筑物资}放入{/g 指挥中心}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..将获得{/color:4bd0ff 建筑物资}放入{/g 指挥中心}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -296,7 +296,7 @@ local guide2 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..恭喜你结束了{/g 物流教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..恭喜你结束了{/g 物流教学}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"/pkg/vaststars.resources/ui/tutorial_end.html", {text = "物流教学结束"}},

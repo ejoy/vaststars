@@ -3,7 +3,7 @@ local guide1 = {
         name = "",
 		narrative = {
             {"哔哩..欢迎进入{/g 采矿教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..检查附近的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..检查附近的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"/pkg/vaststars.resources/ui/chapter_pop.html", {main_text = "教学", sub_text = "开采矿物"}},
@@ -34,8 +34,8 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..将获取的{/color:4bd0ff 建筑}放置入{/g 指挥中心}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..{/g 指挥中心}可以将收纳的建筑铺设到基地中..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..将获取的{/color:4bd0ff 建筑}放置入{/g 指挥中心}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..{/g 指挥中心}可以将收纳的建筑铺设到基地中..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -51,7 +51,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..在{/color:4bd0ff 3处矿点}上各放置1台{/g 采矿机}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..在{/color:4bd0ff 3处矿点}上各放置1台{/g 采矿机}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -67,8 +67,8 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..放置1座{/g 仓库}在{/color:4bd0ff 组装机}和{/color:4bd0ff 无人机平台}附近..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-            {"哔哩..注意{/color:4bd0ff 仓库}需要放置在{/g 无人机平台物流范围}内..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..放置1座{/g 仓库}在{/color:4bd0ff 组装机}和{/color:4bd0ff 无人机平台}附近..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..注意{/color:4bd0ff 仓库}需要放置在{/g 无人机平台物流范围}内..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -84,7 +84,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..{/color:4bd0ff 仓库}分别设置收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..{/color:4bd0ff 仓库}分别设置收货{/g 碎石}、{/g 铁矿石}、{/g 铝矿石}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -117,7 +117,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..将从采矿机获得的原料放置{/g 6个碎石}到仓库里..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..将从采矿机获得的原料放置{/g 6个碎石}到仓库里..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -133,7 +133,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..点击{/color:4bd0ff 组装机}并设置配方{/g 地质科技包1}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..点击{/color:4bd0ff 组装机}并设置配方{/g 地质科技包1}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -149,7 +149,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..点击{/color:4bd0ff 仓库}并添加收货类型{/g 地质科技包}..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..点击{/color:4bd0ff 仓库}并添加收货类型{/g 地质科技包}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -165,7 +165,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..往仓库里放置{/color:4bd0ff 矿物}作为组装机生产{/g 地质科技包}的原料..哔哩..(期待)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..往仓库里放置{/color:4bd0ff 矿物}作为组装机生产{/g 地质科技包}的原料..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             task = {
@@ -181,7 +181,7 @@ local guide1 = {
     {
         name = "",
 		narrative = {
-            {"哔哩..恭喜你结束了{/g 挖矿教学}..哔哩..(高兴)", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..恭喜你结束了{/g 挖矿教学}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {
             pop_chapter = {"/pkg/vaststars.resources/ui/tutorial_end.html", {text = "挖矿教学结束"}},
