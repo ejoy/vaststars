@@ -141,14 +141,10 @@ function M.create(unpicked_recipe)
     return {
         techitems = tech_index and finish_items or items,
         show_finish = tech_index and true or false,
-        title = tech_index and "科研历史" or "科研目标",
         tech_index = tech_index,
         recipe_index = recipe_index,
         current_tech = current_tech,
-        current_desc = current_tech.desc,
         current_icon = current_tech.icon,
-        sub_icon = current_tech.sub_icon,
-        sub_desc = current_tech.sub_desc,
         current_running = current_tech.running,
         current_button_str = get_button_str(current_tech)
     }
@@ -161,10 +157,7 @@ function M.update(datamodel)
         end
         current_tech = tech
         datamodel.current_tech = tech
-        datamodel.current_desc = tech.desc
         datamodel.current_icon = tech.icon
-        datamodel.sub_desc = tech.sub_desc
-        datamodel.sub_icon = tech.sub_icon
         datamodel.current_running = tech.running
         datamodel.current_button_str = get_button_str(tech)
     end
