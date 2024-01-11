@@ -187,7 +187,8 @@ function M.create()
         pollution = 0,
         daynight = _get_daynight_image(gameplay_world),
         electricity = 0,
-        electricity_unit = "w",
+        electricity_unit = "W",
+        pollution_unit = "μg",
     }
 end
 
