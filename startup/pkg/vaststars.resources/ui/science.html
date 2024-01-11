@@ -471,7 +471,6 @@
                         <div style="margin-left: 10vmin; margin-top: 0.8vmin; font-size: 5vmin; color: black;">{{current_tech.name}}</div>
                         <div class="recipe-des-text" style="margin-left: 2vmin; margin-top: 1vmin;">{{current_tech.desc}}</div>
                         <div style="margin-left: 2vmin; flex-direction: row; justify-content: flex-start; align-items: center;">
-                            <!-- div style='width: 4.66vmin; height: 4vmin; background-size: cover;' data-style-background-image="current_tech.sub_icon"/ -->
                             <div style="width: 90%; color: rgb(241,157,52); font-size: 3vmin; word-break: break-all;">{{current_tech.sub_desc}}</div>
                         </div>
                         <div style='margin-top: 1vmin; margin-left: 2%; margin-right: 2%; width: 96%; height: 0.1vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>
@@ -479,7 +478,7 @@
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>
                     </div>
-                    <button-confirm data-if="not current_running and not show_finish" style="width: 40vmin; height: 10vmin; align-self: flex-end;" data-event-click="startSwitch()">
+                    <button-confirm data-if="not current_running and not show_finish and #techitems > 0" style="width: 40vmin; height: 10vmin; align-self: flex-end;" data-event-click="startSwitch()">
                         <div style="margin-top: 1.5vmin; font-size: 6vmin; text-align: center;">{{current_button_str}}</div>
                     </button-confirm>
                     <div style="position:absolute;left:1vmin; bottom:1vmin; flex-direction: row; justify-content: flex-start; align-items: center;" data-event-click="showFinish()">

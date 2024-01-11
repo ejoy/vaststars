@@ -119,6 +119,9 @@ local function get_techlist(tech_list)
 end
 
 local function get_button_str(tech)
+    if not tech then
+        return ""
+    end
     return "开始" .. (tech.task and "任务" or "研究")
 end
 
@@ -143,9 +146,8 @@ function M.create(unpicked_recipe)
         show_finish = tech_index and true or false,
         tech_index = tech_index,
         recipe_index = recipe_index,
-        current_tech = current_tech,
-        current_icon = current_tech.icon,
-        current_running = current_tech.running,
+        current_tech = current_tech or {},
+        current_running = current_tech and current_tech.running or false,
         current_button_str = get_button_str(current_tech)
     }
 end
@@ -156,9 +158,8 @@ function M.update(datamodel)
             return
         end
         current_tech = tech
-        datamodel.current_tech = tech
-        datamodel.current_icon = tech.icon
-        datamodel.current_running = tech.running
+        datamodel.current_tech = tech or {}
+        datamodel.current_running = tech and tech.running or false
         datamodel.current_button_str = get_button_str(tech)
     end
 
