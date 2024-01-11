@@ -103,8 +103,8 @@
                 <div style = "height: 9.50vmin; width: 10.00vmax; flex-direction: row; align-items: center; margin-top: -0.8vmin;">
                     <div style = "margin-left: 1.15vmin; width: 4.05vmin; height: 4.05vmin; background-image: '/pkg/vaststars.resources/ui/textures/construct/electricity.texture'; background-size: 100% 100%; flex-grow: 0;" />
                     <div style = "height: 100%; flex-grow: 1; flex-direction: row; align-items: center; justify-content: center;">
-                        <div style = "font-size: 4.14vmin;">{{electricity}}</div>
-                        <div style = "font-size: 3.14vmin;">{{electricity_unit}}</div>
+                        <div style = "font-size: 4.14vmin;" data-style-color = "electricity > 0 and 'rgb(0,255,0)' or 'rgb(255,0,0)' ">{{electricity}}</div>
+                        <div style = "font-size: 3.14vmin; color:rgb(200,200,200);">{{electricity_unit}}</div>
                     </div>
                 </div>
                 <div style = "height: 9.50vmin; width: 5.50vmax; align-items: center;">
@@ -168,8 +168,9 @@
 
         <bottom-bar data-if = "status ~= 'BUILD' and #item_bar > 0">
             <item-bar-button data-for = "item_bar" style = "flex-direction: row; justify-content: center; top: 0.5vmin;" data-event-click = "clickButton('focus_transfer_source')">
-                <div style = "width: 7.48vmin; height: 7.48vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'" />
-                <div style = "height: 7.48vmin; font-size: 4.0vmin; text-align: center; -webkit-text-stroke: 0.2vmin #000; justify-content: center; align-items: center;" data-style-color = "it.count > 0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{it.count}}</div>
+                <div style = "width: 11.48vmin; height: 11.48vmin; background-size: 100% 100%; background-color: rgb(61, 61, 61);" data-style-background-image = "it.icon" data-style-border = "it.is_transfer and '0.20vmin #3498db' or '0vmin'">
+                    <div style = "position:absolute; right:0; top:-0.5vmin;  font-size: 4.0vmin; text-align: center; -webkit-text-stroke: 0.2vmin #000; justify-content: center; align-items: center;" data-style-color = "it.count > 0 and 'rgb(255,255,255)' or 'rgb(255,0,0)' ">{{it.count}}</div>
+                </div>
             </item-bar-button>
         </bottom-bar>
     </body>
