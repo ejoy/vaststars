@@ -15,7 +15,7 @@ local iinventory = require "gameplay.interface.inventory"
 local source_eid, dest_eid
 
 local function _source_fileter(e, slot)
-    return e.assembling ~= nil or slot.amount > 0
+    return e.assembling ~= nil or e.depot or slot.amount > 0
 end
 
 local function _dest_fileter(e, slot)

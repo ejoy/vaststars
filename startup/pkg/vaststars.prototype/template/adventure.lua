@@ -126,7 +126,7 @@ return {
   show = false,
   guide = guide,
   start_tech = "地质研究",
-  research_queue = {
+  login_techs = {
     "登录科技开启",
   },
   init_ui = {

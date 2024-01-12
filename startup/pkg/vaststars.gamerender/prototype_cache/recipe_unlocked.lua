@@ -37,8 +37,8 @@ return function ()
     end
 
     local game_template = gameplay_core.get_storage().game_template
-    local research_queue = ecs.require(("vaststars.prototype|%s"):format(game_template)).research_queue or {}
-    for _, name in ipairs(research_queue) do
+    local login_techs = ecs.require(("vaststars.prototype|%s"):format(game_template)).login_techs or {}
+    for _, name in ipairs(login_techs) do
         _insert_unlocked_tech(name)
     end
 

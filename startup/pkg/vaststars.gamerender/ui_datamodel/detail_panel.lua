@@ -252,6 +252,9 @@ local function get_property(e, typeobject)
             t.chest_list_2 = {}
             t.chest_list_2 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_2, true)
             t.chest_list_2 = processStationSlots(max_slot, t.chest_list_2)
+        elseif e.depot then
+            t.chest_list_1 = {}
+            t.chest_list_1 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_1, true)
         else
             t.chest_list_1 = {}
             t.chest_list_1 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_1)

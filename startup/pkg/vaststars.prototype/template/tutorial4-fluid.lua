@@ -357,7 +357,7 @@ return {
   guide = guide,
   show = true,
   start_tech = "管道接收",
-  research_queue = {
+  login_techs = {
     "登录科技4",
   },
   init_ui = {
