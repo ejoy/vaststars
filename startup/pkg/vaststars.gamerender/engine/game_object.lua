@@ -115,9 +115,9 @@ end
 local hitchEvents = {}
 hitchEvents["group"] = function(self, group)
     local e <close> = world:entity(self.tag["hitch"][1])
-    w:extend(e, "hitch:update hitch_changed?out")
+    w:extend(e, "hitch:update hitch_create?out")
     e.hitch.group = group
-    e.hitch_changed = true
+    e.hitch_create = true
 end
 hitchEvents["obj_motion"] = function(self, method, ...)
     local e <close> = world:entity(self.tag["hitch"][1])
