@@ -49,6 +49,7 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
     local NEXT_HITCH_GROUP = 1
 
     function get_hitch_group_id(prefab, color, work_status, emissive_color, render_layer, dynamic_mesh)
+        dynamic_mesh = dynamic_mesh
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
         if cache[hash] then
@@ -196,7 +197,8 @@ function igame_object.create(init)
             self.data.color,
             self.data.work_status,
             self.data.emissive_color,
-            self.data.render_layer
+            self.data.render_layer,
+            self.data.dynamic
         )
         world:instance_message(self.instance, "group", hitch_group_id)
 
