@@ -26,6 +26,7 @@ local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
 local setting = import_package "vaststars.settings"
+local itransfer = require "gameplay.interface.transfer"
 
 local m = ecs.system "game_init_system"
 
@@ -63,7 +64,11 @@ local function init_game(template)
 
     if template.research_queue then
         gameplay_world:research_queue(template.research_queue)
-        for _, tech in ipairs(template.research_queue) do
+    end
+
+    if template.login_techs then
+        gameplay_world:research_queue(template.login_techs)
+        for _, tech in ipairs(template.login_techs) do
             local typeobject = iprototype.queryByName(tech)
             gameplay_world:research_progress(tech, typeobject.count)
             assert(gameplay_world:is_researched(tech))
@@ -177,4 +182,9 @@ function m:init_world()
     local func = assert(funcs[args[1]])
     func(table.unpack(args, 2))
     global.startup_args = {}
+end
+
+function m:exit()
+    itransfer.set_source_eid(nil)
+    itransfer.set_dest_eid(nil)
 end
