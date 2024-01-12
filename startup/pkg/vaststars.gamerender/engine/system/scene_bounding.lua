@@ -66,7 +66,8 @@ function sb_sys:update_camera_bounding()
     sb.scene_info = {
         PSR = PSR,
         zn = zn, zf = zf,
-        PSR_ln = ln, PSR_lf = lf
+        PSR_ln = ln, PSR_lf = lf,
+        nearHit=1, farHit = 100,
     }
 end
 
