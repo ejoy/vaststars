@@ -81,4 +81,9 @@ file: materials/Material.001.material
 op: add
 path: /fx/setting/no_predepth
 value: true
+---
+file: materials/Material.001.material
+op: replace
+path: /state/DEPTH_TEST
+value: ALWAYS
 
