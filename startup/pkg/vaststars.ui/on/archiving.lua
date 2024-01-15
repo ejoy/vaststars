@@ -1,5 +1,4 @@
 local fs = require "filesystem"
-local audio = import_package "ant.audio"
 local archiving = import_package "vaststars.gamerender" "archiving"
 
 return function (window)
@@ -14,7 +13,6 @@ return function (window)
         templates = templates,
     }
     function model.open(filename)
-        audio.play("event:/ui/button1")
         window.callMessage("reboot", "restore", filename)
         window.close()
     end

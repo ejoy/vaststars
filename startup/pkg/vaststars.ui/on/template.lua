@@ -1,5 +1,4 @@
 local fs = require "filesystem"
-local audio = import_package "ant.audio"
 
 return function (window, document)
     local templates = {}
@@ -29,7 +28,6 @@ return function (window, document)
     }
 
     function model.open(filename)
-        audio.play("event:/ui/button1")
         window.callMessage("reboot", "new_game", filename)
         window.close()
     end

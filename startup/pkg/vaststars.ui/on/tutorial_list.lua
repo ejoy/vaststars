@@ -33,8 +33,6 @@ return function (window)
     }
 
     function model.open(filename)
-        local audio = import_package "ant.audio"
-        audio.play "event:/ui/button1"
         window.callMessage("reboot", "new_game", filename)
         window.close()
     end

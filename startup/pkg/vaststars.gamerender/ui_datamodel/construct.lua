@@ -27,7 +27,6 @@ local icoord = require "coord"
 local iinventory = require "gameplay.interface.inventory"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local igameplay = ecs.require "gameplay.gameplay_system"
-local audio = import_package "ant.audio"
 local ilorry = ecs.require "render_updates.lorry"
 local igame_object = ecs.require "engine.game_object"
 local rotate_mb = mailbox:sub {"rotate"}
@@ -368,8 +367,6 @@ local function pickupObject(datamodel, position, blur)
 
         iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, o.id, false)
 
-        audio.play "event:/ui/click"
-
     elseif o and o.class == CLASS.Object then
         local object = o.object
         local excluded_pickup_id = iguide_tips.get_excluded_pickup_id()
@@ -391,9 +388,6 @@ local function pickupObject(datamodel, position, blur)
         datamodel.status = "FOCUS"
 
         iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, gameplay_eid, false)
-
-        audio.play "event:/ui/click"
-
         building_eid = gameplay_eid
 
     elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
@@ -411,8 +405,6 @@ local function pickupObject(datamodel, position, blur)
             iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, o.id, false)
         end
 
-        audio.play "event:/ui/click"
-
     elseif o and o.class == CLASS.Mineral then
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
@@ -426,7 +418,6 @@ local function pickupObject(datamodel, position, blur)
         idetail.add_tmp_object({remove = function()
             datamodel.show_construct_button = false
         end})
-        audio.play "event:/ui/click"
 
     elseif o and o.class == CLASS.Empty then
         show_selectbox(o.x, o.y, o.w, o.h)
@@ -439,7 +430,6 @@ local function pickupObject(datamodel, position, blur)
         idetail.add_tmp_object({remove = function()
             datamodel.show_construct_button = false
         end})
-        audio.play "event:/ui/click"
     end
 
     itransfer.set_dest_eid(building_eid)
@@ -497,8 +487,6 @@ function M.update(datamodel)
     for _ in build_mb:unpack() do
         if builder and builder.confirm then
             builder:confirm(builder_datamodel)
-            audio.play "event:/function/place"
-
             if builder.CONFIRM_EXIT then
                 __clean(datamodel)
                 toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
