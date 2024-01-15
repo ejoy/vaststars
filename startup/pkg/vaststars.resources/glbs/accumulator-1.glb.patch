@@ -1,7 +1,23 @@
 ---
 file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  Cube_P1
+---
+file: mesh.prefab
 op: copyfile
 path: debris.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
 ---
 file: images/accumulator_Metallic-accumulator_Roughness.texture
 op: add
@@ -41,6 +57,20 @@ path: /-
 value:
   mount: 3
   prefab: /pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event: {}
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
 ---
 file: mesh.prefab
 op: createfile
