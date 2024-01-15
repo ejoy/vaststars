@@ -181,6 +181,7 @@ prototype "蓄电池I" {
 	charge_power = "100kW",
 	capacitance = "10MJ",
     area = "2x2",
+    work_status = {work = true},
     sound = "building/electricity",
 }
 
@@ -194,6 +195,7 @@ prototype "蓄电池II" {
 	charge_power = "200kW",
 	capacitance = "30MJ",
     area = "2x2",
+    work_status = {work = true},
     sound = "building/electricity",
 }
 
@@ -207,6 +209,7 @@ prototype "蓄电池III" {
 	charge_power = "250kW",
 	capacitance = "60MJ",
     area = "2x2",
+    work_status = {work = true},
     sound = "building/electricity",
 }
 
