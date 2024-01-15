@@ -363,7 +363,7 @@ prototype "特殊浮选器" {
     drain = "6kW",
     speed = "100%",
     priority = "secondary",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     craft_category = {"登录配方"},
     maxslot = 8,
     ingredients_details = false,
