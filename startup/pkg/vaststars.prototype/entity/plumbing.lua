@@ -9,7 +9,7 @@ prototype "液罐I" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     fluidbox = {
         capacity = 15000,
         height = 100,
@@ -31,7 +31,7 @@ prototype "液罐II" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     fluidbox = {
         capacity = 30000,
         height = 100,
@@ -53,7 +53,7 @@ prototype "液罐III" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     fluidbox = {
         capacity = 60000,
         height = 100,
@@ -99,7 +99,7 @@ prototype "地下水挖掘机I" {
     rotate_on_build = true,
     power = "50kW",
     speed = "100%",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     assembling_icon = false,
     priority = "secondary",
     recipe = "离岸抽水",
@@ -131,7 +131,7 @@ prototype "地下水挖掘机II" {
     rotate_on_build = true,
     power = "200kW",
     speed = "400%",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     assembling_icon = false,
     priority = "secondary",
     recipe = "离岸抽水",
@@ -306,7 +306,7 @@ prototype "空气过滤器I" {
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = 8,
-    sound = "building/air-filter",
+    -- sound = "building/air-filter",
     fluidboxes = {
         input = {},
         output = {
@@ -337,7 +337,7 @@ prototype "空气过滤器II" {
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = 8,
-    sound = "building/air-filter",
+    -- sound = "building/air-filter",
     fluidboxes = {
         input = {},
         output = {
@@ -368,7 +368,7 @@ prototype "空气过滤器III" {
     priority = "secondary",
     recipe = "空气过滤",
     maxslot = 8,
-    sound = "building/air-filter",
+    -- sound = "building/air-filter",
     fluidboxes = {
         input = {},
         output = {

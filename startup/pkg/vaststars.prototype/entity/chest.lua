@@ -55,7 +55,7 @@ prototype "无人机平台I" {
     drone = {
         "无人机I",
     },
-    sound = "building/drone",
+    -- sound = "building/drone",
 }
 
 prototype "无人机平台II" {
@@ -73,7 +73,7 @@ prototype "无人机平台II" {
         "无人机II",
         "无人机II",
     },
-    sound = "building/drone",
+    -- sound = "building/drone",
 }
 
 prototype "无人机平台III" {
@@ -93,7 +93,7 @@ prototype "无人机平台III" {
         "无人机III",
         "无人机III",
     },
-    sound = "building/drone",
+    -- sound = "building/drone",
 }
 
 --{ "无人机", 1 }, 表示一个无人机带一种货物1

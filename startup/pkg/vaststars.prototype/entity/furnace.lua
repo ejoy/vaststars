@@ -13,7 +13,7 @@ prototype "熔炼炉I" {
     power = "300kW",
     priority = "secondary",
     rotate_on_build = true,
-    sound = "building/furnace",
+    -- sound = "building/furnace",
     craft_category = {"金属冶炼"},
     fluidboxes = {
         input = {
@@ -52,7 +52,7 @@ prototype "熔炼炉II" {
     power = "600kW",
     priority = "secondary",
     rotate_on_build = true,
-    sound = "building/furnace",
+    -- sound = "building/furnace",
     craft_category = {"金属冶炼"},
     fluidboxes = {
         input = {
@@ -91,7 +91,7 @@ prototype "熔炼炉III" {
     power = "1MW",
     priority = "secondary",
     rotate_on_build = true,
-    sound = "building/furnace",
+    -- sound = "building/furnace",
     craft_category = {"金属冶炼"},
     fluidboxes = {
         input = {
@@ -131,7 +131,7 @@ prototype "粉碎机I" {
     drain = "3kW",
     drone_height = 22,
     priority = "secondary",
-    sound = "building/crusher",
+    -- sound = "building/crusher",
     craft_category = {"矿石粉碎"},
     maxslot = 8,
 }
@@ -149,7 +149,7 @@ prototype "粉碎机II" {
     drone_height = 22,
     speed = "200%",
     priority = "secondary",
-    sound = "building/crusher",
+    -- sound = "building/crusher",
     craft_category = {"矿石粉碎"},
     maxslot = 8,
 }
@@ -166,7 +166,7 @@ prototype "粉碎机III" {
     drone_height = 22,
     speed = "400%",
     priority = "secondary",
-    sound = "building/crusher",
+    -- sound = "building/crusher",
     craft_category = {"矿石粉碎"},
     maxslot = 8,
 }
@@ -185,7 +185,7 @@ prototype "浮选器I" {
     drain = "6kW",
     speed = "100%",
     priority = "secondary",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     craft_category = {"矿石浮选"},
     maxslot = 8,
     fluidboxes = {
@@ -242,7 +242,7 @@ prototype "浮选器II" {
     drain = "12kW",
     speed = "200%",
     priority = "secondary",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     craft_category = {"矿石浮选"},
     maxslot = 8,
     fluidboxes = {
@@ -299,7 +299,7 @@ prototype "浮选器III" {
     drain = "24kW",
     speed = "400%",
     priority = "secondary",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     craft_category = {"矿石浮选"},
     maxslot = 8,
     fluidboxes = {
@@ -356,7 +356,7 @@ prototype "特殊浮选器" {
     drain = "6kW",
     speed = "100%",
     priority = "secondary",
-    sound = "building/hydro-plant",
+    -- sound = "building/hydro-plant",
     craft_category = {"登录配方"},
     maxslot = 8,
     fluidboxes = {

@@ -14,7 +14,7 @@ prototype "蒸汽发电机I" {
     assembling_icon = false,
     power = "900kW",
     priority = "secondary",
-    sound = "building/steam-turbine",
+    -- sound = "building/steam-turbine",
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
@@ -48,7 +48,7 @@ prototype "蒸汽发电机II" {
     assembling_icon = false,
     power = "2.4MW",
     priority = "secondary",
-    sound = "building/steam-turbine",
+    -- sound = "building/steam-turbine",
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
@@ -82,7 +82,7 @@ prototype "蒸汽发电机III" {
     assembling_icon = false,
     power = "6MW",
     priority = "secondary",
-    sound = "building/steam-turbine",
+    -- sound = "building/steam-turbine",
     -- recipe = "蒸汽发电",
     craft_category = {"流体发电"},
     maxslot = 8,
@@ -182,7 +182,7 @@ prototype "蓄电池I" {
 	capacitance = "10MJ",
     area = "2x2",
     work_status = {work = true},
-    sound = "building/electricity",
+    -- sound = "building/electricity",
 }
 
 prototype "蓄电池II" {
@@ -196,7 +196,7 @@ prototype "蓄电池II" {
 	capacitance = "30MJ",
     area = "2x2",
     work_status = {work = true},
-    sound = "building/electricity",
+    -- sound = "building/electricity",
 }
 
 prototype "蓄电池III" {
@@ -210,7 +210,7 @@ prototype "蓄电池III" {
 	capacitance = "60MJ",
     area = "2x2",
     work_status = {work = true},
-    sound = "building/electricity",
+    -- sound = "building/electricity",
 }
 
 prototype "核反应堆" {
@@ -327,7 +327,7 @@ prototype "地热井I" {
     mining_area = "5x5",
     rotate_on_build = true,
     io_shelf = false,
-    sound = "building/geothermal",
+    -- sound = "building/geothermal",
     craft_category = {"地热处理"},
     maxslot = 8,
     fluidboxes = {
@@ -357,7 +357,7 @@ prototype "地热井II" {
     mining_area = "5x5",
     rotate_on_build = true,
     io_shelf = false,
-    sound = "building/geothermal",
+    -- sound = "building/geothermal",
     craft_category = {"地热处理"},
     maxslot = 8,
     fluidboxes = {
@@ -387,7 +387,7 @@ prototype "地热井III" {
     mining_area = "5x5",
     rotate_on_build = true,
     io_shelf = false,
-    sound = "building/geothermal",
+    -- sound = "building/geothermal",
     craft_category = {"地热处理"},
     maxslot = 8,
     fluidboxes = {

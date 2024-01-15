@@ -12,7 +12,7 @@ prototype "指挥中心" {
     maxslot = 16,
     speed = "50%",
     area = "6x6",
-    sound = "building/headquarter",
+    -- sound = "building/headquarter",
 }
 
 prototype "物流中心" {
@@ -36,7 +36,7 @@ prototype "物流中心" {
     speed = "50%",
     maxslot = 20,
     area = "4x6",
-    sound = "building/logistics-center",
+    -- sound = "building/logistics-center",
     crossing = {
         connections = {
             {type="factory", position={2,4,"S"}},
@@ -60,7 +60,7 @@ prototype "科研中心I" {
     area = "3x3",
     power = "100kW",
     speed = "100%",
-    sound = "building/lab",
+    -- sound = "building/lab",
     drone_height = 42,
     priority = "secondary",
     inputs = {
@@ -84,7 +84,7 @@ prototype "地质科研中心" {
     area = "3x3",
     power = "1MW",
     speed = "100%",
-    sound = "building/lab",
+    -- sound = "building/lab",
     drone_height = 42,
     priority = "secondary",
     inputs = {
@@ -103,7 +103,7 @@ prototype "科研中心II" {
     area = "3x3",
     power = "250kW",
     speed = "200%",
-    sound = "building/lab",
+    -- sound = "building/lab",
     priority = "secondary",
     inputs = {
         "地质科技包",
@@ -123,7 +123,7 @@ prototype "科研中心III" {
     area = "3x3",
     power = "500kW",
     speed = "400%",
-    sound = "building/lab",
+    -- sound = "building/lab",
     priority = "secondary",
     inputs = {
         "地质科技包",
@@ -284,7 +284,7 @@ prototype "物流站" {
     rotate_on_build = true,
     area = "4x2",
     drone_height = 24,
-    sound = "building/logistics-center",
+    -- sound = "building/logistics-center",
     crossing = {
         connections = {
             {type="station", position={1,1,"S"}},
