@@ -218,7 +218,7 @@ function M:restore(fullpath)
     for v in gameplay_world.ecs:select "road building:in" do
         local typeobject = iprototype.queryById(v.building.prototype)
         local shape = iroadnet_converter.to_shape(typeobject.name)
-        iroadnet:set("road", v.building.x, v.building.y, "normal", shape, iprototype.dir_tostring(v.building.direction))
+        iroadnet:set("road", v.building.x, v.building.y, 0xffffffff, shape, iprototype.dir_tostring(v.building.direction))
     end
     iroadnet:flush()
 
@@ -255,7 +255,7 @@ function M:restart(game_template_file)
     for _, road in ipairs(game_template.road or {}) do
         igameplay.create_entity(road)
         local shape, dir = iroadnet_converter.to_shape(road.prototype_name), road.dir
-        iroadnet:set("road", road.x, road.y, "normal", shape, dir)
+        iroadnet:set("road", road.x, road.y, 0xffffffff, shape, dir)
     end
     iroadnet:flush()
 

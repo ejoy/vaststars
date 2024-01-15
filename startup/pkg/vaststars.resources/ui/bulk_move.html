@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <style>
+        </style>
+        <script type="text/x-lua" >
+            local audio = import_package "ant.audio"
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, {})
+
+            function start.clickButton(...)
+                audio.play "event:/ui/button1"
+                ui_sys.pub(window, {...})
+            end
+        </script>
+    </head>
+    <body style = "align-items: center; justify-content: center;">
+        <div style = "border: 1px rgb(255, 0, 255); width: 80%; height: 80%;" />
+    </body>
+</html>
