@@ -100,7 +100,7 @@ local function setRoad(x, y, mask)
         road = true,
     }
     local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-    iroadnet:set("road", x, y, "normal", shape, dir)
+    iroadnet:set("road", x, y, 0xffffffff, shape, dir)
 end
 
 local function getRoad(x, y)

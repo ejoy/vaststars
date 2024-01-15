@@ -51,6 +51,7 @@ local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
+local bulk_move_mb = mailbox:sub {"bulk_move"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
@@ -544,7 +545,7 @@ function M.update(datamodel)
             iui.leave()
 
             -- not in copy mode
-            if datamodel.status ~= "BUILD" then
+            if datamodel.status ~= "BUILD" and datamodel.status ~= "BULK_MOVE" then
                 datamodel.focus_building_icon = ""
                 datamodel.status = "NORMAL"
                 itransfer.set_dest_eid(nil)
@@ -579,6 +580,10 @@ function M.update(datamodel)
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
+        if datamodel.status ~= "BUILD" and datamodel.status ~= "NORMAL" then
+            goto continue
+        end
+
         iui.leave()
         local pos = icamera_controller.screen_to_world(v.x, v.y, XZ_PLANE)
 
@@ -588,6 +593,7 @@ function M.update(datamodel)
         else
             pickupObject(datamodel, pos, true)
         end
+        ::continue::
     end
 
     local longpress_startpoint = {}
@@ -903,6 +909,17 @@ function M.update(datamodel)
         iui.open({rml = "/pkg/vaststars.resources/ui/science.html"}, recipe)
         table.remove(global.science.tech_recipe_unpicked, index)
         datamodel.recipe_list = get_recipe_list()
+    end
+
+    for _ in bulk_move_mb:unpack() do
+        idetail.unselected()
+
+        datamodel.status = "BULK_MOVE"
+        toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), function()
+            iui.leave()
+            iui.open({rml = "/pkg/vaststars.resources/ui/bulk_move.html"})
+            gameplay_core.world_update = false
+        end)
     end
 
     iobject.flush()

@@ -26,14 +26,14 @@ local function cvtcoord2pos(x, y)
     return {pos[1], pos[3] - CONSTANT.ROAD_HEIGHT}
 end
 
-local function add_road(layer, x, y, state, shape, dir)
+local function add_road(layer, x, y, color, shape, dir)
     local gid = igroup.id(x, y)
     local idx = icoord.coord2idx(x, y)
     local item = {
         x=x, y=y,
         pos = cvtcoord2pos(x, y),
         [layer] = {
-            state   = state,
+            color   = color,
             shape   = shape,
             dir     = dir,
         }
@@ -88,8 +88,8 @@ function roadnet:flush()
     MODIFIED_GROUPS:update()
 end
 
-function roadnet:set(layer_name, x, y, shape_state, shape, dir)
-    local gid = add_road(layer_name, x, y, shape_state, shape, dir)
+function roadnet:set(layer_name, x, y, color, shape, dir)
+    local gid = add_road(layer_name, x, y, color, shape, dir)
     MODIFIED_GROUPS:mark(gid)
 end
 
