@@ -42,6 +42,9 @@ local function get_working_status(e)
     if e.capacitance and not ipower_check.is_powered_on(gameplay_core.get_world(), e) then
         return STATUS_NO_POWER
     end
+    if e.accumulator and e.capacitance then
+        return e.capacitance.delta ~= 0 and STATUS_WORKING or STATUS_IDLE
+    end
     if e.assembling then
         return e.assembling.progress > 0 and STATUS_WORKING or STATUS_IDLE
     end
