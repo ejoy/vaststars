@@ -86,7 +86,7 @@
                 height:35%;
             }
             .small-item-new {
-                margin: 1.5vmin 1vmin 1.5vmin 1vmin;
+                margin: 1.5vmin 3vmin 1.5vmin 3vmin;
                 /* flex-direction: column; */
                 /* align-items:flex-start; */
                 /* justify-content:flex-start; */
@@ -304,8 +304,8 @@
                 for _, indata in ipairs(detail.input) do
                     inoutstr = inoutstr .. ([[
                     <div style='flex-direction: column; align-items: center; justify-content: center;'>
-                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
-                            <div style='position:absolute; width:6vmin; bottom:-1vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div>
+                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s"; flex-direction:row; justify-content:center; align-items:center;'>
+                            <div style='position:absolute; width:8vmin; bottom:-1vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div>
                             <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x%d</div>    
                         </div>
                     </div>
@@ -325,8 +325,8 @@
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
                     <div style='flex-direction: column; align-items: center; justify-content: center;'>
-                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s";'>
-                            <div style='position:absolute; bottom:-1.2vmin; width:6vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div> 
+                        <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s"; flex-direction:row; justify-content:center; align-items:center;'>
+                            <div style='position:absolute; bottom:-1.2vmin; width:8vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div> 
                             <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x%d</div>   
                             <new data-if = '%s'>新</new>
                         </div>
