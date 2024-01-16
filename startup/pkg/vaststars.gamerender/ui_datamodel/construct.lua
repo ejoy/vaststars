@@ -143,11 +143,11 @@ local function _get_electricity(gameplay_world)
     electricity = math.abs(electricity)
 
     if electricity > 1000000 then
-        return negative and -(electricity // 1000000) or electricity // 1000000, "mw"
+        return negative and -(electricity // 1000000) or electricity // 1000000, "MW"
     elseif electricity > 1000 then
-        return negative and -(electricity // 1000) or electricity // 1000, "kw"
+        return negative and -(electricity // 1000) or electricity // 1000, "kW"
     else
-        return negative and -electricity or electricity, "w"
+        return negative and -electricity or electricity, "W"
     end
 end
 
