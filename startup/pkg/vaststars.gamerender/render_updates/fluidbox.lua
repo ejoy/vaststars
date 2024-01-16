@@ -77,22 +77,34 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
 
         local object = objects:coord(dx, dy)
         if object then
+            local e = assert(gameplay_world.entity[object.gameplay_eid])
             local typeobject = iprototype.queryByName(object.prototype_name)
             if ground then
-                if not iprototype.has_type(typeobject.type, "pipe_to_ground") then
+                if not typeobject.fluidbox then
                     goto continue
+                end
+
+                local found = false
+                for _, connection in ipairs(typeobject.fluidbox.connections) do
+                    if connection.ground then
+                        local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+                        if x == dx and y == dy and dir == iprototype.reverse_dir(dir) then
+                            found = true
+                        end
+                    end
+                end
+                if not found then
+                    return
                 end
             end
 
             local fluid_name
             if iprototype.has_type(typeobject.type, "fluidbox") then
-                local e = assert(gameplay_world.entity[object.gameplay_eid])
                 if e.fluidbox.fluid ~= 0 then
                     fluid_name = iprototype.queryById(e.fluidbox.fluid).name
                 end
             elseif iprototype.has_type(typeobject.type, "fluidboxes") then
                 fluid_name = {}
-                local e = assert(gameplay_world.entity[object.gameplay_eid])
                 for _, v in ipairs(FLUIDBOXES) do
                     local f = e.fluidboxes[v.fluid]
                     if f ~= 0 then
@@ -134,12 +146,12 @@ function fluidbox_sys:gameworld_prebuild()
     local gameplay_world = gameplay_core.get_world()
     local gameplay_ecs = gameplay_world.ecs
 
-    local changed = {}
+    local new = {}
     for e in gameplay_ecs:select "building_new:in fluidbox:in eid:in" do
-        changed[e.eid] = true
+        new[e.eid] = true
     end
 
-    for eid in pairs(changed) do
+    for eid in pairs(new) do
         local e = gameplay_world.entity[eid]
         local typeobject = iprototype.queryById(e.building.prototype)
         local fluid = e.fluidbox.fluid or 0
@@ -155,8 +167,8 @@ function fluidbox_sys:gameworld_prebuild()
                     fluids[neighbor_fluid] = true
                 end
             end
-            assert(length(fluids) <= 1)
-            if length(fluids) == 1 then
+            if length(fluids) > 0 then
+                assert(length(fluids) == 1)
                 local fluid = next(fluids)
                 igameplay_fluidbox.update_fluidbox(gameplay_world, e, fluid)
                 print("update fluidbox", e.building.x, e.building.y, fluid)

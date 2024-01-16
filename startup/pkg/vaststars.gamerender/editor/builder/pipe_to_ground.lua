@@ -9,6 +9,7 @@ local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
 local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
 local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
+local DIRECTION <const> = CONSTANT.DIRECTION
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
@@ -32,6 +33,7 @@ local global = require "global"
 local gameplay_core = require "gameplay.core"
 local srt = require "utility.srt"
 local icamera_controller = ecs.require "engine.system.camera_controller"
+local ifluidbox = ecs.require "render_updates.fluidbox"
 
 local function revert_changes(revert_cache_names)
     local t = {}
@@ -87,7 +89,7 @@ end
 -- Note: different from pipe_builder
 -- automatically connects to its neighbors which has fluidbox, except for pipe or pipe to ground
 local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir, prototype_name, dir)
-    local succ, neighbor_x, neighbor_y, dx, dy
+    local succ, neighbor_x, neighbor_y
     succ, neighbor_x, neighbor_y = icoord.move(x, y, neighbor_dir, 1)
     if not succ then
         return prototype_name, dir
@@ -103,28 +105,41 @@ local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir
         _prototype_name, _dir = iflow_connector.covers(object.prototype_name, object.dir)
     end
 
-    for _, fb in ipairs(ifluid:get_fluidbox(_prototype_name, object.x, object.y, _dir, object.fluid_name)) do
-        succ, dx, dy = icoord.move(fb.x, fb.y, fb.dir, 1)
-        if succ and dx == x and dy == y then
+    local typeobject = iprototype.queryByName(_prototype_name)
+    for _, conn in ipairs(typeobject.fluidbox.connections) do
+        local dx, dy, ddir = ifluidbox.rotate(conn.position, DIRECTION[object.dir], typeobject.area)
+        dx, dy = iprototype.move_coord(object.x + dx, object.y + dy, ddir, 1)
+
+        if not (dx == x and dy == y and ddir == DIRECTION[iprototype.reverse_dir(neighbor_dir)]) then
+            goto continue
+        end
+
+        if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
+            local coord = packcoord(object.x, object.y)
+            _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(neighbor_dir), true)
+            if _prototype_name then
+                PipeToGroundState.map[coord] = {object.x, object.y, _prototype_name, _dir}
+            end
+        end
+
+        local fluid = ifluidbox.get(object.x, object.y, iprototype.reverse_dir(neighbor_dir))
+        local fluid_name = ""
+        if fluid then
+            fluid_name = iprototype.queryById(fluid).name
+        end
+        if not (fluid_name == "" or State.fluid_name == "" or fluid_name == State.fluid_name) then
+            State.succ = false
+        else
+            State.fluid_name = fluid_name
+
             prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, neighbor_dir, true)
             assert(prototype_name and dir) -- TODO:remove this assert
+        end
 
-            if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-                local coord = packcoord(object.x, object.y)
-                _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(neighbor_dir), true)
-                if _prototype_name then
-                    PipeToGroundState.map[coord] = {object.x, object.y, _prototype_name, _dir}
-                end
-            end
-
-            if not (fb.fluid_name == "" or State.fluid_name == "" or fb.fluid_name == State.fluid_name) then
-                State.succ = false
-            else
-                State.fluid_name = fb.fluid_name
-            end
-
+        if true then
             return prototype_name, dir -- only one fluidbox can be connected to the endpoint
         end
+        ::continue::
     end
 
     return prototype_name, dir

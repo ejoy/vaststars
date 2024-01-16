@@ -568,7 +568,7 @@ function M.update(datamodel)
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
-        if datamodel.status ~= "BUILD" and datamodel.status ~= "NORMAL" then
+        if datamodel.status == "BULK_MOVE" then
             goto continue
         end
 
