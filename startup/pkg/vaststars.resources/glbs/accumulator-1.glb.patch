@@ -65,7 +65,17 @@ value:
   data:
     timeline:
       duration: 3
-      key_event: {}
+      key_event:
+        ---
+        event_list:
+          ---
+          action: light
+          asset_path: /pkg/vaststars.resources/animations/accumulator_light.anim
+          event_type: Animation
+          pause_frame: -1
+          target: Cube_P1
+        tick: 0
+        time: 0
       loop: false
   policy:
     ant.timeline|timeline
