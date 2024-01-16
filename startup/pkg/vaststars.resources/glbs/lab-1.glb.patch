@@ -118,7 +118,7 @@ path: animations/work.ozz
 file: animations/work.ozz
 op: replace
 path: /animations/work
-value: /pkg/vaststars.resources/animations/lab_animat.anim
+value: /pkg/vaststars.resources/animations/lab_animat.bin
 ---
 file: work.prefab
 op: replace

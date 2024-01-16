@@ -1,9 +1,7 @@
 ---
-type: ske
 duration: 3
 name: work
 sample_ratio: 30
-skeleton: /pkg/vaststars.resources/glbs/miner-1.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:
@@ -17,6 +15,7 @@ target_anims:
     rot_axis: 2
     tween: 6
     type: 2
+  inherit: {false, false, false}
   target_name: Bone.002
   ---
   clips:
@@ -30,6 +29,7 @@ target_anims:
     rot_axis: 2
     tween: 1
     type: 1
+  inherit: {false, false, false}
   target_name: Bone.003
   ---
   clips:
@@ -43,6 +43,7 @@ target_anims:
     rot_axis: 3
     tween: 6
     type: 2
+  inherit: {false, false, false}
   target_name: Bone.004
   ---
   clips:
@@ -56,4 +57,6 @@ target_anims:
     rot_axis: 2
     tween: 4
     type: 2
+  inherit: {false, false, false}
   target_name: Bone.001
+type: ske

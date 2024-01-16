@@ -40,7 +40,7 @@ path: animations/work.ozz
 file: animations/work.ozz
 op: replace
 path: /animations/work
-value: /pkg/vaststars.resources/animations/air-filter_animat.anim
+value: /pkg/vaststars.resources/animations/air-filter_animat.bin
 ---
 file: debris.prefab
 op: add

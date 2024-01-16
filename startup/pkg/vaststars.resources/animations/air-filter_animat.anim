@@ -2,7 +2,6 @@
 duration: 0.6
 name: work
 sample_ratio: 30
-skeleton: /pkg/vaststars.resources/glbs/air-filter.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:

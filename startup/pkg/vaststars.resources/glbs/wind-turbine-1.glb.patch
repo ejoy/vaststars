@@ -33,7 +33,7 @@ path: animations/work.ozz
 file: animations/work.ozz
 op: replace
 path: /animations/work
-value: /pkg/vaststars.resources/animations/wind_turbine_animat.anim
+value: /pkg/vaststars.resources/animations/wind_turbine_animat.bin
 ---
 file: mesh.prefab
 op: copyfile

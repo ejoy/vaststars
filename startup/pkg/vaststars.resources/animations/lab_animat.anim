@@ -2,7 +2,6 @@
 duration: 3
 name: work
 sample_ratio: 30
-skeleton: /pkg/vaststars.resources/glbs/lab-1.glb|animations/skeleton.bin
 target_anims:
   ---
   clips:
