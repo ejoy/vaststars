@@ -1,5 +1,5 @@
 ---
-duration: 0.6
+duration: 0.5
 name: work
 sample_ratio: 30
 target_anims:
@@ -7,10 +7,10 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: 60
+    amplitude_rot: 59
     direction: 2
     random_amplitude: false
-    range: {0, 17}
+    range: {0, 14}
     repeat_count: 1
     rot_axis: 2
     tween: 1

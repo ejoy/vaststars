@@ -1,6 +1,18 @@
 ---
 file: mesh.prefab
 op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /3/tag
+value:
+  zhuti.001_P1
+---
+file: mesh.prefab
+op: replace
 path: /2/tag
 value:
   anim_ctrl
@@ -67,6 +79,7 @@ path: /-
 value:
   data:
     efk:
+      fadeout: true
       path: /pkg/vaststars.resources/effects/air-filter_smoke_work.efk
       speed: 1
     scene:
@@ -86,17 +99,44 @@ path: /-
 value:
   data:
     timeline:
-      duration: 0.6
+      duration: 3
       key_event:
         ---
         event_list:
           ---
           action: work
           event_type: Animation
+          forwards: false
           name: Animation2
           pause_frame: -1
+          ---
+          action: work
+          event_type: Effect
         tick: 0
         time: 0
+        ---
+        event_list:
+          ---
+          action: work
+          event_type: Animation
+          forwards: false
+          pause_frame: -1
+        tick: 18
+        time: 0.6
+        ---
+        event_list:
+          ---
+          action: work
+          event_type: Effect
+        tick: 30
+        time: 1
+        ---
+        event_list:
+          ---
+          action: work
+          event_type: Effect
+        tick: 60
+        time: 2
       loop: true
   policy:
     ant.timeline|timeline
