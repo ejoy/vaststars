@@ -1878,7 +1878,7 @@ prototype "蓄电池2" {
     recipe_order =  95,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/grid-battery-design.texture",
     ingredients = {
-        {"电容II", 4},
+        {"电池I", 4},
         {"玻璃纤维", 4},
         {"蓄电池I", 3},
     },
