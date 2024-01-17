@@ -125,6 +125,20 @@ local function _get_daynight_image(gameplay_world)
     end
 end
 
+local MAX_ELECTRICITY_LEN <const> = 3
+local function _format_number(n)
+    local int_part = math.floor(n)
+    local decimal_part = n - int_part
+
+    if int_part >= 1000 or decimal_part == 0 then
+        return tostring(int_part)
+    else
+        local num_digits = MAX_ELECTRICITY_LEN - string.len(tostring(int_part))
+        local format_str = "%." .. tostring(num_digits) .. "f"
+        return string.format(format_str, n)
+    end
+end
+
 local function _get_electricity(gameplay_world)
     local consumer = 0
     local generator = 0
@@ -142,12 +156,16 @@ local function _get_electricity(gameplay_world)
     local negative = electricity < 0
     electricity = math.abs(electricity)
 
-    if electricity > 1000000 then
-        return negative and -(electricity // 1000000) or electricity // 1000000, "MW"
+    if electricity > 1000000000 then
+        local v = _format_number(electricity / 1000000000)
+        return negative and "-" .. v or v, "GW", negative
+    elseif electricity > 1000000 then
+        local v = _format_number(electricity / 1000000)
+        return negative and "-" .. v or v, "MW", negative
     elseif electricity > 1000 then
-        return negative and -(electricity // 1000) or electricity // 1000, "kW"
+        return negative and -(electricity // 1000) or electricity // 1000, "kW", negative
     else
-        return negative and -electricity or electricity, "W"
+        return negative and -electricity or electricity, "W", negative
     end
 end
 
@@ -188,6 +206,7 @@ function M.create()
         daynight = _get_daynight_image(gameplay_world),
         electricity = 0,
         electricity_unit = "W",
+        electricity_negative = false,
         pollution_unit = "μg",
     }
 end
@@ -442,7 +461,7 @@ local update = interval_call(300, function(datamodel)
     local e = assert(gameplay_world.ecs:first("global_state:in"))
     datamodel.pollution = e.global_state.pollution
     datamodel.daynight = _get_daynight_image(gameplay_world)
-    datamodel.electricity, datamodel.electricity_unit = _get_electricity(gameplay_world)
+    datamodel.electricity, datamodel.electricity_unit, datamodel.electricity_negative = _get_electricity(gameplay_world)
 
     if not itransfer.get_source_eid() then
         if #datamodel.item_bar > 0 then
