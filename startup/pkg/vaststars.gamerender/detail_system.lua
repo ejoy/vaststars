@@ -86,12 +86,12 @@ do
 
         if typeobject.sound then
             audio.play_background("event:/" .. typeobject.sound)
+            temp_objects[#temp_objects+1] = {
+                remove = function (self)
+                    audio.stop_background(true)
+                end
+            }
         end
-        temp_objects[#temp_objects+1] = {
-            remove = function (self)
-                audio.stop_background(true)
-            end
-        }
 
         --
         if typeobject.supply_area then
