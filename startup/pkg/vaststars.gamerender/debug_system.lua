@@ -109,6 +109,9 @@ function debug_sys:ui_update()
         if state.CTRL and key == "S" and press == 1 then
             export_startup()
         end
+        if key == "A" and press == 1 then
+            idm.reset_texture_mipmap("true", 0)
+        end
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
