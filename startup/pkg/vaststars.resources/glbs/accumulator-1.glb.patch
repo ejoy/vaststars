@@ -1,4 +1,19 @@
 ---
+file: images/accumulator_color.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/accumulator_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/accumulator_Metallic-accumulator_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
 file: mesh.prefab
 op: replace
 path: /1/tag
@@ -19,25 +34,10 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
-file: images/accumulator_Metallic-accumulator_Roughness.texture
-op: add
-path: /maxsize
-value: 128
----
-file: images/accumulator_color.texture
-op: add
-path: /maxsize
-value: 128
----
 file: images/accumulator_light.texture
 op: add
 path: /maxsize
 value: 32
----
-file: images/accumulator_normal.texture
-op: add
-path: /maxsize
-value: 128
 ---
 file: debris.prefab
 op: add
