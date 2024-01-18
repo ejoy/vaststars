@@ -45,6 +45,7 @@ local main_button_longpress_mb = mailbox:sub {"main_button_longpress"}
 local unselected_mb = mailbox:sub {"unselected"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
+local gesture_pinch = world:sub {"gesture", "pinch"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
@@ -541,8 +542,10 @@ function M.update(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         dragdrop_delta = delta
     end
-    if dragdrop_delta and builder then
-        builder:touch_move(builder_datamodel, dragdrop_delta)
+    if dragdrop_delta then
+        if builder then
+            builder:touch_move(builder_datamodel, dragdrop_delta)
+        end
     end
 
     for _, _, e in gesture_pan_mb:unpack() do
@@ -558,6 +561,8 @@ function M.update(datamodel)
                 itransfer.set_dest_eid(nil)
                 selected_obj = nil
             end
+        elseif e.state == "ended" or e.state == "changed" then
+            iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
         end
 
         if builder then
@@ -586,6 +591,10 @@ function M.update(datamodel)
         end
     end
 
+    for _ in gesture_pinch:unpack() do
+        iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
+    end
+
     for _, _, v in gesture_tap_mb:unpack() do
         if datamodel.status == "BULK_MOVE" then
             goto continue
@@ -606,7 +615,7 @@ function M.update(datamodel)
     local longpress_startpoint = {}
     for _, _, e in gesture_longpress_mb:unpack() do
         -- don't respond to long press in build mode
-        if datamodel.status == "BUILD" then
+        if datamodel.status == "BUILD" or datamodel.status == "BULK_MOVE" then
             goto continue
         end
         if e.state == "began" then

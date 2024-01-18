@@ -9,9 +9,19 @@
             function start.clickButton(...)
                 ui_sys.pub(window, {...})
             end
+
+            function init()
+                local e = assert(document.getElementsByTagName("select-box")[1])
+                start.clickButton("select", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight)
+
+                window.onMessage(window.getName() .. "-message", function(param)
+                    local e = assert(document.getElementsByTagName("select-box")[1])
+                    start.clickButton("select", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight)
+                end)
+            end
         </script>
     </head>
-    <body style = "align-items: center; justify-content: center;">
-        <div style = "border: 1px rgb(255, 0, 255); width: 80%; height: 80%;" />
+    <body style = "pointer-events: none; align-items: center; justify-content: center;" onload="init()">
+        <select-box style = "pointer-events: none; border: 1px rgb(255, 0, 255); width: 80%; height: 80%;" />
     </body>
 </html>

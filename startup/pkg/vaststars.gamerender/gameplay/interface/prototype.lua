@@ -81,6 +81,12 @@ function M.packcoord(x, y)
     return y * MAP_WIDTH + x
 end
 
+function M.unpackcoord(coord)
+    local y = coord // MAP_WIDTH
+    local x = coord % MAP_WIDTH
+    return x, y
+end
+
 function M.packarea(w, h)
     return (w << 8) | h
 end

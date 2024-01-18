@@ -4,7 +4,6 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
-local FLUIDBOXES <const> = CONSTANT.FLUIDBOXES
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local ICON_STATUS_NOPOWER <const> = 1
 local ICON_STATUS_NORECIPE <const> = 2
@@ -34,17 +33,10 @@ local irecipe = require "gameplay.interface.recipe"
 local gameplay_core = require "gameplay.core"
 local interval_call = ecs.require "engine.interval_call"
 local draw_fluid_icon = ecs.require "fluid_icon"
-local iprototype_cache = require "gameplay.prototype_cache.init"
-local ifluid = require "gameplay.interface.fluid"
 local ipower_check = ecs.require "power_check_system"
-local gameplay = import_package "vaststars.gameplay"
-local igameplay_chimney = gameplay.interface "chimney"
 local ichest = require "gameplay.interface.chest"
 local math3d = require "math3d"
 local vsobject_manager = ecs.require "vsobject_manager"
-local icoord = require "coord"
-local iworld = require "gameplay.interface.world"
-local igameplay_fluidbox = gameplay.interface "fluidbox"
 
 local function __get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -295,98 +287,6 @@ local function create_consumer_icon(object_id, building_srt)
         on_position_change = on_position_change,
         remove = remove,
     }
-end
-
-local function _find_neighbor_fluid(gameplay_world, x, y, dir, ground)
-    local succ, dx, dy = false, x, y
-    for i = 1, ground or 1 do
-        succ, dx, dy = icoord.move(dx, dy, dir, 1)
-        if not succ then
-            return
-        end
-
-        local object = objects:coord(dx, dy)
-        if object then
-            local typeobject = iprototype.queryByName(object.prototype_name)
-            if ground then
-                if not iprototype.has_type(typeobject.type, "pipe_to_ground") then
-                    goto continue
-                end
-            end
-
-            local fluid_name
-            if iprototype.has_type(typeobject.type, "fluidbox") then
-                local e = assert(gameplay_world.entity[object.gameplay_eid])
-                if e.fluidbox.fluid ~= 0 then
-                    fluid_name = iprototype.queryById(e.fluidbox.fluid).name
-                end
-            elseif iprototype.has_type(typeobject.type, "fluidboxes") then
-                fluid_name = {}
-                local e = assert(gameplay_world.entity[object.gameplay_eid])
-                for _, v in ipairs(FLUIDBOXES) do
-                    local f = e.fluidboxes[v.fluid]
-                    if f ~= 0 then
-                        fluid_name[v.classify] = fluid_name[v.classify] or {}
-                        fluid_name[v.classify][v.index] = iprototype.queryById(f).name
-                    end
-                end
-            end
-            for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, fluid_name)) do
-                if fb.x == dx and fb.y == dy and fb.dir == iprototype.reverse_dir(dir) then
-                    return fb.fluid_name, object
-                end
-            end
-
-            goto continue
-        end
-        ::continue::
-    end
-end
-
-function assembling_sys:gameworld_prebuild()
-    local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update REMOVED:absent" do
-        local object = assert(objects:coord(e.building.x, e.building.y))
-        local typeobject = iprototype.queryById(e.building.prototype)
-        local cache = iprototype_cache.get("recipe_config").assembling_recipes_2[typeobject.name]
-        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            local neighbor_fluid_name = _find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
-            if neighbor_fluid_name then
-                local recipe_name = cache[neighbor_fluid_name]
-                if recipe_name then
-                    local pt = iprototype.queryByName(recipe_name)
-                    if pt.id ~= e.assembling.recipe then
-                        iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit)
-                    end
-                    break
-                end
-            end
-        end
-    end
-
-    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in fluidbox:update REMOVED:absent" do
-        local object = assert(objects:coord(e.building.x, e.building.y))
-        local typeobject = iprototype.queryById(e.building.prototype)
-        local cache = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
-        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-            local neighbor_fluid_name = _find_neighbor_fluid(gameplay_world, fb.x, fb.y, fb.dir)
-            if neighbor_fluid_name then
-                local recipe_name = cache[neighbor_fluid_name]
-                if recipe_name then
-                    local pt_recipe = iprototype.queryByName(recipe_name)
-                    if pt_recipe.id ~= e.chimney.recipe then
-                        igameplay_chimney.set_recipe(e, recipe_name)
-                    end
-
-                    local pt_fluid = iprototype.queryByName(neighbor_fluid_name)
-                    if pt_fluid.id ~= e.fluidbox.fluid then
-                        igameplay_fluidbox.update_fluidbox(gameplay_world, e, pt_fluid.id)
-                    end
-                    break
-                end
-            end
-        end
-    end
 end
 
 local function getGameObject(object)
