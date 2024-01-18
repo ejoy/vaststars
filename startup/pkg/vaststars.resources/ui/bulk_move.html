@@ -1,27 +1,61 @@
 <html>
     <head>
         <style>
+            body {
+                font: 100% "阿里巴巴普惠体";
+            }
+            teardown {
+                width: 20vmin;
+                height: 10vmin;
+                background-color: rgb(255, 0, 0);
+                border: 0.25vmin rgb(189, 149, 43);
+                font-size: 5vmin;
+                align-items: center;
+                justify-content: center;
+            }
+            teardown:active {
+                transform: scale(1.2);
+            }
+            move {
+                width: 20vmin;
+                height: 10vmin;
+                background-color: rgb(189, 149, 43);
+                border: 0.25vmin rgb(189, 149, 43);
+                font-size: 5vmin;
+                align-items: center;
+                justify-content: center;
+            }
+            move:active {
+                transform: scale(1.2);
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = import_package "vaststars.ui".ui_system
             local start = ui_sys.createDataMode(window, {})
+
+            local function _send()
+                local e = assert(document.getElementsByTagName("select-box")[1])
+                ui_sys.pub(window, {"select", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight})
+            end
 
             function start.clickButton(...)
                 ui_sys.pub(window, {...})
             end
 
             function init()
-                local e = assert(document.getElementsByTagName("select-box")[1])
-                start.clickButton("select", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight)
+                _send()
 
                 window.onMessage(window.getName() .. "-message", function(param)
-                    local e = assert(document.getElementsByTagName("select-box")[1])
-                    start.clickButton("select", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight)
+                    _send()
                 end)
             end
         </script>
     </head>
-    <body style = "pointer-events: none; align-items: center; justify-content: center;" onload="init()">
-        <select-box style = "pointer-events: none; border: 1px rgb(255, 0, 255); width: 80%; height: 80%;" />
+    <body style = "pointer-events: none; align-items: center; justify-content: center;" onload = "init()">
+        <select-box style = "pointer-events: none; border: 0.25vmin rgb(189, 149, 43); width: 80%; height: 70%;" />
+        <div style = "width: 80%; height: 15%; position: absolute; bottom: 0vmin; flex-direction: row; gap: 2vmin;">
+            <teardown data-event-click = "clickButton('teardown')">删除</teardown>
+            <move data-event-click = "clickButton('move')">移动</move>
+        </div>
     </body>
 </html>
