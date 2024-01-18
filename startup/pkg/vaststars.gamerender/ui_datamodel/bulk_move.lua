@@ -3,6 +3,8 @@ local world = ecs.world
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local CONSTANT <const> = require "gameplay.interface.constant"
+local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
@@ -11,6 +13,7 @@ local icoord = require "coord"
 local COORD_BOUNDARY <const> = icoord.boundary()
 
 local select_mb = mailbox:sub {"select"}
+local teardown_mb = mailbox:sub {"teardown"}
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icoord = require "coord"
 local objects = require "objects"
@@ -19,6 +22,10 @@ local ibuilding = ecs.require "render_updates.building"
 local iprototype = require "gameplay.interface.prototype"
 local iroadnet_converter = require "roadnet_converter"
 local iroadnet = ecs.require "engine.roadnet"
+local teardown = ecs.require "editor.teardown"
+local gameplay_core = require "gameplay.core"
+local iinventory = require "gameplay.interface.inventory"
+local show_message = ecs.require "show_message".show_message
 
 local selected = {}
 
@@ -75,7 +82,11 @@ function M.update(datamodel)
             for y = ltcoord[2], rbcoord[2] do
                 local object = objects:coord(x, y)
                 if object then
-                    new[iprototype.packcoord(object.x, object.y)] = true
+                    local e = assert(gameplay_core.get_entity(object.gameplay_eid))
+                    local typeobject = iprototype.queryById(e.building.prototype)
+                    if not e.debris and typeobject.teardown ~= false then
+                        new[iprototype.packcoord(object.x, object.y)] = true
+                    end
                 end
                 local road_x, road_y = x//2*2, y//2*2
                 local v = ibuilding.get(road_x, road_y)
@@ -105,6 +116,39 @@ function M.update(datamodel)
 
         selected = new
         iroadnet:flush()
+    end
+
+    for _ in teardown_mb:unpack() do
+        local full = false
+        for coord in pairs(selected) do
+            local x, y = iprototype.unpackcoord(coord)
+            local object = objects:coord(x, y)
+            if object then
+                teardown(object.gameplay_eid)
+                local e = assert(gameplay_core.get_entity(object.gameplay_eid))
+                if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
+                    full = true
+                end
+            end
+            local road_x, road_y = x//2*2, y//2*2
+            local v = ibuilding.get(road_x, road_y)
+            if v then
+                teardown(v.eid)
+                local e = assert(gameplay_core.get_entity(v.eid))
+                if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
+                    full = true
+                end
+            end
+        end
+
+        gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+        -- the building directly go into the backpack
+        if full then
+            show_message("backpack is full")
+        end
+
+        selected = {}
     end
 end
 

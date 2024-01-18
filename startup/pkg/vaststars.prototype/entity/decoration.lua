@@ -196,6 +196,19 @@ prototype "建筑物残骸 5x5" {
     area = "5x5",
 }
 
+prototype "建筑物残骸 6x4" {
+    display_name = "建筑物残骸",
+    model = "",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/6x4.glb|mesh.prefab config:s,1,3",
+    check_coord = "exclusive",
+    builder = "normal",
+    type = {"building", "chest", "debris"},
+    chest_type = "supply",
+    chest_style = "chest",
+    chest_destroy = true,
+    area = "6x6",
+}
+
 prototype "建筑物残骸 6x6" {
     display_name = "建筑物残骸",
     model = "",
