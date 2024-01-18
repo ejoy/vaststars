@@ -7,7 +7,8 @@ target_anims:
   clips: {}
   inherit: {false, false, false}
   init_value: {1, 1, 1, 1}
-  target_name: u_basecolor_factor
+  property_name: u_basecolor_factor
+  target_name: Plane.001_P1
   ---
   clips:
     ---
@@ -27,10 +28,12 @@ target_anims:
     value: {1, 1, 1, 0}
   inherit: {false, false, true}
   init_value: {0.5, 0.5, 0.5, 0}
-  target_name: u_emissive_factor
+  property_name: u_emissive_factor
+  target_name: Plane.001_P1
   ---
   clips: {}
   inherit: {false, false, false}
   init_value: {1, 1, 1, 1}
-  target_name: u_pbr_factor
+  property_name: u_pbr_factor
+  target_name: Plane.001_P1
 type: mtl
