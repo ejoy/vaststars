@@ -299,7 +299,6 @@ prototype "锅炉I" {
                 base_level = -100,
                 connections = {
                     {type="input-output", position={0,0,"W"}},
-                    {type="input-output", position={2,0,"E"}},
                 }
             },
         },
@@ -310,6 +309,14 @@ prototype "锅炉I" {
                 base_level = 150,
                 connections = {
                     {type="output", position={1,1,"S"}},
+                }
+            },
+            {
+                capacity = 1000,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="input-output", position={2,0,"E"}},
                 }
             },
         },
