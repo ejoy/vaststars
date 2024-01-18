@@ -1,4 +1,24 @@
 ---
+file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  Plane.001_P1
+---
+file: mesh.prefab
+op: copyfile
+path: debris.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
 file: images/boiler_normal.texture
 op: add
 path: /maxsize
@@ -23,10 +43,6 @@ file: materials/Material.001.material
 op: replace
 path: /state/CULL
 value: NONE
----
-file: mesh.prefab
-op: copyfile
-path: debris.prefab
 ---
 file: debris.prefab
 op: add
