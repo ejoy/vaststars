@@ -1803,23 +1803,23 @@ prototype "坩埚制造" {
   },
 }
 
-prototype "锅炉制造" {
-  desc = "研究可进行高温加工的特殊器皿",
-  type = { "tech" },
-  effects = {
-    unlock_recipe = {"锅炉"},
-    unlock_item = {"锅炉I"},
-  },
-  prerequisites = {"坩埚制造"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"气候科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 10,
-  order = 56,
-  time = "6s"
-}
+-- prototype "锅炉制造" {
+--   desc = "研究可进行高温加工的特殊器皿",
+--   type = { "tech" },
+--   effects = {
+--     unlock_recipe = {"锅炉"},
+--     unlock_item = {"锅炉I"},
+--   },
+--   prerequisites = {"坩埚制造"},
+--   ingredients = {
+--     {"地质科技包", 1},
+--     {"气候科技包", 1},
+--     {"机械科技包", 1},
+--   },
+--   count = 10,
+--   order = 56,
+--   time = "6s"
+-- }
 
 prototype "有机化学3" {
   desc = "研究碳化合物组成、结构和制备方法",
@@ -1828,7 +1828,7 @@ prototype "有机化学3" {
     unlock_recipe = {"橡胶"},
     unlock_item = {"橡胶"},
   },
-  prerequisites = {"化学工程1","锅炉制造"},
+  prerequisites = {"化学工程1"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
@@ -2461,7 +2461,7 @@ prototype "地热1" {
   desc = "研究开发地热资源的装置",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"地热井1"},
+    unlock_recipe = {"地热井1","地热气转蒸汽"},
     unlock_item = {"地热井I"},
   },
   prerequisites = {"建筑材料","科技大跃进"},

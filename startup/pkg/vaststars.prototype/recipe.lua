@@ -3652,6 +3652,23 @@ prototype "纯水转蒸汽" {
     description = "纯水加热成为蒸汽",
 }
 
+prototype "地热气转蒸汽" {
+    type = { "recipe" },
+    recipe_craft_category = "流体基础化工",
+    recipe_category =  "化工",
+    recipe_order =  112,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/water2steam.texture",
+    ingredients = {
+        {"地热气", 100},
+    },
+    results = {
+        {"蒸汽", 80},
+        {"废料", 2},
+    },
+    time = "1s",
+    description = "地热气处理成为蒸汽",
+}
+
 prototype "塑料1" {
     type = { "recipe" },
     recipe_craft_category = "器件基础化工",
@@ -4208,11 +4225,11 @@ prototype "地热气发电" {
     recipe_order =  120,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/water-electrolysis.texture",
     ingredients = {
-        {"地热气", 30},
+        {"地热气", 50},
     },
     results = {
     },
-    time = "1.25s",
+    time = "1.5s",
     description = "地热气发电",
 }
 
