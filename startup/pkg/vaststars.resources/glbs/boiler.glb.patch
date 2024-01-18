@@ -1,4 +1,14 @@
 ---
+file: materials/Material.001.material
+op: replace
+path: /state/CULL
+value: NONE
+---
+file: materials/Material.001.material
+op: replace
+path: /properties/u_emissive_factor
+value: {0.5, 0.5, 0.5, 0}
+---
 file: mesh.prefab
 op: replace
 path: /1/tag
@@ -39,11 +49,6 @@ op: add
 path: /maxsize
 value: 128
 ---
-file: materials/Material.001.material
-op: replace
-path: /state/CULL
-value: NONE
----
 file: debris.prefab
 op: add
 path: /-
@@ -62,6 +67,30 @@ path: /-
 value:
   mount: 3
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x2.glb|mesh.prefab
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          action: light
+          asset_path: /pkg/vaststars.resources/animations/boiler_light.anim
+          event_type: Animation
+          pause_frame: -1
+          target: Plane.001_P1
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline1
 ---
 file: mesh.prefab
 op: createfile
