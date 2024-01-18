@@ -3643,12 +3643,12 @@ prototype "纯水转蒸汽" {
     recipe_order =  112,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/water2steam.texture",
     ingredients = {
-        {"纯水", 70},
+        {"纯水", 20},
     },
     results = {
-        {"蒸汽", 70},
+        {"蒸汽", 20},
     },
-    time = "1s",
+    time = "2s",
     description = "纯水加热成为蒸汽",
 }
 
