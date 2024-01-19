@@ -2153,18 +2153,6 @@ local entities = {{
 }, {
   dir = "E",
   fluid_name = "蒸汽",
-  prototype_name = "管道1-U型",
-  x = 92,
-  y = 138
-}, {
-  dir = "E",
-  fluid_name = "蒸汽",
-  prototype_name = "管道1-I型",
-  x = 93,
-  y = 138
-}, {
-  dir = "E",
-  fluid_name = "蒸汽",
   prototype_name = "管道1-I型",
   x = 93,
   y = 134
@@ -2205,40 +2193,16 @@ local entities = {{
   x = 97,
   y = 139
 }, {
-  dir = "W",
+  dir = "N",
   fluid_name = "地下卤水",
-  prototype_name = "管道1-L型",
+  prototype_name = "管道1-U型",
   x = 97,
   y = 140
 }, {
-  dir = "W",
-  fluid_name = "地下卤水",
-  prototype_name = "管道1-T型",
-  x = 95,
-  y = 140
-}, {
-  dir = "E",
+  dir = "N",
   fluid_name = "地下卤水",
   prototype_name = "管道1-I型",
-  x = 96,
-  y = 140
-}, {
-  dir = "E",
-  fluid_name = "地下卤水",
-  prototype_name = "管道1-T型",
   x = 97,
-  y = 136
-}, {
-  dir = "W",
-  fluid_name = "地下卤水",
-  prototype_name = "管道1-T型",
-  x = 95,
-  y = 136
-}, {
-  dir = "E",
-  fluid_name = "地下卤水",
-  prototype_name = "管道1-I型",
-  x = 96,
   y = 136
 }, {
   dir = "E",
