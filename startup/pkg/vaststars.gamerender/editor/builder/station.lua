@@ -213,7 +213,6 @@ local function __new_entity(self, datamodel, typeobject, x, y, position, dir)
             t = position,
             r = ROTATORS[dir],
         },
-        fluid_name = "",
         group_id = 0,
     }
 

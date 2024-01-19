@@ -93,10 +93,7 @@ local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
                 for _, conn in ipairs(typeobject.fluidbox.connections) do
                     if conn.ground then
                         if _check_connnection(dx, dy, iprototype.reverse_dir(dir), conn, e, typeobject) then
-                            if e.fluidbox.fluid == 0 then
-                                return
-                            end
-                            return e.fluidbox.fluid, e.eid
+                            return e.eid
                         end
                     end
                 end
@@ -104,21 +101,14 @@ local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
             end
 
             if e.fluidbox then
-                if e.fluidbox.fluid == 0 then
-                    return
-                end
-                return e.fluidbox.fluid, e.eid
+                return e.eid
 
             elseif e.fluidboxes then
                 for _, v in ipairs(FLUIDBOXES) do
                     if typeobject.fluidboxes[v.classify][v.index] then
                         for _, conn in ipairs(typeobject.fluidboxes[v.classify][v.index].connections) do
                             if _check_connnection(dx, dy, iprototype.reverse_dir(dir), conn, e, typeobject) then
-                                local f = e.fluidboxes[v.fluid]
-                                if f == 0 then
-                                    return
-                                end
-                                return f, e.eid
+                                return e.eid, v.fluid
                             end
                         end
                     end
@@ -131,16 +121,39 @@ local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
     end
 end
 
+local function _find_neighbor_fluid(...)
+    local eid, fluid = _find_neighbor(...)
+    if not eid then
+        return
+    end
+
+    local gameplay_world = gameplay_core.get_world()
+    local e = assert(gameplay_world.entity[eid])
+    if e.fluidbox then
+        if e.fluidbox.fluid == 0 then
+            return
+        end
+        return e.fluidbox.fluid
+    elseif e.fluidboxes then
+        if e.fluidboxes[fluid] == 0 then
+            return
+        end
+        return e.fluidboxes[fluid]
+    else
+        assert(false)
+    end
+end
+
 local function _update_neighbor_fluid(gameplay_world, e, typeobject, map)
     assert(e.fluidbox.fluid ~= 0)
     for _, connection in ipairs(typeobject.fluidbox.connections) do
         local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-        local fluid, eid = _find_neighbor(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
-        if fluid then
+        local eid = _find_neighbor(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
+        if eid then
             local neighbor = assert(gameplay_world.entity[eid])
-            if neighbor.fluidbox and (neighbor.fluidbox.fluid or 0) == 0 then
-                print("update fluidbox", neighbor.building.x, neighbor.building.y, fluid)
-                igameplay_fluidbox.update_fluidbox(gameplay_world, neighbor, fluid)
+            if neighbor.fluidbox and neighbor.fluidbox.fluid == 0 then
+                print("update fluidbox", neighbor.building.x, neighbor.building.y, e.fluidbox.fluid)
+                igameplay_fluidbox.update_fluidbox(gameplay_world, neighbor, e.fluidbox.fluid)
                 _update_neighbor_fluid(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype), map)
             end
         end
@@ -186,7 +199,7 @@ function fluidbox_sys:gameworld_prebuild()
             local fluids = {}
             for _, connection in ipairs(typeobject.fluidbox.connections) do
                 local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-                local neighbor_fluid = _find_neighbor(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
+                local neighbor_fluid = _find_neighbor_fluid(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
                 print(e.building.x + x, e.building.y + y, neighbor_fluid)
                 if neighbor_fluid then
                     fluids[neighbor_fluid] = true
@@ -214,8 +227,7 @@ function fluidbox_sys:gameworld_prebuild()
             if typeobject.fluidboxes[v.classify][v.index] then
                 for _, connection in ipairs(typeobject.fluidboxes[v.classify][v.index].connections) do
                     local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-                    local neighbor_fluid = _find_neighbor(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
-                    print(e.building.x + x, e.building.y + y, neighbor_fluid)
+                    local neighbor_fluid = _find_neighbor_fluid(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
                     if neighbor_fluid then
                         fluids[neighbor_fluid] = true
                     end
@@ -242,11 +254,11 @@ function fluidbox_sys:gameworld_prebuild()
         local fluids = {}
         for _, connection in ipairs(typeobject.fluidbox.connections) do
             local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-            local neighbor_fluid = _find_neighbor(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
-            print(e.building.x + x, e.building.y + y, neighbor_fluid)
+            local neighbor_fluid = _find_neighbor_fluid(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
             if neighbor_fluid then
                 fluids[neighbor_fluid] = true
             end
+            ::continue::
         end
         assert(length(fluids) <= 1)
         local fluid = next(fluids)

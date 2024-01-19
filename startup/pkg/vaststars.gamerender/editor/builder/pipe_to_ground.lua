@@ -19,7 +19,6 @@ local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
 local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
-local ifluid = require "gameplay.interface.fluid"
 local iobject = ecs.require "object"
 local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
@@ -50,7 +49,6 @@ local function revert_changes(revert_cache_names)
             object.prototype_name = old_object.prototype_name
             object.dir = old_object.dir
             object.srt.r = ROTATORS[object.dir]
-            object.fluid_name = old_object.fluid_name
         else
             iobject.remove(object)
         end
@@ -154,16 +152,46 @@ local function _get_covers_fluidbox(object, groud)
         prototype_name = object.prototype_name
     end
 
-    local t = {}
-    for _, fb in ipairs(ifluid:get_fluidbox(prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-        if groud == nil and fb.ground then
-            goto continue
-        end
+    local funcs = {}
+    funcs["fluidbox"] = function(typeobject, x, y, dir, result)
+        for _, conn in ipairs(typeobject.fluidbox.connections) do
+            local dx, dy, dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
+            if groud == nil and conn.ground then
+                goto continue
+            end
 
-        t[#t+1] = fb
-        ::continue::
+            result[#result+1] = {x = x + dx, y = y + dy, dir = dir, ground = conn.ground}
+            ::continue::
+        end
+        return result
     end
-    return t
+
+    local iotypes = {"input", "output"}
+    funcs["fluidboxes"] = function(typeobject, x, y, dir, fluid_name, result)
+        for _, iotype in ipairs(iotypes) do
+            for idx, v in ipairs(typeobject.fluidboxes[iotype]) do
+                for _, conn in ipairs(v.connections) do
+                    if groud == nil and conn.ground then
+                        goto continue
+                    end
+                    local dx, dy, dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
+                    result[#result+1] = {x = x + dx, y = y + dy, dir = dir, ground = conn.ground}
+                    ::continue::
+                end
+            end
+        end
+        return result
+    end
+
+    local result = {}
+    local typeobject = assert(iprototype.queryByName(prototype_name))
+    for _, t in ipairs(typeobject.type) do
+        local func = funcs[t]
+        if func then
+            result = func(typeobject, object.x, object.y, object.dir, result)
+        end
+    end
+    return result
 end
 
 -- check if the neighbor pipe can be replaced with a pipe to ground
@@ -527,7 +555,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                     r = ROTATORS[dir],
                 },
-                fluid_name = State.fluid_name,
                 group_id = 0,
             }
             objects:set(object, "CONFIRM")
@@ -709,7 +736,6 @@ local function _new_entity(self, typeobject, x, y, position, dir)
             t = position,
             r = ROTATORS[dir],
         },
-        fluid_name = "",
         group_id = 0,
     }
 

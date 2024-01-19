@@ -40,7 +40,7 @@ local function clean()
 end
 
 local function restore_world(gameplay_world)
-    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, debris)
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, debris)
         local typeobject = iprototype.queryByName(prototype_name)
         local object = iobject.new {
             prototype_name = prototype_name,
@@ -51,7 +51,6 @@ local function restore_world(gameplay_world)
                 t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
                 r = ROTATORS[dir],
             },
-            fluid_name = fluid_name,
             debris = debris,
         }
         object.gameplay_eid = gameplay_eid
@@ -61,44 +60,9 @@ local function restore_world(gameplay_world)
     -- restore
     local all_object = {}
     local map = {} -- coord -> id
-    local fluidbox_map = {} -- coord -> id -- only for fluidbox
     for v in gameplay_world.ecs:select("eid:in building:in road:absent inner_building:absent fluidbox?in fluidboxes?in assembling?in debris?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
-        local fluid_name = ""
-        if v.fluidbox then
-            fluid_name = ""
-            if v.fluidbox.fluid == 0 then
-                fluid_name = ""
-            else
-                local typeobject_fluid = assert(iprototype.queryById(v.fluidbox.fluid))
-                fluid_name = typeobject_fluid.name
-            end
-            local w, h = iprototype.rotate_area(typeobject.area, e.direction)
-            for i = 0, w - 1 do
-                for j = 0, h - 1 do
-                    local coord = iprototype.packcoord(e.x + i, e.y + j)
-                    assert(fluidbox_map[coord] == nil, ("duplicate fluidbox coord: %d, %d"):format(e.x + i, e.y + j))
-                    fluidbox_map[coord] = v.eid
-                end
-            end
-        end
-        if v.fluidboxes then
-            fluid_name = {}
-            for id, fluid in pairs(v.fluidboxes) do
-                if fluid ~= 0 then
-                    local iotype, index = id:match("(%a+)(%d+)%_fluid")
-                    if iotype then
-                        local classity = ifluid:iotype_to_classity(iotype)
-                        local typeobject_fluid = assert(iprototype.queryById(fluid))
-
-                        fluid_name[classity] = fluid_name[classity] or {}
-                        fluid_name[classity][tonumber(index)] = typeobject_fluid.name
-                    end
-                end
-            end
-        end
-
         local debris
         if v.debris then
             debris = v.debris.prototype
@@ -110,7 +74,6 @@ local function restore_world(gameplay_world)
             dir = iprototype.dir_tostring(e.direction),
             x = e.x,
             y = e.y,
-            fluid_name = fluid_name,
             debris = debris,
         }
 
@@ -128,7 +91,7 @@ local function restore_world(gameplay_world)
 
     -----------
     for id, v in pairs(all_object) do
-        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.debris)
+        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.debris)
     end
 
     iobject.flush()
