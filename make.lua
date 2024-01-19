@@ -61,7 +61,6 @@ lm.configs = {
 }
 
 local EnableSanitize = false
-local EnableLog = false
 
 if EnableSanitize then
     lm.builddir = ("build/%s/sanitize"):format(plat)
@@ -86,21 +85,19 @@ if EnableSanitize then
     }
 end
 
-lm.antdir = lm.antdir or "3rd/ant/"
-
-lm:import(lm.antdir .. "make.lua")
+lm:import(lm.AntDir .. "/make.lua")
 lm:import "clibs/make.lua"
 
 if lm.os == "windows" then
     lm:copy "copy_dll" {
         input = {
-            lm.antdir .. "3rd/fmod/windows/core/lib/x64/" .. (EnableLog and "fmodL.dll" or "fmod.dll"),
-            lm.antdir .. "3rd/fmod/windows/studio/lib/x64/" .. (EnableLog and "fmodstudioL.dll" or "fmodstudio.dll"),
-            lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
+            lm.AntDir .. "/3rd/fmod/windows/core/lib/x64/fmod.dll",
+            lm.AntDir .. "/3rd/fmod/windows/studio/lib/x64/fmodstudio.dll",
+            lm.AntDir .. "/3rd/vulkan/x64/vulkan-1.dll",
         },
         output = {
-            lm.bindir .. (EnableLog and "/fmodL.dll" or "/fmod.dll"),
-            lm.bindir .. (EnableLog and "/fmodstudioL.dll" or "/fmodstudio.dll"),
+            lm.bindir .. "/fmod.dll",
+            lm.bindir .. "/fmodstudio.dll",
             lm.bindir .. "/vulkan-1.dll",
         },
     }
