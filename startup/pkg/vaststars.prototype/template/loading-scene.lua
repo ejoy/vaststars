@@ -675,28 +675,6 @@ local entities = {{
   prototype_name = "锅炉I",
   recipe = "卤水沸腾",
   x = 94,
-  y = 141
-}, {
-  dir = "E",
-  fluid_name = {
-    input = { "地下卤水" },
-    output = { "蒸汽" }
-  },
-  items = { { "地下卤水", 1 }, { "蒸汽", 0 } },
-  prototype_name = "锅炉I",
-  recipe = "卤水沸腾",
-  x = 94,
-  y = 137
-}, {
-  dir = "E",
-  fluid_name = {
-    input = { "地下卤水" },
-    output = { "蒸汽" }
-  },
-  items = { { "地下卤水", 51 }, { "蒸汽", 0 } },
-  prototype_name = "锅炉I",
-  recipe = "卤水沸腾",
-  x = 94,
   y = 133
 }, {
   dir = "E",
@@ -704,23 +682,9 @@ local entities = {{
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 0 } },
+  items = { { "蒸汽", 30 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
-  x = 89,
-  y = 141
-}, {
-  dir = "E",
-  fluid_name = "",
-  items = {},
-  prototype_name = "蒸汽发电机I",
-  x = 87,
-  y = 137
-}, {
-  dir = "E",
-  fluid_name = "",
-  items = {},
-  prototype_name = "蒸汽发电机I",
   x = 85,
   y = 133
 }, {
