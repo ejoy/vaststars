@@ -2,6 +2,9 @@ local lm = require "luamake"
 
 lm:runlua "compile_gameplay_ecs" {
     script = "../../clibs/gameplay/compile_ecs.lua",
+    args = {
+        lm.AntDir
+    },
     input = "../../startup/pkg/vaststars.gameplay/init/component.lua",
     output = "../../clibs/gameplay/src/util/component.h",
 }
