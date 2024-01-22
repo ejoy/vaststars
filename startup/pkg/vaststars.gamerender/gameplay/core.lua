@@ -39,7 +39,11 @@ init_func["assembling"] = function(pt, template)
         return template
     end
 
-    template.fluids = template.fluid -- TODO: remove this
+    local recipe_typeobject = iprototype.queryByName(recipe)
+    if recipe_typeobject then
+        template.fluids = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
+    end
+
     return template
 end
 
@@ -74,7 +78,6 @@ function m.create_entity(init)
         x = init.x,
         y = init.y,
         dir = init.dir,
-        fluid = init.fluid_name,
         items = init.items,
         item = init.item,
         recipe = init.recipe, -- for debugging

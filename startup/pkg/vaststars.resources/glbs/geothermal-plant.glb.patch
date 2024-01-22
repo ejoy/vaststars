@@ -1,7 +1,23 @@
 ---
 file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  Cylinder.010_P1
+---
+file: mesh.prefab
 op: copyfile
 path: debris.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
 ---
 file: debris.prefab
 op: add

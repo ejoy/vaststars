@@ -146,7 +146,6 @@ local function _new_entity(self, datamodel, typeobject, x, y, pos, dir)
             t = pos,
             r = ROTATORS[dir],
         },
-        fluid_name = "",
         group_id = 0,
     }
 
@@ -284,7 +283,6 @@ local function place_one(self, datamodel)
             t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, "N"))),
             r = ROTATORS["N"],
         },
-        fluid_name = '',
         group_id = 0,
     }
     objects:set(object, "CONFIRM")

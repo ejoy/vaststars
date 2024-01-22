@@ -1,0 +1,36 @@
+---
+duration: 3
+name: light
+sample_ratio: 30
+target_anims:
+  ---
+  clips: {}
+  inherit: {false, false, false}
+  init_value: {1, 1, 1, 1}
+  target_name: u_basecolor_factor
+  ---
+  clips:
+    ---
+    range: {0, 1}
+    scale: 5
+    tween: 1
+    value: {1, 1, 1, 0}
+    ---
+    range: {2, 44}
+    scale: 10
+    tween: 1
+    value: {1, 1, 1, 0}
+    ---
+    range: {45, 88}
+    scale: 5
+    tween: 1
+    value: {1, 1, 1, 0}
+  inherit: {false, false, true}
+  init_value: {0.5, 0.5, 0.5, 0}
+  target_name: u_emissive_factor
+  ---
+  clips: {}
+  inherit: {false, false, false}
+  init_value: {1, 1, 1, 1}
+  target_name: u_pbr_factor
+type: mtl

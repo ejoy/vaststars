@@ -13,6 +13,7 @@ prototype "指挥中心" {
     speed = "50%",
     area = "6x6",
     -- sound = "building/headquarter",
+    teardown = false,
 }
 
 prototype "物流中心" {

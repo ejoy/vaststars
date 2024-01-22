@@ -3579,7 +3579,7 @@ prototype "地下卤水净化" {
         {"纯水", 70},
         {"废水", 30},
     },
-    time = "1s",
+    time = "4s",
     description = "卤水净化成纯水",
 }
 
@@ -3643,13 +3643,30 @@ prototype "纯水转蒸汽" {
     recipe_order =  112,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/water2steam.texture",
     ingredients = {
-        {"纯水", 70},
+        {"纯水", 20},
     },
     results = {
-        {"蒸汽", 270},
+        {"蒸汽", 20},
+    },
+    time = "2s",
+    description = "纯水加热成为蒸汽",
+}
+
+prototype "地热气转蒸汽" {
+    type = { "recipe" },
+    recipe_craft_category = "流体基础化工",
+    recipe_category =  "化工",
+    recipe_order =  112,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/water2steam.texture",
+    ingredients = {
+        {"地热气", 100},
+    },
+    results = {
+        {"蒸汽", 80},
+        {"废料", 2},
     },
     time = "1s",
-    description = "纯水加热成为蒸汽",
+    description = "地热气处理成为蒸汽",
 }
 
 prototype "塑料1" {
@@ -4208,11 +4225,11 @@ prototype "地热气发电" {
     recipe_order =  120,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/water-electrolysis.texture",
     ingredients = {
-        {"地热气", 30},
+        {"地热气", 50},
     },
     results = {
     },
-    time = "1.25s",
+    time = "1.5s",
     description = "地热气发电",
 }
 
@@ -4346,7 +4363,7 @@ prototype "卤水沸腾" {
     },
     results = {
         {"蒸汽", 60},
-        -- {"废水", 10},
+        {"废水", 10},
     },
     time = "1.5s",
     description = "卤水转蒸汽",

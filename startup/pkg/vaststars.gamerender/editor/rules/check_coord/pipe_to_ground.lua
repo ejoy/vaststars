@@ -16,6 +16,7 @@ return function (x, y, dir, typeobject, object_id)
             -- building
             if object and object.id ~= object_id then
                 local typeobject = iprototype.queryByName(object.prototype_name)
+                -- pipes can be placed on existing pipe locations for replacement
                 if iprototype.has_types(typeobject.type, "pipe", "pipe_to_ground") then
                     goto continue
                 end

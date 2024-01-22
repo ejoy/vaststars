@@ -135,6 +135,7 @@ prototype "太阳能板I" {
     type = {"building","generator","solar_panel"},
     area = "3x3",
     power = "300kW",
+    work_status = {work = true},
     priority = "primary",
 }
 
@@ -146,6 +147,7 @@ prototype "太阳能板II" {
     type = {"building","generator","solar_panel"},
     area = "3x3",
     power = "450kW",
+    work_status = {work = true},
     priority = "primary",
 }
 
@@ -157,6 +159,7 @@ prototype "太阳能板III" {
     type = {"building","generator","solar_panel"},
     area = "3x3",
     power = "600kW",
+    work_status = {work = true},
     priority = "primary",
 }
 
@@ -168,6 +171,7 @@ prototype "轻型太阳能板" {
     type = {"building","generator","solar_panel"},
     area = "3x3",
     power = "60kW",
+    work_status = {work = true},
     priority = "primary",
 }
 
@@ -291,6 +295,7 @@ prototype "锅炉I" {
     io_shelf = false,
     craft_category = {"流体换热处理"},
     maxslot = 8,
+    work_status = {work = true},
     fluidboxes = {
         input = {
             {
@@ -299,7 +304,6 @@ prototype "锅炉I" {
                 base_level = -100,
                 connections = {
                     {type="input-output", position={0,0,"W"}},
-                    {type="input-output", position={2,0,"E"}},
                 }
             },
         },
@@ -310,6 +314,14 @@ prototype "锅炉I" {
                 base_level = 150,
                 connections = {
                     {type="output", position={1,1,"S"}},
+                }
+            },
+            {
+                capacity = 1000,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="input-output", position={2,0,"E"}},
                 }
             },
         },
@@ -330,6 +342,7 @@ prototype "地热井I" {
     -- sound = "building/geothermal",
     craft_category = {"地热处理"},
     maxslot = 8,
+    work_status = {work = true},
     fluidboxes = {
         input = {
         },
@@ -360,6 +373,7 @@ prototype "地热井II" {
     -- sound = "building/geothermal",
     craft_category = {"地热处理"},
     maxslot = 8,
+    work_status = {work = true},
     fluidboxes = {
         input = {
         },
@@ -390,6 +404,7 @@ prototype "地热井III" {
     -- sound = "building/geothermal",
     craft_category = {"地热处理"},
     maxslot = 8,
+    work_status = {work = true},
     fluidboxes = {
         input = {
         },

@@ -5,7 +5,6 @@ local w = world.w
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
-local DEBRIS <const> = ecs.require "vaststars.prototype|debris"
 
 local ipick_object = ecs.require "pick_object_system"
 local CLASS <const> = ipick_object.CLASS
@@ -26,7 +25,6 @@ local idetail = ecs.require "detail_system"
 local icoord = require "coord"
 local iinventory = require "gameplay.interface.inventory"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
-local igameplay = ecs.require "gameplay.gameplay_system"
 local ilorry = ecs.require "render_updates.lorry"
 local igame_object = ecs.require "engine.game_object"
 local rotate_mb = mailbox:sub {"rotate"}
@@ -45,6 +43,7 @@ local main_button_longpress_mb = mailbox:sub {"main_button_longpress"}
 local unselected_mb = mailbox:sub {"unselected"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
+local gesture_pinch = world:sub {"gesture", "pinch"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
@@ -55,9 +54,8 @@ local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
 local itransfer = require "gameplay.interface.transfer"
-local ichest = require "gameplay.interface.chest"
-local inner_building = require "editor.inner_building"
 local show_message = ecs.require "show_message".show_message
+local teardown = ecs.require "editor.teardown"
 
 local tech_recipe_unpicked_dirty_mb = world:sub {"tech_recipe_unpicked_dirty"}
 local builder, builder_datamodel, builder_ui
@@ -541,8 +539,10 @@ function M.update(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         dragdrop_delta = delta
     end
-    if dragdrop_delta and builder then
-        builder:touch_move(builder_datamodel, dragdrop_delta)
+    if dragdrop_delta then
+        if builder then
+            builder:touch_move(builder_datamodel, dragdrop_delta)
+        end
     end
 
     for _, _, e in gesture_pan_mb:unpack() do
@@ -558,6 +558,8 @@ function M.update(datamodel)
                 itransfer.set_dest_eid(nil)
                 selected_obj = nil
             end
+        elseif e.state == "ended" or e.state == "changed" then
+            iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
         end
 
         if builder then
@@ -586,6 +588,10 @@ function M.update(datamodel)
         end
     end
 
+    for _ in gesture_pinch:unpack() do
+        iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
+    end
+
     for _, _, v in gesture_tap_mb:unpack() do
         if datamodel.status == "BULK_MOVE" then
             goto continue
@@ -606,7 +612,7 @@ function M.update(datamodel)
     local longpress_startpoint = {}
     for _, _, e in gesture_longpress_mb:unpack() do
         -- don't respond to long press in build mode
-        if datamodel.status == "BUILD" then
+        if datamodel.status == "BUILD" or datamodel.status == "BULK_MOVE" then
             goto continue
         end
         if e.state == "began" then
@@ -647,68 +653,11 @@ function M.update(datamodel)
         selected_obj = nil
 
         local e = assert(gameplay_core.get_entity(gameplay_eid))
-
-        local items = {}
-        if e.chest then
-            for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-                local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
-                if not slot then
-                    break
-                end
-                if slot.item ~= 0 and slot.amount > 0 then
-                    local typeobject = iprototype.queryById(slot.item)
-                    if not iprototype.is_fluid_id(slot.item) then
-                        items[#items+1] = {typeobject.name, slot.amount}
-                    end
-                end
-            end
-        end
-        igameplay.destroy_entity(gameplay_eid)
-
-        --TODO
-        -- ibuilding.remove(x, y)
-        -- iroadnet:del("road", x, y)
-        -- gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
-
-        -- the road will not execute the following logic
-        local typeobject = iprototype.queryById(e.building.prototype)
-        local old_object = objects:coord(e.building.x, e.building.y)
-        if old_object then
-            iobject.remove(old_object)
-            objects:remove(old_object.id)
-            local building = global.buildings[old_object.id]
-            if building then
-                for _, v in pairs(building) do
-                    v:remove()
-                end
-            end
-
-            local w, h = iprototype.rotate_area(typeobject.area, e.building.direction)
-            for gameplay_eid in inner_building:get(e.building.x, e.building.y, w, h) do
-                igameplay.destroy_entity(gameplay_eid)
-            end
-
-            if #items > 0 then
-                -- Add a ruined building
-                local new_object = iobject.new {
-                    prototype_name = assert(DEBRIS[("%sx%s"):format(w, h)]),
-                    dir = old_object.dir,
-                    x = e.building.x,
-                    y = e.building.y,
-                    srt = old_object.srt,
-                    group_id = old_object.group_id,
-                    items = items,
-                    debris = e.building.prototype,
-                }
-                new_object.gameplay_eid = igameplay.create_entity(new_object)
-                objects:set(new_object, "CONSTRUCTED")
-            end
-        end
-
+        teardown(gameplay_eid)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         -- the building directly go into the backpack
-        if not iinventory.place(gameplay_core.get_world(), iprototype.item(typeobject).id, 1) then
+        if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
             show_message("backpack is full")
         end
     end

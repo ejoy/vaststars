@@ -27,13 +27,15 @@ local E <const> = 1
 local S <const> = 2
 local W <const> = 3
 
-local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local fluidbox_sys = ecs.system "fluidbox_system"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_fluidbox = gameplay.interface "fluidbox"
+local iprototype_cache = require "gameplay.prototype_cache.init"
+local iworld = require "gameplay.interface.world"
+local igameplay_chimney = gameplay.interface "chimney"
 
 local FluidboxCache = {}
 
@@ -66,8 +68,12 @@ local function rotate(position, direction, area)
     end
 end
 
-local ifluid = require "gameplay.interface.fluid"
-local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
+local function _check_connnection(x, y, dir, conn, e, typeobject)
+    local dx, dy, ddir = iprototype.rotate_connection(conn.position, DIRECTION[e.building.direction], typeobject.area)
+    return x == e.building.x + dx and y == e.building.y + dy and ddir == dir
+end
+
+local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
     local succ, dx, dy = false, x, y
     for i = 1, ground or 1 do
         succ, dx, dy = icoord.move(dx, dy, dir, 1)
@@ -75,68 +81,80 @@ local function __find_neighbor_fluid(gameplay_world, x, y, dir, ground)
             return
         end
 
-        local object = objects:coord(dx, dy)
-        if object then
-            local e = assert(gameplay_world.entity[object.gameplay_eid])
-            local typeobject = iprototype.queryByName(object.prototype_name)
+        local eid = map[iprototype.packcoord(dx, dy)]
+        if eid then
+            local e = assert(gameplay_world.entity[eid])
+            local typeobject = iprototype.queryById(e.building.prototype)
             if ground then
                 if not typeobject.fluidbox then
                     goto continue
                 end
 
-                local found = false
-                for _, connection in ipairs(typeobject.fluidbox.connections) do
-                    if connection.ground then
-                        local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-                        if x == dx and y == dy and dir == iprototype.reverse_dir(dir) then
-                            found = true
+                for _, conn in ipairs(typeobject.fluidbox.connections) do
+                    if conn.ground then
+                        if _check_connnection(dx, dy, iprototype.reverse_dir(dir), conn, e, typeobject) then
+                            return e.eid
                         end
                     end
                 end
-                if not found then
-                    return
-                end
+                return
             end
 
-            local fluid_name
-            if iprototype.has_type(typeobject.type, "fluidbox") then
-                if e.fluidbox.fluid ~= 0 then
-                    fluid_name = iprototype.queryById(e.fluidbox.fluid).name
-                end
-            elseif iprototype.has_type(typeobject.type, "fluidboxes") then
-                fluid_name = {}
+            if e.fluidbox then
+                return e.eid
+
+            elseif e.fluidboxes then
                 for _, v in ipairs(FLUIDBOXES) do
-                    local f = e.fluidboxes[v.fluid]
-                    if f ~= 0 then
-                        fluid_name[v.classify] = fluid_name[v.classify] or {}
-                        fluid_name[v.classify][v.index] = iprototype.queryById(f).name
+                    if typeobject.fluidboxes[v.classify][v.index] then
+                        for _, conn in ipairs(typeobject.fluidboxes[v.classify][v.index].connections) do
+                            if _check_connnection(dx, dy, iprototype.reverse_dir(dir), conn, e, typeobject) then
+                                return e.eid, v.fluid
+                            end
+                        end
                     end
                 end
+                return
             end
-            for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, fluid_name)) do
-                if fb.x == dx and fb.y == dy and fb.dir == iprototype.reverse_dir(dir) then
-                    return fb.fluid_name, object
-                end
-            end
-
             goto continue
         end
         ::continue::
     end
 end
 
-local function __update_neighbor_fluid_type(gameplay_world, e, typeobject)
+local function _find_neighbor_fluid(...)
+    local eid, fluid = _find_neighbor(...)
+    if not eid then
+        return
+    end
+
+    local gameplay_world = gameplay_core.get_world()
+    local e = assert(gameplay_world.entity[eid])
+    if e.fluidbox then
+        if e.fluidbox.fluid == 0 then
+            return
+        end
+        return e.fluidbox.fluid
+    elseif e.fluidboxes then
+        if e.fluidboxes[fluid] == 0 then
+            return
+        end
+        return e.fluidboxes[fluid]
+    else
+        assert(false)
+    end
+end
+
+local function _update_neighbor_fluid(gameplay_world, e, typeobject, map)
     assert(e.fluidbox.fluid ~= 0)
-    local fluid = e.fluidbox.fluid
     for _, connection in ipairs(typeobject.fluidbox.connections) do
         local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-        local neighbor_fluid_name, neighbor_object = __find_neighbor_fluid(gameplay_world, e.building.x + x, e.building.y + y, dir, connection.ground)
-        if (not neighbor_fluid_name or neighbor_fluid_name == "") and neighbor_object then
-            local neighbor = assert(gameplay_world.entity[neighbor_object.gameplay_eid])
-            if neighbor.fluidbox then
-                print("update fluidbox", neighbor.building.x, neighbor.building.y, fluid)
-                igameplay_fluidbox.update_fluidbox(gameplay_world, neighbor, fluid)
-                __update_neighbor_fluid_type(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype))
+        local eid = _find_neighbor(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
+        if eid then
+            local neighbor = assert(gameplay_world.entity[eid])
+            if neighbor.fluidbox and neighbor.fluidbox.fluid == 0 then
+                print("update fluidbox", neighbor.building.x, neighbor.building.y, e.fluidbox.fluid)
+                igameplay_fluidbox.update_fluidbox(gameplay_world, neighbor, e.fluidbox.fluid)
+                _update_neighbor_fluid(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype), map)
             end
         end
     end
@@ -146,6 +164,27 @@ function fluidbox_sys:gameworld_prebuild()
     local gameplay_world = gameplay_core.get_world()
     local gameplay_ecs = gameplay_world.ecs
 
+    local map = {}
+    local function cache_building(e)
+        local w, h = iprototype.rotate_area(iprototype.queryById(e.building.prototype).area, e.building.direction)
+        for i = 0, w - 1 do
+            for j = 0, h - 1 do
+                local coord = iprototype.packcoord(e.building.x + i, e.building.y + j)
+                -- assert(map[coord] == nil)
+                map[coord] = e.eid
+            end
+        end
+    end
+
+    for e in gameplay_ecs:select "fluidbox:in building:in eid:in" do
+        cache_building(e)
+    end
+
+    for e in gameplay_ecs:select "fluidboxes:in building:in eid:in" do
+        cache_building(e)
+    end
+
+    -----
     local new = {}
     for e in gameplay_ecs:select "building_new:in fluidbox:in eid:in" do
         new[e.eid] = true
@@ -160,10 +199,9 @@ function fluidbox_sys:gameworld_prebuild()
             local fluids = {}
             for _, connection in ipairs(typeobject.fluidbox.connections) do
                 local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-                local neighbor_fluid_name = __find_neighbor_fluid(gameplay_world, e.building.x + x, e.building.y + y, dir, connection.ground)
-                print(e.building.x + x, e.building.y + y, neighbor_fluid_name)
-                if neighbor_fluid_name and neighbor_fluid_name ~= "" then
-                    local neighbor_fluid = iprototype.queryByName(neighbor_fluid_name).id
+                local neighbor_fluid = _find_neighbor_fluid(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
+                print(e.building.x + x, e.building.y + y, neighbor_fluid)
+                if neighbor_fluid then
                     fluids[neighbor_fluid] = true
                 end
             end
@@ -172,10 +210,70 @@ function fluidbox_sys:gameworld_prebuild()
                 local fluid = next(fluids)
                 igameplay_fluidbox.update_fluidbox(gameplay_world, e, fluid)
                 print("update fluidbox", e.building.x, e.building.y, fluid)
-                __update_neighbor_fluid_type(gameplay_world, e, typeobject)
+                _update_neighbor_fluid(gameplay_world, e, typeobject, map)
             end
         else
-            __update_neighbor_fluid_type(gameplay_world, e, typeobject)
+            _update_neighbor_fluid(gameplay_world, e, typeobject, map)
+        end
+    end
+
+    -- 
+    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update REMOVED:absent" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local cache = iprototype_cache.get("recipe_config").assembling_recipes_2[typeobject.name]
+
+        local fluids = {}
+        for _, v in ipairs(FLUIDBOXES) do
+            if typeobject.fluidboxes[v.classify][v.index] then
+                for _, connection in ipairs(typeobject.fluidboxes[v.classify][v.index].connections) do
+                    local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+                    local neighbor_fluid = _find_neighbor_fluid(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
+                    if neighbor_fluid then
+                        fluids[neighbor_fluid] = true
+                    end
+                end
+            end
+        end
+        assert(length(fluids) <= 1)
+        local fluid = next(fluids)
+        if fluid then
+            local recipe_name = cache[iprototype.queryById(fluid).name]
+            if recipe_name then
+                local pt = iprototype.queryByName(recipe_name)
+                if pt.id ~= e.assembling.recipe then
+                    iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit)
+                end
+            end
+        end
+    end
+
+    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in fluidbox:update REMOVED:absent" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local cache = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
+
+        local fluids = {}
+        for _, connection in ipairs(typeobject.fluidbox.connections) do
+            local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+            local neighbor_fluid = _find_neighbor_fluid(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
+            if neighbor_fluid then
+                fluids[neighbor_fluid] = true
+            end
+            ::continue::
+        end
+        assert(length(fluids) <= 1)
+        local fluid = next(fluids)
+        if fluid then
+            local recipe_name = cache[iprototype.queryById(fluid).name]
+            if recipe_name then
+                local pt_recipe = iprototype.queryByName(recipe_name)
+                if pt_recipe.id ~= e.chimney.recipe then
+                    igameplay_chimney.set_recipe(e, recipe_name)
+                end
+
+                if fluid ~= e.fluidbox.fluid then
+                    igameplay_fluidbox.update_fluidbox(gameplay_world, e, fluid)
+                end
+            end
         end
     end
 end

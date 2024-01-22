@@ -9,4 +9,5 @@ return {
     ["needs to be placed above a resource mine"] = {text = "需要将矿机放置在矿点上方"},
     ["needs to be placed above geothermal"] = {text = "地热井需要放置在地热上方"},
     ["needs to be placed above the road"] = {text = "物流中心需要放置在公路上方"},
+    ["different fluids do not mix"] = {text = "不同流体不能混合"},
 }

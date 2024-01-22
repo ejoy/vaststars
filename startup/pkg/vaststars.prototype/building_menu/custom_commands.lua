@@ -108,6 +108,11 @@ return {
         "transfer_source",
         "transfer",
     },
+    ["建筑物残骸 6x4"] = {
+        "set_transfer_source",
+        "transfer_source",
+        "transfer",
+    },
     ["建筑物残骸 6x6"] = {
         "set_transfer_source",
         "transfer_source",

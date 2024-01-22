@@ -188,30 +188,6 @@ value:
   tag:
     timeline3
 ---
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    timeline:
-      duration: 3
-      key_event:
-        ---
-        event_list:
-          ---
-          action: work_start
-          event_type: Animation
-          forwards: true
-          name: Animation3
-          pause_frame: 90
-        tick: 0
-        time: 0
-      loop: false
-  policy:
-    ant.timeline|timeline
-  tag:
-    timeline2
----
 file: idle.prefab
 op: add
 path: /-
@@ -235,6 +211,30 @@ value:
     ant.timeline|timeline
   tag:
     timeline4
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          action: work_start
+          event_type: Animation
+          forwards: true
+          name: Animation3
+          pause_frame: 90
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline2
 ---
 file: mesh.prefab
 op: createfile
