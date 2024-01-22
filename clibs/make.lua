@@ -60,7 +60,7 @@ if lm.os == "android" then
         ldflags = "-Wl,--no-undefined",
         includes = {
             LuaInclude,
-            Antdir .. "runtime/common",
+            lm.AntDir .. "/runtime/common",
         },
         sources = "vaststars_modules.c",
     }
@@ -77,7 +77,7 @@ if lm.os == "macos" then
         },
         includes = {
             LuaInclude,
-            Antdir .. "runtime/common",
+            lm.AntDir .. "/runtime/common",
         },
         sources = "vaststars_modules.c"
     }
@@ -92,7 +92,7 @@ if lm.os == "macos" then
         },
         includes = {
             LuaInclude,
-            Antdir .. "runtime/common",
+            lm.AntDir .. "/runtime/common",
         },
         msvc = {
             defines = "LUA_BUILD_AS_DLL",
@@ -109,7 +109,7 @@ if lm.os == "macos" then
         },
         includes = {
             LuaInclude,
-            Antdir .. "runtime/common",
+            lm.AntDir .. "/runtime/common",
         },
         frameworks = {
             "Carbon",
