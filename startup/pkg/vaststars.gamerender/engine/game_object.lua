@@ -44,11 +44,20 @@ local calcHash ; do
     end
 end
 
+local function replace_di_prefab(prefab)
+    local suffix = "di"
+    local glb, pn = assert(prefab:match("^(.*%.glb)|(.*)%.prefab$"))
+    return string.format("%s|%s_%s.prefab", glb, pn, suffix)
+end
+
 local get_hitch_group_id, stopWorld, restartWorld ; do
     local cache = {}
     local NEXT_HITCH_GROUP = 1
 
     function get_hitch_group_id(prefab, color, work_status, emissive_color, render_layer, dynamic_mesh)
+        if not dynamic_mesh then
+            prefab = replace_di_prefab(prefab) 
+        end
         dynamic_mesh = dynamic_mesh
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
