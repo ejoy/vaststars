@@ -120,7 +120,7 @@ local function _connect_to_neighbor(State, PipeToGroundState, x, y, neighbor_dir
 
         local fluid = ifluidbox.get(object.x, object.y, iprototype.reverse_dir(neighbor_dir))
         local fluid_name = ""
-        if fluid then
+        if fluid and fluid ~= 0 then
             fluid_name = iprototype.queryById(fluid).name
         end
         if not (fluid_name == "" or State.fluid_name == "" or fluid_name == State.fluid_name) then
