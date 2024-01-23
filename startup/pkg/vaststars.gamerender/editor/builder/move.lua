@@ -550,16 +550,28 @@ local function clean(self, datamodel)
     vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
 end
 
-local function get_check_coord(object_id)
+local function _get_check_coord(object_id)
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
-    return ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
+    local funcs = {}
+    for _, v in ipairs(typeobject.check_coord) do
+        funcs[#funcs+1] = ecs.require(("editor.rules.check_coord.%s"):format(v))
+    end
+    return function(...)
+        for _, v in ipairs(funcs) do
+            local succ, reason = v(...)
+            if not succ then
+                return succ, reason
+            end
+        end
+        return true
+    end
 end
 
 local function new(self, move_object_id, datamodel, typeobject)
     self.move_object_id = move_object_id
     self.typeobject = typeobject
-    self._check_coord = get_check_coord(move_object_id)
+    self._check_coord = _get_check_coord(move_object_id)
 
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true

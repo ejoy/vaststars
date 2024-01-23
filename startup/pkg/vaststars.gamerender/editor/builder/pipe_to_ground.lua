@@ -952,8 +952,24 @@ local function confirm(self, datamodel)
     end
 end
 
+local function _get_check_coord(typeobject)
+    local funcs = {}
+    for _, v in ipairs(typeobject.check_coord) do
+        funcs[#funcs+1] = ecs.require(("editor.rules.check_coord.%s"):format(v))
+    end
+    return function(...)
+        for _, v in ipairs(funcs) do
+            local succ, reason = v(...)
+            if not succ then
+                return succ, reason
+            end
+        end
+        return true
+    end
+end
+
 local function new(self, datamodel, typeobject, position_type)
-    self._check_coord = ecs.require(("editor.rules.check_coord.%s"):format(typeobject.check_coord))
+    self._check_coord = _get_check_coord(typeobject)
 
     self.typeobject = typeobject
     self.position_type = position_type

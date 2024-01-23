@@ -10,7 +10,7 @@ return {
     CONSTRUCT_OUTLINE_SELF_VALID = math3d.constant("v4", {0, 1, 0, 1}),   -- 建造时, 自身的外框(合法时)
     CONSTRUCT_OUTLINE_SELF_INVALID = math3d.constant("v4", {1, 0, 0, 1}), -- 建造时, 自身的外框(非法时)
     SELECTED_OUTLINE = math3d.constant("v4", {0, 1, 0, 1}),   -- 选中建筑时, 外框的显示
-    MOVE_SELF = math3d.constant("v4", {1, 1, 1, 0.15}),
+    MOVE_SELF = math3d.constant("v4", {0, 0, 1, 0.15}),
     WORK_STATE_WORKING = math3d.constant("v4", {0.0, 1.0, 0.0, 1}),
     WORK_STATE_IDLE = math3d.constant("v4", {1.0, 1.0, 0.0, 1}),
     WORK_STATE_NO_POWER = math3d.constant("v4", {1.0, 0.0, 0.0, 1}),

@@ -31,7 +31,7 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = import_package "vaststars.ui".ui_system
-            local start = ui_sys.createDataMode(window, {})
+            local start = ui_sys.createDataMode(window, ...)
 
             local function _send()
                 local e = assert(document.getElementsByTagName("select-box")[1])
@@ -54,8 +54,11 @@
     <body style = "pointer-events: none; align-items: center; justify-content: center;" onload = "init()">
         <select-box style = "pointer-events: none; border: 0.25vmin rgb(189, 149, 43); width: 80%; height: 70%;" />
         <div style = "width: 80%; height: 15%; position: absolute; bottom: 0vmin; flex-direction: row; gap: 2vmin;">
-            <teardown data-event-click = "clickButton('teardown')">删除</teardown>
-            <move data-event-click = "clickButton('move')">移动</move>
+            <teardown data-event-click = "clickButton('teardown')" data-if = "teardown">删除</teardown>
+            <move data-event-click = "clickButton('move')" data-if = "move">移动</move>
+            <move data-event-click = "clickButton('move_confirm')" data-if = "move_confirm">移动确认</move>
+            <move data-event-click = "clickButton('move_cancel')" data-if = "move_cancel">移动取消</move>
+            <move data-event-click = "clickButton('close')">取消</move>
         </div>
     </body>
 </html>

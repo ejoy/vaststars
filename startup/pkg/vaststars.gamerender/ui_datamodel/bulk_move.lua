@@ -12,8 +12,15 @@ local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local icoord = require "coord"
 local COORD_BOUNDARY <const> = icoord.boundary()
 
+local CONSTANT <const> = require "gameplay.interface.constant"
+local ROTATORS <const> = CONSTANT.ROTATORS
+
 local select_mb = mailbox:sub {"select"}
 local teardown_mb = mailbox:sub {"teardown"}
+local move_mb = mailbox:sub {"move"}
+local close_mb = mailbox:sub {"close"}
+local move_confirm_mb = mailbox:sub {"move_confirm"}
+local move_cancel_mb = mailbox:sub {"move_cancel"}
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icoord = require "coord"
 local objects = require "objects"
@@ -26,12 +33,22 @@ local teardown = ecs.require "editor.teardown"
 local gameplay_core = require "gameplay.core"
 local iinventory = require "gameplay.interface.inventory"
 local show_message = ecs.require "show_message".show_message
+local iui = ecs.require "engine.system.ui_system"
+local isrt = require "utility.srt"
+local igame_object = ecs.require "engine.game_object"
 
 local selected = {}
+local moving_objs = {}
+local moving = false
 
 local M = {}
 function M.create()
-    return {}
+    return {
+        teardown = true,
+        move = true,
+        move_confirm = false,
+        move_cancel = false,
+    }
 end
 
 local function _update_object_state(coord, state, color, emissive_color, render_layer)
@@ -149,6 +166,96 @@ function M.update(datamodel)
         end
 
         selected = {}
+    end
+
+    for _ in move_mb:unpack() do
+        datamodel.teardown = false
+        datamodel.move = false
+        datamodel.move_confirm = true
+        datamodel.move_cancel = true
+
+        local t = {}
+        for coord in pairs(selected) do
+            t[#t+1] = coord
+        end
+        _update_selected_coords(t, "translucent", SPRITE_COLOR.MOVE_SELF, RENDER_LAYER.TRANSLUCENT_BUILDING)
+        iroadnet:flush()
+
+        moving = true
+
+        for coord in pairs(selected) do
+            local x, y = iprototype.unpackcoord(coord)
+            local object = objects:coord(x, y)
+            if object then
+                local typeobject = iprototype.queryByName(object.prototype_name)
+                local srt = isrt.new(object.srt)
+                moving_objs[coord] = {
+                    obj = igame_object.create {
+                        prefab = typeobject.model,
+                        group_id = 0,
+                        srt = srt,
+                    },
+                    srt = srt,
+                }
+            end
+            local v = ibuilding.get(x, y)
+            if v then
+                local typeobject = iprototype.queryByName(v.prototype)
+                local srt = isrt.new {r = ROTATORS[v.direction], t = icoord.position(x, y, iprototype.rotate_area(typeobject.area, v.direction))}
+                moving_objs[coord] = {
+                    obj = igame_object.create {
+                        prefab = typeobject.model,
+                        group_id = 0,
+                        srt = srt,
+                    },
+                    srt = srt,
+                }
+            end
+        end
+    end
+
+    for _ in move_confirm_mb:unpack() do
+        datamodel.teardown = true
+        datamodel.move = true
+        datamodel.move_confirm = false
+        datamodel.move_cancel = false
+    end
+
+    for _ in move_cancel_mb:unpack() do
+        datamodel.teardown = true
+        datamodel.move = true
+        datamodel.move_confirm = false
+        datamodel.move_cancel = false
+    end
+
+    for _ in close_mb:unpack() do
+        local t = {}
+        for coord in pairs(selected) do
+            t[#t+1] = coord
+        end
+        _update_selected_coords(t, "opaque", "null", RENDER_LAYER.BUILDING)
+        iroadnet:flush()
+
+        selected = {}
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_move_exit")
+    end
+end
+
+function M.gesture_pinch()
+    if not moving then
+        iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
+    end
+end
+
+function M.gesture_pan(datamodel, delta_vec)
+    if moving then
+        for _, v in pairs(moving_objs) do
+            v.srt = isrt.new {t = math3d.add(v.srt.t, delta_vec), r = v.srt.r}
+            v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
+            v.obj:send("obj_motion", "set_rotation", math3d.live(v.srt.r))
+        end
+    else
+        iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
     end
 end
 

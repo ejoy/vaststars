@@ -50,6 +50,7 @@ local settings_mb = mailbox:sub {"settings"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
 local bulk_move_mb = mailbox:sub {"bulk_move"}
+local bulk_move_exit_mb = mailbox:sub {"bulk_move_exit"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
@@ -540,6 +541,7 @@ function M.update(datamodel)
         dragdrop_delta = delta
     end
     if dragdrop_delta then
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pan", dragdrop_delta)
         if builder then
             builder:touch_move(builder_datamodel, dragdrop_delta)
         end
@@ -558,8 +560,6 @@ function M.update(datamodel)
                 itransfer.set_dest_eid(nil)
                 selected_obj = nil
             end
-        elseif e.state == "ended" or e.state == "changed" then
-            iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
         end
 
         if builder then
@@ -589,7 +589,7 @@ function M.update(datamodel)
     end
 
     for _ in gesture_pinch:unpack() do
-        iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pinch")
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
@@ -875,6 +875,14 @@ function M.update(datamodel)
             iui.leave()
             iui.open({rml = "/pkg/vaststars.resources/ui/bulk_move.html"})
             gameplay_core.world_update = false
+        end)
+    end
+
+    for _ in bulk_move_exit_mb:unpack() do
+        iui.close("/pkg/vaststars.resources/ui/bulk_move.html")
+        datamodel.status = "NORMAL"
+        toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
+            gameplay_core.world_update = true
         end)
     end
 

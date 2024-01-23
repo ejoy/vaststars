@@ -1,11 +1,8 @@
 local ecs = ...
 local world = ecs.world
 
-local exclusive = ecs.require "editor.rules.check_coord.exclusive"
 local iprototype = require "gameplay.interface.prototype"
 local ifluidbox = ecs.require "render_updates.fluidbox"
-local CONSTANT <const> = require "gameplay.interface.constant"
-local DIRECTION <const> = CONSTANT.DIRECTION
 
 local function _get_neighbor_fluid_types(typeobject, x, y, dir)
     local fluids = {}
@@ -25,11 +22,6 @@ local function _get_neighbor_fluid_types(typeobject, x, y, dir)
 end
 
 return function (x, y, dir, typeobject, exclude_object_id)
-    local r, errmsg = exclusive(x, y, dir, typeobject, exclude_object_id)
-    if not r then
-        return false, errmsg
-    end
-
     assert(iprototype.has_type(typeobject.type, "fluidbox"))
     local fluids = _get_neighbor_fluid_types(typeobject, x, y, dir)
     if #fluids > 1 then
