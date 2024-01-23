@@ -97,7 +97,7 @@ local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
                         end
                     end
                 end
-                return
+                goto continue
             end
 
             if e.fluidbox then
