@@ -62,7 +62,7 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
         if cache[hash] then
-            return assert(cache[hash].hitch_group_id)
+            return assert(cache[hash].hitch_group_id), true
         end
 
         local hitch_group_id = ig.register("HITCH_GROUP_" .. NEXT_HITCH_GROUP)
@@ -123,11 +123,17 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
 end
 
 local hitchEvents = {}
-hitchEvents["group"] = function(self, group)
+hitchEvents["create_group"] = function(self, group)
     local e <close> = world:entity(self.tag["hitch"][1])
     w:extend(e, "hitch:update hitch_create?out")
     e.hitch.group = group
     e.hitch_create = true
+end
+hitchEvents["update_group"] = function(self, group)
+    local e <close> = world:entity(self.tag["hitch"][1])
+    w:extend(e, "hitch:update hitch_update?out")
+    e.hitch.group = group
+    e.hitch_update = true
 end
 hitchEvents["obj_motion"] = function(self, method, ...)
     local e <close> = world:entity(self.tag["hitch"][1])
@@ -181,7 +187,7 @@ function igame_object.create(init)
         on_ready = function(self)
             local root <close> = world:entity(self.tag["hitch"][1])
             set_srt(root, srt)
-            assert(hitchEvents["group"])(self, hitch_group_id)
+            assert(hitchEvents["create_group"])(self, hitch_group_id)
         end,
         on_message = function(self, event, ...)
             assert(hitchEvents[event])(self, ...)
@@ -201,7 +207,7 @@ function igame_object.create(init)
             end
         end
 
-        local hitch_group_id = get_hitch_group_id(
+        local hitch_group_id, existed = get_hitch_group_id(
             RESOURCES_BASE_PATH:format(self.data.prefab),
             self.data.color,
             self.data.work_status,
@@ -209,8 +215,12 @@ function igame_object.create(init)
             self.data.render_layer,
             self.data.dynamic
         )
-        world:instance_message(self.instance, "group", hitch_group_id)
 
+        if existed then
+            world:instance_message(self.instance, "update_group", hitch_group_id)
+        else
+            world:instance_message(self.instance, "create_group", hitch_group_id)
+        end
         self.hitch_group_id = hitch_group_id
     end
     local function send(self, ...)
