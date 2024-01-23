@@ -541,7 +541,7 @@ function M.update(datamodel)
         dragdrop_delta = delta
     end
     if dragdrop_delta then
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pan", dragdrop_delta)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pan_changed", dragdrop_delta)
         if builder then
             builder:touch_move(builder_datamodel, dragdrop_delta)
         end
@@ -560,6 +560,8 @@ function M.update(datamodel)
                 itransfer.set_dest_eid(nil)
                 selected_obj = nil
             end
+        elseif e.state == "ended" then
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pan_ended", dragdrop_delta)
         end
 
         if builder then

@@ -86,6 +86,56 @@ local function _update_selected_coords(coords, state, color, render_layer)
     end
 end
 
+local function _get_info(x, y)
+    local object = objects:coord(x, y)
+    if object then
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        return typeobject.area, object.dir
+    end
+    local v = ibuilding.get(x, y)
+    if v then
+        local typeobject = iprototype.queryByName(v.prototype)
+        return typeobject.area, v.direction
+    end
+    assert(false)
+end
+
+local function _clear_selected()
+    local t = {}
+    for coord in pairs(selected) do
+        t[#t+1] = coord
+    end
+    _update_selected_coords(t, "opaque", "null", RENDER_LAYER.BUILDING)
+    iroadnet:flush()
+
+    selected = {}
+    iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_move_exit")
+end
+
+local function _get_check_coord(typeobject)
+    local funcs = {}
+    for _, v in ipairs(typeobject.check_coord) do
+        funcs[#funcs+1] = ecs.require(("editor.rules.check_coord.%s"):format(v))
+    end
+    return function(...)
+        for _, v in ipairs(funcs) do
+            local succ, reason = v(...)
+            if not succ then
+                return succ, reason
+            end
+        end
+        return true
+    end
+end
+
+local function _clear_moving_objs()
+    for _, v in pairs(moving_objs) do
+        v.obj:remove()
+    end
+    moving_objs = {}
+    moving = false
+end
+
 function M.update(datamodel)
     for _, _, _, left, top, width, height in select_mb:unpack() do
         local lefttop = icamera_controller.screen_to_world(left, top, XZ_PLANE)
@@ -196,6 +246,8 @@ function M.update(datamodel)
                         srt = srt,
                     },
                     srt = srt,
+                    x = x,
+                    y = y,
                 }
             end
             local v = ibuilding.get(x, y)
@@ -209,12 +261,30 @@ function M.update(datamodel)
                         srt = srt,
                     },
                     srt = srt,
+                    x = x,
+                    y = y,
                 }
             end
         end
     end
 
     for _ in move_confirm_mb:unpack() do
+        for coord, v in pairs(moving_objs) do
+            local x, y = iprototype.unpackcoord(coord)
+            local object = objects:coord(x, y)
+            if object then
+                local typeobject = iprototype.queryByName(object.prototype_name)
+                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, object.dir, typeobject)
+                if not succ then
+                    show_message(msg)
+                    return
+                end
+            end
+        end
+
+        _clear_selected()
+        _clear_moving_objs()
+
         datamodel.teardown = true
         datamodel.move = true
         datamodel.move_confirm = false
@@ -222,22 +292,13 @@ function M.update(datamodel)
     end
 
     for _ in move_cancel_mb:unpack() do
-        datamodel.teardown = true
-        datamodel.move = true
-        datamodel.move_confirm = false
-        datamodel.move_cancel = false
+        _clear_selected()
+        _clear_moving_objs()
     end
 
     for _ in close_mb:unpack() do
-        local t = {}
-        for coord in pairs(selected) do
-            t[#t+1] = coord
-        end
-        _update_selected_coords(t, "opaque", "null", RENDER_LAYER.BUILDING)
-        iroadnet:flush()
-
-        selected = {}
-        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_move_exit")
+        _clear_selected()
+        _clear_moving_objs()
     end
 end
 
@@ -247,16 +308,52 @@ function M.gesture_pinch()
     end
 end
 
-function M.gesture_pan(datamodel, delta_vec)
+function M.gesture_pan_changed(datamodel, delta_vec)
     if moving then
-        for _, v in pairs(moving_objs) do
+        for coord, v in pairs(moving_objs) do
             v.srt = isrt.new {t = math3d.add(v.srt.t, delta_vec), r = v.srt.r}
             v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
             v.obj:send("obj_motion", "set_rotation", math3d.live(v.srt.r))
+
+            local area, dir = _get_info(iprototype.unpackcoord(coord))
+            local c = icoord.align(v.srt.t, iprototype.rotate_area(area, dir))
+            assert(c)
+            v.x = c[1]
+            v.y = c[2]
         end
     else
         iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
     end
+end
+
+function M.gesture_pan_ended(datamodel)
+    -- if not moving then
+    --     return
+    -- end
+
+    -- local coord, v = next(moving_objs)
+    -- if not coord then
+    --     return
+    -- end
+
+    -- local area, dir = _get_info(iprototype.unpackcoord(coord))
+    -- local c, position = icoord.align(v.srt.t, iprototype.rotate_area(area, dir))
+    -- if not c then
+    --     return
+    -- end
+    -- icamera_controller.move_delta(math3d.mark(math3d.sub(position, v.srt.t)))
+    -- local dx, dy = c[1] - v.x, c[2] - v.y
+
+    -- for _, v in pairs(moving_objs) do
+    --     local area, dir = _get_info(iprototype.unpackcoord(coord))
+    --     local position = icoord.position(v.x + dx, v.y + dy, iprototype.rotate_area(area, dir))
+    --     assert(position)
+    --     v.srt = isrt.new {t = math3d.vector(position), r = v.srt.r}
+    --     v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
+    --     v.obj:send("obj_motion", "set_rotation", math3d.live(v.srt.r))
+    --     v.x = v.x + dx
+    --     v.y = v.y + dy
+    -- end
 end
 
 return M

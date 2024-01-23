@@ -198,6 +198,12 @@ local function set_camera_srt(s, r, t)
     iom.set_srt(ce, s, r, t)
 end
 
+local function move_delta(delta)
+    math3d.unmark(delta)
+    local ce <close> = world:entity(irq.main_camera())
+    iom.move_delta(ce, delta)
+end
+
 local function check_camera_editable()
     return cam_cmd_queue:size() <= 0 and cam_motion_matrix_queue:size() <= 0
 end
@@ -230,6 +236,8 @@ local function handle_camera_motion(ce)
             c[2]()
         elseif c[1] == "set_camera_srt" then
             set_camera_srt(c[2], c[3], c[4])
+        elseif c[1] == "move_delta" then
+            move_delta(c[2])
         else
             assert(false)
         end
@@ -412,6 +420,10 @@ end
 
 function icamera_controller.unlock_axis()
     LockAxis = nil
+end
+
+function icamera_controller.move_delta(delta)
+    cam_cmd_queue:push {{"move_delta", delta}}
 end
 
 -- for debug
