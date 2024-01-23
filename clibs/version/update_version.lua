@@ -1,4 +1,4 @@
-local output = ...
+local input, output = ...
 local subprocess = require "bee.subprocess"
 
 local function GitVersion(path)
@@ -19,13 +19,6 @@ local function GitVersion(path)
 end
 
 local f <close> = assert(io.open(output, 'w'))
-local function write(data)
-    f:write(data)
-    f:write "\n"
-end
-
-write "#pragma once"
-write ""
-write(("const char gGameGitVersion[]   = \"%s\";"):format(GitVersion "./"))
-write(("const char gEngineGitVersion[] = \"%s\";"):format(GitVersion "3rd/ant/"))
-write ""
+f:write('"')
+f:write(GitVersion(input))
+f:write('"')

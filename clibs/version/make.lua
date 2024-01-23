@@ -6,12 +6,21 @@ end
 
 lm:runlua {
     script = "update_version.lua",
-    args = { "$out" },
-    output = "EmbedVersion.h",
+    args = { ".", "$out" },
+    output = "GameVersion.h",
+}
+
+lm:runlua {
+    script = "update_version.lua",
+    args = { "3rd/ant", "$out" },
+    output = "EngineVersion.h",
 }
 
 lm:phony {
-    input = "EmbedVersion.h",
+    input = {
+        "GameVersion.h",
+        "EngineVersion.h",
+    },
     output = "version.cpp",
 }
 
