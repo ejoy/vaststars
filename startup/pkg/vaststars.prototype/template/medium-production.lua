@@ -21,7 +21,7 @@ local entities = { {
   y = 142
 },{
   dir = "N",
-  items = { { "铁矿石", 2 } },
+  items = { { "铁矿石", 1 } },
   prototype_name = "采矿机I",
   recipe = "铁矿石挖掘",
   x = 138,
@@ -61,20 +61,20 @@ local entities = { {
   y = 134
 }, {
   dir = "N",
-  items = { { "铁矿石", 60 }, { "铝矿石", 0 } },
+  items = { { "铁矿石", 0 }, { "铝矿石", 0 } },
   prototype_name = "仓库I",
   x = 144,
   y = 146
 }, {
   dir = "N",
-  items = { { "铁板", 8 }, { "铁棒", 7 } },
+  items = { { "铁板", 8 }, { "铁棒", 9 } },
   prototype_name = "组装机I",
   recipe = "铁棒1",
   x = 118,
   y = 130
 }, {
   dir = "N",
-  items = { { "碎石", 4 }, { "铁矿石", 4 }, { "铝矿石", 4 }, { "地质科技包", 1 } },
+  items = { { "碎石", 4 }, { "铁矿石", 4 }, { "铝矿石", 4 }, { "地质科技包", 0 } },
   prototype_name = "组装机I",
   recipe = "地质科技包1",
   x = 122,
@@ -88,33 +88,33 @@ local entities = { {
   y = 135
 }, {
   dir = "N",
-  items = { { "电动机I", 2 }, { "铁齿轮", 6 }, { "机械科技包", 1 }, { "石砖", 0 }, { "管道1-X型", 10 } },
+  items = { { "电动机I", 2 }, { "铁齿轮", 6 }, { "机械科技包", 0 }, { "石砖", 0 }, { "管道1-X型", 10 } },
   prototype_name = "组装机I",
   recipe = "机械科技包T1",
   x = 122,
   y = 135
 }, {
   dir = "N",
-  items = { { "铁矿石", 6 }, { "铁板", 2 }, { "碾碎铁矿石", 0 }, { "石墨", 0 } },
+  items = { { "铁矿石", 6 }, { "铁板", 1 }, { "碾碎铁矿石", 0 }, { "石墨", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板1",
   x = 115,
   y = 130
 }, {
   dir = "N",
-  items = { { "地质科技包", 2 }, { "气候科技包", 2 }, { "机械科技包", 2 }, { "电子科技包", 2 }, { "化学科技包", 2 }, { "物理科技包", 0 } },
+  items = { { "地质科技包", 2 }, { "气候科技包", 2 }, { "机械科技包", 2 }, { "电子科技包", 0 }, { "化学科技包", 2 }, { "物理科技包", 0 } },
   prototype_name = "科研中心I",
   x = 125,
   y = 133
 }, {
   dir = "N",
-  items = { { "石砖", 30 }, { "机械科技包", 30 }, { "地质科技包", 30 }, { "铁棒", 30 } },
+  items = { { "石砖", 30 }, { "机械科技包", 28 }, { "地质科技包", 28 }, { "铁棒", 30 } },
   prototype_name = "仓库I",
   x = 121,
   y = 134
 }, {
   dir = "N",
-  items = { { "地质科技包", 2 }, { "气候科技包", 2 }, { "机械科技包", 2 }, { "电子科技包", 2 }, { "化学科技包", 2 }, { "物理科技包", 0 } },
+  items = { { "地质科技包", 2 }, { "气候科技包", 2 }, { "机械科技包", 2 }, { "电子科技包", 0 }, { "化学科技包", 2 }, { "物理科技包", 0 } },
   prototype_name = "科研中心I",
   x = 125,
   y = 130
@@ -132,7 +132,7 @@ local entities = { {
   y = 128
 }, {
   dir = "N",
-  items = { { "碾碎铁矿石", 1 }, { "石墨", 2 }, { "铁板", 6 }, { "碎石", 0 } },
+  items = { { "碾碎铁矿石", 7 }, { "石墨", 2 }, { "铁板", 0 }, { "碎石", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板2",
   x = 107,
@@ -145,7 +145,7 @@ local entities = { {
   y = 136
 }, {
   dir = "N",
-  items = { { "铁矿石", 2 } },
+  items = { { "铁矿石", 0 } },
   prototype_name = "采矿机I",
   recipe = "铁矿石挖掘",
   x = 150,
@@ -156,7 +156,7 @@ local entities = { {
     input = { "空气", "地下卤水" },
     output = {}
   },
-  items = { { "空气", 6000 }, { "地下卤水", 4000 }, { "气候科技包", 2 } },
+  items = { { "空气", 3899 }, { "地下卤水", 4000 }, { "气候科技包", 2 } },
   prototype_name = "水电站I",
   recipe = "气候科技包1",
   x = 129,
@@ -167,7 +167,7 @@ local entities = { {
     input = {},
     output = { "地下卤水" }
   },
-  items = { { "地下卤水", 200 } },
+  items = { { "地下卤水", 160 } },
   prototype_name = "地下水挖掘机I",
   recipe = "离岸抽水",
   x = 131,
@@ -178,7 +178,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 100 } },
+  items = { { "空气", 0 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 129,
@@ -194,7 +194,7 @@ local entities = { {
     input = { "空气", "地下卤水" },
     output = {}
   },
-  items = { { "空气", 5299 }, { "地下卤水", 4000 }, { "气候科技包", 2 } },
+  items = { { "空气", 6000 }, { "地下卤水", 4000 }, { "气候科技包", 2 } },
   prototype_name = "水电站I",
   recipe = "气候科技包1",
   x = 129,
@@ -205,7 +205,7 @@ local entities = { {
     input = {},
     output = { "地下卤水" }
   },
-  items = { { "地下卤水", 200 } },
+  items = { { "地下卤水", 240 } },
   prototype_name = "地下水挖掘机I",
   recipe = "离岸抽水",
   x = 129,
@@ -216,7 +216,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 0 } },
+  items = { { "空气", 200 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 132,
@@ -328,7 +328,7 @@ local entities = { {
     input = {},
     output = { "地下卤水" }
   },
-  items = { { "地下卤水", 240 } },
+  items = { { "地下卤水", 231 } },
   prototype_name = "地下水挖掘机I",
   recipe = "离岸抽水",
   x = 90,
@@ -357,7 +357,7 @@ local entities = { {
     input = { "空气" },
     output = { "氮气", "二氧化碳" }
   },
-  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 44 } },
+  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 18 } },
   prototype_name = "蒸馏厂I",
   recipe = "空气分离1",
   x = 85,
@@ -392,7 +392,7 @@ local entities = { {
     input = { "二氧化碳", "氢气" },
     output = { "甲烷", "纯水" }
   },
-  items = { { "二氧化碳", 64 }, { "氢气", 203 }, { "甲烷", 12 }, { "纯水", 0 } },
+  items = { { "二氧化碳", 64 }, { "氢气", 220 }, { "甲烷", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "二氧化碳转甲烷",
   x = 85,
@@ -414,7 +414,7 @@ local entities = { {
     input = { "氧气", "甲烷" },
     output = { "乙烯", "纯水" }
   },
-  items = { { "氧气", 80 }, { "甲烷", 80 }, { "乙烯", 30 }, { "纯水", 0 } },
+  items = { { "氧气", 80 }, { "甲烷", 80 }, { "乙烯", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "甲烷转乙烯",
   x = 85,
@@ -477,7 +477,7 @@ local entities = { {
     input = { "乙烯", "蒸汽" },
     output = { "丁二烯", "氢气" }
   },
-  items = { { "乙烯", 100 }, { "蒸汽", 300 }, { "丁二烯", 34 }, { "氢气", 0 } },
+  items = { { "乙烯", 100 }, { "蒸汽", 69 }, { "丁二烯", 20 }, { "氢气", 30 } },
   prototype_name = "蒸馏厂I",
   recipe = "乙烯转丁二烯",
   x = 96,
@@ -499,7 +499,7 @@ local entities = { {
     input = { "氧气" },
     output = { "二氧化碳" }
   },
-  items = { { "铁板", 3 }, { "氧气", 60 }, { "钢板", 0 }, { "二氧化碳", 0 } },
+  items = { { "铁板", 4 }, { "氧气", 60 }, { "钢板", 0 }, { "二氧化碳", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "钢板1",
   x = 98,
@@ -512,7 +512,7 @@ local entities = { {
   y = 124
 }, {
   dir = "N",
-  items = { { "碾碎铁矿石", 1 }, { "石墨", 2 }, { "铁板", 8 }, { "碎石", 0 }, { "铁矿石", 0 } },
+  items = { { "碾碎铁矿石", 4 }, { "石墨", 2 }, { "铁板", 1 }, { "碎石", 0 }, { "铁矿石", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板2",
   x = 111,
@@ -530,7 +530,7 @@ local entities = { {
   y = 130
 }, {
   dir = "N",
-  items = { { "铁矿石", 2 } },
+  items = { { "铁矿石", 0 } },
   prototype_name = "采矿机I",
   recipe = "铁矿石挖掘",
   x = 61,
@@ -563,7 +563,7 @@ local entities = { {
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 30 } },
+  items = { { "蒸汽", 29 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
   x = 57,
@@ -574,7 +574,7 @@ local entities = { {
     input = {},
     output = { "地下卤水" }
   },
-  items = { { "地下卤水", 185 } },
+  items = { { "地下卤水", 191 } },
   prototype_name = "地下水挖掘机I",
   recipe = "离岸抽水",
   x = 41,
@@ -585,7 +585,7 @@ local entities = { {
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 29 } },
+  items = { { "蒸汽", 14 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
   x = 63,
@@ -596,28 +596,28 @@ local entities = { {
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 29 } },
+  items = { { "蒸汽", 14 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
   x = 63,
   y = 200
 }, {
   dir = "N",
-  items = { { "碎石", 4 }, { "沙子", 1 } },
+  items = { { "碎石", 4 }, { "沙子", 0 } },
   prototype_name = "粉碎机I",
   recipe = "沙子1",
   x = 117,
   y = 149
 }, {
   dir = "N",
-  items = { { "碎石", 1 }, { "沙子", 0 } },
+  items = { { "碎石", 0 }, { "沙子", 0 } },
   prototype_name = "粉碎机I",
   recipe = "沙子1",
   x = 120,
   y = 149
 }, {
   dir = "N",
-  items = { { "铝矿石", 6 }, { "碾碎铝矿石", 0 }, { "碾碎铁矿石", 0 }, { "沙子", 0 } },
+  items = { { "铝矿石", 12 }, { "碾碎铝矿石", 6 }, { "碾碎铁矿石", 0 }, { "沙子", 0 } },
   prototype_name = "粉碎机I",
   recipe = "碾碎铝矿石",
   x = 125,
@@ -630,7 +630,7 @@ local entities = { {
   y = 146
 }, {
   dir = "N",
-  items = { { "沙子", 60 }, { "沙子", 60 }, { "碾碎铝矿石", 1 }, { "碾碎铝矿石", 0 } },
+  items = { { "沙子", 28 }, { "沙子", 27 }, { "碾碎铝矿石", 60 }, { "碾碎铝矿石", 60 } },
   prototype_name = "仓库I",
   x = 121,
   y = 148
@@ -646,33 +646,23 @@ local entities = { {
   prototype_name = "组装机I",
   recipe = "钢齿轮",
   x = 94,
-  y = 116
+  y = 117
 }, {
   dir = "N",
   items = { { "钢板", 6 }, { "钢齿轮", 4 } },
   prototype_name = "组装机I",
   recipe = "钢齿轮",
   x = 99,
-  y = 116
-}, {
-  dir = "N",
-  prototype_name = "无人机平台I",
-  x = 98,
-  y = 118
+  y = 117
 }, {
   dir = "N",
   items = { { "钢齿轮", 30 }, { "钢齿轮", 30 } },
   prototype_name = "仓库I",
   x = 98,
-  y = 116
-}, {
-  dir = "N",
-  prototype_name = "无人机平台I",
-  x = 97,
   y = 118
 }, {
   dir = "N",
-  items = { { "铁板", 3 }, { "铁棒", 2 }, { "铁齿轮", 3 } },
+  items = { { "铁板", 4 }, { "铁棒", 2 }, { "铁齿轮", 4 } },
   prototype_name = "组装机I",
   recipe = "铁齿轮",
   x = 115,
@@ -716,7 +706,7 @@ local entities = { {
     input = { "地下卤水" },
     output = { "废水" }
   },
-  items = { { "地下卤水", 120 }, { "沙子", 1 }, { "废水", 0 }, { "硅", 2 } },
+  items = { { "地下卤水", 120 }, { "沙子", 3 }, { "废水", 0 }, { "硅", 0 } },
   prototype_name = "浮选器I",
   recipe = "硅1",
   x = 117,
@@ -727,7 +717,7 @@ local entities = { {
     input = { "地下卤水" },
     output = { "废水" }
   },
-  items = { { "地下卤水", 120 }, { "沙子", 1 }, { "废水", 0 }, { "硅", 0 } },
+  items = { { "地下卤水", 120 }, { "沙子", 5 }, { "废水", 0 }, { "硅", 0 } },
   prototype_name = "浮选器I",
   recipe = "硅1",
   x = 122,
@@ -738,7 +728,7 @@ local entities = { {
     input = {},
     output = { "地下卤水" }
   },
-  items = { { "地下卤水", 227 } },
+  items = { { "地下卤水", 153 } },
   prototype_name = "地下水挖掘机I",
   recipe = "离岸抽水",
   x = 126,
@@ -752,7 +742,7 @@ local entities = { {
   y = 153
 }, {
   dir = "N",
-  items = { { "硅", 17 }, { "硅", 18 }, { "坩埚", 15 }, { "坩埚", 15 } },
+  items = { { "硅", 25 }, { "硅", 26 }, { "坩埚", 15 }, { "坩埚", 15 } },
   prototype_name = "仓库I",
   x = 124,
   y = 158
@@ -849,7 +839,7 @@ local entities = { {
   y = 170
 }, {
   dir = "N",
-  items = { { "碎石", 2 } },
+  items = { { "碎石", 0 } },
   prototype_name = "采矿机I",
   recipe = "碎石挖掘",
   x = 150,
@@ -871,7 +861,7 @@ local entities = { {
     input = { "一氧化碳", "氢气" },
     output = { "纯水" }
   },
-  items = { { "一氧化碳", 56 }, { "氢气", 25 }, { "石墨", 0 }, { "纯水", 0 } },
+  items = { { "一氧化碳", 56 }, { "氢气", 33 }, { "石墨", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "一氧化碳转石墨",
   x = 85,
@@ -895,7 +885,7 @@ local entities = { {
     input = { "二氧化碳", "氢气" },
     output = { "一氧化碳", "纯水" }
   },
-  items = { { "二氧化碳", 80 }, { "氢气", 27 }, { "一氧化碳", 0 }, { "纯水", 0 } },
+  items = { { "二氧化碳", 80 }, { "氢气", 1 }, { "一氧化碳", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "二氧化碳转一氧化碳",
   x = 76,
@@ -918,7 +908,7 @@ local entities = { {
     input = { "二氧化碳", "氢气" },
     output = { "一氧化碳", "纯水" }
   },
-  items = { { "二氧化碳", 80 }, { "氢气", 13 }, { "一氧化碳", 0 }, { "纯水", 0 } },
+  items = { { "二氧化碳", 80 }, { "氢气", 17 }, { "一氧化碳", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "二氧化碳转一氧化碳",
   x = 76,
@@ -1133,7 +1123,7 @@ local entities = { {
     input = { "空气" },
     output = { "氮气", "二氧化碳" }
   },
-  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 47 } },
+  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 75 } },
   prototype_name = "蒸馏厂I",
   recipe = "空气分离1",
   x = 85,
@@ -1155,7 +1145,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 175 } },
+  items = { { "空气", 125 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 83,
@@ -1185,7 +1175,7 @@ local entities = { {
   y = 170
 }, {
   dir = "N",
-  items = { { "铁矿石", 60 }, { "铁矿石", 60 }, { "石墨", 13 }, { "石墨", 12 } },
+  items = { { "铁矿石", 60 }, { "铁矿石", 60 }, { "石墨", 0 }, { "石墨", 0 } },
   prototype_name = "仓库I",
   x = 91,
   y = 170
@@ -1196,21 +1186,21 @@ local entities = { {
   y = 169
 }, {
   dir = "N",
-  items = { { "硅", 10 }, { "石墨", 4 }, { "硅板", 4 } },
+  items = { { "硅", 10 }, { "石墨", 4 }, { "硅板", 5 } },
   prototype_name = "熔炼炉I",
   recipe = "硅板1",
   x = 121,
   y = 167
 }, {
   dir = "N",
-  items = { { "硅", 10 }, { "石墨", 4 }, { "硅板", 5 } },
+  items = { { "硅", 10 }, { "石墨", 4 }, { "硅板", 4 } },
   prototype_name = "熔炼炉I",
   recipe = "硅板1",
   x = 124,
   y = 167
 }, {
   dir = "N",
-  items = { { "铝矿石", 5 }, { "碾碎铝矿石", 2 }, { "碾碎铁矿石", 1 }, { "沙子", 0 } },
+  items = { { "铝矿石", 14 }, { "碾碎铝矿石", 6 }, { "碾碎铁矿石", 0 }, { "沙子", 0 } },
   prototype_name = "粉碎机I",
   recipe = "碾碎铝矿石",
   x = 125,
@@ -1223,7 +1213,7 @@ local entities = { {
   y = 166
 }, {
   dir = "N",
-  items = { { "铝矿石", 2 } },
+  items = { { "铝矿石", 1 } },
   prototype_name = "采矿机I",
   recipe = "铝矿挖掘",
   x = 166,
@@ -1377,7 +1367,7 @@ local entities = { {
   y = 146
 }, {
   dir = "N",
-  items = { { "沙子", 59 }, { "沙子", 59 }, { "沙子", 59 }, { "沙子", 59 } },
+  items = { { "沙子", 26 }, { "沙子", 26 }, { "沙子", 26 }, { "沙子", 26 } },
   prototype_name = "仓库I",
   x = 124,
   y = 150
@@ -1488,7 +1478,7 @@ local entities = { {
     input = { "碱性溶液" },
     output = { "废水" }
   },
-  items = { { "碾碎铝矿石", 0 }, { "碱性溶液", 60 }, { "氢氧化铝", 0 }, { "废水", 0 } },
+  items = { { "碾碎铝矿石", 2 }, { "碱性溶液", 60 }, { "氢氧化铝", 0 }, { "废水", 0 } },
   prototype_name = "浮选器I",
   recipe = "铝矿石浮选",
   x = 145,
@@ -1499,7 +1489,7 @@ local entities = { {
     input = { "碱性溶液" },
     output = { "废水" }
   },
-  items = { { "碾碎铝矿石", 1 }, { "碱性溶液", 60 }, { "氢氧化铝", 4 }, { "废水", 0 } },
+  items = { { "碾碎铝矿石", 0 }, { "碱性溶液", 60 }, { "氢氧化铝", 2 }, { "废水", 0 } },
   prototype_name = "浮选器I",
   recipe = "铝矿石浮选",
   x = 152,
@@ -1535,14 +1525,14 @@ local entities = { {
   y = 172
 }, {
   dir = "N",
-  items = { { "氢氧化铝", 0 }, { "氧化铝", 0 } },
+  items = { { "氢氧化铝", 1 }, { "氧化铝", 5 } },
   prototype_name = "熔炼炉I",
   recipe = "氧化铝",
   x = 145,
   y = 172
 }, {
   dir = "N",
-  items = { { "氢氧化铝", 1 }, { "氧化铝", 6 } },
+  items = { { "氢氧化铝", 0 }, { "氧化铝", 4 } },
   prototype_name = "熔炼炉I",
   recipe = "氧化铝",
   x = 154,
@@ -1559,14 +1549,14 @@ local entities = { {
   y = 172
 }, {
   dir = "E",
-  items = { { "氧化铝", 6 }, { "石墨", 2 }, { "铝板", 6 }, { "碳化铝", 0 } },
+  items = { { "氧化铝", 18 }, { "石墨", 5 }, { "铝板", 6 }, { "碳化铝", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铝板1",
   x = 148,
   y = 173
 }, {
   dir = "N",
-  items = { { "氧化铝", 15 }, { "石墨", 3 }, { "铝板", 6 }, { "碳化铝", 0 } },
+  items = { { "氧化铝", 18 }, { "石墨", 0 }, { "铝板", 6 }, { "碳化铝", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铝板1",
   x = 151,
@@ -1577,7 +1567,7 @@ local entities = { {
     input = { "纯水" },
     output = { "甲烷" }
   },
-  items = { { "碳化铝", 0 }, { "纯水", 80 }, { "氢氧化铝", 0 }, { "甲烷", 0 } },
+  items = { { "碳化铝", 0 }, { "纯水", 120 }, { "氢氧化铝", 0 }, { "甲烷", 0 } },
   prototype_name = "化工厂I",
   recipe = "氢氧化铝",
   x = 142,
@@ -1588,7 +1578,7 @@ local entities = { {
     input = { "纯水" },
     output = { "甲烷" }
   },
-  items = { { "碳化铝", 12 }, { "纯水", 56 }, { "氢氧化铝", 0 }, { "甲烷", 0 } },
+  items = { { "碳化铝", 0 }, { "纯水", 120 }, { "氢氧化铝", 0 }, { "甲烷", 0 } },
   prototype_name = "化工厂I",
   recipe = "氢氧化铝",
   x = 157,
@@ -1826,7 +1816,7 @@ local entities = { {
   y = 168
 }, {
   dir = "N",
-  items = { { "铝棒", 10 }, { "铝丝", 11 } },
+  items = { { "铝棒", 10 }, { "铝丝", 14 } },
   prototype_name = "组装机I",
   recipe = "铝丝1",
   x = 166,
@@ -1942,7 +1932,7 @@ local entities = { {
     input = { "二氧化碳", "氢气" },
     output = { "甲烷", "纯水" }
   },
-  items = { { "二氧化碳", 64 }, { "氢气", 68 }, { "甲烷", 0 }, { "纯水", 0 } },
+  items = { { "二氧化碳", 64 }, { "氢气", 31 }, { "甲烷", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "二氧化碳转甲烷",
   x = 85,
@@ -1960,7 +1950,7 @@ local entities = { {
     input = { "丁二烯" },
     output = {}
   },
-  items = { { "丁二烯", 30 }, { "橡胶", 1 } },
+  items = { { "丁二烯", 30 }, { "橡胶", 0 } },
   prototype_name = "浮选器I",
   recipe = "橡胶",
   x = 100,
@@ -1998,7 +1988,7 @@ local entities = { {
     input = { "盐酸", "甲烷" },
     output = { "润滑油" }
   },
-  items = { { "硅板", 2 }, { "盐酸", 19 }, { "甲烷", 24 }, { "润滑油", 0 } },
+  items = { { "硅板", 2 }, { "盐酸", 5 }, { "甲烷", 24 }, { "润滑油", 0 } },
   prototype_name = "化工厂I",
   recipe = "润滑油",
   x = 117,
@@ -2062,7 +2052,7 @@ local entities = { {
     input = { "润滑油" },
     output = {}
   },
-  items = { { "铝丝", 6 }, { "硅板", 8 }, { "润滑油", 10 }, { "逻辑电路", 4 }, { "电子科技包", 0 }, { "电容I", 0 }, { "绝缘线", 0 } },
+  items = { { "铝丝", 6 }, { "硅板", 8 }, { "润滑油", 10 }, { "逻辑电路", 3 }, { "电子科技包", 0 }, { "电容I", 0 }, { "绝缘线", 0 } },
   prototype_name = "组装机I",
   recipe = "逻辑电路1",
   x = 128,
@@ -2079,7 +2069,7 @@ local entities = { {
   y = 132
 }, {
   dir = "N",
-  items = { { "电子科技包", 20 }, { "化学科技包", 30 } },
+  items = { { "电子科技包", 0 }, { "化学科技包", 30 } },
   prototype_name = "仓库I",
   x = 121,
   y = 135
@@ -2365,24 +2355,6 @@ local entities = { {
   x = 80,
   y = 162
 }, {
-  dir = "N",
-  fluid_name = "丁二烯",
-  prototype_name = "地下管1-JU型",
-  x = 95,
-  y = 169
-}, {
-  dir = "E",
-  fluid_name = "丁二烯",
-  prototype_name = "管道1-L型",
-  x = 95,
-  y = 158
-}, {
-  dir = "S",
-  fluid_name = "丁二烯",
-  prototype_name = "地下管1-JI型",
-  x = 95,
-  y = 159
-}, {
   dir = "E",
   fluid_name = "乙烯",
   prototype_name = "地下管1-JI型",
@@ -2471,7 +2443,7 @@ local entities = { {
     input = { "氧气", "甲烷" },
     output = { "乙烯", "纯水" }
   },
-  items = { { "氧气", 80 }, { "甲烷", 80 }, { "乙烯", 23 }, { "纯水", 0 } },
+  items = { { "氧气", 47 }, { "甲烷", 65 }, { "乙烯", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "甲烷转乙烯",
   x = 85,
@@ -2656,7 +2628,7 @@ local entities = { {
     input = { "空气" },
     output = { "氮气", "二氧化碳" }
   },
-  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 55 } },
+  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 52 } },
   prototype_name = "蒸馏厂I",
   recipe = "空气分离1",
   x = 85,
@@ -2900,7 +2872,7 @@ local entities = { {
   y = 150
 }, {
   dir = "S",
-  items = { { "demand", "铝矿石", 3 }, { "supply", "碾碎铝矿石", 3 }, { "demand", "碎石", 2 } },
+  items = { { "demand", "铝矿石", 2 }, { "supply", "碾碎铝矿石", 2 }, { "demand", "碎石", 2 }, { "supply", "沙子", 2 } },
   prototype_name = "物流站",
   x = 116,
   y = 146
@@ -2921,7 +2893,7 @@ local entities = { {
   y = 154
 }, {
   dir = "N",
-  items = { { "电容I", 2 }, { "绝缘线", 0 }, { "逻辑电路", 2 }, { "电子科技包", 0 } },
+  items = { { "电容I", 2 }, { "绝缘线", 4 }, { "逻辑电路", 2 }, { "电子科技包", 0 } },
   prototype_name = "组装机I",
   recipe = "电子科技包1",
   x = 128,
@@ -2955,7 +2927,7 @@ local entities = { {
     input = { "地下卤水" },
     output = { "氧气", "氢气", "氯气" }
   },
-  items = { { "地下卤水", 90 }, { "氧气", 0 }, { "氢气", 197 }, { "氯气", 0 } },
+  items = { { "地下卤水", 90 }, { "氧气", 0 }, { "氢气", 0 }, { "氯气", 0 } },
   prototype_name = "电解厂I",
   recipe = "地下卤水电解1",
   x = 73,
@@ -2966,7 +2938,7 @@ local entities = { {
     input = {},
     output = { "地下卤水" }
   },
-  items = { { "地下卤水", 137 } },
+  items = { { "地下卤水", 171 } },
   prototype_name = "地下水挖掘机I",
   recipe = "离岸抽水",
   x = 71,
@@ -3056,7 +3028,7 @@ local entities = { {
     input = { "一氧化碳", "氢气" },
     output = { "纯水" }
   },
-  items = { { "一氧化碳", 56 }, { "氢气", 3 }, { "石墨", 0 }, { "纯水", 0 } },
+  items = { { "一氧化碳", 56 }, { "氢气", 10 }, { "石墨", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "一氧化碳转石墨",
   x = 85,
@@ -3180,7 +3152,7 @@ local entities = { {
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 14 } },
+  items = { { "蒸汽", 32 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
   x = 51,
@@ -3191,7 +3163,7 @@ local entities = { {
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 14 } },
+  items = { { "蒸汽", 25 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
   x = 51,
@@ -3473,7 +3445,7 @@ local entities = { {
     input = { "氮气", "氢气" },
     output = { "氨气" }
   },
-  items = { { "氮气", 16 }, { "氢气", 18 }, { "氨气", 0 } },
+  items = { { "氮气", 16 }, { "氢气", 2 }, { "氨气", 0 } },
   prototype_name = "化工厂I",
   recipe = "氨气",
   x = 61,
@@ -3782,7 +3754,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 175 } },
+  items = { { "空气", 125 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 82,
@@ -3834,7 +3806,7 @@ local entities = { {
     input = { "二氧化碳", "氢气" },
     output = { "甲烷", "纯水" }
   },
-  items = { { "二氧化碳", 64 }, { "氢气", 46 }, { "甲烷", 0 }, { "纯水", 0 } },
+  items = { { "二氧化碳", 64 }, { "氢气", 76 }, { "甲烷", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂II",
   recipe = "二氧化碳转甲烷",
   x = 63,
@@ -3845,7 +3817,7 @@ local entities = { {
     input = { "二氧化碳", "氢气" },
     output = { "甲烷", "纯水" }
   },
-  items = { { "二氧化碳", 64 }, { "氢气", 68 }, { "甲烷", 0 }, { "纯水", 0 } },
+  items = { { "二氧化碳", 64 }, { "氢气", 53 }, { "甲烷", 0 }, { "纯水", 0 } },
   prototype_name = "化工厂I",
   recipe = "二氧化碳转甲烷",
   x = 63,
@@ -4192,7 +4164,7 @@ local entities = { {
     input = { "空气" },
     output = { "氮气", "二氧化碳" }
   },
-  items = { { "空气", 287 }, { "氮气", 29 }, { "二氧化碳", 79 } },
+  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 77 } },
   prototype_name = "蒸馏厂I",
   recipe = "空气分离1",
   x = 63,
@@ -4203,7 +4175,7 @@ local entities = { {
     input = { "空气" },
     output = { "氮气", "二氧化碳" }
   },
-  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 0 } },
+  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 19 } },
   prototype_name = "蒸馏厂I",
   recipe = "空气分离1",
   x = 63,
@@ -4262,7 +4234,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 181 } },
+  items = { { "空气", 174 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 61,
@@ -4273,7 +4245,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 181 } },
+  items = { { "空气", 175 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 60,
@@ -4290,7 +4262,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 200 } },
+  items = { { "空气", 175 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 61,
@@ -4301,7 +4273,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 200 } },
+  items = { { "空气", 175 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 60,
@@ -4318,7 +4290,7 @@ local entities = { {
     input = { "空气" },
     output = { "氮气", "二氧化碳" }
   },
-  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 55 } },
+  items = { { "空气", 300 }, { "氮气", 0 }, { "二氧化碳", 79 } },
   prototype_name = "蒸馏厂I",
   recipe = "空气分离1",
   x = 63,
@@ -4371,7 +4343,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 125 } },
+  items = { { "空气", 200 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 61,
@@ -4382,7 +4354,7 @@ local entities = { {
     input = {},
     output = { "空气" }
   },
-  items = { { "空气", 125 } },
+  items = { { "空气", 200 } },
   prototype_name = "空气过滤器I",
   recipe = "空气过滤",
   x = 60,
@@ -4531,7 +4503,7 @@ local entities = { {
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 58 } },
+  items = { { "蒸汽", 30 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
   x = 45,
@@ -4542,7 +4514,7 @@ local entities = { {
     input = { "蒸汽" },
     output = {}
   },
-  items = { { "蒸汽", 29 } },
+  items = { { "蒸汽", 28 } },
   prototype_name = "蒸汽发电机I",
   recipe = "蒸汽发电",
   x = 45,
@@ -4564,7 +4536,7 @@ local entities = { {
     input = { "地热气" },
     output = {}
   },
-  items = { { "地热气", 24 } },
+  items = { { "地热气", 13 } },
   prototype_name = "蒸汽发电机I",
   recipe = "地热气发电",
   x = 229,
@@ -4586,7 +4558,7 @@ local entities = { {
     input = { "地热气" },
     output = {}
   },
-  items = { { "地热气", 24 } },
+  items = { { "地热气", 13 } },
   prototype_name = "蒸汽发电机I",
   recipe = "地热气发电",
   x = 229,
@@ -4731,7 +4703,7 @@ local entities = { {
   y = 133
 }, {
   dir = "N",
-  items = { { "铁矿石", 6 }, { "铁板", 1 } },
+  items = { { "铁矿石", 6 }, { "铁板", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板1",
   x = 111,
@@ -4782,7 +4754,7 @@ local entities = { {
   y = 134
 }, {
   dir = "N",
-  items = { { "铁矿石", 6 }, { "铁板", 1 } },
+  items = { { "铁矿石", 6 }, { "铁板", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板1",
   x = 107,
@@ -4793,7 +4765,7 @@ local entities = { {
     input = {},
     output = { "地热气" }
   },
-  items = { { "地热气", 126 } },
+  items = { { "地热气", 142 } },
   prototype_name = "地热井I",
   recipe = "地热采集",
   x = 45,
@@ -5026,7 +4998,7 @@ local entities = { {
     input = { "纯水" },
     output = {}
   },
-  items = { { "纯水", 12 }, { "碎石", 8 }, { "沙子", 4 }, { "钢板", 10 }, { "混凝土", 9 } },
+  items = { { "纯水", 12 }, { "碎石", 5 }, { "沙子", 2 }, { "钢板", 8 }, { "混凝土", 6 } },
   prototype_name = "浮选器I",
   recipe = "混凝土",
   x = 130,
@@ -5037,7 +5009,7 @@ local entities = { {
     input = { "纯水" },
     output = {}
   },
-  items = { { "纯水", 12 }, { "碎石", 8 }, { "沙子", 4 }, { "钢板", 10 }, { "混凝土", 6 } },
+  items = { { "纯水", 12 }, { "碎石", 1 }, { "沙子", 1 }, { "钢板", 5 }, { "混凝土", 8 } },
   prototype_name = "浮选器I",
   recipe = "混凝土",
   x = 130,
@@ -5118,7 +5090,7 @@ local entities = { {
     input = { "硫酸", "氨气" },
     output = {}
   },
-  items = { { "橡胶", 10 }, { "硫酸", 36 }, { "混凝土", 12 }, { "氨气", 100 }, { "化学科技包", 4 } },
+  items = { { "橡胶", 2 }, { "硫酸", 36 }, { "混凝土", 12 }, { "氨气", 100 }, { "化学科技包", 0 } },
   prototype_name = "化工厂I",
   recipe = "化学科技包1",
   x = 50,
@@ -5170,7 +5142,7 @@ local entities = { {
     input = { "硫酸", "氨气" },
     output = {}
   },
-  items = { { "橡胶", 10 }, { "硫酸", 36 }, { "混凝土", 12 }, { "氨气", 100 }, { "化学科技包", 4 } },
+  items = { { "橡胶", 1 }, { "硫酸", 36 }, { "混凝土", 12 }, { "氨气", 100 }, { "化学科技包", 0 } },
   prototype_name = "化工厂I",
   recipe = "化学科技包1",
   x = 54,
@@ -5267,7 +5239,7 @@ local entities = { {
   y = 129
 }, {
   dir = "N",
-  items = { { "混凝土", 15 }, { "橡胶", 15 }, { "化学科技包", 30 }, { "化学科技包", 30 } },
+  items = { { "混凝土", 15 }, { "橡胶", 0 }, { "化学科技包", 21 }, { "化学科技包", 21 } },
   prototype_name = "仓库I",
   x = 53,
   y = 127
@@ -5286,28 +5258,28 @@ local entities = { {
   y = 138
 }, {
   dir = "N",
-  items = { { "铁矿石", 6 }, { "铁板", 1 } },
+  items = { { "铁矿石", 6 }, { "铁板", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板1",
   x = 108,
   y = 138
 }, {
   dir = "N",
-  items = { { "铁矿石", 4 }, { "铁板", 1 } },
+  items = { { "铁矿石", 1 }, { "铁板", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板1",
   x = 112,
   y = 138
 }, {
   dir = "N",
-  items = { { "铁矿石", 6 }, { "铁板", 0 } },
+  items = { { "铁矿石", 5 }, { "铁板", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板1",
   x = 108,
   y = 141
 }, {
   dir = "N",
-  items = { { "铁矿石", 5 }, { "铁板", 0 } },
+  items = { { "铁矿石", 2 }, { "铁板", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "铁板1",
   x = 112,
@@ -5372,7 +5344,7 @@ local entities = { {
     input = { "氧气" },
     output = { "二氧化碳" }
   },
-  items = { { "铁板", 2 }, { "氧气", 60 }, { "钢板", 0 }, { "二氧化碳", 0 } },
+  items = { { "铁板", 3 }, { "氧气", 60 }, { "钢板", 0 }, { "二氧化碳", 0 } },
   prototype_name = "熔炼炉I",
   recipe = "钢板1",
   x = 101,
@@ -5391,18 +5363,6 @@ local entities = { {
   y = 128
 }, {
   dir = "S",
-  fluid_name = "氧气",
-  prototype_name = "管道1-L型",
-  x = 102,
-  y = 128
-}, {
-  dir = "W",
-  fluid_name = "氧气",
-  prototype_name = "地下管1-JI型",
-  x = 101,
-  y = 128
-}, {
-  dir = "S",
   fluid_name = "二氧化碳",
   prototype_name = "管道1-T型",
   x = 99,
@@ -5412,18 +5372,6 @@ local entities = { {
   fluid_name = "二氧化碳",
   prototype_name = "地下管1-JI型",
   x = 100,
-  y = 132
-}, {
-  dir = "W",
-  fluid_name = "二氧化碳",
-  prototype_name = "管道1-L型",
-  x = 102,
-  y = 132
-}, {
-  dir = "W",
-  fluid_name = "二氧化碳",
-  prototype_name = "地下管1-JI型",
-  x = 101,
   y = 132
 }, {
   dir = "W",
@@ -5567,7 +5515,7 @@ local entities = { {
     input = {},
     output = { "纯水", "氧气" }
   },
-  items = { { "氢氧化钠", 8 }, { "纯水", 0 }, { "氧气", 0 }, { "钠", 6 } },
+  items = { { "氢氧化钠", 3 }, { "纯水", 0 }, { "氧气", 0 }, { "钠", 0 } },
   prototype_name = "电解厂I",
   recipe = "氢氧化钠电解",
   x = 98,
@@ -5661,7 +5609,7 @@ local entities = { {
     input = { "地下卤水" },
     output = { "蒸汽", "废水" }
   },
-  items = { { "地下卤水", 157 }, { "蒸汽", 0 }, { "废水", 0 } },
+  items = { { "地下卤水", 180 }, { "蒸汽", 0 }, { "废水", 0 } },
   prototype_name = "锅炉I",
   recipe = "卤水沸腾",
   x = 45,
@@ -5678,7 +5626,7 @@ local entities = { {
     input = { "地下卤水" },
     output = { "蒸汽", "废水" }
   },
-  items = { { "地下卤水", 171 }, { "蒸汽", 0 }, { "废水", 0 } },
+  items = { { "地下卤水", 161 }, { "蒸汽", 0 }, { "废水", 0 } },
   prototype_name = "锅炉I",
   recipe = "卤水沸腾",
   x = 51,
@@ -5689,7 +5637,7 @@ local entities = { {
     input = { "地下卤水" },
     output = { "蒸汽", "废水" }
   },
-  items = { { "地下卤水", 113 }, { "蒸汽", 29 }, { "废水", 0 } },
+  items = { { "地下卤水", 161 }, { "蒸汽", 0 }, { "废水", 0 } },
   prototype_name = "锅炉I",
   recipe = "卤水沸腾",
   x = 57,
@@ -5700,7 +5648,7 @@ local entities = { {
     input = { "地下卤水" },
     output = { "蒸汽", "废水" }
   },
-  items = { { "地下卤水", 150 }, { "蒸汽", 0 }, { "废水", 0 } },
+  items = { { "地下卤水", 149 }, { "蒸汽", 0 }, { "废水", 0 } },
   prototype_name = "锅炉I",
   recipe = "卤水沸腾",
   x = 63,
@@ -5964,7 +5912,7 @@ local entities = { {
   items = { { "硫酸", 24 }, { "沙子", 0 }, { "二氧化碳", 0 }, { "废水", 0 }, { "金红石", 0 } },
   prototype_name = "浮选器I",
   recipe = "金红石1",
-  x = 41,
+  x = 40,
   y = 125
 }, {
   dir = "E",
@@ -6159,17 +6107,731 @@ local entities = { {
   x = 47,
   y = 129
 }, {
-  dir = "E",
-  fluid_name = "硫酸",
-  prototype_name = "地下管1-JI型",
-  x = 44,
-  y = 129
-}, {
   dir = "N",
   fluid_name = "硫酸",
   prototype_name = "管道1-L型",
+  x = 42,
+  y = 129
+}, {
+  dir = "E",
+  fluid_name = "硫酸",
+  prototype_name = "地下管1-JI型",
   x = 43,
   y = 129
+}, {
+  dir = "W",
+  items = { { "demand", "沙子", 2 }, { "supply", "金红石", 2 } },
+  prototype_name = "物流站",
+  x = 42,
+  y = 130
+}, {
+  dir = "W",
+  fluid_name = {
+    input = { "氯气" },
+    output = { "四氯化钛" }
+  },
+  items = { { "氯气", 160 }, { "石墨", 11 }, { "金红石", 1 }, { "四氯化钛", 0 }, { "废料", 0 } },
+  prototype_name = "熔炼炉I",
+  recipe = "四氯化钛",
+  x = 99,
+  y = 133
+}, {
+  dir = "W",
+  fluid_name = {
+    input = { "氯气" },
+    output = { "四氯化钛" }
+  },
+  items = { { "氯气", 160 }, { "石墨", 11 }, { "金红石", 2 }, { "四氯化钛", 0 }, { "废料", 0 } },
+  prototype_name = "熔炼炉I",
+  recipe = "四氯化钛",
+  x = 99,
+  y = 140
+}, {
+  dir = "W",
+  items = { { "demand", "石墨", 2 }, { "demand", "金红石", 2 }, { "supply", "废料", 2 } },
+  prototype_name = "物流站",
+  x = 102,
+  y = 136
+}, {
+  dir = "N",
+  prototype_name = "无人机平台II",
+  x = 101,
+  y = 137
+}, {
+  dir = "N",
+  prototype_name = "无人机平台II",
+  x = 41,
+  y = 130
+}, {
+  dir = "N",
+  fluid_name = "氯气",
+  prototype_name = "地下管1-JI型",
+  x = 98,
+  y = 143
+}, {
+  dir = "S",
+  fluid_name = "氯气",
+  prototype_name = "地下管1-JI型",
+  x = 98,
+  y = 142
+}, {
+  dir = "N",
+  fluid_name = "氯气",
+  prototype_name = "地下管1-JI型",
+  x = 98,
+  y = 140
+}, {
+  dir = "W",
+  fluid_name = "氯气",
+  prototype_name = "管道1-T型",
+  x = 98,
+  y = 141
+}, {
+  dir = "E",
+  fluid_name = "氯气",
+  prototype_name = "管道1-L型",
+  x = 98,
+  y = 134
+}, {
+  dir = "S",
+  fluid_name = "氯气",
+  prototype_name = "地下管1-JI型",
+  x = 98,
+  y = 135
+}, {
+  dir = "W",
+  fluid_name = "废水",
+  prototype_name = "排水口I",
+  recipe = "废水排泄",
+  x = 37,
+  y = 125
+}, {
+  dir = "N",
+  fluid_name = "二氧化碳",
+  prototype_name = "烟囱I",
+  recipe = "二氧化碳排泄",
+  x = 40,
+  y = 123
+}, {
+  dir = "S",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 135
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 140
+}, {
+  dir = "E",
+  fluid_name = "四氯化钛",
+  prototype_name = "管道1-T型",
+  x = 102,
+  y = 141
+}, {
+  dir = "S",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 142
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JU型",
+  x = 102,
+  y = 154
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 148
+}, {
+  dir = "S",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 149
+}, {
+  dir = "E",
+  fluid_name = "四氯化钛",
+  prototype_name = "管道1-T型",
+  x = 102,
+  y = 134
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 133
+}, {
+  dir = "N",
+  fluid_name = "丁二烯",
+  prototype_name = "地下管1-JI型",
+  x = 95,
+  y = 169
+}, {
+  dir = "E",
+  fluid_name = "丁二烯",
+  prototype_name = "管道1-L型",
+  x = 95,
+  y = 158
+}, {
+  dir = "S",
+  fluid_name = "丁二烯",
+  prototype_name = "地下管1-JI型",
+  x = 95,
+  y = 159
+}, {
+  dir = "W",
+  fluid_name = "二氧化碳",
+  prototype_name = "管道1-L型",
+  x = 102,
+  y = 132
+}, {
+  dir = "W",
+  fluid_name = "二氧化碳",
+  prototype_name = "地下管1-JI型",
+  x = 101,
+  y = 132
+}, {
+  dir = "S",
+  fluid_name = "氧气",
+  prototype_name = "管道1-L型",
+  x = 102,
+  y = 128
+}, {
+  dir = "W",
+  fluid_name = "氧气",
+  prototype_name = "地下管1-JI型",
+  x = 101,
+  y = 128
+}, {
+  dir = "N",
+  fluid_name = {
+    input = { "氦气", "四氯化钛" },
+    output = { "废水" }
+  },
+  items = { { "氦气", 2 }, { "钠", 0 }, { "四氯化钛", 20 }, { "钛板", 0 }, { "废水", 0 } },
+  prototype_name = "浮选器I",
+  recipe = "钛板",
+  x = 103,
+  y = 115
+}, {
+  dir = "N",
+  fluid_name = {
+    input = { "空气" },
+    output = { "氮气", "二氧化碳", "氦气" }
+  },
+  items = { { "空气", 200 }, { "氮气", 0 }, { "二氧化碳", 0 }, { "氦气", 0 } },
+  prototype_name = "蒸馏厂I",
+  recipe = "空气分离2",
+  x = 102,
+  y = 101
+}, {
+  dir = "N",
+  fluid_name = {
+    input = { "空气" },
+    output = { "氮气", "二氧化碳", "氦气" }
+  },
+  items = { { "空气", 200 }, { "氮气", 0 }, { "二氧化碳", 0 }, { "氦气", 0 } },
+  prototype_name = "蒸馏厂I",
+  recipe = "空气分离2",
+  x = 108,
+  y = 101
+}, {
+  dir = "N",
+  fluid_name = {
+    input = { "空气" },
+    output = { "氮气", "二氧化碳", "氦气" }
+  },
+  items = { { "空气", 200 }, { "氮气", 0 }, { "二氧化碳", 0 }, { "氦气", 0 } },
+  prototype_name = "蒸馏厂I",
+  recipe = "空气分离2",
+  x = 114,
+  y = 101
+}, {
+  dir = "W",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  items = { { "空气", 197 } },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 101,
+  y = 99
+}, {
+  dir = "N",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  items = { { "空气", 197 } },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 102,
+  y = 97
+}, {
+  dir = "N",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  items = { { "空气", 197 } },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 108,
+  y = 97
+}, {
+  dir = "N",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  items = { { "空气", 197 } },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 114,
+  y = 97
+}, {
+  dir = "W",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  items = { { "空气", 197 } },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 107,
+  y = 99
+}, {
+  dir = "W",
+  fluid_name = {
+    input = {},
+    output = { "空气" }
+  },
+  items = { { "空气", 197 } },
+  prototype_name = "空气过滤器I",
+  recipe = "空气过滤",
+  x = 113,
+  y = 99
+}, {
+  dir = "E",
+  fluid_name = "空气",
+  prototype_name = "管道1-T型",
+  x = 103,
+  y = 99
+}, {
+  dir = "N",
+  fluid_name = "空气",
+  prototype_name = "管道1-I型",
+  x = 103,
+  y = 100
+}, {
+  dir = "N",
+  fluid_name = "空气",
+  prototype_name = "管道1-I型",
+  x = 109,
+  y = 100
+}, {
+  dir = "E",
+  fluid_name = "空气",
+  prototype_name = "管道1-T型",
+  x = 109,
+  y = 99
+}, {
+  dir = "N",
+  fluid_name = "空气",
+  prototype_name = "管道1-I型",
+  x = 115,
+  y = 100
+}, {
+  dir = "E",
+  fluid_name = "空气",
+  prototype_name = "管道1-T型",
+  x = 115,
+  y = 99
+}, {
+  dir = "W",
+  fluid_name = "氮气",
+  prototype_name = "地下管1-JI型",
+  x = 107,
+  y = 106
+}, {
+  dir = "S",
+  fluid_name = "氮气",
+  prototype_name = "管道1-T型",
+  x = 108,
+  y = 106
+}, {
+  dir = "E",
+  fluid_name = "氮气",
+  prototype_name = "地下管1-JI型",
+  x = 109,
+  y = 106
+}, {
+  dir = "W",
+  fluid_name = "氮气",
+  prototype_name = "管道1-L型",
+  x = 114,
+  y = 106
+}, {
+  dir = "W",
+  fluid_name = "氮气",
+  prototype_name = "地下管1-JI型",
+  x = 113,
+  y = 106
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "管道1-I型",
+  x = 116,
+  y = 106
+}, {
+  dir = "N",
+  fluid_name = "二氧化碳",
+  prototype_name = "管道1-I型",
+  x = 112,
+  y = 106
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "管道1-I型",
+  x = 116,
+  y = 107
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "管道1-I型",
+  x = 110,
+  y = 106
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "管道1-I型",
+  x = 110,
+  y = 107
+}, {
+  dir = "N",
+  fluid_name = "二氧化碳",
+  prototype_name = "管道1-I型",
+  x = 106,
+  y = 106
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "管道1-I型",
+  x = 104,
+  y = 106
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "管道1-I型",
+  x = 104,
+  y = 107
+}, {
+  dir = "W",
+  fluid_name = "二氧化碳",
+  prototype_name = "地下管1-JI型",
+  x = 111,
+  y = 107
+}, {
+  dir = "N",
+  fluid_name = "二氧化碳",
+  prototype_name = "管道1-L型",
+  x = 106,
+  y = 107
+}, {
+  dir = "E",
+  fluid_name = "二氧化碳",
+  prototype_name = "地下管1-JI型",
+  x = 107,
+  y = 107
+}, {
+  dir = "S",
+  fluid_name = "二氧化碳",
+  prototype_name = "管道1-T型",
+  x = 112,
+  y = 107
+}, {
+  dir = "E",
+  fluid_name = "二氧化碳",
+  prototype_name = "地下管1-JI型",
+  x = 113,
+  y = 107
+}, {
+  dir = "W",
+  fluid_name = "氮气",
+  prototype_name = "烟囱I",
+  recipe = "氮气排泄",
+  x = 100,
+  y = 106
+}, {
+  dir = "S",
+  fluid_name = "氮气",
+  prototype_name = "管道1-T型",
+  x = 102,
+  y = 106
+}, {
+  dir = "E",
+  fluid_name = "氮气",
+  prototype_name = "地下管1-JI型",
+  x = 103,
+  y = 106
+}, {
+  dir = "E",
+  fluid_name = "二氧化碳",
+  prototype_name = "烟囱I",
+  recipe = "二氧化碳排泄",
+  x = 119,
+  y = 106
+}, {
+  dir = "S",
+  fluid_name = "二氧化碳",
+  prototype_name = "管道1-T型",
+  x = 118,
+  y = 107
+}, {
+  dir = "N",
+  fluid_name = "二氧化碳",
+  prototype_name = "管道1-I型",
+  x = 118,
+  y = 106
+}, {
+  dir = "W",
+  fluid_name = "二氧化碳",
+  prototype_name = "地下管1-JI型",
+  x = 117,
+  y = 107
+}, {
+  dir = "E",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 111,
+  y = 108
+}, {
+  dir = "W",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 115,
+  y = 108
+}, {
+  dir = "W",
+  fluid_name = "氦气",
+  prototype_name = "管道1-L型",
+  x = 116,
+  y = 108
+}, {
+  dir = "W",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 109,
+  y = 108
+}, {
+  dir = "S",
+  fluid_name = "氦气",
+  prototype_name = "管道1-T型",
+  x = 110,
+  y = 108
+}, {
+  dir = "E",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 105,
+  y = 108
+}, {
+  dir = "S",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 104,
+  y = 109
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 104,
+  y = 113
+}, {
+  dir = "N",
+  prototype_name = "无人机平台II",
+  x = 97,
+  y = 118
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 124
+}, {
+  dir = "S",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 125
+}, {
+  dir = "S",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 117
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "管道1-T型",
+  x = 102,
+  y = 116
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "管道1-L型",
+  x = 101,
+  y = 116
+}, {
+  dir = "N",
+  fluid_name = {
+    input = { "氦气", "四氯化钛" },
+    output = { "废水" }
+  },
+  items = { { "氦气", 2 }, { "钠", 0 }, { "四氯化钛", 1 }, { "钛板", 0 }, { "废水", 0 } },
+  prototype_name = "浮选器I",
+  recipe = "钛板",
+  x = 109,
+  y = 115
+}, {
+  dir = "E",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 105,
+  y = 114
+}, {
+  dir = "W",
+  fluid_name = "氦气",
+  prototype_name = "管道1-T型",
+  x = 104,
+  y = 114
+}, {
+  dir = "S",
+  fluid_name = "氦气",
+  prototype_name = "管道1-L型",
+  x = 110,
+  y = 114
+}, {
+  dir = "W",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 109,
+  y = 114
+}, {
+  dir = "E",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 102,
+  y = 115
+}, {
+  dir = "E",
+  fluid_name = "四氯化钛",
+  prototype_name = "管道1-L型",
+  x = 101,
+  y = 115
+}, {
+  dir = "W",
+  fluid_name = "四氯化钛",
+  prototype_name = "地下管1-JI型",
+  x = 107,
+  y = 115
+}, {
+  dir = "N",
+  fluid_name = "四氯化钛",
+  prototype_name = "管道1-L型",
+  x = 108,
+  y = 116
+}, {
+  dir = "S",
+  fluid_name = "四氯化钛",
+  prototype_name = "管道1-L型",
+  x = 108,
+  y = 115
+}, {
+  dir = "N",
+  items = { { "supply", "钛板", 2 }, { "demand", "钠", 2 } },
+  prototype_name = "物流站",
+  x = 106,
+  y = 120
+}, {
+  dir = "N",
+  prototype_name = "无人机平台II",
+  x = 107,
+  y = 119
+}, {
+  dir = "N",
+  items = { { "钛板", 0 }, { "钛板", 0 }, { "钠", 0 }, { "钠", 0 } },
+  prototype_name = "仓库I",
+  x = 108,
+  y = 119
+}, {
+  dir = "N",
+  fluid_name = "废水",
+  prototype_name = "管道1-L型",
+  x = 105,
+  y = 119
+}, {
+  dir = "E",
+  fluid_name = "废水",
+  prototype_name = "地下管1-JI型",
+  x = 106,
+  y = 119
+}, {
+  dir = "E",
+  fluid_name = "废水",
+  prototype_name = "排水口I",
+  recipe = "废水排泄",
+  x = 113,
+  y = 118
+}, {
+  dir = "W",
+  fluid_name = "废水",
+  prototype_name = "地下管1-JI型",
+  x = 110,
+  y = 119
+}, {
+  dir = "E",
+  fluid_name = "废水",
+  prototype_name = "管道1-I型",
+  x = 112,
+  y = 119
+}, {
+  dir = "S",
+  fluid_name = "废水",
+  prototype_name = "管道1-T型",
+  x = 111,
+  y = 119
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "液罐I",
+  x = 94,
+  y = 107
+}, {
+  dir = "N",
+  fluid_name = "氦气",
+  prototype_name = "管道1-X型",
+  x = 104,
+  y = 108
+}, {
+  dir = "W",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 103,
+  y = 108
+}, {
+  dir = "E",
+  fluid_name = "氦气",
+  prototype_name = "地下管1-JI型",
+  x = 97,
+  y = 108
 } }
 local road = { {
   dir = "E",
@@ -6437,26 +7099,6 @@ local road = { {
   x = 116,
   y = 126
 }, {
-  dir = "S",
-  prototype_name = "砖石公路-U型",
-  x = 116,
-  y = 124
-}, {
-  dir = "N",
-  prototype_name = "砖石公路-L型",
-  x = 102,
-  y = 126
-}, {
-  dir = "N",
-  prototype_name = "砖石公路-I型",
-  x = 102,
-  y = 124
-}, {
-  dir = "S",
-  prototype_name = "砖石公路-L型",
-  x = 102,
-  y = 122
-}, {
   dir = "E",
   prototype_name = "砖石公路-I型",
   x = 100,
@@ -6696,11 +7338,6 @@ local road = { {
   prototype_name = "砖石公路-I型",
   x = 104,
   y = 132
-}, {
-  dir = "N",
-  prototype_name = "砖石公路-T型",
-  x = 104,
-  y = 126
 }, {
   dir = "N",
   prototype_name = "砖石公路-I型",
@@ -7647,9 +8284,99 @@ local road = { {
   x = 46,
   y = 122
 }, {
-  dir = "E",
+  dir = "S",
   prototype_name = "砖石公路-U型",
   x = 44,
+  y = 120
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 44,
+  y = 124
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 44,
+  y = 126
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 44,
+  y = 128
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 44,
+  y = 130
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 44,
+  y = 132
+}, {
+  dir = "W",
+  prototype_name = "砖石公路-T型",
+  x = 44,
+  y = 122
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-U型",
+  x = 44,
+  y = 134
+}, {
+  dir = "W",
+  prototype_name = "砖石公路-T型",
+  x = 104,
+  y = 126
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 104,
+  y = 124
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 102,
+  y = 122
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-T型",
+  x = 104,
+  y = 122
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 106,
+  y = 122
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 108,
+  y = 122
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 110,
+  y = 122
+}, {
+  dir = "N",
+  prototype_name = "砖石公路-I型",
+  x = 116,
+  y = 124
+}, {
+  dir = "S",
+  prototype_name = "砖石公路-L型",
+  x = 116,
+  y = 122
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 112,
+  y = 122
+}, {
+  dir = "E",
+  prototype_name = "砖石公路-I型",
+  x = 114,
   y = 122
 } }
 local mineral = {
