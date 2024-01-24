@@ -151,7 +151,7 @@ function M.update(datamodel)
                 if object then
                     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
                     local typeobject = iprototype.queryById(e.building.prototype)
-                    if not e.debris and typeobject.teardown ~= false then
+                    if not e.debris and typeobject.teardown ~= false and typeobject.bulk_move ~= false then
                         new[iprototype.packcoord(object.x, object.y)] = true
                     end
                 end
@@ -275,6 +275,15 @@ function M.update(datamodel)
             if object then
                 local typeobject = iprototype.queryByName(object.prototype_name)
                 local succ, msg = _get_check_coord(typeobject)(v.x, v.y, object.dir, typeobject)
+                if not succ then
+                    show_message(msg)
+                    return
+                end
+            end
+            local v = ibuilding.get(x, y)
+            if v then
+                local typeobject = iprototype.queryByName(v.prototype)
+                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, v.direction, typeobject)
                 if not succ then
                     show_message(msg)
                     return

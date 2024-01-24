@@ -18,6 +18,7 @@ prototype "采矿机I" {
     craft_category = {"矿石开采"},
     speed = "100%",
     maxslot = 8,
+    bulk_move = false,
 }
 
 prototype "采矿机II" {
@@ -37,6 +38,7 @@ prototype "采矿机II" {
     craft_category = {"矿石开采"},
     speed = "200%",
     maxslot = 8,
+    bulk_move = false,
 }
 
 prototype "采矿机III" {
@@ -56,6 +58,7 @@ prototype "采矿机III" {
     craft_category = {"矿石开采"},
     speed = "300%",
     maxslot = 8,
+    bulk_move = false,
 }
 
 prototype "轻型采矿机" {
@@ -75,4 +78,5 @@ prototype "轻型采矿机" {
     craft_category = {"矿石开采"},
     speed = "100%",
     maxslot = 8,
+    bulk_move = false,
 }

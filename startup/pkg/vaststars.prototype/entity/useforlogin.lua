@@ -347,6 +347,7 @@ prototype "特殊采矿机" {
     craft_category = {"矿石开采"},
     speed = "200%",
     maxslot = 8,
+    bulk_move = false,
 }
 
 prototype "特殊浮选器" {
