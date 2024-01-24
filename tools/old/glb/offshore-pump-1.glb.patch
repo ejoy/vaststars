@@ -1,6 +1,0 @@
----
-file: mesh.prefab
-op: replace
-path: /1/data/scene
-value:
-    t : {0, 1.899999976158142, 0}
