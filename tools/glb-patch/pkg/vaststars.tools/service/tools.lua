@@ -20,7 +20,7 @@ local function localwriteall(file, content)
     f:write(content)
 end
 
-local BASE_LOCALPATH <const> = lfs.path(vfs.repopath() .. "../startup/pkg/vaststars.resources/glbs/"):lexically_normal()
+local BASE_LOCALPATH <const> = lfs.path(vfs.repopath() .. "../../startup/pkg/vaststars.resources/glbs/"):lexically_normal()
 local function dir(p)
 	local t = {}
 	for v in lfs.pairs(p) do
