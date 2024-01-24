@@ -228,8 +228,24 @@ value:
           forwards: true
           name: Animation3
           pause_frame: 90
+          ---
+          action: light
+          asset_path: /pkg/vaststars.resources/animations/chemical_light.anim
+          event_type: Animation
+          pause_frame: -1
+          target: Cylinder.001_P1
         tick: 0
         time: 0
+        ---
+        event_list:
+          ---
+          action: light
+          asset_path: /pkg/vaststars.resources/animations/chemical_light.anim
+          event_type: Animation
+          pause_frame: -1
+          target: Cylinder.001_P1
+        tick: 45
+        time: 1.5
       loop: false
   policy:
     ant.timeline|timeline
