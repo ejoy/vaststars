@@ -17,5 +17,5 @@ return {
     TRANSFER_SOURCE = math3d.constant("v4", {1.0, 1.0, 0.0, 1}),
     CONSTRUCT_SELF = math3d.constant("v4", {0, 0.85, 1, 0.1}),
     CONSTRUCT_SELF_EMISSIVE = math3d.constant("v4", {0, 0, 1, 0.1}),
-    SELECTED = math3d.constant("v4", {0, 1, 0, 1}),
+    SELECTED = math3d.constant("v4", {0, 1, 0, 0.15}),
 }
