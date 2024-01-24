@@ -36,6 +36,9 @@ local show_message = ecs.require "show_message".show_message
 local iui = ecs.require "engine.system.ui_system"
 local isrt = require "utility.srt"
 local igame_object = ecs.require "engine.game_object"
+local igameplay = ecs.require "gameplay.gameplay_system"
+local global = require "global"
+local iobject = ecs.require "object"
 
 local selected = {}
 local moving_objs = {}
@@ -134,6 +137,23 @@ local function _clear_moving_objs()
     end
     moving_objs = {}
     moving = false
+end
+
+local function _move_building(object, x, y)
+    local e = gameplay_core.get_entity(object.gameplay_eid)
+    e.building_changed = true
+    igameplay.move(object.gameplay_eid, x, y)
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+    iobject.coord(object, x, y)
+    objects:coord_update(object)
+
+    local building = global.buildings[object.id]
+    if building then
+        for _, v in pairs(building) do
+            v:on_position_change(object.srt, object.dir)
+        end
+    end
 end
 
 function M.update(datamodel)
@@ -280,14 +300,33 @@ function M.update(datamodel)
                     return
                 end
             end
-            local v = ibuilding.get(x, y)
-            if v then
-                local typeobject = iprototype.queryByName(v.prototype)
-                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, v.direction, typeobject)
+            local r = ibuilding.get(x, y)
+            if r then
+                local typeobject = iprototype.queryByName(r.prototype)
+                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, r.direction, typeobject)
                 if not succ then
                     show_message(msg)
                     return
                 end
+            end
+        end
+
+        for coord, v in pairs(moving_objs) do
+            local x, y = iprototype.unpackcoord(coord)
+            local object = objects:coord(x, y)
+            if object then
+                _move_building(object, v.x, v.y)
+            end
+            local r = ibuilding.get(x, y)
+            if r then
+                ibuilding.remove(x, y)
+                ibuilding.set {
+                    x = v.x,
+                    y = v.y,
+                    prototype_name = r.prototype,
+                    direction = r.direction,
+                    road = true,
+                }
             end
         end
 
