@@ -23,14 +23,14 @@ function m.init(map)
 
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d+),(%d+)$")
-        x, y = tonumber(x), tonumber(y)
+        x, y = x + 0, y + 0
 
         local typeobject = iprototype.queryByName(mineral)
         local errmsg <const> = "%s is defined as a type of mineral, but no corresponding mineral model is configured."
         local mineral_model = assert(typeobject).mineral_model or error(errmsg:format(mineral))
 
         local w, h = typeobject.mineral_area:match("^(%d+)x(%d+)$")
-        w, h = tonumber(w), tonumber(h)
+        w, h = w + 0, h + 0
 
         local hash = iprototype.packcoord(x, y)
         mineral_hash[hash] = {x = x, y = y, w = w, h = h, mineral = mineral}

@@ -44,19 +44,13 @@ local calcHash ; do
     end
 end
 
-local function replace_di_prefab(prefab)
-    local suffix = "di"
-    local glb, pn = assert(prefab:match("^(.*%.glb)|(.*)%.prefab$"))
-    return string.format("%s|%s_%s.prefab", glb, pn, suffix)
-end
-
 local get_hitch_group_id, stopWorld, restartWorld ; do
     local cache = {}
     local NEXT_HITCH_GROUP = 1
 
     function get_hitch_group_id(prefab, color, work_status, emissive_color, render_layer, dynamic_mesh)
         if not dynamic_mesh then
-            prefab = replace_di_prefab(prefab)
+            prefab = prefab:gsub("(%.[^%.]+)$", "_di%1")
         end
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = calcHash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
@@ -170,18 +164,14 @@ init = {
     render_layer,
 }
 --]]
-
 function igame_object.create(init)
     local prefab = RESOURCES_BASE_PATH:format(init.prefab)
-    local glb = assert(prefab:match("^(.*%.glb)|.*%.prefab$"))
-    -- log.info(("hitch prefab: %s, group_id: %s"):format(hitchPrefab, init.group_id))
-
     local hitch_group_id = get_hitch_group_id(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer, init.dynamic)
     local srt = init.srt or {}
 
     local instance = world:create_instance {
         group = init.group_id,
-        prefab = glb .. "|hitch.prefab",
+        prefab = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1hitch.prefab"),
         parent = init.parent,
         on_ready = function(self)
             local root <close> = world:entity(self.tag["hitch"][1])

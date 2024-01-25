@@ -130,8 +130,9 @@ local function rebuild(self, gameplay_world, e, game_object)
     end
 end
 
-function mt:on_position_change(building_srt, group_id)
-    -- TODO: implement this
+function mt:on_position_change(building_srt, dir, gameplay_world, e, game_object)
+    self:remove()
+    rebuild(self, gameplay_world, e, game_object)
 end
 
 function mt:update_item(idx, amount)

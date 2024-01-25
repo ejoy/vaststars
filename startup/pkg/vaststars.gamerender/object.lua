@@ -160,6 +160,18 @@ local function flush()
                     emissive_color = outer.emissive_color,
                     render_layer = outer.render_layer,
                 }
+
+                local global = require "global"
+                local gameplay_core = require "gameplay.core"
+                local gameplay_world = gameplay_core.get_world()
+                local e = gameplay_core.get_entity(outer.gameplay_eid)
+
+                local building = global.buildings[outer.id]
+                if building then
+                    for _, v in pairs(building) do
+                        v:on_position_change(outer.srt, outer.dir, gameplay_world, e, vsobject.game_object)
+                    end
+                end
             else
                 for k in pairs(outer.__change_keys) do
                     local func = funcs[k]

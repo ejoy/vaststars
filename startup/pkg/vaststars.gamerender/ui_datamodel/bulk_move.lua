@@ -38,7 +38,6 @@ local iui = ecs.require "engine.system.ui_system"
 local isrt = require "utility.srt"
 local igame_object = ecs.require "engine.game_object"
 local igameplay = ecs.require "gameplay.gameplay_system"
-local global = require "global"
 local iobject = ecs.require "object"
 
 local selected = {}
@@ -148,13 +147,6 @@ local function _move_building(object, x, y, position)
 
     iobject.coord(object, x, y)
     objects:coord_update(object)
-
-    local building = global.buildings[object.id]
-    if building then
-        for _, v in pairs(building) do
-            v:on_position_change(object.srt, object.dir)
-        end
-    end
 end
 
 function M.update(datamodel)

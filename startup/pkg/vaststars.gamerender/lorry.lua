@@ -82,8 +82,7 @@ local function create(prefab, s, r, t)
     lorry_obj:send("attach", "arrow", arrow_instance)
 
     function outer:work()
-        local model = assert(prefab:match("(.*%.glb|).*%.prefab"))
-        model = model .. "work.prefab"
+        local model = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1work.prefab")
         lorry_obj:update({work_status = "work", prefab = model})
     end
     function outer:idle()
