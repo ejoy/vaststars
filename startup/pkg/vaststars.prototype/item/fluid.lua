@@ -11,7 +11,7 @@ prototype "空气" {
     max_temperature = 100,
     item_order = 2,
     pollution = 0,
-    item_item_descriptioncription = "大气层中的基本气体",
+    item_description = "大气层中的基本气体",
 }
 
 prototype "氮气" {
