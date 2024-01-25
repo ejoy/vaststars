@@ -14,6 +14,7 @@ local COORD_BOUNDARY <const> = icoord.boundary()
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
+local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 
 local select_mb = mailbox:sub {"select"}
 local teardown_mb = mailbox:sub {"teardown"}
@@ -139,7 +140,7 @@ local function _clear_moving_objs()
     moving = false
 end
 
-local function _move_building(object, x, y)
+local function _move_building(object, x, y, position)
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building_changed = true
     igameplay.move(object.gameplay_eid, x, y)
@@ -311,14 +312,17 @@ function M.update(datamodel)
             end
         end
 
+        _clear_selected()
+
         for coord, v in pairs(moving_objs) do
             local x, y = iprototype.unpackcoord(coord)
             local object = objects:coord(x, y)
             if object then
-                _move_building(object, v.x, v.y)
+                _move_building(object, v.x, v.y, v.srt.t)
             end
             local r = ibuilding.get(x, y)
             if r then
+                assert(v.x % ROAD_SIZE == 0 and v.y % ROAD_SIZE == 0)
                 ibuilding.remove(x, y)
                 ibuilding.set {
                     x = v.x,
@@ -330,7 +334,6 @@ function M.update(datamodel)
             end
         end
 
-        _clear_selected()
         _clear_moving_objs()
 
         datamodel.teardown = true
@@ -358,50 +361,67 @@ end
 
 function M.gesture_pan_changed(datamodel, delta_vec)
     if moving then
-        for coord, v in pairs(moving_objs) do
+        for _, v in pairs(moving_objs) do
             v.srt = isrt.new {t = math3d.add(v.srt.t, delta_vec), r = v.srt.r}
             v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
-            v.obj:send("obj_motion", "set_rotation", math3d.live(v.srt.r))
-
-            local area, dir = _get_info(iprototype.unpackcoord(coord))
-            local c = icoord.align(v.srt.t, iprototype.rotate_area(area, dir))
-            assert(c)
-            v.x = c[1]
-            v.y = c[2]
         end
     else
         iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
     end
 end
 
+local function _get_first_moving_obj(moving_objs)
+    for coord, v in pairs(moving_objs) do
+        local x, y = iprototype.unpackcoord(coord)
+        local r = ibuilding.get(x, y)
+        if r then
+            return coord, v, true
+        end
+    end
+    return next(moving_objs)
+end
+
 function M.gesture_pan_ended(datamodel)
-    -- if not moving then
-    --     return
-    -- end
+    if not moving then
+        return
+    end
 
-    -- local coord, v = next(moving_objs)
-    -- if not coord then
-    --     return
-    -- end
+    local coord, v, road = _get_first_moving_obj(moving_objs)
+    if not coord then
+        assert(false)
+        return
+    end
 
-    -- local area, dir = _get_info(iprototype.unpackcoord(coord))
-    -- local c, position = icoord.align(v.srt.t, iprototype.rotate_area(area, dir))
-    -- if not c then
-    --     return
-    -- end
-    -- icamera_controller.move_delta(math3d.mark(math3d.sub(position, v.srt.t)))
-    -- local dx, dy = c[1] - v.x, c[2] - v.y
+    local area, dir = _get_info(iprototype.unpackcoord(coord))
+    local c, position = icoord.align(v.srt.t, iprototype.rotate_area(area, dir))
+    if not c then
+        assert(false)
+        return
+    end
+    if road then
+        c[1], c[2] = c[1] - (c[1] % ROAD_SIZE), c[2] - (c[2] % ROAD_SIZE)
+        position = math3d.vector(icoord.position(c[1], c[2], iprototype.rotate_area(area, dir)))
+    end
+    icamera_controller.move_delta(math3d.mark(math3d.sub(position, v.srt.t)))
+    local dx, dy = c[1] - v.x, c[2] - v.y
 
-    -- for _, v in pairs(moving_objs) do
-    --     local area, dir = _get_info(iprototype.unpackcoord(coord))
-    --     local position = icoord.position(v.x + dx, v.y + dy, iprototype.rotate_area(area, dir))
-    --     assert(position)
-    --     v.srt = isrt.new {t = math3d.vector(position), r = v.srt.r}
-    --     v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
-    --     v.obj:send("obj_motion", "set_rotation", math3d.live(v.srt.r))
-    --     v.x = v.x + dx
-    --     v.y = v.y + dy
-    -- end
+    local positions = {}
+    for coord, v in pairs(moving_objs) do
+        v.x = v.x + dx
+        v.y = v.y + dy
+        local area, dir = _get_info(iprototype.unpackcoord(coord))
+        local position = icoord.position(v.x, v.y, iprototype.rotate_area(area, dir))
+        if not position then
+            return
+        end
+        positions[coord] = position
+    end
+
+    for coord, position in pairs(positions) do
+        local v = assert(moving_objs[coord])
+        v.srt = isrt.new {t = position, r = v.srt.r}
+        v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
+    end
 end
 
 return M

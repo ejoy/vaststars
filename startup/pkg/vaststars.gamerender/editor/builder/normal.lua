@@ -69,7 +69,6 @@ local function __show_self_selected_boxes(self, position, typeobject, dir, valid
     end
 end
 
--- TODO: duplicate from builder.lua
 local function _get_mineral_recipe(prototype_name, x, y, w, h)
     local typeobject = iprototype.queryByName(prototype_name)
     if not iprototype.has_type(typeobject.type, "mining") then

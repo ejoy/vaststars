@@ -146,10 +146,26 @@ local function flush()
                 render_layer = outer.render_layer,
             }
         else
-            for k in pairs(outer.__change_keys) do
-                local func = funcs[k]
-                if func then
-                    func(outer)
+            if outer.__change_keys.group_id then
+                vsobject:remove()
+                vsobject = vsobject_manager:create {
+                    id = outer.id,
+                    prototype_name = outer.prototype_name,
+                    dir = outer.dir,
+                    position = outer.srt.t,
+                    group_id = outer.group_id or igroup.id(outer.x, outer.y),
+                    debris = outer.debris,
+                    state = outer.state,
+                    color = outer.color,
+                    emissive_color = outer.emissive_color,
+                    render_layer = outer.render_layer,
+                }
+            else
+                for k in pairs(outer.__change_keys) do
+                    local func = funcs[k]
+                    if func then
+                        func(outer)
+                    end
                 end
             end
         end
@@ -185,13 +201,6 @@ local function flush()
             iefk.play("/pkg/vaststars.resources/effects/building-animat.efk", {s = scale, t = outer.srt.t})
         end
     end
-
-    for _, outer in ipairs(appear) do
-        local vsobject = vsobject_manager:get(outer.id)
-        if vsobject then
-            -- vsobject:modifier({name = "appear", forwards = true}, true)
-        end
-    end
 end
 
 local function move_delta(object, delta_vec)
@@ -223,6 +232,10 @@ local function coord(object, x, y)
         return
     end
     object.x, object.y = x, y
+    local new_group_id = igroup.id(x, y)
+    if object.group_id ~= new_group_id then
+        object.group_id = new_group_id
+    end
     object.srt.t = position
 end
 

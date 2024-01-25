@@ -259,19 +259,17 @@ local handle_drop_camera; do
     local start_time
 
     function handle_drop_camera(ce)
-        local pan_ended = false
-        local ending_x, ending_y
+        local end_time, ending_x, ending_y
 
         for _, _, e in gesture_pan:unpack() do
             if e.state == "began" then
                 start_pos.v = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
-				-- todo: use e.timestamp only
-                start_time = e.timestamp or now()
+                start_time = e.timestamp
                 cam_motion_matrix_queue:clear()
             else
                 ending_x, ending_y = e.x, e.y
                 if e.state == "ended" then
-                    pan_ended = e.timestamp or now()
+                    end_time = e.timestamp
                 end
             end
         end
@@ -301,10 +299,9 @@ local handle_drop_camera; do
             end
 
             pos = mu.clamp_vec(pos, CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
-			iom.set_position(ce, pos)
 
-            if pan_ended then
-                local delta_time = pan_ended - start_time
+            if end_time then
+                local delta_time = end_time - start_time
                 if delta_time > 0 then
 					local distance = math3d.length(delta_vec)
 					local delta_inv = 1 / delta_time
@@ -331,9 +328,10 @@ local handle_drop_camera; do
                         end
 					end
 				end
+            else
+                world:pub(mathmsg("dragdrop_camera", math3d.sub(pos, scene.t)))
+                iom.set_position(ce, pos)
 			end
-
-            world:pub(mathmsg("dragdrop_camera", delta_vec))
         end
     end
 end

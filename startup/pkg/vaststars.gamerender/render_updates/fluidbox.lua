@@ -152,7 +152,6 @@ local function _update_neighbor_fluid(gameplay_world, e, typeobject, map)
         if eid then
             local neighbor = assert(gameplay_world.entity[eid])
             if neighbor.fluidbox and neighbor.fluidbox.fluid == 0 then
-                print("update fluidbox", neighbor.building.x, neighbor.building.y, e.fluidbox.fluid)
                 igameplay_fluidbox.update_fluidbox(gameplay_world, neighbor, e.fluidbox.fluid)
                 _update_neighbor_fluid(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype), map)
             end
@@ -200,7 +199,6 @@ function fluidbox_sys:gameworld_prebuild()
             for _, connection in ipairs(typeobject.fluidbox.connections) do
                 local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
                 local neighbor_fluid = _find_neighbor_fluid(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
-                print(e.building.x + x, e.building.y + y, neighbor_fluid)
                 if neighbor_fluid then
                     fluids[neighbor_fluid] = true
                 end
@@ -209,7 +207,6 @@ function fluidbox_sys:gameworld_prebuild()
                 assert(length(fluids) == 1)
                 local fluid = next(fluids)
                 igameplay_fluidbox.update_fluidbox(gameplay_world, e, fluid)
-                print("update fluidbox", e.building.x, e.building.y, fluid)
                 _update_neighbor_fluid(gameplay_world, e, typeobject, map)
             end
         else
