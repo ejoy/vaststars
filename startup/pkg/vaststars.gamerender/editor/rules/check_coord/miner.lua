@@ -4,7 +4,7 @@ local world = ecs.world
 local ibuilding = ecs.require "render_updates.building"
 local imineral = ecs.require "mineral"
 local objects = require "objects"
-local imining = require "gameplay.interface.mining"
+local iminer = require "gameplay.interface.miner"
 local iprototype = require "gameplay.interface.prototype"
 
 return function (x, y, dir, typeobject, exclude_object_id)
@@ -39,7 +39,7 @@ return function (x, y, dir, typeobject, exclude_object_id)
         if not succ then
             return false, "needs to be placed above a resource mine"
         end
-        local r = imining.get_mineral_recipe(typeobject.name, mineral) ~= nil
+        local r = iminer.get_mineral_recipe(typeobject.name, mineral) ~= nil
         if r then
             return true
         else

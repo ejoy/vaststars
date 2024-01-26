@@ -9,10 +9,10 @@ return function()
         t[#t+1] = typeobject
     end
 
-    local mining_recipe = {}
+    local miner_recipe = {}
     for _, typeobject in pairs(iprototype.each_type("building", "mining")) do
-        assert(typeobject.craft_category, "mining entity should have craft_category")
-        mining_recipe[typeobject.name] = {}
+        assert(typeobject.craft_category, "miner entity should have craft_category")
+        miner_recipe[typeobject.name] = {}
         for _, category in ipairs(typeobject.craft_category) do
             local recipes = recipe_category[category]
             if not recipes then
@@ -22,15 +22,15 @@ return function()
             for _, recipe_typeobject in ipairs(recipes) do
                 local ingredients = itypes.items(recipe_typeobject.ingredients)
                 local result = itypes.items(recipe_typeobject.results)
-                assert(#ingredients == 0, "recipe of mining should not have ingredients")
-                assert(#result == 1, "recipe of mining should only have one result")
+                assert(#ingredients == 0, "recipe of miner should not have ingredients")
+                assert(#result == 1, "recipe of miner should only have one result")
 
                 local mineral = iprototype.queryById(result[1].id).name
-                local _ = mining_recipe[mineral] == nil or error(("find duplicate recipe for mineral `%s`"):format(mineral))
-                mining_recipe[typeobject.name][mineral] = recipe_typeobject.name
+                local _ = miner_recipe[mineral] == nil or error(("find duplicate recipe for mineral `%s`"):format(mineral))
+                miner_recipe[typeobject.name][mineral] = recipe_typeobject.name
             end
         end
     end
 
-    return mining_recipe
+    return miner_recipe
 end

@@ -521,7 +521,6 @@ local function new(self, datamodel, typeobject, position_type)
     end
 
     __new_entity(self, datamodel, typeobject, x, y, position, dir)
-    self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
         self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})

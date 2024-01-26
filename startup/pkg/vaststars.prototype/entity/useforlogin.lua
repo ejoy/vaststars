@@ -333,7 +333,7 @@ prototype "特殊采矿机" {
     model = "glbs/miner-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
-    check_coord = {"mining"},
+    check_coord = {"miner"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
     area = "3x3",

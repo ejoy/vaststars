@@ -19,7 +19,7 @@ local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local objects = require "objects"
 local iobject = ecs.require "object"
-local imining = require "gameplay.interface.mining"
+local iminer = require "gameplay.interface.miner"
 local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_station_indicator = ecs.require "editor.indicators.station_indicator"
@@ -306,7 +306,7 @@ local function _get_mineral_recipe(prototype_name, x, y, w, h)
     if not succ then
         return
     end
-    return imining.get_mineral_recipe(prototype_name, mineral)
+    return iminer.get_mineral_recipe(prototype_name, mineral)
 end
 
 local function __align(object)
@@ -574,7 +574,6 @@ local function new(self, move_object_id, datamodel, typeobject)
     self._check_coord = _get_check_coord(move_object_id)
 
     __new_entity(self, datamodel, typeobject)
-    self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
         if iprototype.has_types(typeobject.type, "station") then

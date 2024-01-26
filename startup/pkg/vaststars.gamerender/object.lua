@@ -122,7 +122,6 @@ local function flush()
     }
 
     local prepare = {}
-    local appear = {}
 
     local vsobject
     for object_id, outer in pairs(changeset) do
@@ -185,11 +184,6 @@ local function flush()
         if outer.PREPARE then
             prepare[#prepare+1] = outer
             outer.PREPARE = nil
-        end
-
-        if outer.APPEAR then
-            appear[#appear+1] = outer
-            outer.APPEAR = nil
         end
 
         outer.__change_keys = {}

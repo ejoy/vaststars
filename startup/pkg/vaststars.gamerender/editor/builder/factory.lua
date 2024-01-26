@@ -120,27 +120,33 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
         "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab"
     }, self_selected_boxes_position, color, w+1, h+1)
 
+    self.status = {
+        x = x,
+        y = y,
+        dir = dir,
+        srt = srt.new {
+            t = position,
+            r = ROTATORS[dir],
+        },
+    }
+
     self.pickup_object = iobject.new {
         prototype_name = typeobject.name,
         dir = dir,
         x = x,
         y = y,
-        srt = srt.new {
-            t = position,
-            r = ROTATORS[dir],
-        },
+        srt = srt.new(self.status.srt),
         group_id = 0,
     }
 end
 
 local function _update_state(self, datamodel)
-    assert(self.pickup_object)
+    local typeobject = assert(self.typeobject)
+    local status = assert(self.status)
     assert(self.grid_entity)
 
-    local pickup_object = self.pickup_object
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-
-    self.grid_entity:set_position(_calc_grid_position(pickup_object.x, pickup_object.y, w, h))
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
+    self.grid_entity:set_position(_calc_grid_position(status.x, status.y, w, h))
 
     local position, x, y = _align(w, h, self.position_type)
     if position then
@@ -148,8 +154,8 @@ local function _update_state(self, datamodel)
         self.self_selected_boxes:set_wh(w, h)
     end
 
-    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
-    local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
+    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, status.dir, self.typeobject.area, self.typeobject.check_area)
+    local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, status.dir)
     local valid = _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
 
     datamodel.show_confirm = valid
@@ -166,11 +172,16 @@ end
 
 local function touch_end(self, datamodel)
     local pickup_object = assert(self.pickup_object)
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    local status = assert(self.status)
+
+    local w, h = iprototype.rotate_area(self.typeobject.area, status.dir)
     local position, x, y = _align(w, h, self.position_type)
     if not position then
         return
     end
+    status.x, status.y = x, y
+    status.srt.t = position
+
     pickup_object.x, pickup_object.y = x, y
     pickup_object.srt.t = position
 
@@ -179,15 +190,24 @@ end
 
 local function rotate(self, datamodel, dir, delta_vec)
     local pickup_object = assert(self.pickup_object)
-    dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
-    pickup_object.dir = iprototype.dir_tostring(dir)
-    pickup_object.srt.r = ROTATORS[pickup_object.dir]
+    local status = assert(self.status)
 
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
+    status.dir = iprototype.dir_tostring(dir)
+    status.srt.r = ROTATORS[status.dir]
+
+    pickup_object.dir = status.dir
+    pickup_object.srt.r = ROTATORS[status.dir]
+
+    local w, h = iprototype.rotate_area(self.typeobject.area, status.dir)
     local position, x, y = _align(w, h, self.position_type)
     if not position then
         return
     end
+
+    status.x, status.y = x, y
+    status.srt.t = position
+
     pickup_object.x, pickup_object.y = x, y
     pickup_object.srt.t = position
 
@@ -215,33 +235,36 @@ end
 
 local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
-    local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
-    local succ, errmsg = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
+    local check_x, check_y = _lefttop_position(typeobject.check_pos, status.dir, typeobject.area, typeobject.check_area)
+    local check_w, check_h = iprototype.rotate_area(typeobject.check_area, status.dir)
+    local succ, errmsg = _check_coord(status.x, status.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
         show_message(errmsg)
         return
     end
 
     local gameplay_world = gameplay_core.get_world()
-    if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
-        print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
+    if iinventory.query(gameplay_world, typeobject.id) < 1 then
+        print("can not place, not enough " .. typeobject.name) --TODO: show error message
         return
     end
-    assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
+    assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
     datamodel.show_confirm = false
     datamodel.show_rotate = false
 
     objects:set(pickup_object, "CONSTRUCTED")
-    pickup_object.gameplay_eid = build(self, {dir = pickup_object.dir, x = pickup_object.x, y = pickup_object.y, prototype_name = pickup_object.prototype_name, amount = self.typeobject.amount})
+    pickup_object.gameplay_eid = build(self, {dir = status.dir, x = status.x, y = status.y, prototype_name = typeobject.name, amount = typeobject.amount})
 
     pickup_object.PREPARE = true
     self.pickup_object = nil
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
     self.self_selected_boxes:remove()
 
-    _new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, pickup_object.srt.t, pickup_object.dir)
+    _new_entity(self, datamodel, typeobject, status.x, status.y, status.srt.t, status.dir)
 end
 
 local function clean(self, datamodel)
@@ -257,6 +280,7 @@ end
 local function new(self, datamodel, typeobject, position_type)
     self.position_type = position_type
     self.typeobject = typeobject
+    self.status = {}
 
     local dir = DEFAULT_DIR
     local w, h = iprototype.rotate_area(self.typeobject.area, dir)
@@ -266,7 +290,6 @@ local function new(self, datamodel, typeobject, position_type)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.pickup_object.APPEAR = true
     self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
 end
 
@@ -299,7 +322,6 @@ function move_t:new(move_object_id, datamodel, typeobject)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.pickup_object.APPEAR = true
     self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
 
     self.move_object_id = move_object_id
@@ -319,11 +341,12 @@ local function _get_inner_building_config(inner_buildings, area, dx, dy, dir)
 end
 
 function move_t:confirm(datamodel)
-    local pickup_object = assert(self.pickup_object)
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
-    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, pickup_object.dir, self.typeobject.area, self.typeobject.check_area)
-    local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, pickup_object.dir)
-    local succ, errmsg = _check_coord(pickup_object.x, pickup_object.y, w, h, check_x, check_y, check_w, check_h)
+    local status = assert(self.status)
+
+    local w, h = iprototype.rotate_area(self.typeobject.area, status.dir)
+    local check_x, check_y = _lefttop_position(self.typeobject.check_pos, status.dir, self.typeobject.area, self.typeobject.check_area)
+    local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, status.dir)
+    local succ, errmsg = _check_coord(status.x, status.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
         show_message(errmsg)
         return
@@ -338,27 +361,27 @@ function move_t:confirm(datamodel)
         local ce = gameplay_core.get_entity(gameplay_eid)
 
         local cfg = _get_inner_building_config(typeobject.inner_building, typeobject.area, ce.building.x - e.building.x, ce.building.y - e.building.y, iprototype.dir_tostring(e.building.direction))
-        local dx, dy = _lefttop_position(cfg, pickup_object.dir, typeobject.area, iprototype.queryById(ce.building.prototype).area)
-        local dir = iprototype.rotate_dir(e.building.direction, pickup_object.dir)
+        local dx, dy = _lefttop_position(cfg, status.dir, typeobject.area, iprototype.queryById(ce.building.prototype).area)
+        local dir = iprototype.rotate_dir(e.building.direction, status.dir)
 
         ce.building_changed = true
-        igameplay.move(gameplay_eid, self.pickup_object.x + dx, self.pickup_object.y + dy)
+        igameplay.move(gameplay_eid, status.x + dx, status.y + dy)
         igameplay.rotate(gameplay_eid, iprototype.dir_tostring(dir))
 
         local cw, ch = iprototype.unpackarea(iprototype.queryById(ce.building.prototype).area)
-        inner_building:reset(gameplay_eid, self.pickup_object.x + dx, self.pickup_object.y + dy, cw, ch)
+        inner_building:reset(gameplay_eid, status.x + dx, status.y + dy, cw, ch)
     end
 
     e.building_changed = true
-    igameplay.move(object.gameplay_eid, self.pickup_object.x, self.pickup_object.y)
-    igameplay.rotate(object.gameplay_eid, self.pickup_object.dir)
+    igameplay.move(object.gameplay_eid, status.x, status.y)
+    igameplay.rotate(object.gameplay_eid, status.dir)
 
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
-    object.x = self.pickup_object.x
-    object.y = self.pickup_object.y
-    object.srt.t = self.pickup_object.srt.t
-    object.dir = self.pickup_object.dir
+    object.x = status.x
+    object.y = status.y
+    object.srt.t = status.srt.t
+    object.dir = status.dir
     object.srt.r = ROTATORS[object.dir]
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
