@@ -49,8 +49,8 @@ local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
-local bulk_move_mb = mailbox:sub {"bulk_move"}
-local bulk_move_exit_mb = mailbox:sub {"bulk_move_exit"}
+local bulk_opt_mb = mailbox:sub {"bulk_opt"}
+local bulk_opt_exit_mb = mailbox:sub {"bulk_opt_exit"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
 local interval_call = ecs.require "engine.interval_call"
@@ -541,7 +541,7 @@ function M.update(datamodel)
         dragdrop_delta = delta
     end
     if dragdrop_delta then
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pan_changed", dragdrop_delta)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pan_changed", dragdrop_delta)
         if builder then
             builder:touch_move(builder_datamodel, dragdrop_delta)
         end
@@ -554,14 +554,14 @@ function M.update(datamodel)
             iui.leave()
 
             -- not in copy mode
-            if datamodel.status ~= "BUILD" and datamodel.status ~= "BULK_MOVE" then
+            if datamodel.status ~= "BUILD" and datamodel.status ~= "BULK_OPT" then
                 datamodel.focus_building_icon = ""
                 datamodel.status = "NORMAL"
                 itransfer.set_dest_eid(nil)
                 selected_obj = nil
             end
         elseif e.state == "ended" then
-            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pan_ended", dragdrop_delta)
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pan_ended", dragdrop_delta)
         end
 
         if builder then
@@ -591,11 +591,11 @@ function M.update(datamodel)
     end
 
     for _ in gesture_pinch:unpack() do
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_move.html", "gesture_pinch")
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pinch")
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
-        if datamodel.status == "BULK_MOVE" then
+        if datamodel.status == "BULK_OPT" then
             goto continue
         end
 
@@ -614,7 +614,7 @@ function M.update(datamodel)
     local longpress_startpoint = {}
     for _, _, e in gesture_longpress_mb:unpack() do
         -- don't respond to long press in build mode
-        if datamodel.status == "BUILD" or datamodel.status == "BULK_MOVE" then
+        if datamodel.status == "BUILD" or datamodel.status == "BULK_OPT" then
             goto continue
         end
         if e.state == "began" then
@@ -869,19 +869,19 @@ function M.update(datamodel)
         datamodel.recipe_list = get_recipe_list()
     end
 
-    for _ in bulk_move_mb:unpack() do
+    for _ in bulk_opt_mb:unpack() do
         idetail.unselected()
 
-        datamodel.status = "BULK_MOVE"
+        datamodel.status = "BULK_OPT"
         toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), function()
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/bulk_move.html"})
+            iui.open({rml = "/pkg/vaststars.resources/ui/bulk_opt.html"})
             gameplay_core.world_update = false
         end)
     end
 
-    for _ in bulk_move_exit_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/bulk_move.html")
+    for _ in bulk_opt_exit_mb:unpack() do
+        iui.close("/pkg/vaststars.resources/ui/bulk_opt.html")
         datamodel.status = "NORMAL"
         toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
             gameplay_core.world_update = true

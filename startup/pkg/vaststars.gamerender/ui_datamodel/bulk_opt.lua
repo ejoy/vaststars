@@ -112,7 +112,7 @@ local function _clear_selected()
     iroadnet:flush()
 
     selected = {}
-    iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_move_exit")
+    iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_opt_exit")
 end
 
 local function _get_check_coord(typeobject)
@@ -164,7 +164,7 @@ function M.update(datamodel)
                 if object then
                     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
                     local typeobject = iprototype.queryById(e.building.prototype)
-                    if not e.debris and typeobject.teardown ~= false and typeobject.bulk_move ~= false then
+                    if not e.debris and typeobject.teardown ~= false and typeobject.bulk_opt ~= false then
                         new[iprototype.packcoord(object.x, object.y)] = true
                     end
                 end
@@ -347,18 +347,18 @@ end
 
 function M.gesture_pinch()
     if not moving then
-        iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
+        iui.send("/pkg/vaststars.resources/ui/bulk_opt.html", "select")
     end
 end
 
 function M.gesture_pan_changed(datamodel, delta_vec)
     if moving then
         for _, v in pairs(moving_objs) do
-            v.srt = isrt.new {t = math3d.add(v.srt.t, delta_vec), r = v.srt.r}
+            v.srt.t = math3d.add(v.srt.t, delta_vec)
             v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
         end
     else
-        iui.send("/pkg/vaststars.resources/ui/bulk_move.html", "select")
+        iui.send("/pkg/vaststars.resources/ui/bulk_opt.html", "select")
     end
 end
 
@@ -411,7 +411,7 @@ function M.gesture_pan_ended(datamodel)
 
     for coord, position in pairs(positions) do
         local v = assert(moving_objs[coord])
-        v.srt = isrt.new {t = position, r = v.srt.r}
+        v.srt.t = position
         v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
     end
 end

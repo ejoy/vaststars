@@ -357,7 +357,7 @@ prototype "地热井I" {
             },
         },
     },
-    bulk_move = false,
+    bulk_opt = false,
 }
 
 prototype "地热井II" {
@@ -389,7 +389,7 @@ prototype "地热井II" {
             },
         },
     },
-    bulk_move = false,
+    bulk_opt = false,
 }
 
 prototype "地热井III" {
@@ -421,5 +421,5 @@ prototype "地热井III" {
             },
         },
     },
-    bulk_move = false,
+    bulk_opt = false,
 }

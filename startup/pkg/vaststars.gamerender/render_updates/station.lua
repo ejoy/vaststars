@@ -14,34 +14,6 @@ local igroup = ecs.require "group"
 local ivs = ecs.require "ant.render|visible_state"
 local vsobject_manager = ecs.require "vsobject_manager"
 
-local meta = {}
-function meta:remove()
-    for idx = 1, #self.items do
-        local v = assert(self.items[idx])
-        world:remove_instance(v.inst)
-    end
-    self.items = {}
-end
-function meta:on_position_change()
-    -- do nothing
-end
-function meta:update(gameplay_world, e)
-    for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = ichest.get(gameplay_world, e.chest, idx)
-        if not slot then
-            break
-        end
-        assert(slot.item ~= 0)
-
-        local v = assert(self.items[idx])
-        local show = slot.amount <= 0
-        if v.show ~= show then
-            world:instance_message(v.inst, "show", v.show)
-            v.show = show
-        end
-    end
-end
-
 local item_events = {}
 item_events["show"] = function (self, show)
     for _, eid in ipairs(self.tag["*"]) do
@@ -52,9 +24,8 @@ item_events["show"] = function (self, show)
     end
 end
 
-local function create(gameplay_world, e, game_object)
-    local o = {items = {}}
-
+local function _rebuild(gameplay_world, e, game_object)
+    local items = {}
     for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(gameplay_world, e.chest, idx)
         if not slot then
@@ -82,9 +53,44 @@ local function create(gameplay_world, e, game_object)
                 end
             }
             game_object:send("attach", assert(STATION_SLOTS[idx]), inst)
-            o.items[idx] = {inst = inst, show = show}
+            items[idx] = {inst = inst, show = show}
         end
     end
+    return items
+end
+
+local meta = {}
+function meta:remove()
+    for idx = 1, #self.items do
+        local v = assert(self.items[idx])
+        world:remove_instance(v.inst)
+    end
+    self.items = {}
+end
+function meta:on_position_change(building_srt, dir, gameplay_world, e, game_object)
+    self:remove()
+    self.items = _rebuild(gameplay_world, e, game_object)
+end
+function meta:update(gameplay_world, e)
+    for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+        local slot = ichest.get(gameplay_world, e.chest, idx)
+        if not slot then
+            break
+        end
+        assert(slot.item ~= 0)
+
+        local v = assert(self.items[idx])
+        local show = slot.amount <= 0
+        if v.show ~= show then
+            world:instance_message(v.inst, "show", v.show)
+            v.show = show
+        end
+    end
+end
+
+local function create(gameplay_world, e, game_object)
+    local o = {items = {}}
+    o.items = _rebuild(gameplay_world, e, game_object)
 
     return setmetatable(o, {__index = meta})
 end

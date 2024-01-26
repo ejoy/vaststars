@@ -77,10 +77,14 @@ local function repair(world, map, road_cache)
                 local neighbor_mask = map[pack(dx, dy)]
                 if not neighbor_mask then
                     m = close(m, dir)
-                else
-                    if not check(neighbor_mask, reverse(dir)) then
-                        m = close(m, dir)
-                    end
+                end
+            else
+                local dx, dy = move(dir)
+                dx, dy = x + dx, y + dy
+
+                local neighbor_mask = map[pack(dx, dy)]
+                if neighbor_mask then
+                    m = open(m, dir)
                 end
             end
         end
