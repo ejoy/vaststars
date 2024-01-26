@@ -165,7 +165,7 @@ value:
   policy:
     ant.timeline|timeline
   tag:
-    timeline1
+    timeline
 ---
 file: mesh.prefab
 op: createfile

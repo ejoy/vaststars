@@ -101,7 +101,7 @@ value:
   policy:
     ant.timeline|timeline
   tag:
-    timeline1
+    timeline
 ---
 file: work.prefab
 op: replace

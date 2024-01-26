@@ -162,7 +162,7 @@ value:
   policy:
     ant.timeline|timeline
   tag:
-    timeline1
+    timeline
 ---
 file: idle_start.prefab
 op: add
