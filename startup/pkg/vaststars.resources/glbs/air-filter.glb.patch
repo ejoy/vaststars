@@ -45,15 +45,6 @@ op: add
 path: /maxsize
 value: 128
 ---
-file: animations/animation.ozz
-op: copyfile
-path: animations/work.ozz
----
-file: animations/work.ozz
-op: replace
-path: /animations/work
-value: /pkg/vaststars.resources/animations/air-filter_animat.bin
----
 file: debris.prefab
 op: add
 path: /-
@@ -72,6 +63,15 @@ path: /-
 value:
   mount: 4
   prefab: /pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab
+---
+file: animations/animation.ozz
+op: copyfile
+path: animations/work.ozz
+---
+file: animations/work.ozz
+op: replace
+path: /animations/work
+value: /pkg/vaststars.resources/animations/air-filter_animat.anim
 ---
 file: work.prefab
 op: add

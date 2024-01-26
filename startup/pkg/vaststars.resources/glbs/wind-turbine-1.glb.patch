@@ -26,15 +26,6 @@ op: replace
 path: /state/CULL
 value: NONE
 ---
-file: animations/animation.ozz
-op: copyfile
-path: animations/work.ozz
----
-file: animations/work.ozz
-op: replace
-path: /animations/work
-value: /pkg/vaststars.resources/animations/wind_turbine_animat.bin
----
 file: mesh.prefab
 op: copyfile
 path: debris.prefab
@@ -57,6 +48,15 @@ path: /-
 value:
   mount: 4
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
+---
+file: animations/animation.ozz
+op: copyfile
+path: animations/work.ozz
+---
+file: animations/work.ozz
+op: replace
+path: /animations/work
+value: /pkg/vaststars.resources/animations/wind_turbine_animat.anim
 ---
 file: work.prefab
 op: add

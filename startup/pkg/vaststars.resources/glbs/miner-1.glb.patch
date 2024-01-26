@@ -59,15 +59,6 @@ file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---
-file: animations/animation.ozz
-op: copyfile
-path: animations/work.ozz
----
-file: animations/work.ozz
-op: replace
-path: /animations/work
-value: /pkg/vaststars.resources/animations/miner_Bone.anim
----
 file: mesh.prefab
 op: copyfile
 path: debris.prefab
@@ -90,6 +81,15 @@ path: /-
 value:
   mount: 10
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
+---
+file: animations/animation.ozz
+op: copyfile
+path: animations/work.ozz
+---
+file: animations/work.ozz
+op: replace
+path: /animations/work
+value: /pkg/vaststars.resources/animations/miner_Bone.anim
 ---
 file: work.prefab
 op: add

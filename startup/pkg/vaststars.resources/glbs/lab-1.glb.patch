@@ -111,20 +111,6 @@ op: add
 path: /maxsize
 value: 128
 ---
-file: animations/animation.ozz
-op: copyfile
-path: animations/work.ozz
----
-file: animations/work.ozz
-op: replace
-path: /animations/work
-value: /pkg/vaststars.resources/animations/lab_animat.bin
----
-file: work.prefab
-op: replace
-path: /2/data/animation
-value: ./animations/work.ozz
----
 file: debris.prefab
 op: add
 path: /-
@@ -143,6 +129,15 @@ path: /-
 value:
   mount: 10
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
+---
+file: animations/animation.ozz
+op: copyfile
+path: animations/work.ozz
+---
+file: animations/work.ozz
+op: replace
+path: /animations/work
+value: /pkg/vaststars.resources/animations/lab_animat.anim
 ---
 file: work.prefab
 op: add
@@ -166,6 +161,11 @@ value:
     ant.timeline|timeline
   tag:
     timeline
+---
+file: work.prefab
+op: replace
+path: /2/data/animation
+value: ./animations/work.ozz
 ---
 file: mesh.prefab
 op: createfile
