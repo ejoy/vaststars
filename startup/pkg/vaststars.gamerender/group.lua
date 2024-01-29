@@ -105,7 +105,7 @@ function group.enable(lefttop, rightbottom)
     go:flush()
     go:filter("render_object_visible", "render_object")
     go:filter("hitch_visible", "hitch")
-    go:filter("efk_visible", "efk")
+    --go:filter("efk_visible", "efk")
 end
 
 return group
