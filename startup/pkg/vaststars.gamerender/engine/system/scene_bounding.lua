@@ -53,7 +53,9 @@ function sb_sys:update_camera_bounding()
     local sbe = w:first "shadow_bounding:in"
     local sb = sbe.shadow_bounding
 
-    local pointsWS = math3d.frustum_points(C.camera.viewprojmat)
+    local vpmat = math3d.mul(math3d.projmat(C.camera.frustum), C.camera.viewmat)
+    local pointsWS = math3d.frustum_points(vpmat)
+
     local raysWS = get_frustum_points_rays(pointsWS)
     local intersectpoints = ray_intersect_nearfar_planes(raysWS)
     local zn, zf = find_zn_zf(intersectpoints, C.camera.viewmat)

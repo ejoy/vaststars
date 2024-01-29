@@ -12,14 +12,14 @@ target_anims:
   clips:
     ---
     range: {0, 22}
-    scale: 10
+    scale: 5
     tween: 3
-    value: {1, 1, 1, 0}
+    value: {0, 1, 0, 0}
     ---
     range: {23, 44}
     scale: 1
     tween: 1
-    value: {1, 1, 1, 0}
+    value: {0, 1, 0, 0}
   inherit: {false, false, false}
   init_value: {1, 1, 1, 0}
   target_name: u_emissive_factor

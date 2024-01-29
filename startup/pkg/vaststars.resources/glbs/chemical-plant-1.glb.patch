@@ -99,7 +99,7 @@ file: mesh.prefab
 op: replace
 path: /2/tag
 value:
-  anim_ctrl
+  animation
 ---
 file: mesh.prefab
 op: copyfile
@@ -232,6 +232,7 @@ value:
           action: light
           asset_path: /pkg/vaststars.resources/animations/chemical_light.anim
           event_type: Animation
+          forwards: false
           pause_frame: -1
           target: Cylinder.001_P1
         tick: 0
@@ -242,6 +243,7 @@ value:
           action: light
           asset_path: /pkg/vaststars.resources/animations/chemical_light.anim
           event_type: Animation
+          forwards: false
           pause_frame: -1
           target: Cylinder.001_P1
         tick: 45

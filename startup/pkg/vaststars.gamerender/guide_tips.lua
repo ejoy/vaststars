@@ -13,7 +13,7 @@ local create_selected_box = ecs.require "selected_boxes"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
 local iui = ecs.require "engine.system.ui_system"
-local iani = ecs.require "ant.anim_ctrl|state_machine"
+local playback = ecs.require "ant.animation|playback"
 
 local selected_tips = {}
 local excluded_pickup_id
@@ -36,12 +36,13 @@ local function show(tech_node)
                     prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
                     on_ready = function(self)
                         for _, eid in ipairs(self.tag['*']) do
-                            local e <close> = world:entity(eid, "render_object?in anim_ctrl?in")
+                            local e <close> = world:entity(eid, "render_object?in animation?in")
                             if e.render_object then
                                 irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
                             end
-                            if e.anim_ctrl then
-                                iani.play(eid, {name = "Armature.001Action", loop = true, speed = 1.0, manual = false}) --TODO: remove hardcode
+                            if e.animation then
+                                playback.set_play(e, "Armature.001Action", true)
+                                playback.set_loop(e, "Armature.001Action", true)
                             end
                         end
 
