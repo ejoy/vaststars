@@ -171,9 +171,9 @@ local function _new_entity(self, datamodel, typeobject, x, y)
                 iom.set_rotation(root, ROTATORS[self.forward_dir])
 
                 for _, eid in ipairs(instance.tag["*"]) do
-                    local e <close> = world:entity(eid, "anim_ctrl?in")
-                    if e.anim_ctrl then
-                        iani.play(eid, {name = "Armature.002Action", loop = true, speed = 1.0, manual = false}) --TODO: remove hardcode
+                    local e <close> = world:entity(eid, "animation?in")
+                    if e.animation then
+                        iani.play(eid, {name = "Armature.002Action", loop = true, speed = 1.0}) --TODO: remove hardcode
                     end
                 end
             end,

@@ -24,8 +24,8 @@ end
 
 events["stop_world"] = function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
-        local e <close> = world:entity(eid, "anim_ctrl?in efk?in")
-        if e.anim_ctrl then
+        local e <close> = world:entity(eid, "animation?in efk?in")
+        if e.animation then
             iani.pause(eid, true)
         end
         if e.efk then
@@ -36,8 +36,8 @@ end
 
 events["restart_world"] = function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
-        local e <close> = world:entity(eid, "anim_ctrl?in efk?in")
-        if e.anim_ctrl then
+        local e <close> = world:entity(eid, "animation?in efk?in")
+        if e.animation then
             iani.pause(eid, false)
         end
         if e.efk then
