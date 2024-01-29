@@ -26,7 +26,7 @@ events["stop_world"] = function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e <close> = world:entity(eid, "animation?in efk?in")
         if e.animation then
-            playback.set_play_all(eid, false)
+            playback.set_play_all(e, false)
         end
         if e.efk then
             iefk.pause(e, true)
@@ -38,7 +38,7 @@ events["restart_world"] = function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e <close> = world:entity(eid, "animation?in efk?in")
         if e.animation then
-            playback.set_play_all(eid, true)
+            playback.set_play_all(e, true)
         end
         if e.efk then
             iefk.pause(e, false)
