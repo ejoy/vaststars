@@ -13,7 +13,7 @@ local create_selected_box = ecs.require "selected_boxes"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
 local iui = ecs.require "engine.system.ui_system"
-local iani = ecs.require "ant.anim_ctrl|state_machine"
+local playback = ecs.require "ant.animation|playback"
 
 local selected_tips = {}
 local excluded_pickup_id
@@ -41,7 +41,8 @@ local function show(tech_node)
                                 irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
                             end
                             if e.animation then
-                                iani.play(eid, {name = "Armature.001Action", loop = true, speed = 1.0}) --TODO: remove hardcode
+                                playback.set_play(e, "Armature.001Action", true)
+                                playback.set_loop(e, "Armature.001Action", true)
                             end
                         end
 

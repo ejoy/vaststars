@@ -1,4 +1,3 @@
-import_feature "ant.anim_ctrl"
 import_feature "ant.animation"
 import_feature "ant.daynight"
 import_feature "ant.efk"

@@ -31,7 +31,7 @@ file: mesh.prefab
 op: replace
 path: /2/tag
 value:
-  anim_ctrl
+  animation
 ---
 file: mesh.prefab
 op: createfile

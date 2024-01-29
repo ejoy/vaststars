@@ -39,7 +39,7 @@ file: mesh.prefab
 op: replace
 path: /2/tag
 value:
-  anim_ctrl
+  animation
 ---
 file: images/miner_color.texture
 op: add
