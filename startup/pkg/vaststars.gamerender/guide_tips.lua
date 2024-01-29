@@ -36,12 +36,12 @@ local function show(tech_node)
                     prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
                     on_ready = function(self)
                         for _, eid in ipairs(self.tag['*']) do
-                            local e <close> = world:entity(eid, "render_object?in anim_ctrl?in")
+                            local e <close> = world:entity(eid, "render_object?in animation?in")
                             if e.render_object then
                                 irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
                             end
-                            if e.anim_ctrl then
-                                iani.play(eid, {name = "Armature.001Action", loop = true, speed = 1.0, manual = false}) --TODO: remove hardcode
+                            if e.animation then
+                                iani.play(eid, {name = "Armature.001Action", loop = true, speed = 1.0}) --TODO: remove hardcode
                             end
                         end
 
