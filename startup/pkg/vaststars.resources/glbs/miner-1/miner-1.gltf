@@ -283,8 +283,8 @@
         },
         {
             "mimeType" : "image/png",
-            "name" : "miner_color.png",
-            "uri" : "miner_color_png.png"
+            "name" : "miner_color",
+            "uri" : "miner_color.png"
         },
         {
             "mimeType" : "image/png",
