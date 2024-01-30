@@ -8,6 +8,7 @@ local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
 local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
+local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local DIRECTION <const> = CONSTANT.DIRECTION
 local STATE_NONE  <const> = 0
@@ -15,8 +16,6 @@ local STATE_START <const> = 1
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 
 local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-
 local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
 local iobject = ecs.require "object"
@@ -33,6 +32,7 @@ local gameplay_core = require "gameplay.core"
 local srt = require "utility.srt"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local ifluidbox = ecs.require "render_updates.fluidbox"
+local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 
 local function revert_changes(revert_cache_names)
     local t = {}
@@ -952,24 +952,8 @@ local function confirm(self, datamodel)
     end
 end
 
-local function _get_check_coord(typeobject)
-    local funcs = {}
-    for _, v in ipairs(typeobject.check_coord) do
-        funcs[#funcs+1] = ecs.require(("editor.rules.check_coord.%s"):format(v))
-    end
-    return function(...)
-        for _, v in ipairs(funcs) do
-            local succ, reason = v(...)
-            if not succ then
-                return succ, reason
-            end
-        end
-        return true
-    end
-end
-
 local function new(self, datamodel, typeobject, position_type)
-    self._check_coord = _get_check_coord(typeobject)
+    self._check_coord = get_check_coord(typeobject)
 
     self.typeobject = typeobject
     self.position_type = position_type

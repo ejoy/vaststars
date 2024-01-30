@@ -6,6 +6,7 @@ local imineral = ecs.require "mineral"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local icoord = require "coord"
+local imountain = ecs.require "engine.mountain"
 
 return function (x, y, dir, typeobject, exclude_coords)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
@@ -34,6 +35,10 @@ return function (x, y, dir, typeobject, exclude_coords)
 
             -- mineral
             if imineral.get(dx, dy) then
+                return false, "cannot place here"
+            end
+
+            if imountain:has_mountain(dx, dy) then
                 return false, "cannot place here"
             end
             ::continue::

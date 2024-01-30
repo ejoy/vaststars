@@ -12,11 +12,10 @@ local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
+local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 
 local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
 local iflow_connector = require "gameplay.interface.flow_connector"
@@ -31,6 +30,7 @@ local iprototype_cache = ecs.require "prototype_cache"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local srt = require "utility.srt"
 local iinventory = require "gameplay.interface.inventory"
+local show_message = ecs.require "show_message".show_message
 
 local function length(t)
     local n = 0
@@ -256,7 +256,7 @@ local function place_one(self, datamodel)
 
     local gameplay_world = gameplay_core.get_world()
     if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
-        print("can not place, not enough " .. self.typeobject.name) --TODO: show error message
+        show_message("item not enough")
         return
     end
     assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
@@ -358,7 +358,6 @@ local function create()
     m.new = new
     m.touch_move = touch_move
     m.touch_end = touch_end
-    m.prototype_name = ""
     m.confirm = place_one
     m.clean = clean
     m.build = build

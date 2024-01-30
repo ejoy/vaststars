@@ -10,10 +10,9 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
 local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
+local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 
 local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-
 local ipl = ecs.require "ant.polyline|polyline"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local icoord = require "coord"

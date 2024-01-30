@@ -10,10 +10,10 @@ local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
 local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED <const> = math3d.constant("v4", {1, 0.03, 0, 1})
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
@@ -251,7 +251,7 @@ local function confirm(self, datamodel)
 
     local gameplay_world = gameplay_core.get_world()
     if iinventory.query(gameplay_world, typeobject.id) < 1 then
-        print("can not place, not enough " .. typeobject.name) --TODO: show error message
+        show_message("item not enough")
         return
     end
     assert(iinventory.pickup(gameplay_world, typeobject.id, 1))

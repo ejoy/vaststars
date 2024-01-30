@@ -7,13 +7,12 @@ local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
+local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-
 local iprototype = require "gameplay.interface.prototype"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local objects = require "objects"
@@ -34,6 +33,7 @@ local imineral = ecs.require "mineral"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local show_message = ecs.require "show_message".show_message
 local igroup = ecs.require "group"
+local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 
 local function _create_self_sprite(typeobject, x, y, dir, sprite_color)
     local sprite
@@ -385,7 +385,7 @@ local function confirm(self, datamodel)
 
     local gameplay_world = gameplay_core.get_world()
     if iinventory.query(gameplay_world, typeobject.id) < 1 then
-        print("can not place, not enough " .. typeobject.name) --TODO: show error message
+        show_message("item not enough")
         return
     end
     assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
@@ -497,24 +497,8 @@ local function clean(self, datamodel)
     end
 end
 
-local function _get_check_coord(typeobject)
-    local funcs = {}
-    for _, v in ipairs(typeobject.check_coord) do
-        funcs[#funcs+1] = ecs.require(("editor.rules.check_coord.%s"):format(v))
-    end
-    return function(...)
-        for _, v in ipairs(funcs) do
-            local succ, reason = v(...)
-            if not succ then
-                return succ, reason
-            end
-        end
-        return true
-    end
-end
-
 local function new(self, datamodel, typeobject, position_type)
-    self._check_coord = _get_check_coord(typeobject)
+    self._check_coord = get_check_coord(typeobject)
 
     self.typeobject = typeobject
     self.position_type = position_type

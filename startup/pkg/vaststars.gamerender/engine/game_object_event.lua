@@ -4,7 +4,7 @@ local w = world.w
 
 local imaterial = ecs.require "ant.asset|material"
 local iefk = ecs.require "ant.efk|efk"
-local playback = ecs.require "ant.animation|playback"
+local iplayback = ecs.require "ant.animation|playback"
 
 local events = {}
 events["material"] = function(prefab, method, ...)
@@ -26,7 +26,7 @@ events["stop_world"] = function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e <close> = world:entity(eid, "animation?in efk?in")
         if e.animation then
-            playback.set_play_all(e, false)
+            iplayback.set_play_all(e, false)
         end
         if e.efk then
             iefk.pause(e, true)
@@ -38,7 +38,7 @@ events["restart_world"] = function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e <close> = world:entity(eid, "animation?in efk?in")
         if e.animation then
-            playback.set_play_all(e, true)
+            iplayback.set_play_all(e, true)
         end
         if e.efk then
             iefk.pause(e, false)

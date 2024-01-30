@@ -8,12 +8,12 @@ local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
 local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
 local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
-
 local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
-local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
 local DIRECTION <const> = CONSTANT.DIRECTION
+local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
+
 local WORLD_MOVE_DELTA <const> = {
     ['N'] = {x = 0,  y = 1},
     ['E'] = {x = 1,  y = 0},
@@ -26,10 +26,7 @@ local WORLD_MOVE_DELTA <const> = {
 }
 
 local math3d = require "math3d"
-local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-
 local iprototype = require "gameplay.interface.prototype"
-local objects = require "objects"
 local icoord = require "coord"
 local task = ecs.require "task"
 local iroadnet_converter = require "roadnet_converter"
@@ -41,37 +38,17 @@ local iinstance_object = ecs.require "engine.instance_object"
 local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iroad = ecs.require "vaststars.gamerender|render_updates.road"
-local imountain = ecs.require "engine.mountain"
 local iinventory = require "gameplay.interface.inventory"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local srt = require "utility.srt"
-local imineral = ecs.require "mineral"
-local playback = ecs.require "ant.animation|playback"
+local iplayback = ecs.require "ant.animation|playback"
 local igame_object = ecs.require "engine.game_object"
-
-local function _is_valid_road_coord(x, y)
-    for i = 0, ROAD_WIDTH_COUNT - 1 do
-        for j = 0, ROAD_HEIGHT_COUNT - 1 do
-            local object = objects:coord(x + i, y + j)
-            if object then
-                return false
-            end
-
-            if imineral.get(x + i, y + j) then
-                return false
-            end
-
-            if imountain:has_mountain(x + i, y + j) then
-                return false
-            end
-        end
-    end
-    return true
-end
+local show_message = ecs.require "show_message".show_message
+local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 
 local function _update_components_status(self)
     local status = self.status
-    local show_confirm = _is_valid_road_coord(status.x, status.y)
+    local show_confirm = self._check_coord(status.x, status.y, status.dir, self.typeobject)
     for _, c in pairs(self.pickup_components) do
         c:on_status_change(show_confirm)
     end
@@ -115,8 +92,8 @@ local function _get_road(x, y)
     return iroadnet_converter.prototype_name_dir_to_mask(road.prototype, road.direction)
 end
 
-local function _get_placed_road_prototype_name(x, y, default_prototype_name, default_dir)
-    if not _is_valid_road_coord(x, y) then
+local function _get_placed_road_prototype_name(self, x, y, default_prototype_name, default_dir)
+    if not self._check_coord(x, y, default_dir, self.typeobject) then
         return default_prototype_name, default_dir
     end
 
@@ -133,7 +110,7 @@ local function _get_placed_road_prototype_name(x, y, default_prototype_name, def
 end
 
 local function _new_entity(self, datamodel, typeobject, x, y)
-    local prototype_name, dir = _get_placed_road_prototype_name(x, y, typeobject.name, DEFAULT_DIR)
+    local prototype_name, dir = _get_placed_road_prototype_name(self, x, y, typeobject.name, DEFAULT_DIR)
     self.status = {
         x = x,
         y = y,
@@ -184,8 +161,8 @@ local function _new_entity(self, datamodel, typeobject, x, y)
                 for _, eid in ipairs(instance.tag["*"]) do
                     local e <close> = world:entity(eid, "animation?in")
                     if e.animation then
-                        playback.set_play(e, "Armature.002Action", true)
-                        playback.set_loop(e, "Armature.002Action", true)
+                        iplayback.set_play(e, "Armature.002Action", true)
+                        iplayback.set_loop(e, "Armature.002Action", true)
                     end
                 end
             end,
@@ -219,7 +196,7 @@ local function touch_move(self, datamodel, delta_vec)
 
     local pos = icamera_controller.get_screen_world_position(self.position_type)
     local _, x, y = _align(pos, self.typeobject.area, status.dir)
-    local prototype_name, dir = _get_placed_road_prototype_name(x, y, typeobject.name, DEFAULT_DIR)
+    local prototype_name, dir = _get_placed_road_prototype_name(self, x, y, typeobject.name, DEFAULT_DIR)
     if prototype_name ~= status.prototype_name or dir ~= status.dir then
         status.x, status.y, status.dir = x, y, dir
 
@@ -244,7 +221,7 @@ local function touch_end(self, datamodel)
 
     indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
-    local prototype_name, dir = _get_placed_road_prototype_name(status.x, status.y, self.typeobject.name, DEFAULT_DIR)
+    local prototype_name, dir = _get_placed_road_prototype_name(self, status.x, status.y, self.typeobject.name, DEFAULT_DIR)
     if prototype_name ~= status.prototype_name or dir ~= status.dir then
         status.srt.r = ROTATORS[dir]
 
@@ -266,7 +243,7 @@ local function place(self, datamodel)
     local typeobject = assert(self.typeobject)
     local status = assert(self.status)
 
-    if not _is_valid_road_coord(status.x, status.y) then
+    if not self._check_coord(status.x, status.y, status.dir, typeobject) then
         return
     end
     icoord.assert_road_coord(status.x, status.y)
@@ -275,6 +252,7 @@ local function place(self, datamodel)
     if not mask then
         local gameplay_world = gameplay_core.get_world()
         if iinventory.query(gameplay_world, typeobject.id) < 1 then
+            show_message("item not enough")
             return
         end
         assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
@@ -321,6 +299,7 @@ local function rotate(self)
 end
 
 local function new(self, datamodel, typeobject, position_type)
+    self._check_coord = get_check_coord(typeobject)
     self.typeobject = typeobject
     self.position_type = position_type
 

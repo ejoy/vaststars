@@ -3,6 +3,7 @@ local world = ecs.world
 
 local MESSAGES = import_package "vaststars.prototype"("messages")
 local iRmlUi = ecs.require "ant.rmlui|rmlui_system"
+local string_format = string.format
 
 local window
 local function show_message(tip, ...)
@@ -12,7 +13,7 @@ local function show_message(tip, ...)
     if window then
         window.close()
     end
-    window = iRmlUi.open(url, url, {type = "message", message = string.format(v.text, ...)})
+    window = iRmlUi.open(url, url, {type = "message", message = string_format(v.text, ...)})
 end
 
 local function show_items_mesage(x, y, items)

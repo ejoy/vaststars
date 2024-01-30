@@ -13,7 +13,7 @@ local create_selected_box = ecs.require "selected_boxes"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
 local iui = ecs.require "engine.system.ui_system"
-local playback = ecs.require "ant.animation|playback"
+local iplayback = ecs.require "ant.animation|playback"
 
 local selected_tips = {}
 local excluded_pickup_id
@@ -41,8 +41,8 @@ local function show(tech_node)
                                 irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
                             end
                             if e.animation then
-                                playback.set_play(e, "Armature.001Action", true)
-                                playback.set_loop(e, "Armature.001Action", true)
+                                iplayback.set_play(e, "Armature.001Action", true)
+                                iplayback.set_loop(e, "Armature.001Action", true)
                             end
                         end
 
