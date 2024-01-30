@@ -4,10 +4,11 @@ local world = ecs.world
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
-local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
-local TILE_SIZE <const> = CONSTANT.TILE_SIZE
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
+local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
@@ -100,7 +101,7 @@ end
 local function _calc_grid_position(x, y, w, h)
     local _, origin_pos = icoord.align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
     x, y = icoord.road_coord(x, y)
-    local building_pos = icoord.position(x, y, ROAD_SIZE, ROAD_SIZE)
+    local building_pos = icoord.position(x, y, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
     return math3d.add(math3d.sub(building_pos, origin_pos), GRID_POSITION_OFFSET)
 end
 
@@ -291,7 +292,7 @@ local function new(self, datamodel, typeobject, position_type)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.grid_entity = igrid_entity.create(MAP_WIDTH // w, MAP_HEIGHT // h, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
+    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // w, MAP_HEIGHT_COUNT // h, ROAD_WIDTH_SIZE, {t = _calc_grid_position(x, y, w, h)})
 end
 
 local build_t = {}
@@ -323,7 +324,7 @@ function move_t:new(move_object_id, datamodel, typeobject)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.grid_entity = igrid_entity.create(MAP_WIDTH // w, MAP_HEIGHT // h, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
+    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // w, MAP_HEIGHT_COUNT // h, ROAD_WIDTH_SIZE, {t = _calc_grid_position(x, y, w, h)})
 
     self.move_object_id = move_object_id
     local vsobject = assert(vsobject_manager:get(self.move_object_id))

@@ -1,7 +1,8 @@
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 local CONSTANT = require "gameplay.interface.constant"
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local IN_FLUIDBOXES <const> = CONSTANT.IN_FLUIDBOXES
 --[[
 custom_type :
@@ -54,14 +55,14 @@ local function check_path_connected(sx, sy, dx, dy, road)
     assert(sx == dx or sy == dy)
     local start, stop, step
     if sx == dx then
-        start, stop, step = sy, dy, sy < dy and ROAD_SIZE or -ROAD_SIZE
+        start, stop, step = sy, dy, sy < dy and ROAD_HEIGHT_COUNT or -ROAD_HEIGHT_COUNT
         for y = start, stop, step do
             if not road[iprototype.packcoord(sx, y)] then
                 return false
             end
         end
     else
-        start, stop, step = sx, dx, sx < dx and ROAD_SIZE or -ROAD_SIZE
+        start, stop, step = sx, dx, sx < dx and ROAD_WIDTH_COUNT or -ROAD_WIDTH_COUNT
         for x = start, stop, step do
             if not road[iprototype.packcoord(x, sy)] then
                 return false

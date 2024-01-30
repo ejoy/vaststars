@@ -3,7 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local CLASS <const> = {
     Lorry = 1,
     Object = 2,
@@ -92,8 +93,8 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
                 dist = distance(pick_x, pick_y, x, y),
                 x = o.x,
                 y = o.y,
-                w = ROAD_SIZE,
-                h = ROAD_SIZE,
+                w = ROAD_WIDTH_COUNT,
+                h = ROAD_HEIGHT_COUNT,
                 get_pos = function(self)
                     return assert(icoord.position(self.x, self.y, self.w, self.h))
                 end,

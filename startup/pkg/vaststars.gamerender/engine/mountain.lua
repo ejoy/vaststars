@@ -4,7 +4,7 @@ local w     = world.w
 
 -- local MOUNTAIN <const> = ecs.require "vaststars.prototype|mountain"
 local CONST <const> = require "gameplay.interface.constant"
-local WIDTH <const>, HEIGHT<const> = CONST.MAP_WIDTH, CONST.MAP_HEIGHT
+local WIDTH <const>, HEIGHT<const> = CONST.MAP_WIDTH_COUNT, CONST.MAP_HEIGHT_COUNT
 
 local im = ecs.require "ant.landform|stone_mountain_system"
 local icoord = require "coord"

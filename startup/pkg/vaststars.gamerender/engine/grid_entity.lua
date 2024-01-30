@@ -8,7 +8,8 @@ local COLOR <const> = {0.0, 1.0, 0.0, 0.4}
 local MATERIAL <const> = "/pkg/vaststars.resources/materials/polylinelist.material"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local CONSTANT <const> = require "gameplay.interface.constant"
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 
 local math3d = require "math3d"
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -68,14 +69,14 @@ function M.create(width, height, unit, srt, pos_offset, material, position_type)
 		end,
 		on_position_change = function(_, srt)
 			assert(position_type)
-			local coord = icoord.align(icamera_controller.get_screen_world_position(position_type), ROAD_SIZE, ROAD_SIZE)
+			local coord = icoord.align(icamera_controller.get_screen_world_position(position_type), ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
 			if not coord then
 				return
 			end
 
-			local _, originPosition = icoord.align(math3d.vector {10, 0, -10}, ROAD_SIZE, ROAD_SIZE)
-			coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
-			local t = icoord.position(coord[1], coord[2], ROAD_SIZE, ROAD_SIZE)
+			local _, originPosition = icoord.align(math3d.vector {10, 0, -10}, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
+			coord[1], coord[2] = icoord.road_coord(coord[1], coord[2])
+			local t = icoord.position(coord[1], coord[2], ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
 			local p = math3d.live(math3d.add(math3d.sub(t, originPosition), GRID_POSITION_OFFSET))
 
 			if ready then

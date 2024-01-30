@@ -5,8 +5,8 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
-local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
@@ -300,7 +300,7 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     flush_sprite()
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = _calc_grid_position(self, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, {t = _calc_grid_position(self, typeobject, dir)})
     end
 end
 

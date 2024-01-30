@@ -11,7 +11,8 @@ local SPEC_TRACKS <const> = CONFIG.SPEC
 local START_SLOTS <const> = CONFIG.START
 local ALL_DIR = CONSTANT.ALL_DIR
 
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local ROAD_DIRECTION = {
     [0] = "left",
     [1] = "top",
@@ -52,7 +53,7 @@ local function genKeyFrames(last_srt, x, y, toward, offset)
     end
 
     if not c then
-        building_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_SIZE, ROAD_SIZE))}
+        building_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT))}
         c = cache
     end
 
@@ -116,7 +117,7 @@ local function update(obj, x, y, toward, offset, last_srt, maxprogress, progress
 end
 
 local function createLorry(classid, x, y, toward, offset)
-    local road_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_SIZE, ROAD_SIZE))}
+    local road_srt = {s = mc.ONE, t = math3d.vector(icoord.position(x, y, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT))}
     local start_srt = start_srts[toward]
 
     local s, r, t = math3d.srt(

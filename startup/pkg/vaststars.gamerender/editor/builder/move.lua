@@ -2,11 +2,13 @@ local ecs = ...
 local world = ecs.world
 
 local CONSTANT <const> = require "gameplay.interface.constant"
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
-local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local ROTATORS <const> = CONSTANT.ROTATORS
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
+local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
 local ALL_DIR <const> = CONSTANT.ALL_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
@@ -595,9 +597,9 @@ local function new(self, move_object_id, datamodel, typeobject)
 
     if not self.grid_entity then
         if iprototype.has_types(typeobject.type, "station") then
-            self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+            self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         else
-            self.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+            self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         end
     end
 end

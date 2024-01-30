@@ -5,23 +5,22 @@
 -- └──►x
 
 -- logical coordinate system
--- range: [0, WIDTH - 1], determined by gameplay
+-- range: [0, MAP_WIDTH_COUNT - 1], determined by gameplay
 -- ┌──►x
 -- │
 -- ▼
 -- y
 
 local CONSTANT <const> = require "gameplay.interface.constant"
-local SURFACE_HEIGHT <const> = CONSTANT.SURFACE_HEIGHT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
-local WIDTH <const> = CONSTANT.MAP_WIDTH
-local HEIGHT <const> = CONSTANT.MAP_HEIGHT
-local OFFSET_3D <const> = {-(WIDTH * TILE_SIZE)/2, 0.0, -(HEIGHT * TILE_SIZE)/2}
-local BOUNDARY_3D <const> = {OFFSET_3D, {OFFSET_3D[1] + WIDTH * TILE_SIZE, OFFSET_3D[2], OFFSET_3D[3] + HEIGHT * TILE_SIZE}}
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
+local OFFSET_3D <const> = {-(MAP_WIDTH_COUNT * TILE_SIZE)/2, 0.0, -(MAP_HEIGHT_COUNT * TILE_SIZE)/2}
+local BOUNDARY_3D <const> = {OFFSET_3D, {OFFSET_3D[1] + MAP_WIDTH_COUNT * TILE_SIZE, OFFSET_3D[2], OFFSET_3D[3] + MAP_HEIGHT_COUNT * TILE_SIZE}}
 local ORIGIN <const> = {OFFSET_3D[1], BOUNDARY_3D[2][3]} -- the world position corresponding to the logical origin (0, 0)
-local COORD_BOUNDARY <const> = {{0, 0}, {WIDTH - 1, HEIGHT - 1}}
-local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_SIZE
-local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_SIZE
+local COORD_BOUNDARY <const> = {{0, 0}, {MAP_WIDTH_COUNT - 1, MAP_HEIGHT_COUNT - 1}}
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
@@ -73,7 +72,7 @@ function coord.lefttop_position(x, y)
         log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(COORD_BOUNDARY[1], ","), table.concat(COORD_BOUNDARY[2], ",")))
         return
     end
-    return {ORIGIN[1] + (x * TILE_SIZE), SURFACE_HEIGHT, ORIGIN[2] - (y * TILE_SIZE)}
+    return {ORIGIN[1] + (x * TILE_SIZE), 0, ORIGIN[2] - (y * TILE_SIZE)}
 end
 
 function coord.origin_position()
@@ -120,21 +119,21 @@ end
 
 --base 0
 function coord.idx2coord(idx)
-    return (idx % WIDTH), (idx // WIDTH)
+    return (idx % MAP_WIDTH_COUNT), (idx // MAP_WIDTH_COUNT)
 end
 
 --base 0
 function coord.coord2idx(x, y)
-    return y * WIDTH + x
+    return y * MAP_WIDTH_COUNT + x
 end
 
 function coord.road_coord(x, y)
-    return x - (x % ROAD_WIDTH_SIZE), y - (y % ROAD_HEIGHT_SIZE)
+    return x - (x % ROAD_WIDTH_COUNT), y - (y % ROAD_HEIGHT_COUNT)
 end
 
 function coord.assert_road_coord(x, y)
-    assert(x % ROAD_WIDTH_SIZE == 0)
-    assert(y % ROAD_HEIGHT_SIZE == 0)
+    assert(x % ROAD_WIDTH_COUNT == 0)
+    assert(y % ROAD_HEIGHT_COUNT == 0)
 end
 
 return coord

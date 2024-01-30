@@ -3,8 +3,6 @@ local world = ecs.world
 local w     = world.w
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local CONSTANT <const> = require "gameplay.interface.constant"
-local SURFACE_HEIGHT <const> = CONSTANT.SURFACE_HEIGHT
 
 local icas   = ecs.require "ant.terrain|canvas"
 local iom = ecs.require "ant.objcontroller|obj_motion"
@@ -98,7 +96,7 @@ function M.create(canvas_type, show, yaxis)
         },
         data = {
             scene = {
-                t = {0.0, yaxis or SURFACE_HEIGHT + 10, 0.0},
+                t = {0.0, yaxis or 10, 0.0},
             },
             canvas = {
                 show = show,

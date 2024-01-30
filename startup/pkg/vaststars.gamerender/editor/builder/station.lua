@@ -4,12 +4,14 @@ local world = ecs.world
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ALL_DIR <const> = CONSTANT.ALL_DIR
 local ROTATORS <const> = CONSTANT.ROTATORS
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
+local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
-local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 
 local math3d = require "math3d"
@@ -463,26 +465,26 @@ local function _get_adjacent_coords(typeobject)
         assert(w % 2 == 0 and h % 2 == 0)
 
         -- top
-        for x = 0, w - 1, ROAD_SIZE do
-            for y = -2, -2, -ROAD_SIZE do
+        for x = 0, w - 1, ROAD_WIDTH_COUNT do
+            for y = -2, -2, -ROAD_HEIGHT_COUNT do
                 table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'N'))})
             end
         end
         -- right
-        for x = w, w, ROAD_SIZE do
-            for y = 0, h - 1, ROAD_SIZE do
+        for x = w, w, ROAD_WIDTH_COUNT do
+            for y = 0, h - 1, ROAD_HEIGHT_COUNT do
                 table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'E'))})
             end
         end
         -- bottom
-        for x = 0, w - 1, ROAD_SIZE do
-            for y = h, h, ROAD_SIZE do
+        for x = 0, w - 1, ROAD_WIDTH_COUNT do
+            for y = h, h, ROAD_HEIGHT_COUNT do
                 table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'S'))})
             end
         end
         -- left
-        for x = -2, -2, -ROAD_SIZE do
-            for y = 0, h - 1, ROAD_SIZE do
+        for x = -2, -2, -ROAD_WIDTH_COUNT do
+            for y = 0, h - 1, ROAD_HEIGHT_COUNT do
                 table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'W'))})
             end
         end
@@ -525,7 +527,7 @@ local function new(self, datamodel, typeobject, position_type)
     __new_entity(self, datamodel, typeobject, x, y, position, dir)
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, {t = __calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
     end
 end
 

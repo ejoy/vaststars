@@ -6,8 +6,8 @@ local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
-local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local DIRECTION <const> = CONSTANT.DIRECTION
 local STATE_NONE  <const> = 0
@@ -757,7 +757,7 @@ local function _new_entity(self, typeobject, x, y, position, dir)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, x, y, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, x, y, dir)})
     end
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)

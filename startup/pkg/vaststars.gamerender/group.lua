@@ -3,15 +3,17 @@ local world = ecs.world
 local w     = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
-local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
-local MAP_CHUNK_WIDTH <const> = 16
-local MAP_CHUNK_HEIGHT <const> = 16
-assert(MAP_CHUNK_WIDTH % 2 == 0 and MAP_CHUNK_HEIGHT % 2 == 0)
-assert(MAP_WIDTH % MAP_CHUNK_WIDTH == 0 and MAP_HEIGHT % MAP_CHUNK_HEIGHT == 0)
-local MAX_BUILDING_WIDTH <const> = 6
-local MAX_BUILDING_HEIGHT <const> = 6
+local MAP_CHUNK_WIDTH_COUNT <const> = 16
+local MAP_CHUNK_HEIGHT_COUNT <const> = 16
+assert(MAP_CHUNK_WIDTH_COUNT % 2 == 0 and MAP_CHUNK_HEIGHT_COUNT % 2 == 0)
+assert(MAP_WIDTH_COUNT % MAP_CHUNK_WIDTH_COUNT == 0 and MAP_HEIGHT_COUNT % MAP_CHUNK_HEIGHT_COUNT == 0)
+local MAX_BUILDING_WIDTH_COUNT <const> = 6
+local MAX_BUILDING_HEIGHT_COUNT <const> = 6
+local MAX_BUILDING_WIDTH_SIZE <const> = MAX_BUILDING_WIDTH_COUNT * TILE_SIZE
+local MAX_BUILDING_HEIGHT_SIZE <const> = MAX_BUILDING_HEIGHT_COUNT * TILE_SIZE
 
 local icoord = require "coord"
 local COORD_BOUNDARY <const> = icoord.boundary()
@@ -31,7 +33,7 @@ end})
 local lock = false
 
 local function _get_gridxy(x, y)
-    return (x // MAP_CHUNK_WIDTH) + 1, (y // MAP_CHUNK_HEIGHT) + 1
+    return (x // MAP_CHUNK_WIDTH_COUNT) + 1, (y // MAP_CHUNK_HEIGHT_COUNT) + 1
 end
 
 local function _get_grid_id(x, y)
@@ -52,7 +54,7 @@ function group.lock(b)
 end
 
 function group.map_chunk_wh()
-    return MAP_CHUNK_WIDTH, MAP_CHUNK_HEIGHT
+    return MAP_CHUNK_WIDTH_COUNT, MAP_CHUNK_HEIGHT_COUNT
 end
 
 function group.enable(lefttop, rightbottom)
@@ -75,8 +77,8 @@ function group.enable(lefttop, rightbottom)
     end
 
     -- because the group id of the buildings is calculated based on the coordinates of the top-left corner, so we need to expand the range
-    lefttop = math3d.add(lefttop, {-(MAX_BUILDING_WIDTH * TILE_SIZE), 0, MAX_BUILDING_HEIGHT * TILE_SIZE})
-    rightbottom = math3d.add(rightbottom, {MAX_BUILDING_WIDTH * TILE_SIZE, 0, -(MAX_BUILDING_HEIGHT * TILE_SIZE)})
+    lefttop = math3d.add(lefttop, {-(MAX_BUILDING_WIDTH_SIZE), 0, MAX_BUILDING_HEIGHT_SIZE})
+    rightbottom = math3d.add(rightbottom, {MAX_BUILDING_WIDTH_SIZE, 0, -(MAX_BUILDING_HEIGHT_SIZE)})
 
     local ltCoord = icoord.position2coord(lefttop) or {0, 0}
     local rbCoord = icoord.position2coord(rightbottom) or {COORD_BOUNDARY[2][1], COORD_BOUNDARY[2][2]}

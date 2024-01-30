@@ -1,5 +1,5 @@
 local CONSTANT <const> = require "gameplay.interface.constant"
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
 local DIRECTION <const> = CONSTANT.DIRECTION
 
@@ -78,12 +78,12 @@ function M.queryFirstByType(...)
 end
 
 function M.packcoord(x, y)
-    return y * MAP_WIDTH + x
+    return y * MAP_WIDTH_COUNT + x
 end
 
 function M.unpackcoord(coord)
-    local y = coord // MAP_WIDTH
-    local x = coord % MAP_WIDTH
+    local y = coord // MAP_WIDTH_COUNT
+    local x = coord % MAP_WIDTH_COUNT
     return x, y
 end
 

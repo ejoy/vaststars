@@ -4,9 +4,13 @@ local world = ecs.world
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
-local MAP_WIDTH <const> = CONSTANT.MAP_WIDTH
-local MAP_HEIGHT <const> = CONSTANT.MAP_HEIGHT
+local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
+local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
+local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
+local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
+
+local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
+local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
 local DIRECTION <const> = CONSTANT.DIRECTION
@@ -46,8 +50,8 @@ local playback = ecs.require "ant.animation|playback"
 local igame_object = ecs.require "engine.game_object"
 
 local function _is_valid_road_coord(x, y)
-    for i = 0, ROAD_SIZE - 1 do
-        for j = 0, ROAD_SIZE - 1 do
+    for i = 0, ROAD_WIDTH_COUNT - 1 do
+        for j = 0, ROAD_HEIGHT_COUNT - 1 do
             local object = objects:coord(x + i, y + j)
             if object then
                 return false
@@ -118,7 +122,7 @@ local function _get_placed_road_prototype_name(x, y, default_prototype_name, def
 
     local mask = _get_road(x, y) or 0
     for _, dir in ipairs(CONSTANT.ALL_DIR_NUM) do
-        local dx, dy = iprototype.move_coord(x, y, dir, ROAD_SIZE, ROAD_SIZE)
+        local dx, dy = iprototype.move_coord(x, y, dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
         local m = _get_road(dx, dy)
         if m and not iroad.check(mask, dir) then
             mask = iroad.open(mask, dir)
@@ -148,18 +152,17 @@ local function _new_entity(self, datamodel, typeobject, x, y)
     end
     self.indicator = igame_object.create {
         prefab = typeobject.model,
-        group_id = 0,
         srt = status.srt,
     }
 
     if not self.pickup_components.grid_entity then
-        local position = _align(status.srt.t, iprototype.packarea(8 * ROAD_SIZE, 8 * ROAD_SIZE), dir)
+        local position = _align(status.srt.t, iprototype.packarea(8 * ROAD_WIDTH_COUNT, 8 * ROAD_HEIGHT_COUNT), dir)
         position = math3d.add(position, GRID_POSITION_OFFSET)
         local offset = math3d.sub(status.srt.t, position)
         self.pickup_components.grid_entity = igrid_entity.create(
-            MAP_WIDTH // ROAD_SIZE,
-            MAP_HEIGHT // ROAD_SIZE,
-            TILE_SIZE * ROAD_SIZE,
+            MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT,
+            MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT,
+            ROAD_WIDTH_SIZE,
             {t = status.srt.t},
             offset,
             nil,
@@ -170,7 +173,7 @@ local function _new_entity(self, datamodel, typeobject, x, y)
         self.pickup_components.selected_box = create_pickup_selected_box(status.srt.t, typeobject.area, dir, true)
     end
     if not self.pickup_components.next_box then
-        local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_SIZE)
+        local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
         self.pickup_components.next_box = iinstance_object.create(world:create_instance {
             prefab = "/pkg/vaststars.resources/glbs/road/road_indicator.glb|mesh.prefab",
             on_ready = function (instance)
@@ -191,7 +194,7 @@ local function _new_entity(self, datamodel, typeobject, x, y)
                     local building_srt = ...
                     local position = building_srt.t
                     local delta = WORLD_MOVE_DELTA[self.forward_dir]
-                    local x, z = math3d.index(position, 1) + delta.x * TILE_SIZE * ROAD_SIZE, math3d.index(position, 3) + delta.y * TILE_SIZE * ROAD_SIZE
+                    local x, z = math3d.index(position, 1) + delta.x * ROAD_WIDTH_SIZE, math3d.index(position, 3) + delta.y * ROAD_HEIGHT_SIZE
 
                     local root <close> = world:entity(instance.tag['*'][1])
                     iom.set_position(root, math3d.vector(x, math3d.index(position, 2), z))
@@ -225,7 +228,6 @@ local function touch_move(self, datamodel, delta_vec)
         end
         self.indicator = igame_object.create {
             prefab = iprototype.queryByName(prototype_name).model,
-            group_id = 0,
             srt = status.srt,
         }
     end
@@ -251,7 +253,6 @@ local function touch_end(self, datamodel)
         end
         self.indicator = igame_object.create {
             prefab = iprototype.queryByName(prototype_name).model,
-            group_id = 0,
             srt = status.srt,
         }
     end
@@ -273,26 +274,23 @@ local function place(self, datamodel)
     local mask = _get_road(status.x, status.y)
     if not mask then
         local gameplay_world = gameplay_core.get_world()
-        if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
+        if iinventory.query(gameplay_world, typeobject.id) < 1 then
             return
         end
-        assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
-
-        mask = 0
+        assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
     end
 
-    _set_road(status.x, status.y, mask)
+    _set_road(status.x, status.y, mask or 0)
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
-    local dx, dy = iprototype.move_coord(status.x, status.y, self.forward_dir, ROAD_SIZE)
-    icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_SIZE, ROAD_SIZE)), function ()
+    local dx, dy = iprototype.move_coord(status.x, status.y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
+    icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)), function ()
         if self.destroy then
             return
         end
-        _new_entity(self, datamodel, self.typeobject, dx, dy)
+        _new_entity(self, datamodel, typeobject, dx, dy)
     end)
 
-    iinventory.pickup(gameplay_core.get_world(), typeobject.id, 1)
     task.update_progress("is_road_connected")
 end
 

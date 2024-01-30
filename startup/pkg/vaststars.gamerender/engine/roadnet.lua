@@ -18,12 +18,12 @@ local GROUP_ROADS = new_groups()
 
 ---------------------------------------------------------
 function roadnet:create()
-    iroad.create(CONSTANT.ROAD_WIDTH, CONSTANT.ROAD_HEIGHT)
+    iroad.create(CONSTANT.ROAD_WIDTH_SIZE, CONSTANT.ROAD_HEIGHT_SIZE)
 end
 
 local function cvtcoord2pos(x, y)
     local pos = icoord.lefttop_position(x, y)
-    return {pos[1], pos[3] - CONSTANT.ROAD_HEIGHT}
+    return {pos[1], pos[3] - CONSTANT.ROAD_HEIGHT_SIZE}
 end
 
 local function add_road(layer, x, y, color, shape, dir)
