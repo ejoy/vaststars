@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/construct/main-button-active.png
+path: ../../images/construct/main-button-active.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

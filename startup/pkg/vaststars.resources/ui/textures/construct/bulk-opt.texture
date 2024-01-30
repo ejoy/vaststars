@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/construct/bulk-opt.png
+path: ../../images/construct/bulk-opt.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

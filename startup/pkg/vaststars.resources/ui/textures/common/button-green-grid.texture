@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/common/button-green-grid.png
+path: ../../images/common/button-green-grid.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

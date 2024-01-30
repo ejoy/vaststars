@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/common/exclamation2.png
+path: ../../images/common/exclamation2.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

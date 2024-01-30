@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/science/indicator.png
+path: ../../images/science/indicator.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

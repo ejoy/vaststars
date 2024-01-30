@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/science/right_panel_bg.png
+path: ../../images/science/right_panel_bg.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

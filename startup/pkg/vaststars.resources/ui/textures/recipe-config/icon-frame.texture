@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/recipe-config/icon-frame.png
+path: ../../images/recipe-config/icon-frame.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

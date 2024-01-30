@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/building-pic/small_pic_mountain.png
+path: ../../images/building-pic/small_pic_mountain.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

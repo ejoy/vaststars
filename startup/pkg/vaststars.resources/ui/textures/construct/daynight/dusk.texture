@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../../image/construct/daynight/dusk.png
+path: ../../../images/construct/daynight/dusk.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR
