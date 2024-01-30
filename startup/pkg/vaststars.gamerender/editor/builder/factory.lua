@@ -60,7 +60,7 @@ local function _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
             -- check road in the specified range
             if i >= sx_min and i <= sx_max and
                j >= sy_min and j <= sy_max then
-                if not ibuilding.get((x + i)//2*2, (y + j)//2*2) then
+                if not ibuilding.get(icoord.road_coord(x + i, y + j)) then
                     return false, "needs to be placed above the road"
                 end
             else
@@ -71,7 +71,7 @@ local function _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
                 end
 
                 -- road
-                if ibuilding.get((x + i)//2*2, (y + j)//2*2) then
+                if ibuilding.get(icoord.road_coord(x + i, y + j)) then
                     return false, "cannot place here"
                 end
 
@@ -92,14 +92,15 @@ local function _align(w, h, position_type)
     if not coord then
         return
     end
-    coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
+    coord[1], coord[2] = icoord.road_coord(coord[1], coord[2])
     position = math3d.vector(icoord.position(coord[1], coord[2], w, h))
     return position, coord[1], coord[2]
 end
 
 local function _calc_grid_position(x, y, w, h)
     local _, origin_pos = icoord.align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
-    local building_pos = icoord.position(x - (x % ROAD_SIZE), y - (y % ROAD_SIZE), ROAD_SIZE, ROAD_SIZE)
+    x, y = icoord.road_coord(x, y)
+    local building_pos = icoord.position(x, y, ROAD_SIZE, ROAD_SIZE)
     return math3d.add(math3d.sub(building_pos, origin_pos), GRID_POSITION_OFFSET)
 end
 
@@ -290,7 +291,7 @@ local function new(self, datamodel, typeobject, position_type)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
+    self.grid_entity = igrid_entity.create(MAP_WIDTH // w, MAP_HEIGHT // h, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
 end
 
 local build_t = {}
@@ -322,7 +323,7 @@ function move_t:new(move_object_id, datamodel, typeobject)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.grid_entity = igrid_entity.create(MAP_WIDTH // ROAD_SIZE, MAP_HEIGHT // ROAD_SIZE, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
+    self.grid_entity = igrid_entity.create(MAP_WIDTH // w, MAP_HEIGHT // h, TILE_SIZE * ROAD_SIZE, {t = _calc_grid_position(x, y, w, h)})
 
     self.move_object_id = move_object_id
     local vsobject = assert(vsobject_manager:get(self.move_object_id))

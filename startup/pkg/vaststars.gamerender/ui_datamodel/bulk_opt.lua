@@ -14,7 +14,6 @@ local COORD_BOUNDARY <const> = icoord.boundary()
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local ROTATORS <const> = CONSTANT.ROTATORS
-local ROAD_SIZE <const> = CONSTANT.ROAD_SIZE
 
 local select_mb = mailbox:sub {"select"}
 local teardown_mb = mailbox:sub {"teardown"}
@@ -43,6 +42,7 @@ local iobject = ecs.require "object"
 local selected = {}
 local moving_objs = {}
 local moving = false
+local exclude_coords = {}
 
 local M = {}
 function M.create()
@@ -139,7 +139,7 @@ local function _clear_moving_objs()
     moving = false
 end
 
-local function _move_building(object, x, y, position)
+local function _move_building(object, x, y)
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building_changed = true
     igameplay.move(object.gameplay_eid, x, y)
@@ -168,7 +168,7 @@ function M.update(datamodel)
                         new[iprototype.packcoord(object.x, object.y)] = true
                     end
                 end
-                local road_x, road_y = x//2*2, y//2*2
+                local road_x, road_y = icoord.road_coord(x, y)
                 local v = ibuilding.get(road_x, road_y)
                 if v then
                     new[iprototype.packcoord(road_x, road_y)] = true
@@ -210,8 +210,7 @@ function M.update(datamodel)
                     full = true
                 end
             end
-            local road_x, road_y = x//2*2, y//2*2
-            local v = ibuilding.get(road_x, road_y)
+            local v = ibuilding.get(icoord.road_coord(x, y))
             if v then
                 teardown(v.eid)
                 local e = assert(gameplay_core.get_entity(v.eid))
@@ -251,6 +250,13 @@ function M.update(datamodel)
             local object = objects:coord(x, y)
             if object then
                 local typeobject = iprototype.queryByName(object.prototype_name)
+                local w, h = iprototype.rotate_area(typeobject.area, object.dir)
+                for i = 0, w-1 do
+                    for j = 0, h-1 do
+                        exclude_coords[iprototype.packcoord(x+i, y+j)] = true
+                    end
+                end
+
                 local srt = isrt.new(object.srt)
                 moving_objs[coord] = {
                     obj = igame_object.create {
@@ -266,7 +272,14 @@ function M.update(datamodel)
             local v = ibuilding.get(x, y)
             if v then
                 local typeobject = iprototype.queryByName(v.prototype)
-                local srt = isrt.new {r = ROTATORS[v.direction], t = icoord.position(x, y, iprototype.rotate_area(typeobject.area, v.direction))}
+                local w, h = iprototype.rotate_area(typeobject.area, v.direction)
+                for i = 0, w-1 do
+                    for j = 0, h-1 do
+                        exclude_coords[iprototype.packcoord(x+i, y+j)] = true
+                    end
+                end
+
+                local srt = isrt.new {r = ROTATORS[v.direction], t = icoord.position(x, y, w, h)}
                 moving_objs[coord] = {
                     obj = igame_object.create {
                         prefab = typeobject.model,
@@ -287,7 +300,7 @@ function M.update(datamodel)
             local object = objects:coord(x, y)
             if object then
                 local typeobject = iprototype.queryByName(object.prototype_name)
-                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, object.dir, typeobject)
+                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, object.dir, typeobject, exclude_coords)
                 if not succ then
                     show_message(msg)
                     return
@@ -296,7 +309,7 @@ function M.update(datamodel)
             local r = ibuilding.get(x, y)
             if r then
                 local typeobject = iprototype.queryByName(r.prototype)
-                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, r.direction, typeobject)
+                local succ, msg = _get_check_coord(typeobject)(v.x, v.y, r.direction, typeobject, exclude_coords)
                 if not succ then
                     show_message(msg)
                     return
@@ -310,11 +323,11 @@ function M.update(datamodel)
             local x, y = iprototype.unpackcoord(coord)
             local object = objects:coord(x, y)
             if object then
-                _move_building(object, v.x, v.y, v.srt.t)
+                _move_building(object, v.x, v.y)
             end
             local r = ibuilding.get(x, y)
             if r then
-                assert(v.x % ROAD_SIZE == 0 and v.y % ROAD_SIZE == 0)
+                icoord.assert_road_coord(v.x, v.y)
                 ibuilding.remove(x, y)
                 ibuilding.set {
                     x = v.x,
@@ -328,6 +341,7 @@ function M.update(datamodel)
 
         _clear_moving_objs()
 
+        exclude_coords = {}
         datamodel.teardown = true
         datamodel.move = true
         datamodel.move_confirm = false
@@ -391,7 +405,7 @@ function M.gesture_pan_ended(datamodel)
         return
     end
     if road then
-        c[1], c[2] = c[1] - (c[1] % ROAD_SIZE), c[2] - (c[2] % ROAD_SIZE)
+        c[1], c[2] = icoord.road_coord(c[1], c[2])
         position = math3d.vector(icoord.position(c[1], c[2], iprototype.rotate_area(area, dir)))
     end
     icamera_controller.move_delta(math3d.mark(math3d.sub(position, v.srt.t)))

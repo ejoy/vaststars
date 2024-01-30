@@ -7,7 +7,7 @@ local ifluidbox = ecs.require "render_updates.fluidbox"
 local CONSTANT <const> = require "gameplay.interface.constant"
 local DIRECTION <const> = CONSTANT.DIRECTION
 
-return function (x, y, dir, typeobject, exclude_object_id)
+return function (x, y, dir, typeobject, exclude_coords)
     local t = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
     if not t then
         return false, "unknown"

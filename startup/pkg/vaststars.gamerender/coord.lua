@@ -20,6 +20,8 @@ local OFFSET_3D <const> = {-(WIDTH * TILE_SIZE)/2, 0.0, -(HEIGHT * TILE_SIZE)/2}
 local BOUNDARY_3D <const> = {OFFSET_3D, {OFFSET_3D[1] + WIDTH * TILE_SIZE, OFFSET_3D[2], OFFSET_3D[3] + HEIGHT * TILE_SIZE}}
 local ORIGIN <const> = {OFFSET_3D[1], BOUNDARY_3D[2][3]} -- the world position corresponding to the logical origin (0, 0)
 local COORD_BOUNDARY <const> = {{0, 0}, {WIDTH - 1, HEIGHT - 1}}
+local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_SIZE
+local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_SIZE
 
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
@@ -124,6 +126,15 @@ end
 --base 0
 function coord.coord2idx(x, y)
     return y * WIDTH + x
+end
+
+function coord.road_coord(x, y)
+    return x - (x % ROAD_WIDTH_SIZE), y - (y % ROAD_HEIGHT_SIZE)
+end
+
+function coord.assert_road_coord(x, y)
+    assert(x % ROAD_WIDTH_SIZE == 0)
+    assert(y % ROAD_HEIGHT_SIZE == 0)
 end
 
 return coord

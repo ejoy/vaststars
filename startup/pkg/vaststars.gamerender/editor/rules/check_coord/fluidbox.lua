@@ -21,7 +21,7 @@ local function _get_neighbor_fluid_types(typeobject, x, y, dir)
     return array
 end
 
-return function (x, y, dir, typeobject, exclude_object_id)
+return function (x, y, dir, typeobject, exclude_coords)
     assert(iprototype.has_type(typeobject.type, "fluidbox"))
     local fluids = _get_neighbor_fluid_types(typeobject, x, y, dir)
     if #fluids > 1 then

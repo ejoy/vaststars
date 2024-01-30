@@ -47,7 +47,7 @@ local function _align(w, h, position_type)
     if not coord then
         return
     end
-    coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
+    coord[1], coord[2] = icoord.road_coord(coord[1], coord[2])
     position = math3d.vector(icoord.position(coord[1], coord[2], w, h))
 
     return position, coord[1], coord[2]
@@ -253,7 +253,8 @@ end
 local function __calc_grid_position(typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = icoord.align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
-    local buildingPosition = icoord.position(x - (x % ROAD_SIZE), y - (y % ROAD_SIZE), ROAD_SIZE, ROAD_SIZE)
+    local x, y = icoord.road_coord(x, y)
+    local buildingPosition = icoord.position(x, y, w, h)
     return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
@@ -325,7 +326,8 @@ local function touch_move(self, datamodel, delta_vec)
 
     __show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
 
-    if x % ROAD_SIZE == 0 and y % ROAD_SIZE == 0 and self._check_coord(x, y, pickup_object.dir, self.typeobject) then
+    local dx, dy = icoord.road_coord(x, y)
+    if x == dx and y == dy and self._check_coord(x, y, pickup_object.dir, self.typeobject) then
         local dir = _calc_dir(self._adjacent_coords, x, y, pickup_object.dir)
         if dir and dir ~= pickup_object.dir then
             self:rotate(datamodel, dir)

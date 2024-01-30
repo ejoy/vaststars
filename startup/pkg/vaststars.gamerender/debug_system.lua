@@ -164,7 +164,7 @@ function debug_sys:ui_update()
                     ))
             else
                 local ibuilding = ecs.require "render_updates.building"
-                local road = ibuilding.get(coord[1]//2*2, coord[2]//2*2)
+                local road = ibuilding.get(icoord.road_coord(coord[1], coord[2]))
                 if road then
                     log.info(("road: (%s,%s)"):format(road.x, road.y))
                 end

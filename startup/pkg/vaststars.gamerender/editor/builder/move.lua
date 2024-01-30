@@ -219,6 +219,16 @@ local function __show_nearby_buildings_selected_boxes(self, x, y, dir, typeobjec
     end
 end
 
+local function _get_area_coords(x, y, w, h)
+    local r = {}
+    for i = 0, w - 1 do
+        for j = 0, h - 1 do
+            r[iprototype.packcoord(x + i, y + j)] = true
+        end
+    end
+    return r
+end
+
 local function __new_entity(self, datamodel, typeobject)
     local object = assert(objects:get(self.move_object_id))
 
@@ -234,7 +244,7 @@ local function __new_entity(self, datamodel, typeobject)
     local building_positon = icoord.position(x, y, w, h)
 
     local sprite_color
-    if not self._check_coord(x, y, dir, self.typeobject, self.move_object_id) then
+    if not self._check_coord(x, y, dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -318,7 +328,7 @@ local function __align(object)
     end
 
     if iprototype.has_types(typeobject.type, "station") then
-        coord[1], coord[2] = coord[1] - (coord[1] % ROAD_SIZE), coord[2] - (coord[2] % ROAD_SIZE)
+        coord[1], coord[2] = icoord.road_coord(coord[1], coord[2])
         position = math3d.vector(icoord.position(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir)))
     end
 
@@ -373,7 +383,9 @@ local function touch_move(self, datamodel, delta_vec)
     local sprite_color
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
-    if not self._check_coord(lx, ly, pickup_object.dir, self.typeobject, self.move_object_id) then -- TODO
+    local object = assert(objects:get(self.move_object_id))
+
+    if not self._check_coord(lx, ly, pickup_object.dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -421,6 +433,11 @@ local function touch_end(self, datamodel)
     touch_move(self, datamodel, {0, 0, 0})
 end
 
+local function _get_game_object(object_id)
+    local vsobject = assert(vsobject_manager:get(object_id))
+    return vsobject.game_object
+end
+
 local function confirm(self, datamodel)
     ---
     local object = assert(objects:get(self.move_object_id))
@@ -439,7 +456,7 @@ local function confirm(self, datamodel)
     local building = global.buildings[object.id]
     if building then
         for _, v in pairs(building) do
-            v:on_position_change(object.srt, object.dir)
+            v:on_position_change(object.srt, object.dir, gameplay_core.get_world(), e, _get_game_object(self.move_object_id))
         end
     end
 
@@ -490,7 +507,10 @@ local function rotate(self, datamodel, dir, delta_vec)
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
     local sprite_color
-    if not self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject, self.move_object_id) then
+    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
+    local object = assert(objects:get(self.move_object_id))
+
+    if not self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -550,9 +570,7 @@ local function clean(self, datamodel)
     vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
 end
 
-local function _get_check_coord(object_id)
-    local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName(object.prototype_name)
+local function _get_check_coord(typeobject)
     local funcs = {}
     for _, v in ipairs(typeobject.check_coord) do
         funcs[#funcs+1] = ecs.require(("editor.rules.check_coord.%s"):format(v))
@@ -571,7 +589,7 @@ end
 local function new(self, move_object_id, datamodel, typeobject)
     self.move_object_id = move_object_id
     self.typeobject = typeobject
-    self._check_coord = _get_check_coord(move_object_id)
+    self._check_coord = _get_check_coord(typeobject)
 
     __new_entity(self, datamodel, typeobject)
 

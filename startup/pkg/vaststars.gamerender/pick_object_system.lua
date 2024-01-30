@@ -44,13 +44,9 @@ local function get_lorry_pos(self)
     return lorry.objs[1].last_srt.t
 end
 
-local function convert(x, y)
-    return x//2*2, y//2*2
-end
-
 local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
     if blur then
-        local lorry_ids = lorries[iprototype.packcoord(convert(x, y))]
+        local lorry_ids = lorries[iprototype.packcoord(icoord.road_coord(x, y))]
         if lorry_ids then
             for _, lorry_id in ipairs(lorry_ids) do
                 local lorry = ilorry.get(lorry_id)
@@ -85,7 +81,7 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
         return
     end
 
-    o = ibuilding.get(convert(x, y))
+    o = ibuilding.get(icoord.road_coord(x, y))
     if o then
         local road = mark.road[o.eid]
         if not road then
@@ -181,7 +177,7 @@ function ipick_object.pick(x, y, blur)
         if lorry.prototype == 0 then
             goto continue
         end
-        local coord = iprototype.packcoord(convert(lorry.x, lorry.y))
+        local coord = iprototype.packcoord(icoord.road_coord(lorry.x, lorry.y))
         lorries[coord] = lorries[coord] or {}
         lorries[coord][#lorries[coord] + 1] = e.eid
         ::continue::

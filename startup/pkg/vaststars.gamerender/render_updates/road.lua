@@ -52,18 +52,6 @@ local function move(d)
     end
 end
 
-local function reverse(d)
-    if d == N then
-        return S
-    elseif d == E then
-        return W
-    elseif d == S then
-        return N
-    elseif d == W then
-        return E
-    end
-end
-
 local function repair(world, map, road_cache)
     local m
     for coord, mask in pairs(map) do
