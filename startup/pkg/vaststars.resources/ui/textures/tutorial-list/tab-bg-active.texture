@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/tutorial-list/tab-bg-active.png
+path: ../../images/tutorial-list/tab-bg-active.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

@@ -1,5 +1,0 @@
-mount:
-    /engine/ %engine%/engine
-    /pkg/    %engine%/pkg
-    /pkg/vaststars.tools/    %engine%/../../tools/glb-patch/pkg/vaststars.tools
-    /pkg/vaststars.resources/    %engine%/../../startup/pkg/vaststars.resources

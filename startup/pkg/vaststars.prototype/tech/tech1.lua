@@ -76,7 +76,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 123,
         y = 131,
         w = 4.0,
@@ -110,7 +110,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 132.5,
         y = 114.5,
         w = 5.2,
@@ -143,7 +143,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 116,
         y = 130,
         w = 3.2,
@@ -152,7 +152,7 @@ local prototype = gameplay.register.prototype
         show_arrow = true,
       },
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 132,
         y = 124,
         w = 3.2,
@@ -161,7 +161,7 @@ local prototype = gameplay.register.prototype
         show_arrow = true,
       },
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 127,
         y = 136,
         w = 3.2,
@@ -194,7 +194,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 120,
         y = 121,
         w = 1.2,
@@ -249,7 +249,7 @@ local prototype = gameplay.register.prototype
     order = 316,
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 116,
         y = 130,
         w = 3.2,
@@ -300,7 +300,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"仓库存储矿石"},
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 123,
         y = 122,
         w = 3.2,

@@ -209,7 +209,7 @@ prototype "地热气" {
     item_order = 32,
     pollution = 100,
     item_description = "因地下深处热量而产生的蒸汽",
-    mineral_model = "glbs/mineral/crack.glb|mesh.prefab",
+    mineral_model = "/pkg/vaststars.resources/glbs/mineral/crack.glb|mesh.prefab",
     mineral_area = "3x3",
 }
 

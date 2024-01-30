@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
-    model = "glbs/turbine-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -36,7 +36,7 @@ prototype "蒸汽发电机I" {
 }
 
 prototype "蒸汽发电机II" {
-    model = "glbs/turbine-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -70,7 +70,7 @@ prototype "蒸汽发电机II" {
 }
 
 prototype "蒸汽发电机III" {
-    model = "glbs/turbine-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/turbine-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -104,7 +104,7 @@ prototype "蒸汽发电机III" {
 }
 
 prototype "轻型风力发电机" {
-    model = "glbs/wind-turbine-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,5,1.2",
     check_coord = {"exclusive"},
@@ -116,7 +116,7 @@ prototype "轻型风力发电机" {
 }
 
 prototype "风力发电机I" {
-    model = "glbs/wind-turbine-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,5,1.2",
     check_coord = {"exclusive"},
@@ -128,7 +128,7 @@ prototype "风力发电机I" {
 }
 
 prototype "太阳能板I" {
-    model = "glbs/solar-panel-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -140,7 +140,7 @@ prototype "太阳能板I" {
 }
 
 prototype "太阳能板II" {
-    model = "glbs/solar-panel-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -152,7 +152,7 @@ prototype "太阳能板II" {
 }
 
 prototype "太阳能板III" {
-    model = "glbs/solar-panel-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -164,7 +164,7 @@ prototype "太阳能板III" {
 }
 
 prototype "轻型太阳能板" {
-    model = "glbs/solar-panel-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/solar-panel-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -176,7 +176,7 @@ prototype "轻型太阳能板" {
 }
 
 prototype "蓄电池I" {
-    model = "glbs/accumulator-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -190,7 +190,7 @@ prototype "蓄电池I" {
 }
 
 prototype "蓄电池II" {
-    model = "glbs/accumulator-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -204,7 +204,7 @@ prototype "蓄电池II" {
 }
 
 prototype "蓄电池III" {
-    model = "glbs/accumulator-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -218,7 +218,7 @@ prototype "蓄电池III" {
 }
 
 prototype "核反应堆" {
-    model = "glbs/wind-turbine-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/wind-turbine-1.glb|mesh.prefab config:s,1,5,1.2",
     check_coord = {"exclusive"},
@@ -230,7 +230,7 @@ prototype "核反应堆" {
 }
 
 prototype "换热器I" {
-    model = "glbs/boiler.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -275,7 +275,7 @@ prototype "换热器I" {
 }
 
 prototype "热管1-X型" {
-    model = "glbs/pipe/I.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/I.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -284,7 +284,7 @@ prototype "热管1-X型" {
 }
 
 prototype "锅炉I" {
-    model = "glbs/boiler.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -329,7 +329,7 @@ prototype "锅炉I" {
 }
 
 prototype "地热井I" {
-    model = "glbs/geothermal-plant.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
     check_coord = {"geothermal_plant"},
     builder = "normal",
@@ -361,7 +361,7 @@ prototype "地热井I" {
 }
 
 prototype "地热井II" {
-    model = "glbs/geothermal-plant.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
     check_coord = {"geothermal_plant"},
     builder = "normal",
@@ -393,7 +393,7 @@ prototype "地热井II" {
 }
 
 prototype "地热井III" {
-    model = "glbs/geothermal-plant.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
     check_coord = {"geothermal_plant"},
     builder = "normal",

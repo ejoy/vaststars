@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "小铁制箱子I" {
-    model = "glbs/small-chest.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/small-chest.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/small-chest.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -12,7 +12,7 @@ prototype "小铁制箱子I" {
 }
 
 prototype "小铁制箱子II" {
-    model = "glbs/small-chest.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/small-chest.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/small-chest.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -21,7 +21,7 @@ prototype "小铁制箱子II" {
 }
 
 prototype "大铁制箱子I" {
-    model = "glbs/small-chest.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/small-chest.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/small-chest.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -30,7 +30,7 @@ prototype "大铁制箱子I" {
 }
 
 prototype "仓库I" {
-    model = "glbs/depot.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/depot.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/depot.glb|mesh.prefab config:s,1,3,1.3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -42,7 +42,7 @@ prototype "仓库I" {
 }
 
 prototype "无人机平台I" {
-    model = "glbs/drone-depot2.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -59,7 +59,7 @@ prototype "无人机平台I" {
 }
 
 prototype "无人机平台II" {
-    model = "glbs/drone-depot2.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -77,7 +77,7 @@ prototype "无人机平台II" {
 }
 
 prototype "无人机平台III" {
-    model = "glbs/drone-depot2.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",

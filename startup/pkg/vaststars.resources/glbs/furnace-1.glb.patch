@@ -200,7 +200,7 @@ value:
   policy:
     ant.timeline|timeline
   tag:
-    timeline2
+    timeline
 ---
 file: work.prefab
 op: add

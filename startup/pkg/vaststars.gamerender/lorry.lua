@@ -11,7 +11,6 @@ local imotion = ecs.require "engine.motion"
 local itl = ecs.require "ant.timeline|timeline"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local function create(prefab, s, r, t)
     local motion_entity = imotion.create_motion_object(s, r, t)
@@ -123,7 +122,7 @@ local function create(prefab, s, r, t)
         assert(typeobject.item_model)
 
         self.item = world:create_instance {
-            prefab = RESOURCES_BASE_PATH:format(typeobject.item_model),
+            prefab = typeobject.item_model,
             on_ready = function(self)
                 for _, eid in ipairs(self.tag['*']) do
                     local e <close> = world:entity(eid, "render_object?in")

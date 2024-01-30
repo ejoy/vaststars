@@ -65,7 +65,7 @@ local function create(gameplay_world, e, game_object)
 
         if item ~= 0 then
             local typeobject_item = iprototype.queryById(item)
-            local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
+            local prefab = typeobject_item.item_model
             local inst = world:create_instance {
                 group = igroup.id(e.building.x, e.building.y),
                 prefab = prefab,

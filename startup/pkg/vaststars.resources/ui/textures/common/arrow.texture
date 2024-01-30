@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/common/arrow.png
+path: ../../images/common/arrow.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

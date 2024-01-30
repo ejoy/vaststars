@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "机身残骸" {
-    model = "glbs/broken-assembling-3x3.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/broken-assembling-3x3.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/broken-assembling-3x3.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -15,7 +15,7 @@ prototype "机身残骸" {
 }
 
 prototype "机翼残骸" {
-    model = "glbs/broken-outfall-2x2.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -28,7 +28,7 @@ prototype "机翼残骸" {
 }
 
 prototype "机头残骸" {
-    model = "glbs/broken-outfall-2x2.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
@@ -41,7 +41,7 @@ prototype "机头残骸" {
 }
 
 prototype "机尾残骸" {
-    model = "glbs/broken-pump-2x2.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/broken-pump-2x2.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/broken-pump-2x2.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",

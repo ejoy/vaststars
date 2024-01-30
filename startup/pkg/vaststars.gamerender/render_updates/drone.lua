@@ -235,7 +235,7 @@ function drone_sys:gameworld_update()
             if drone.item ~= 0 then
                 local typeobject_item = iprototype.queryById(drone.item)
                 local item_prefab = world:create_instance {
-                    prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model,
+                    prefab = typeobject_item.item_model,
                     parent = current.prefab.tag["*"][1],
                     group = current.prefab.group,
                     on_ready = function(inst)

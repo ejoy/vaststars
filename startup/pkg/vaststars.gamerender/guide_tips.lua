@@ -57,7 +57,7 @@ local function show(tech_node)
                     excluded_pickup_id = object.id
                 end
             end
-            selected_tips[#selected_tips + 1] = {create_selected_box({"/pkg/vaststars.resources/" .. nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
+            selected_tips[#selected_tips + 1] = {create_selected_box({nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
             iui.leave()
             iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unselected")

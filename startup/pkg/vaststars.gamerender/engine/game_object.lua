@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local game_object_event = ecs.require "engine.game_object_event"
 local iom               = ecs.require "ant.objcontroller|obj_motion"
@@ -66,19 +65,20 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
             group = hitch_group_id,
             on_ready = function (self)
                 for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update timeline?in loop_timeline?out dynamic_mesh?out")
+                    local e <close> = world:entity(eid, "render_object?update dynamic_mesh?out")
                     e.dynamic_mesh = dynamic_mesh
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end
+                end
 
-                    if e.timeline then
-                        e.timeline.eid_map = self.tag
-                        itl:start(e)
+                for _, eid in ipairs(self.tag["timeline"] or {}) do
+                    local e <close> = world:entity(eid, "timeline?in loop_timeline?out")
+                    e.timeline.eid_map = self.tag
+                    itl:start(e)
 
-                        if e.timeline.loop == true then
-                            e.loop_timeline = true
-                        end
+                    if e.timeline.loop == true then
+                        e.loop_timeline = true
                     end
                 end
             end,
@@ -165,7 +165,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local prefab = RESOURCES_BASE_PATH:format(init.prefab)
+    local prefab = init.prefab
     local hitch_group_id = get_hitch_group_id(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer, init.dynamic)
     local srt = init.srt or {}
 
@@ -197,7 +197,7 @@ function igame_object.create(init)
         end
 
         local hitch_group_id, existed = get_hitch_group_id(
-            RESOURCES_BASE_PATH:format(self.data.prefab),
+            self.data.prefab,
             self.data.color,
             self.data.work_status,
             self.data.emissive_color,

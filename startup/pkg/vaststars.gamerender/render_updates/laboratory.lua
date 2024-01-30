@@ -33,7 +33,7 @@ local function _create_shelf(game_object, idx, item, amount)
                 local eid = self.tag["slot"][1]
                 local typeobject = iprototype.queryById(item)
                 local instance; instance = world:create_instance {
-                    prefab = "/pkg/vaststars.resources/" .. typeobject.item_model,
+                    prefab = typeobject.item_model,
                     on_ready = function (self)
                         local e = world:entity(eid)
                         if e then

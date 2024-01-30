@@ -12,7 +12,7 @@ if not exist "%exe%" (
 	set titlemsg=release
 )
 
-%current_dir%%exe% %param% --images_dir=%current_dir%..\..\startup\pkg\vaststars.resources\ui\image\ --textures_dir=%current_dir%..\..\startup\pkg\vaststars.resources\ui\textures\ --remove_all=true
+%current_dir%%exe% %param% --images_dir=%current_dir%..\..\startup\pkg\vaststars.resources\ui\images\ --textures_dir=%current_dir%..\..\startup\pkg\vaststars.resources\ui\textures\ --remove_all=true
 %current_dir%%exe% %param% --images_dir=%current_dir%..\..\startup\pkg\vaststars.resources\images\icons\ --textures_dir=%current_dir%..\..\startup\pkg\vaststars.resources\textures\icons\ --remove_all=true
 
 popd

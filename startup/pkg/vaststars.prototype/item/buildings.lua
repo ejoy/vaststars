@@ -12,7 +12,7 @@ prototype "指挥中心" {
     item_order = 50,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/headquater.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "存储材料和装配运输汽车的核心建筑",
 }
 
@@ -25,7 +25,7 @@ prototype "物流中心" {
     item_order = 50,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/headquater.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "运输车辆出发和停靠的建筑",
 }
 
@@ -39,7 +39,7 @@ prototype "组装机I" {
     item_order = 52,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "自动打印并组装零部件的设备",
 }
 
@@ -52,7 +52,7 @@ prototype "组装机II" {
     item_order = 54,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "自动打印并组装零部件的设备",
 }
 
@@ -65,7 +65,7 @@ prototype "组装机III" {
     item_order = 56,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "自动打印并组装零部件的设备",
 }
 
@@ -78,7 +78,7 @@ prototype "熔炼炉I" {
     item_order = 58,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "高温熔炼矿石和精炼金属的设备",
 }
 
@@ -91,7 +91,7 @@ prototype "熔炼炉II" {
     item_order = 60,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "高温熔炼矿石和精炼金属的设备",
 }
 
@@ -104,7 +104,7 @@ prototype "熔炼炉III" {
     item_order = 62,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "高温熔炼矿石和精炼金属的设备",
 }
 
@@ -117,7 +117,7 @@ prototype "小铁制箱子I" {
     item_order = 64,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -130,7 +130,7 @@ prototype "小铁制箱子II" {
     item_order = 66,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -143,7 +143,7 @@ prototype "大铁制箱子I" {
     item_order = 68,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/furnace.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -156,7 +156,7 @@ prototype "仓库I" {
     item_order = 70,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/depot.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "贮藏物品的容器",
 }
 
@@ -169,7 +169,7 @@ prototype "无人机平台I" {
     item_order = 40,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "使用无人机运输并储存货物的仓库",
 }
 
@@ -182,7 +182,7 @@ prototype "无人机平台II" {
     item_order = 42,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "使用无人机运输并储存货物的平台",
 }
 
@@ -195,7 +195,7 @@ prototype "无人机平台III" {
     item_order = 44,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "使用无人机运输并储存货物的平台",
 }
 
@@ -208,7 +208,7 @@ prototype "采矿机I" {
     item_order = 30,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
@@ -221,7 +221,7 @@ prototype "采矿机II" {
     item_order = 32,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
@@ -234,7 +234,7 @@ prototype "采矿机III" {
     item_order = 34,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
@@ -247,7 +247,7 @@ prototype "轻型采矿机" {
     item_order = 35,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/miner.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "挖掘或钻探地下矿物资源的设备",
 }
 
@@ -260,7 +260,7 @@ prototype "蒸汽发电机I" {
     item_order = 60,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/turbine.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
 
@@ -273,7 +273,7 @@ prototype "蒸汽发电机II" {
     item_order = 62,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/turbine.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
 
@@ -286,7 +286,7 @@ prototype "蒸汽发电机III" {
     item_order = 64,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/turbine.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "将蒸汽的热能转化成机械能用于发电的设备",
 }
 
@@ -299,7 +299,7 @@ prototype "化工厂I" {
     item_order = 66,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过化学反应以生产化学产品的设施",
 }
 
@@ -312,7 +312,7 @@ prototype "化工厂II" {
     item_order = 68,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过化学反应以生产化学产品的设施",
 }
 
@@ -325,7 +325,7 @@ prototype "化工厂III" {
     item_order = 70,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过化学反应以生产化学产品的设施",
 }
 
@@ -338,7 +338,7 @@ prototype "铸造厂I" {
     item_order = 72,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "铸造金属的设施",
 }
 
@@ -351,7 +351,7 @@ prototype "蒸馏厂I" {
     item_order = 74,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/distillery.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
 
@@ -364,7 +364,7 @@ prototype "蒸馏厂II" {
     item_order = 76,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/distillery.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
 
@@ -377,7 +377,7 @@ prototype "蒸馏厂III" {
     item_order = 78,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/distillery.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "使用蒸馏方式对液态原料进行分离的设施",
 }
 
@@ -390,7 +390,7 @@ prototype "粉碎机I" {
     item_order = 80,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "施加机械力到物料上将其破碎成较小碎片的设备",
 }
 
@@ -403,7 +403,7 @@ prototype "粉碎机II" {
     item_order = 82,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "施加机械力到物料上将其破碎成较小碎片的设备",
 }
 
@@ -416,7 +416,7 @@ prototype "粉碎机III" {
     item_order = 84,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/assembler.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "施加机械力到物料上将其破碎成较小碎片的设备",
 }
 
@@ -429,7 +429,7 @@ prototype "浮选器I" {
     item_order = 86,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/flotation-cell-frame.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
 
@@ -442,7 +442,7 @@ prototype "浮选器II" {
     item_order = 88,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/flotation-cell-frame.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
 
@@ -455,7 +455,7 @@ prototype "浮选器III" {
     item_order = 90,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/flotation-cell-frame.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过浮沉矿石进行分离的机器",
 }
 
@@ -469,7 +469,7 @@ prototype "风力发电机I" {
     item_order = 2,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/wind-turbine.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "利用风能转换电能的装置",
 }
 
@@ -482,7 +482,7 @@ prototype "轻型风力发电机" {
     item_order = 2,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/wind-turbine.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "利用风能转换电能的装置",
 }
 
@@ -495,7 +495,7 @@ prototype "铁制电线杆" {
     item_order = 4,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/electric-pole.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "在一定距离内传输电力的铁制电线杆",
 }
 
@@ -508,7 +508,7 @@ prototype "远程电线杆" {
     item_order = 6,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/electric-pole.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "远程距离传输电力的电线杆",
 }
 
@@ -521,7 +521,7 @@ prototype "广域电线杆" {
     item_order = 8,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/electric-pole.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "在大面积区域内传输电力的电线杆",
 }
 
@@ -534,7 +534,7 @@ prototype "科研中心I" {
     item_order = 10,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "应用于科学研究和开发活动的设施",
 }
 
@@ -547,7 +547,7 @@ prototype "科研中心II" {
     item_order = 12,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "应用于科学研究和开发活动的设施",
 }
 
@@ -560,7 +560,7 @@ prototype "科研中心III" {
     item_order = 14,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "应用于科学研究和开发活动的设施",
 }
 
@@ -573,7 +573,7 @@ prototype "地质科研中心" {
     item_order = 10,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/lab.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "应用于科学研究和开发活动的设施",
 }
 
@@ -586,7 +586,7 @@ prototype "物流站" {
     item_order = 15,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/goodstation-input.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "给运输车辆提供货物的车站",
 }
 
@@ -599,7 +599,7 @@ prototype "电解厂I" {
     item_order = 50,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/electrolysis.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "用电化学反应处理原料的设施",
 }
 
@@ -612,7 +612,7 @@ prototype "电解厂II" {
     item_order = 52,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/electrolysis.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "用电化学反应处理原料的设施",
 }
 
@@ -625,7 +625,7 @@ prototype "电解厂III" {
     item_order = 54,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/electrolysis.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "用电化学反应处理原料的设施",
 }
 
@@ -638,7 +638,7 @@ prototype "太阳能板I" {
     item_order = 20,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/solar-panel.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "利用太阳能产生光电效应发电的装置",
 }
 
@@ -651,7 +651,7 @@ prototype "太阳能板II" {
     item_order = 22,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/solar-panel.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "利用太阳能产生光电效应发电的装置",
 }
 
@@ -664,7 +664,7 @@ prototype "太阳能板III" {
     item_order = 24,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/solar-panel.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "利用太阳能产生光电效应发电的装置",
 }
 
@@ -677,7 +677,7 @@ prototype "轻型太阳能板" {
     item_order = 24,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/solar-panel.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "利用太阳能产生光电效应发电的装置",
 }
 
@@ -690,7 +690,7 @@ prototype "蓄电池I" {
     item_order = 26,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/grid-battery.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "化学能与电能互相转化并储存的装置",
 }
 
@@ -703,7 +703,7 @@ prototype "蓄电池II" {
     item_order = 28,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/grid-battery.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "化学能与电能互相转化并储存的装置",
 }
 
@@ -716,7 +716,7 @@ prototype "蓄电池III" {
     item_order = 30,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/grid-battery.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "化学能与电能互相转化并储存的装置",
 }
 
@@ -729,7 +729,7 @@ prototype "水电站I" {
     item_order = 56,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "大规模处理气液的设施",
 }
 
@@ -742,7 +742,7 @@ prototype "水电站II" {
     item_order = 58,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "大规模处理气液的设施",
 }
 
@@ -755,7 +755,7 @@ prototype "水电站III" {
     backpack_limit = 20,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/hydroplant.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "大规模处理气液的设施",
 }
 
@@ -768,7 +768,7 @@ prototype "砖石公路-X型" {
     item_order = 2,
     pollution = 500,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/road.texture",
-    item_model = "glbs/stackeditems/stone-brick.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/stone-brick.glb|mesh.prefab",
     item_description = "供车辆行驶的砖石公路",
 }
 
@@ -784,9 +784,9 @@ prototype "运输车辆I" {
     item_order = 4,
     pollution = 500,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/truck.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab config:s,1,3",
-    model = "glbs/lorry-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lorry-1.glb|mesh.prefab",
 }
 
 prototype "换热器I" {
@@ -798,7 +798,7 @@ prototype "换热器I" {
     item_order = 70,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/truck.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "将水变成蒸汽的机器",
 }
 
@@ -811,7 +811,7 @@ prototype "地热井I" {
     item_order = 72,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/geothermal-plant.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
 
@@ -824,7 +824,7 @@ prototype "地热井II" {
     item_order = 74,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/geothermal-plant.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
 
@@ -837,7 +837,7 @@ prototype "地热井III" {
     item_order = 76,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/geothermal-plant.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过地下钻探获取地热资源的装置",
 }
 
@@ -850,7 +850,7 @@ prototype "锅炉I" {
     item_order = 78,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/boiler-frame.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "通过加热将水变成蒸汽的装置",
 }
 
@@ -861,7 +861,7 @@ prototype "广播塔I" {
     backpack_limit = 25,
     item_order = 80,
     pollution = 5000,
-    item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
     item_description = "将插件功效传导到周边其他机器的设施",
     --item_category = "物流",
@@ -874,7 +874,7 @@ prototype "广播塔II" {
     backpack_limit = 25,
     item_order = 82,
     pollution = 5000,
-    item_model = "glbs/stackeditems/iron-plate.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/iron-plate.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
     item_description = "将插件功效传导到周边其他机器的设施",
     --item_category = "物流",
@@ -889,7 +889,7 @@ prototype "热管1-X型" {
     item_order = 84,
     pollution = 5000,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/chemistry.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "传导热量的特殊管道",
 }
 
@@ -903,7 +903,7 @@ prototype "机身残骸" {
     item_order = 100,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机身组件",
 }
 
@@ -916,7 +916,7 @@ prototype "机翼残骸" {
     item_order = 102,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机翼组件",
 }
 
@@ -929,7 +929,7 @@ prototype "机头残骸" {
     item_order = 104,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机头组件",
 }
 
@@ -942,7 +942,7 @@ prototype "机尾残骸" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -955,7 +955,7 @@ prototype "特殊组装机" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -968,7 +968,7 @@ prototype "特殊科研中心" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -981,7 +981,7 @@ prototype "特殊浮选器" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -994,7 +994,7 @@ prototype "特殊电解厂" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -1007,7 +1007,7 @@ prototype "特殊熔炼炉" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -1020,7 +1020,7 @@ prototype "特殊化工厂" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -1033,7 +1033,7 @@ prototype "特殊水电站" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -1046,7 +1046,7 @@ prototype "特殊采矿机" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }
 
@@ -1059,6 +1059,6 @@ prototype "特殊蒸馏厂" {
     item_order = 106,
     pollution = 0,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/ruin.texture",
-    item_model = "glbs/stackeditems/building.glb|mesh.prefab",
+    item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb|mesh.prefab",
     item_description = "损坏飞行器残留的机尾组件",
 }

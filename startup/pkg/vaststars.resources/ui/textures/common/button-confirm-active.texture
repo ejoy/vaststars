@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/common/button-confirm-active.png
+path: ../../images/common/button-confirm-active.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

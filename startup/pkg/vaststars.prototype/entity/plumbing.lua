@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "液罐I" {
-    model = "glbs/storage-tank-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "normal",
@@ -24,7 +24,7 @@ prototype "液罐I" {
 }
 
 prototype "液罐II" {
-    model = "glbs/storage-tank-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "normal",
@@ -46,7 +46,7 @@ prototype "液罐II" {
 }
 
 prototype "液罐III" {
-    model = "glbs/storage-tank-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "normal",
@@ -68,7 +68,7 @@ prototype "液罐III" {
 }
 
 prototype "气罐I" {
-    model = "glbs/storage-tank-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/storage-tank-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "normal",
@@ -89,7 +89,7 @@ prototype "气罐I" {
 }
 
 prototype "地下水挖掘机I" {
-    model = "glbs/mars-pumpjack.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -121,7 +121,7 @@ prototype "地下水挖掘机I" {
 }
 
 prototype "地下水挖掘机II" {
-    model = "glbs/mars-pumpjack.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -153,7 +153,7 @@ prototype "地下水挖掘机II" {
 }
 
 prototype "核子挖掘机" {
-    model = "glbs/mars-pumpjack.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-pumpjack.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -183,7 +183,7 @@ prototype "核子挖掘机" {
 }
 
 prototype "压力泵I" {
-    model = "glbs/pump-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pump-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/pump-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
@@ -207,7 +207,7 @@ prototype "压力泵I" {
 }
 
 prototype "烟囱I" {
-    model = "glbs/chimney-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "chimney"},
@@ -228,7 +228,7 @@ prototype "烟囱I" {
 }
 
 prototype "烟囱II" {
-    model = "glbs/chimney-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "chimney"},
@@ -249,7 +249,7 @@ prototype "烟囱II" {
 }
 
 prototype "排水口I" {
-    model = "glbs/mars-outfall.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab config:s,1,3",
     check_coord = {"outfall"},
@@ -270,7 +270,7 @@ prototype "排水口I" {
 }
 
 prototype "排水口II" {
-    model = "glbs/mars-outfall.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/mars-outfall.glb|mesh.prefab config:s,1,3",
     check_coord = {"outfall"},
@@ -291,7 +291,7 @@ prototype "排水口II" {
 }
 
 prototype "空气过滤器I" {
-    model = "glbs/air-filter.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
     check_coord = {"exclusive"},
@@ -323,7 +323,7 @@ prototype "空气过滤器I" {
 }
 
 prototype "空气过滤器II" {
-    model = "glbs/air-filter.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
     check_coord = {"exclusive"},
@@ -354,7 +354,7 @@ prototype "空气过滤器II" {
 }
 
 prototype "空气过滤器III" {
-    model = "glbs/air-filter.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
     check_coord = {"exclusive"},
@@ -388,7 +388,7 @@ prototype "管道1-I型" {
     building_category = 1,
     display_name = "管道I",
     item = "管道1-X型",
-    model = "glbs/pipe/I.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/I.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "pipe",
@@ -410,7 +410,7 @@ prototype "管道1-L型" {
     building_category = 1,
     display_name = "管道I",
     item = "管道1-X型",
-    model = "glbs/pipe/L.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/L.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/L.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "pipe",
@@ -432,7 +432,7 @@ prototype "管道1-T型" {
     building_category = 1,
     display_name = "管道I",
     item = "管道1-X型",
-    model = "glbs/pipe/T.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/T.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/T.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "pipe",
@@ -455,7 +455,7 @@ prototype "管道1-X型" {
     building_category = 1,
     display_name = "管道I",
     item = "管道1-X型",
-    model = "glbs/pipe/X.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/X.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/X.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "pipe",
@@ -479,7 +479,7 @@ prototype "管道1-O型" {
     building_category = 1,
     display_name = "管道I",
     item = "管道1-X型",
-    model = "glbs/pipe/O.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/O.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/O.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "pipe",
@@ -499,7 +499,7 @@ prototype "管道1-U型" {
     building_category = 1,
     display_name = "管道I",
     item = "管道1-X型",
-    model = "glbs/pipe/U.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/U.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/U.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "fluidbox"},
     builder = "pipe",
@@ -520,7 +520,7 @@ prototype "地下管1-JU型" {
     building_category = 2,
     display_name = "地下管I",
     item = "地下管1-JI型",
-    model = "glbs/pipe/JU.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/JU.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/JU.glb|mesh.prefab config:s,1,3",
     check_coord = {"pipe_to_ground"},
     builder = "pipe_to_ground",
@@ -541,7 +541,7 @@ prototype "地下管1-JI型" {
     building_category = 2,
     display_name = "地下管I",
     item = "地下管1-JI型",
-    model = "glbs/pipe/JI.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/JI.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/JI.glb|mesh.prefab config:s,1,3",
     check_coord = {"pipe_to_ground"},
     builder = "pipe_to_ground",
@@ -563,7 +563,7 @@ prototype "地下管2-JU型" {
     building_category = 3,
     display_name = "地下管II",
     item = "地下管2-JI型",
-    model = "glbs/pipe/JU.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/JU.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/JU.glb|mesh.prefab config:s,1,3",
     check_coord = {"pipe_to_ground"},
     builder = "pipe_to_ground",
@@ -584,7 +584,7 @@ prototype "地下管2-JI型" {
     building_category = 3,
     display_name = "地下管II",
     item = "地下管2-JI型",
-    model = "glbs/pipe/JI.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/pipe/JI.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/pipe/JI.glb|mesh.prefab config:s,1,3",
     check_coord = {"pipe_to_ground"},
     builder = "pipe_to_ground",

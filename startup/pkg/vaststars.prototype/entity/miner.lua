@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "采矿机I" {
-    model = "glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
@@ -22,7 +22,7 @@ prototype "采矿机I" {
 }
 
 prototype "采矿机II" {
-    model = "glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
@@ -42,7 +42,7 @@ prototype "采矿机II" {
 }
 
 prototype "采矿机III" {
-    model = "glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
@@ -62,7 +62,7 @@ prototype "采矿机III" {
 }
 
 prototype "轻型采矿机" {
-    model = "glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"miner"},

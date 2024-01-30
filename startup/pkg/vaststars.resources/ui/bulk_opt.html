@@ -4,29 +4,26 @@
             body {
                 font: 100% "阿里巴巴普惠体";
             }
-            teardown {
-                width: 20vmin;
-                height: 10vmin;
-                background-color: rgb(255, 0, 0);
-                border: 0.25vmin rgb(189, 149, 43);
+            red-button, green-button {
+                width: 14.95vmin;
+                height: 14.95vmin;
                 font-size: 5vmin;
                 align-items: center;
                 justify-content: center;
+                background-size: 100% 100%;
+                background-lattice: 16.67% 16.67% 15.62% 15.62% 50.00% 50.00%;
             }
-            teardown:active {
-                transform: scale(1.2);
+            red-button {
+                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/red-button-bg.texture";
             }
-            move {
-                width: 20vmin;
-                height: 10vmin;
-                background-color: rgb(189, 149, 43);
-                border: 0.25vmin rgb(189, 149, 43);
-                font-size: 5vmin;
-                align-items: center;
-                justify-content: center;
+            red-button:active {
+                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/red-button-bg-active.texture";
             }
-            move:active {
-                transform: scale(1.2);
+            green-button {
+                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/green-button-bg.texture";
+            }
+            green-button:active {
+                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/green-button-bg-active.texture";
             }
         </style>
         <script type="text/x-lua" >
@@ -51,14 +48,21 @@
             end
         </script>
     </head>
-    <body style = "pointer-events: none; align-items: center; justify-content: center;" onload = "init()">
-        <select-box style = "pointer-events: none; border: 0.25vmin rgb(189, 149, 43); width: 80%; height: 70%;" />
-        <div style = "width: 80%; height: 15%; position: absolute; bottom: 0vmin; flex-direction: row; gap: 2vmin; justify-content: flex-end;">
-            <teardown data-event-click = "clickButton('teardown')" data-if = "teardown">删除</teardown>
-            <move data-event-click = "clickButton('close')">取消</move>
-            <move data-event-click = "clickButton('move')" data-if = "move">移动</move>
-            <move data-event-click = "clickButton('move_cancel')" data-if = "move_cancel">移动取消</move>
-            <move data-event-click = "clickButton('move_confirm')" data-if = "move_confirm">移动确认</move>
+    <body style = "pointer-events: none; align-items: center; margin-top: 5%;" onload = "init()">
+        <select-box style = "pointer-events: none; border: 0.25vmin rgb(189, 149, 43); width: 80%; height: 80%;" />
+        <div style = "width: 80%; height: 10%; flex-direction: row; gap: 2vmin; justify-content: flex-end;">
+            <red-button data-event-click = "clickButton('teardown')" data-if = "teardown">
+                <div style = "width: 8.64vmin; height: 11.76vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/teardown.texture'; background-size: 100% 100%;" />
+            </red-button>
+            <green-button data-event-click = "clickButton('close')">
+                <div style = "width: 9.11vmin; height: 9.11vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/close.texture'; background-size: 100% 100%;" />
+            </green-button>
+            <green-button data-event-click = "clickButton('move')" data-if = "move">
+                <div style = "width: 12.07vmin; height: 12.15vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/move.texture'; background-size: 100% 100%;" />
+            </green-button>
+            <green-button data-event-click = "clickButton('move_confirm')" data-if = "move_confirm">
+                <div style = "width: 10.75vmin; height: 8.57vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/move-confirm.texture'; background-size: 100% 100%;" />
+            </green-button>
         </div>
     </body>
 </html>

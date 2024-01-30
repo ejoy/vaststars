@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../image/tutorial-list/2.png
+path: ../../images/tutorial-list/2.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

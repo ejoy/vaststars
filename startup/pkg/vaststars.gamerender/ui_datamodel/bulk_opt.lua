@@ -20,7 +20,6 @@ local teardown_mb = mailbox:sub {"teardown"}
 local move_mb = mailbox:sub {"move"}
 local close_mb = mailbox:sub {"close"}
 local move_confirm_mb = mailbox:sub {"move_confirm"}
-local move_cancel_mb = mailbox:sub {"move_cancel"}
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local icoord = require "coord"
 local objects = require "objects"
@@ -50,7 +49,6 @@ function M.create()
         teardown = true,
         move = true,
         move_confirm = false,
-        move_cancel = false,
     }
 end
 
@@ -234,7 +232,6 @@ function M.update(datamodel)
         datamodel.teardown = false
         datamodel.move = false
         datamodel.move_confirm = true
-        datamodel.move_cancel = true
 
         local t = {}
         for coord in pairs(selected) do
@@ -345,12 +342,6 @@ function M.update(datamodel)
         datamodel.teardown = true
         datamodel.move = true
         datamodel.move_confirm = false
-        datamodel.move_cancel = false
-    end
-
-    for _ in move_cancel_mb:unpack() do
-        _clear_selected()
-        _clear_moving_objs()
     end
 
     for _ in close_mb:unpack() do

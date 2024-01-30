@@ -36,7 +36,7 @@ local show_message = ecs.require "show_message".show_message
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 
 local function _get_road_entrance_srt(typeobject, building_srt)
-    local slots = prefab_slots("/pkg/vaststars.resources/" .. typeobject.model)
+    local slots = prefab_slots(typeobject.model)
     local slot_srt = slots["slot_indicator"].scene
 
     local mat = math3d.mul(math3d.matrix(building_srt), math3d.matrix(slot_srt))
