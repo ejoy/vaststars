@@ -1,0 +1,189 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.7.33",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Cube",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ],
+            "scale" : [
+                0.009999999776482582,
+                0.009999999776482582,
+                0.009999999776482582
+            ],
+            "translation" : [
+                0,
+                1.3680775165557861,
+                0
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                1,
+                1,
+                1
+            ],
+            "emissiveTexture" : {
+                "index" : 0
+            },
+            "name" : "Material",
+            "normalTexture" : {
+                "index" : 1,
+                "scale" : 2
+            },
+            "pbrMetallicRoughness" : {
+                "baseColorTexture" : {
+                    "index" : 2
+                },
+                "metallicRoughnessTexture" : {
+                    "index" : 3
+                }
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Cube",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "textures" : [
+        {
+            "sampler" : 0,
+            "source" : 0
+        },
+        {
+            "sampler" : 0,
+            "source" : 1
+        },
+        {
+            "sampler" : 0,
+            "source" : 2
+        },
+        {
+            "sampler" : 0,
+            "source" : 3
+        }
+    ],
+    "images" : [
+        {
+            "mimeType" : "image/png",
+            "name" : "accumulator_light",
+            "uri" : "accumulator_light.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "accumulator_normal",
+            "uri" : "accumulator_normal.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "accumulator_color",
+            "uri" : "accumulator_color.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "accumulator_Metallic-accumulator_Roughness",
+            "uri" : "accumulator_Metallic-accumulator_Roughness.png"
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 3307,
+            "max" : [
+                1042.400146484375,
+                1042.400146484375,
+                381.6980285644531
+            ],
+            "min" : [
+                -1042.400146484375,
+                -1042.400146484375,
+                -1973.8206787109375
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 3307,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 3307,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5123,
+            "count" : 9894,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 39684,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 39684,
+            "byteOffset" : 39684
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 26456,
+            "byteOffset" : 79368
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 19788,
+            "byteOffset" : 105824
+        }
+    ],
+    "samplers" : [
+        {
+            "magFilter" : 9729,
+            "minFilter" : 9987
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 125612,
+            "uri" : "accumulator-1.bin"
+        }
+    ]
+}
