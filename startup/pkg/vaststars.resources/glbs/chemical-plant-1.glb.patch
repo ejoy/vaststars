@@ -186,7 +186,7 @@ value:
   policy:
     ant.timeline|timeline
   tag:
-    timeline3
+    timeline
 ---
 file: idle.prefab
 op: add
@@ -210,7 +210,7 @@ value:
   policy:
     ant.timeline|timeline
   tag:
-    timeline4
+    timeline
 ---
 file: work.prefab
 op: add
@@ -252,7 +252,7 @@ value:
   policy:
     ant.timeline|timeline
   tag:
-    timeline2
+    timeline
 ---
 file: mesh.prefab
 op: createfile

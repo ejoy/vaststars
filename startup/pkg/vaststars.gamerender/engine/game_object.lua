@@ -65,19 +65,20 @@ local get_hitch_group_id, stopWorld, restartWorld ; do
             group = hitch_group_id,
             on_ready = function (self)
                 for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update timeline?in loop_timeline?out dynamic_mesh?out")
+                    local e <close> = world:entity(eid, "render_object?update dynamic_mesh?out")
                     e.dynamic_mesh = dynamic_mesh
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end
+                end
 
-                    if e.timeline then
-                        e.timeline.eid_map = self.tag
-                        itl:start(e)
+                for _, eid in ipairs(self.tag["timeline"] or {}) do
+                    local e <close> = world:entity(eid, "timeline?in loop_timeline?out")
+                    e.timeline.eid_map = self.tag
+                    itl:start(e)
 
-                        if e.timeline.loop == true then
-                            e.loop_timeline = true
-                        end
+                    if e.timeline.loop == true then
+                        e.loop_timeline = true
                     end
                 end
             end,
