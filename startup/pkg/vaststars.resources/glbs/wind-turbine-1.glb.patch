@@ -64,13 +64,14 @@ path: /-
 value:
   data:
     timeline:
-      duration: 6
+      duration: 3
       key_event:
         ---
         event_list:
           ---
           action: work
           event_type: Animation
+          forwards: false
           name: Animation2
           pause_frame: -1
         tick: 0
