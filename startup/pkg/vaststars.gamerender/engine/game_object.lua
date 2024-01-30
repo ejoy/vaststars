@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local game_object_event = ecs.require "engine.game_object_event"
 local iom               = ecs.require "ant.objcontroller|obj_motion"
@@ -165,7 +164,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local prefab = RESOURCES_BASE_PATH:format(init.prefab)
+    local prefab = init.prefab
     local hitch_group_id = get_hitch_group_id(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer, init.dynamic)
     local srt = init.srt or {}
 
@@ -197,7 +196,7 @@ function igame_object.create(init)
         end
 
         local hitch_group_id, existed = get_hitch_group_id(
-            RESOURCES_BASE_PATH:format(self.data.prefab),
+            self.data.prefab,
             self.data.color,
             self.data.work_status,
             self.data.emissive_color,

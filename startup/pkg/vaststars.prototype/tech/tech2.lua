@@ -33,7 +33,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 117,
         y = 125,
         w = 4.0,
@@ -67,7 +67,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128.5,
         y = 122.5,
         w = 5.2,
@@ -100,7 +100,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 106,
         y = 128,
         w = 3.2,
@@ -109,7 +109,7 @@ local prototype = gameplay.register.prototype
         show_arrow = true,
       },
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 116,
         y = 132,
         w = 3.2,
@@ -118,7 +118,7 @@ local prototype = gameplay.register.prototype
         show_arrow = true,
       },
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 107,
         y = 137,
         w = 3.2,
@@ -180,7 +180,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"风力发电机放置"},
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 124,
         y = 131,
         w = 3.0,
@@ -189,7 +189,7 @@ local prototype = gameplay.register.prototype
         show_arrow = false,
       },
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 132,
         y = 131,
         w = 3.0,
@@ -226,7 +226,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
         y = 133,
         w = 1.2,
@@ -260,7 +260,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
         y = 133,
         w = 1.2,
@@ -269,7 +269,7 @@ local prototype = gameplay.register.prototype
         show_arrow = false,
       },
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 111,
         y = 133,
         w = 1.2,
@@ -318,7 +318,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 141,
         y = 137,
         w = 2.2,
@@ -404,7 +404,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 128,
         y = 131,
         w = 3.0,
@@ -472,7 +472,7 @@ local prototype = gameplay.register.prototype
     },
     guide_focus = {
       {
-        prefab = "glbs/selected-box-no-animation.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
         x = 130,
         y = 115,
         w = 3.1,

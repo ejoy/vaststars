@@ -31,7 +31,7 @@ end
 local function create_item(group_id, item, amount)
     local typeobject_item = iprototype.queryById(item)
     local _ = typeobject_item.item_model or error(("no pile model: %s"):format(typeobject_item.name))
-    local prefab = "/pkg/vaststars.resources/" .. typeobject_item.item_model
+    local prefab = typeobject_item.item_model
 
     return world:create_instance {
         group = group_id,

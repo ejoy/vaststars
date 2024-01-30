@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
-    model = "glbs/headquater-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -17,7 +17,7 @@ prototype "指挥中心" {
 }
 
 prototype "物流中心" {
-    model = "glbs/factory-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab config:s,1,3",
     check_coord = {""},   -- factory builder special
@@ -53,7 +53,7 @@ prototype "物流中心" {
 prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
-    model = "glbs/lab-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -77,7 +77,7 @@ prototype "科研中心I" {
 prototype "地质科研中心" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
-    model = "glbs/lab-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -96,7 +96,7 @@ prototype "地质科研中心" {
 prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
-    model = "glbs/lab-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -116,7 +116,7 @@ prototype "科研中心II" {
 prototype "科研中心III" {
     type = {"building", "consumer","laboratory"},
     chest_style = "chest",
-    model = "glbs/lab-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -138,7 +138,7 @@ prototype "砖石公路-I型" {
     building_category = 4,
     display_name = "砖石公路",
     item = "砖石公路-X型",
-    model = "glbs/road/I.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab config:s,1,3",
     check_coord = {"road"},
     builder = "road",
@@ -161,7 +161,7 @@ prototype "砖石公路-L型" {
     building_category = 4,
     display_name = "砖石公路",
     item = "砖石公路-X型",
-    model = "glbs/road/L.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/road/L.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/L.glb|mesh.prefab config:s,1,3",
     check_coord = {"road"},
     builder = "road",
@@ -184,7 +184,7 @@ prototype "砖石公路-T型" {
     building_category = 4,
     display_name = "砖石公路",
     item = "砖石公路-X型",
-    model = "glbs/road/T.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/road/T.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/T.glb|mesh.prefab config:s,1,3",
     check_coord = {"road"},
     builder = "road",
@@ -208,7 +208,7 @@ prototype "砖石公路-O型" {
     building_category = 4,
     display_name = "砖石公路",
     item = "砖石公路-X型",
-    model = "glbs/road/I.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab config:s,1,3",
     check_coord = {"road"},
     builder = "road",
@@ -228,7 +228,7 @@ prototype "砖石公路-U型" {
     building_category = 4,
     display_name = "砖石公路",
     item = "砖石公路-X型",
-    model = "glbs/road/I.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/I.glb|mesh.prefab config:s,1,3",
     check_coord = {"road"},
     builder = "road",
@@ -250,7 +250,7 @@ prototype "砖石公路-X型" {
     building_category = 4,
     display_name = "砖石公路",
     item = "砖石公路-X型",
-    model = "glbs/road/X.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab config:s,1,3",
     check_coord = {"road"},
     builder = "road",
@@ -272,7 +272,7 @@ prototype "砖石公路-X型" {
 }
 
 prototype "物流站" {
-    model = "glbs/goods-station-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "station",
@@ -316,7 +316,7 @@ prototype "停车站" {
 
 prototype "广播塔I" {
     type = {"building", "consumer"},
-    model = "glbs/lab-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -331,7 +331,7 @@ prototype "广播塔I" {
 
 prototype "广播塔II" {
     type = {"building", "consumer"},
-    model = "glbs/lab-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
@@ -346,7 +346,7 @@ prototype "广播塔II" {
 
 prototype "广播塔III" {
     type = {"building", "consumer"},
-    model = "glbs/lab-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
