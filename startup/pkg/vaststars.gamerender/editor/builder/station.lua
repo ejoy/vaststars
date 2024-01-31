@@ -14,21 +14,7 @@ local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
-local BUILDING_EFK_SCALE <const> = {
-    ["1x1"] = {4, 4, 4},
-    ["1x2"] = {5, 5, 5},
-    ["2x1"] = {5, 5, 5},
-    ["2x2"] = {5, 5, 5},
-    ["3x2"] = {7, 7, 7},
-    ["3x3"] = {7, 7, 7},
-    ["3x5"] = {10, 10, 10},
-    ["4x2"] = {7, 7, 7},
-    ["4x4"] = {10, 10, 10},
-    ["4x6"] = {12, 12, 12},
-    ["5x3"] = {10, 10, 10},
-    ["5x5"] = {12, 12, 12},
-    ["6x6"] = {12, 12, 12},
-}
+local BUILDING_EFK_SCALE <const> = CONSTANT.BUILDING_EFK_SCALE
 
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
@@ -453,6 +439,7 @@ local function confirm(self, datamodel)
         y = status.y,
         srt = srt.new(status.srt),
     }
+    object.gameplay_eid = igameplay.create_entity(object)
     objects:set(object, "CONSTRUCTED")
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 

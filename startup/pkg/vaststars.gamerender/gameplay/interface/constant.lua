@@ -88,4 +88,20 @@ table.move(M.OUT_FLUIDBOXES, 1, #M.OUT_FLUIDBOXES, #M.FLUIDBOXES+1, M.FLUIDBOXES
 
 M.GRID_POSITION_OFFSET = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
+M.BUILDING_EFK_SCALE = {
+    ["1x1"] = {4, 4, 4},
+    ["1x2"] = {5, 5, 5},
+    ["2x1"] = {5, 5, 5},
+    ["2x2"] = {5, 5, 5},
+    ["3x2"] = {7, 7, 7},
+    ["3x3"] = {7, 7, 7},
+    ["3x5"] = {10, 10, 10},
+    ["4x2"] = {7, 7, 7},
+    ["4x4"] = {10, 10, 10},
+    ["4x6"] = {12, 12, 12},
+    ["5x3"] = {10, 10, 10},
+    ["5x5"] = {12, 12, 12},
+    ["6x6"] = {12, 12, 12},
+}
+
 return M

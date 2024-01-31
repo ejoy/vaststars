@@ -1,21 +1,8 @@
 local ecs = ...
 local world = ecs.world
 
-local BUILDING_EFK_SCALE <const> = {
-    ["1x1"] = {4, 4, 4},
-    ["1x2"] = {5, 5, 5},
-    ["2x1"] = {5, 5, 5},
-    ["2x2"] = {5, 5, 5},
-    ["3x2"] = {7, 7, 7},
-    ["3x3"] = {7, 7, 7},
-    ["3x5"] = {10, 10, 10},
-    ["4x2"] = {7, 7, 7},
-    ["4x4"] = {10, 10, 10},
-    ["4x6"] = {12, 12, 12},
-    ["5x3"] = {10, 10, 10},
-    ["5x5"] = {12, 12, 12},
-    ["6x6"] = {12, 12, 12},
-}
+local CONSTANT <const> = require "gameplay.interface.constant"
+local BUILDING_EFK_SCALE <const> = CONSTANT.BUILDING_EFK_SCALE
 
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
