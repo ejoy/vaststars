@@ -1,51 +1,5 @@
 ---
 file: mesh.prefab
-op: copyfile
-path: work.prefab
----
-file: mesh.prefab
-op: copyfile
-path: debris.prefab
----
-file: debris.prefab
-op: add
-path: /-
-value:
-  data:
-    scene: {}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    mesh
----
-file: debris.prefab
-op: add
-path: /-
-value:
-  mount: 3
-  prefab: /pkg/vaststars.resources/glbs/scaffold/4x4.glb|mesh.prefab
----
-file: work.prefab
-op: add
-path: /-
-value:
-  data:
-    efk:
-      path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
-      speed: 1
-    scene:
-      s: {4, 4, 4}
-      t: {0, 3, 0}
-    visible_state: main_queue
-  mount: 1
-  policy:
-    ant.scene|scene_object
-    ant.efk|efk
-  tag:
-    work
----
-file: mesh.prefab
 op: add
 path: /-
 value:
@@ -125,6 +79,52 @@ value:
     ant.scene|scene_object
   tag:
     shelf6
+---
+file: mesh.prefab
+op: copyfile
+path: work.prefab
+---
+file: mesh.prefab
+op: copyfile
+path: debris.prefab
+---
+file: debris.prefab
+op: add
+path: /-
+value:
+  data:
+    scene: {}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    mesh
+---
+file: debris.prefab
+op: add
+path: /-
+value:
+  mount: 3
+  prefab: /pkg/vaststars.resources/glbs/scaffold/4x4.glb|mesh.prefab
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
+      speed: 1
+    scene:
+      s: {4, 4, 4}
+      t: {0, 3, 0}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    work
 ---
 file: mesh.prefab
 op: createfile
