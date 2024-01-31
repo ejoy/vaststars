@@ -16,8 +16,8 @@ local STATE_START <const> = 1
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 
 local math3d = require "math3d"
-local iprototype = require "gameplay.interface.prototype"
-local packcoord = iprototype.packcoord
+local icoord = require "coord"
+local packcoord = icoord.pack
 local iobject = ecs.require "object"
 local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
@@ -757,7 +757,7 @@ local function _new_entity(self, typeobject, x, y, position, dir)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, x, y, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = __calc_grid_position(self, typeobject, x, y, dir)})
     end
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)

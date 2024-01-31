@@ -7,10 +7,11 @@ local ROTATORS <const> = CONSTANT.ROTATORS
 local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
 local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
-local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
 local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
+local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
+local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 
@@ -58,8 +59,9 @@ end
 
 local function _get_nearby_buldings(x, y, w, h)
     local r = {}
-    local begin_x, begin_y = icoord.bound(x - ((10 - w) // 2), y - ((10 - h) // 2))
-    local end_x, end_y = icoord.bound(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    local offset_x, offset_y = (10 - w) // 2, (10 - h) // 2
+    local begin_x, begin_y = icoord.bound(x - offset_x, y - offset_y)
+    local end_x, end_y = icoord.bound(x + offset_x + w, y + offset_y + h)
     for x = begin_x, end_x do
         for y = begin_y, end_y do
             local object = objects:coord(x, y)
@@ -105,12 +107,16 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 
     local redraw = {}
     for object_id, object in pairs(nearby_buldings) do
-        redraw[object_id] = object
+        if not self.selected_boxes[object_id] then
+            redraw[object_id] = object
+        end
     end
 
     for object_id, o in pairs(self.selected_boxes) do
-        o:remove()
-        self.selected_boxes[object_id] = nil
+        if not nearby_buldings[object_id] then
+            o:remove()
+            self.selected_boxes[object_id] = nil
+        end
     end
 
     for object_id, object in pairs(redraw) do
@@ -509,7 +515,7 @@ local function new(self, datamodel, typeobject, position_type)
     _new_entity(self, datamodel, typeobject, x, y, position, dir)
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, {t = _calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, {t = _calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
     end
 end
 

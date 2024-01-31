@@ -1,9 +1,12 @@
-local iprototype = require "gameplay.interface.prototype"
-local gameplay_core = require "gameplay.core"
 local CONSTANT = require "gameplay.interface.constant"
 local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
 local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local IN_FLUIDBOXES <const> = CONSTANT.IN_FLUIDBOXES
+
+local iprototype = require "gameplay.interface.prototype"
+local gameplay_core = require "gameplay.core"
+local icoord = require "coord"
+
 --[[
 custom_type :
 1. is_road_connected
@@ -57,14 +60,14 @@ local function check_path_connected(sx, sy, dx, dy, road)
     if sx == dx then
         start, stop, step = sy, dy, sy < dy and ROAD_HEIGHT_COUNT or -ROAD_HEIGHT_COUNT
         for y = start, stop, step do
-            if not road[iprototype.packcoord(sx, y)] then
+            if not road[icoord.pack(sx, y)] then
                 return false
             end
         end
     else
         start, stop, step = sx, dx, sx < dx and ROAD_WIDTH_COUNT or -ROAD_WIDTH_COUNT
         for x = start, stop, step do
-            if not road[iprototype.packcoord(x, sy)] then
+            if not road[icoord.pack(x, sy)] then
                 return false
             end
         end
@@ -78,7 +81,7 @@ local custom_type_mapping = {
         local cache = {}
         local gameplay_world = gameplay_core.get_world()
         for e in gameplay_world.ecs:select "road building:in eid:in REMOVED:absent" do
-            cache[iprototype.packcoord(e.building.x, e.building.y)] = {
+            cache[icoord.pack(e.building.x, e.building.y)] = {
                 eid = e.eid,
                 x = e.building.x,
                 y = e.building.y,

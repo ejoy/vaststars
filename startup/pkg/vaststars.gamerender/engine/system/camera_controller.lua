@@ -1,7 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-local mathmsg = require "utility.mathmsg"
+local math3d_msg = require "utility.math3d_msg"
 local iviewport = ecs.require "ant.render|viewport.state"
 
 local ACCELERATION_INV <const> = 1000 / 1 -- m / s
@@ -47,7 +47,6 @@ local iom = ecs.require "ant.objcontroller|obj_motion"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local create_queue = require "utility.queue"
 local create_mathqueue = require "utility.mathqueue"
-local now = require "engine.time".now
 
 local camera_controller = ecs.system "camera_controller"
 local icamera_controller = {}
@@ -249,7 +248,7 @@ local function handle_camera_motion(ce)
             local t1 = iom.get_position(ce)
             local t2 = math3d.index(mat, 4)
             iom.set_srt(ce, math3d.srt(mat))
-            world:pub(mathmsg("dragdrop_camera", math3d.sub(t2, t1)))
+            world:pub(math3d_msg("dragdrop_camera", math3d.sub(t2, t1)))
         end
     end
 end
@@ -329,7 +328,7 @@ local handle_drop_camera; do
 					end
 				end
             else
-                world:pub(mathmsg("dragdrop_camera", math3d.sub(pos, scene.t)))
+                world:pub(math3d_msg("dragdrop_camera", math3d.sub(pos, scene.t)))
                 iom.set_position(ce, pos)
 			end
         end
@@ -421,7 +420,7 @@ function icamera_controller.unlock_axis()
 end
 
 function icamera_controller.move_delta(delta)
-    cam_cmd_queue:push {{"move_delta", delta}}
+    cam_cmd_queue:push {{"move_delta", math3d.mark(delta)}}
 end
 
 -- for debug

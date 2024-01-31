@@ -18,7 +18,6 @@ local iprototype_cache = require "gameplay.prototype_cache.init"
 local iprototype = require "gameplay.interface.prototype"
 local iroadnet_converter = require "roadnet_converter"
 local objects = require "objects"
-local ifluid = require "gameplay.interface.fluid"
 local global = require "global"
 local create_buildings = require "building_components"
 local igameplay = ecs.require "gameplay.gameplay_system"
@@ -80,7 +79,7 @@ local function restore_world(gameplay_world)
         local w, h = iprototype.rotate_area(typeobject.area, e.direction)
         for i = 0, w - 1 do
             for j = 0, h - 1 do
-                local coord = iprototype.packcoord(e.x + i, e.y + j)
+                local coord = icoord.pack(e.x + i, e.y + j)
                 assert(map[coord] == nil, ("duplicate fluidbox coord: %d, %d"):format(e.x + i, e.y + j))
                 map[coord] = v.eid
             end

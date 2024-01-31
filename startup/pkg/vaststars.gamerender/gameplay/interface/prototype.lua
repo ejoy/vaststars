@@ -77,16 +77,6 @@ function M.queryFirstByType(...)
     end
 end
 
-function M.packcoord(x, y)
-    return y * MAP_WIDTH_COUNT + x
-end
-
-function M.unpackcoord(coord)
-    local y = coord // MAP_WIDTH_COUNT
-    local x = coord % MAP_WIDTH_COUNT
-    return x, y
-end
-
 function M.packarea(w, h)
     return (w << 8) | h
 end

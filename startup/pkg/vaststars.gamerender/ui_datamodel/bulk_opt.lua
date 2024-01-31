@@ -53,7 +53,7 @@ function M.create()
 end
 
 local function _update_object_state(coord, state, color, emissive_color, render_layer)
-    local x, y = iprototype.unpackcoord(coord)
+    local x, y = icoord.unpack(coord)
     local object = objects:coord(x, y)
     if object then
         local vsobject = assert(vsobject_manager:get(object.id))
@@ -62,7 +62,7 @@ local function _update_object_state(coord, state, color, emissive_color, render_
 end
 
 local function _update_road_state(coord, color)
-    local x, y = iprototype.unpackcoord(coord)
+    local x, y = icoord.unpack(coord)
     local v = ibuilding.get(x, y)
     if v then
         local typeobject = iprototype.queryByName(v.prototype)
@@ -163,13 +163,13 @@ function M.update(datamodel)
                     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
                     local typeobject = iprototype.queryById(e.building.prototype)
                     if not e.debris and typeobject.teardown ~= false and typeobject.bulk_opt ~= false then
-                        new[iprototype.packcoord(object.x, object.y)] = true
+                        new[icoord.pack(object.x, object.y)] = true
                     end
                 end
                 local road_x, road_y = icoord.road_coord(x, y)
                 local v = ibuilding.get(road_x, road_y)
                 if v then
-                    new[iprototype.packcoord(road_x, road_y)] = true
+                    new[icoord.pack(road_x, road_y)] = true
                 end
             end
         end
@@ -199,7 +199,7 @@ function M.update(datamodel)
     for _ in teardown_mb:unpack() do
         local full = false
         for coord in pairs(selected) do
-            local x, y = iprototype.unpackcoord(coord)
+            local x, y = icoord.unpack(coord)
             local object = objects:coord(x, y)
             if object then
                 teardown(object.gameplay_eid)
@@ -243,14 +243,14 @@ function M.update(datamodel)
         moving = true
 
         for coord in pairs(selected) do
-            local x, y = iprototype.unpackcoord(coord)
+            local x, y = icoord.unpack(coord)
             local object = objects:coord(x, y)
             if object then
                 local typeobject = iprototype.queryByName(object.prototype_name)
                 local w, h = iprototype.rotate_area(typeobject.area, object.dir)
                 for i = 0, w-1 do
                     for j = 0, h-1 do
-                        exclude_coords[iprototype.packcoord(x+i, y+j)] = true
+                        exclude_coords[icoord.pack(x+i, y+j)] = true
                     end
                 end
 
@@ -272,7 +272,7 @@ function M.update(datamodel)
                 local w, h = iprototype.rotate_area(typeobject.area, v.direction)
                 for i = 0, w-1 do
                     for j = 0, h-1 do
-                        exclude_coords[iprototype.packcoord(x+i, y+j)] = true
+                        exclude_coords[icoord.pack(x+i, y+j)] = true
                     end
                 end
 
@@ -293,7 +293,7 @@ function M.update(datamodel)
 
     for _ in move_confirm_mb:unpack() do
         for coord, v in pairs(moving_objs) do
-            local x, y = iprototype.unpackcoord(coord)
+            local x, y = icoord.unpack(coord)
             local object = objects:coord(x, y)
             if object then
                 local typeobject = iprototype.queryByName(object.prototype_name)
@@ -317,7 +317,7 @@ function M.update(datamodel)
         _clear_selected()
 
         for coord, v in pairs(moving_objs) do
-            local x, y = iprototype.unpackcoord(coord)
+            local x, y = icoord.unpack(coord)
             local object = objects:coord(x, y)
             if object then
                 _move_building(object, v.x, v.y)
@@ -369,7 +369,7 @@ end
 
 local function _get_first_moving_obj(moving_objs)
     for coord, v in pairs(moving_objs) do
-        local x, y = iprototype.unpackcoord(coord)
+        local x, y = icoord.unpack(coord)
         local r = ibuilding.get(x, y)
         if r then
             return coord, v, true
@@ -385,11 +385,10 @@ function M.gesture_pan_ended(datamodel)
 
     local coord, v, road = _get_first_moving_obj(moving_objs)
     if not coord then
-        assert(false)
         return
     end
 
-    local area, dir = _get_info(iprototype.unpackcoord(coord))
+    local area, dir = _get_info(icoord.unpack(coord))
     local c, position = icoord.align(v.srt.t, iprototype.rotate_area(area, dir))
     if not c then
         assert(false)
@@ -399,14 +398,14 @@ function M.gesture_pan_ended(datamodel)
         c[1], c[2] = icoord.road_coord(c[1], c[2])
         position = math3d.vector(icoord.position(c[1], c[2], iprototype.rotate_area(area, dir)))
     end
-    icamera_controller.move_delta(math3d.mark(math3d.sub(position, v.srt.t)))
+    icamera_controller.move_delta(math3d.sub(position, v.srt.t))
     local dx, dy = c[1] - v.x, c[2] - v.y
 
     local positions = {}
     for coord, v in pairs(moving_objs) do
         v.x = v.x + dx
         v.y = v.y + dy
-        local area, dir = _get_info(iprototype.unpackcoord(coord))
+        local area, dir = _get_info(icoord.unpack(coord))
         local position = icoord.position(v.x, v.y, iprototype.rotate_area(area, dir))
         if not position then
             return

@@ -28,7 +28,7 @@ end
 
 local function add_road(layer, x, y, color, shape, dir)
     local gid = igroup.id(x, y)
-    local idx = icoord.coord2idx(x, y)
+    local idx = icoord.pack(x, y)
     local item = {
         x=x, y=y,
         pos = cvtcoord2pos(x, y),
@@ -44,7 +44,7 @@ end
 
 local function del_road(layer, x, y)
     local gid = igroup.id(x, y)
-    local idx = icoord.coord2idx(x, y)
+    local idx = icoord.pack(x, y)
     local item = GROUP_ROADS[gid][idx]
     if item then
         item[layer] = nil

@@ -9,6 +9,7 @@ local ROTATORS <const> = CONSTANT.ROTATORS
 local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
 local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
+local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
 local ALL_DIR <const> = CONSTANT.ALL_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
@@ -224,7 +225,7 @@ local function _get_area_coords(x, y, w, h)
     local r = {}
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            r[iprototype.packcoord(x + i, y + j)] = true
+            r[icoord.pack(x + i, y + j)] = true
         end
     end
     return r
@@ -596,7 +597,7 @@ local function new(self, move_object_id, datamodel, typeobject)
 
     if not self.grid_entity then
         if iprototype.has_types(typeobject.type, "station") then
-            self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
+            self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         else
             self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, {t = __calc_grid_position(self, typeobject, self.pickup_object.dir)})
         end

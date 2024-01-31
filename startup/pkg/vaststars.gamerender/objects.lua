@@ -1,5 +1,6 @@
 local create_cache = require "utility.multiple_cache"
 local iprototype = require "gameplay.interface.prototype"
+local icoord = require "coord"
 
 local DEFAULT_CACHE_NAMES <const> = {"CONSTRUCTED"}
 local DEFAULT_CACHE_NAME <const> = "CONSTRUCTED"
@@ -23,7 +24,7 @@ function M:set(object, cache_name)
     local w, h = iprototype.rotate_area(typeobject.area, object.dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local coord = iprototype.packcoord(object.x + i, object.y + j)
+            local coord = icoord.pack(object.x + i, object.y + j)
             tile_objects:set(cache_name, {coord = coord, id = object.id})
         end
     end
@@ -42,7 +43,7 @@ function M:coord_update(object, cache_name)
 
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local coord = iprototype.packcoord(object.x + i, object.y + j)
+            local coord = icoord.pack(object.x + i, object.y + j)
             tile_objects:set(cache_name, {coord = coord, id = object.id})
         end
     end
@@ -50,7 +51,7 @@ end
 
 function M:coord(x, y, cache_names)
     cache_names = cache_names or DEFAULT_CACHE_NAMES
-    local tile = tile_objects:get(cache_names, iprototype.packcoord(x, y))
+    local tile = tile_objects:get(cache_names, icoord.pack(x, y))
     if not tile then
         return
     end

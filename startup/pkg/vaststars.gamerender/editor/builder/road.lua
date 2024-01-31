@@ -140,6 +140,7 @@ local function _new_entity(self, datamodel, typeobject, x, y)
             MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT,
             MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT,
             ROAD_WIDTH_SIZE,
+            ROAD_HEIGHT_SIZE,
             {t = status.srt.t},
             offset,
             nil,
@@ -256,9 +257,9 @@ local function place(self, datamodel)
             return
         end
         assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
+        _set_road(status.x, status.y, 0)
     end
 
-    _set_road(status.x, status.y, mask or 0)
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
 
     local dx, dy = iprototype.move_coord(status.x, status.y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)

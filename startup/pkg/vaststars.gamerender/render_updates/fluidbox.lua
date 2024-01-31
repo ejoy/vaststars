@@ -81,7 +81,7 @@ local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
             return
         end
 
-        local eid = map[iprototype.packcoord(dx, dy)]
+        local eid = map[icoord.pack(dx, dy)]
         if eid then
             local e = assert(gameplay_world.entity[eid])
             local typeobject = iprototype.queryById(e.building.prototype)
@@ -168,7 +168,7 @@ function fluidbox_sys:gameworld_prebuild()
         local w, h = iprototype.rotate_area(iprototype.queryById(e.building.prototype).area, e.building.direction)
         for i = 0, w - 1 do
             for j = 0, h - 1 do
-                local coord = iprototype.packcoord(e.building.x + i, e.building.y + j)
+                local coord = icoord.pack(e.building.x + i, e.building.y + j)
                 -- assert(map[coord] == nil)
                 map[coord] = e.eid
             end

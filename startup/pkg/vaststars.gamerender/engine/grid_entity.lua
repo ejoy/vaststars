@@ -19,12 +19,12 @@ local icoord = require "coord"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 
 local M = {}
-function M.create(width, height, unit, srt, pos_offset, material, position_type)
+function M.create(width, height, width_size, height_size, srt, pos_offset, material, position_type)
 	local hw = width * 0.5
-	local hw_len = hw * unit
+	local hw_len = hw * width_size
 
 	local hh = height * 0.5
-	local hh_len = hh * unit
+	local hh_len = hh * height_size
 
 	local vertices = {}
 
@@ -38,12 +38,12 @@ function M.create(width, height, unit, srt, pos_offset, material, position_type)
 	end
 
 	for i=0, width do
-        local x = -hw_len + i * unit
+        local x = -hw_len + i * width_size
 	    add_line(vertices, x, -hh_len, x, hh_len)
 	end
 
 	for i=0, height do
-        local y = -hh_len + i * unit
+        local y = -hh_len + i * height_size
       	add_line(vertices, -hw_len, y, hw_len, y)
 	end
 
