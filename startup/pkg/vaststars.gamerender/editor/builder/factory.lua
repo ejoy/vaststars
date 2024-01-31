@@ -325,7 +325,7 @@ function move_t:new(move_object_id, datamodel, typeobject)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // w, MAP_HEIGHT_COUNT // h, ROAD_WIDTH_SIZE, {t = _calc_grid_position(x, y, w, h)})
+    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // w, MAP_HEIGHT_COUNT // h, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, {t = _calc_grid_position(x, y, w, h)})
 
     self.move_object_id = move_object_id
     local vsobject = assert(vsobject_manager:get(self.move_object_id))

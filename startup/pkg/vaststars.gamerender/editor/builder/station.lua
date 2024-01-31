@@ -14,6 +14,21 @@ local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
+local BUILDING_EFK_SCALE <const> = {
+    ["1x1"] = {4, 4, 4},
+    ["1x2"] = {5, 5, 5},
+    ["2x1"] = {5, 5, 5},
+    ["2x2"] = {5, 5, 5},
+    ["3x2"] = {7, 7, 7},
+    ["3x3"] = {7, 7, 7},
+    ["3x5"] = {10, 10, 10},
+    ["4x2"] = {7, 7, 7},
+    ["4x4"] = {10, 10, 10},
+    ["4x6"] = {12, 12, 12},
+    ["5x3"] = {10, 10, 10},
+    ["5x5"] = {12, 12, 12},
+    ["6x6"] = {12, 12, 12},
+}
 
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
@@ -35,6 +50,8 @@ local ibuilding = ecs.require "render_updates.building"
 local prefab_slots = require("engine.prefab_parser").slots
 local show_message = ecs.require "show_message".show_message
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
+local igame_object = ecs.require "engine.game_object"
+local iefk = ecs.require "engine.system.efk"
 
 local function _get_road_entrance_srt(typeobject, building_srt)
     local slots = prefab_slots(typeobject.model)
@@ -203,7 +220,6 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 end
 
 local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
-    iobject.remove(self.pickup_object)
     if not self._check_coord(x, y, dir, self.typeobject) then
         datamodel.show_confirm = false
         datamodel.show_rotate = true
@@ -212,21 +228,25 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
         datamodel.show_rotate = true
     end
 
-    self.pickup_object = iobject.new {
-        prototype_name = typeobject.name,
-        dir = dir,
+    self.status = {
         x = x,
         y = y,
+        dir = dir,
         srt = srt.new {
             t = position,
             r = ROTATORS[dir],
         },
-        group_id = 0,
+    }
+    local status = self.status
+
+    self.indicator = igame_object.create {
+        prefab = typeobject.model,
+        srt = status.srt,
     }
 
     _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
-    local srt = _get_road_entrance_srt(typeobject, self.pickup_object.srt)
+    local srt = _get_road_entrance_srt(typeobject, status.srt)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local self_selected_boxes_position = icoord.position(x, y, w, h)
     if srt then
@@ -267,28 +287,34 @@ local function _calc_grid_position(typeobject, x, y, dir)
 end
 
 local function rotate(self, datamodel, dir)
-    local pickup_object = assert(self.pickup_object)
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
 
-    dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
+    dir = dir or iprototype.rotate_dir_times(status.dir, -1)
 
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    pickup_object.dir = iprototype.dir_tostring(dir)
-    pickup_object.srt.r = ROTATORS[pickup_object.dir]
+    status.dir = iprototype.dir_tostring(dir)
+    status.srt.r = ROTATORS[status.dir]
 
-    local srt = _get_road_entrance_srt(typeobject, pickup_object.srt)
+    indicator:send("obj_motion", "set_rotation", math3d.live(status.srt.r))
+
+    local srt = _get_road_entrance_srt(typeobject, status.srt)
     if srt then
         self.road_entrance:set_srt(srt.s, srt.r, srt.t)
     end
 
-    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     local position, x, y = _align(w, h, self.position_type)
     if not position then
         return
     end
-    pickup_object.x, pickup_object.y = x, y
-    pickup_object.srt.t = position
 
-    local self_selected_boxes_position = icoord.position(pickup_object.x, pickup_object.y, w, h)
+    status.x, status.y = x, y
+    status.srt.t = position
+
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
+
+    local self_selected_boxes_position = icoord.position(status.x, status.y, w, h)
     self.self_selected_boxes:set_position(self_selected_boxes_position)
     self.self_selected_boxes:set_wh(w, h)
 end
@@ -312,19 +338,22 @@ local function _calc_dir(adjacent_coords, x, y, dir)
 end
 
 local function touch_move(self, datamodel, delta_vec)
-    local pickup_object = assert(self.pickup_object)
-    iobject.move_delta(pickup_object, delta_vec)
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    status.srt.t = math3d.add(status.srt.t, delta_vec)
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
     if self.grid_entity then
-        self.grid_entity:set_position(_calc_grid_position(typeobject, pickup_object.x, pickup_object.y, pickup_object.dir))
+        self.grid_entity:set_position(_calc_grid_position(typeobject, status.x, status.y, status.dir))
     end
 
-    local srt = _get_road_entrance_srt(typeobject, pickup_object.srt)
+    local srt = _get_road_entrance_srt(typeobject, status.srt)
     assert(srt)
     self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     local position, x, y = _align(w, h, self.position_type)
     if position then
         local self_selected_boxes_position = icoord.position(x, y, w, h)
@@ -332,31 +361,35 @@ local function touch_move(self, datamodel, delta_vec)
         self.self_selected_boxes:set_wh(w, h)
     end
 
-    _show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
+    _show_nearby_buildings_selected_boxes(self, x, y, status.dir, typeobject)
 
     local dx, dy = icoord.road_coord(x, y)
-    if x == dx and y == dy and self._check_coord(x, y, pickup_object.dir, self.typeobject) then
-        local dir = _calc_dir(self._adjacent_coords, x, y, pickup_object.dir)
-        if dir and dir ~= pickup_object.dir then
+    if x == dx and y == dy and self._check_coord(x, y, status.dir, typeobject) then
+        local dir = _calc_dir(self._adjacent_coords, x, y, status.dir)
+        if dir and dir ~= status.dir then
             self:rotate(datamodel, dir)
         end
     end
 end
 
 local function touch_end(self, datamodel)
-    local pickup_object = assert(self.pickup_object)
-    local w, h = iprototype.rotate_area(self.typeobject.area, pickup_object.dir)
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     local position, x, y = _align(w, h, self.position_type)
     if not position then
         return
     end
-    pickup_object.x, pickup_object.y = x, y
-    pickup_object.srt.t = position
+    status.x, status.y = x, y
+    status.srt.t = position
 
-    local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
-    if not self._check_coord(x, y, pickup_object.dir, self.typeobject) then
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
+
+    if not self._check_coord(x, y, status.dir, typeobject) then
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -372,52 +405,38 @@ local function touch_end(self, datamodel)
         end
     end
 
-    local srt= _get_road_entrance_srt(typeobject, self.pickup_object.srt)
+    local srt= _get_road_entrance_srt(typeobject, status.srt)
     assert(srt)
     self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
-    local self_selected_boxes_position = icoord.position(pickup_object.x, pickup_object.y, w, h)
+    local self_selected_boxes_position = icoord.position(status.x, status.y, w, h)
     self.self_selected_boxes:set_position(self_selected_boxes_position)
     self.self_selected_boxes:set_wh(w, h)
 end
 
-local function complete(object_id)
-    assert(object_id)
-    local object = objects:get(object_id, {"CONFIRM"})
-    local old = objects:get(object_id, {"CONSTRUCTED"})
-    if not old then
-        object.gameplay_eid = igameplay.create_entity(object)
-    else
-        if old.prototype_name ~= object.prototype_name then
-            igameplay.destroy_entity(object.gameplay_eid)
-            object.gameplay_eid = igameplay.create_entity(object)
-        elseif old.dir ~= object.dir then
-            igameplay.rotate(object.gameplay_eid, object.dir)
-        end
-    end
-
-    objects:remove(object_id, "CONFIRM")
-    objects:set(object, "CONSTRUCTED")
-    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
-end
-
 local function confirm(self, datamodel)
-    local pickup_object = assert(self.pickup_object)
-    local succ = self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject)
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local succ, errmsg = self._check_coord(status.x, status.y, status.dir, typeobject)
     if not succ then
-        log.info("can not construct") --TODO: show error message
+        show_message(errmsg)
         return
     end
 
     local gameplay_world = gameplay_core.get_world()
-    if iinventory.query(gameplay_world, self.typeobject.id) < 1 then
+    if iinventory.query(gameplay_world, typeobject.id) < 1 then
         show_message("item not enough")
         return
     end
-    assert(iinventory.pickup(gameplay_world, self.typeobject.id, 1))
+    assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
 
-    objects:set(pickup_object, "CONFIRM")
-    pickup_object.PREPARE = true
+    indicator:modifier({name = "confirm"}, true)
+
+    local w, h = iprototype.unpackarea(typeobject.area) -- Note: No need to rotate based on direction here
+    local scale = assert(BUILDING_EFK_SCALE[w.."x"..h])
+    iefk.play("/pkg/vaststars.resources/effects/building-animat.efk", {s = scale, t = status.srt.t})
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
@@ -427,12 +446,17 @@ local function confirm(self, datamodel)
         self.grid_entity = nil
     end
 
-    complete(pickup_object.id)
+    local object = iobject.new {
+        prototype_name = typeobject.name,
+        dir = status.dir,
+        x = status.x,
+        y = status.y,
+        srt = srt.new(status.srt),
+    }
+    objects:set(object, "CONSTRUCTED")
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
-    local position, dir = pickup_object.srt.t, pickup_object.dir
-    self.pickup_object = nil
-
-    _new_entity(self, datamodel, self.typeobject, pickup_object.x, pickup_object.y, position, dir)
+    _new_entity(self, datamodel, typeobject, status.x, status.y, status.srt.t, status.dir)
 end
 
 local function clean(self, datamodel)
@@ -448,8 +472,8 @@ local function clean(self, datamodel)
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    if self.pickup_object then
-        iobject.remove(self.pickup_object)
+    if self.indicator then
+        self.indicator:remove()
     end
 
     if self.road_entrance then
@@ -515,7 +539,11 @@ local function new(self, datamodel, typeobject, position_type)
     _new_entity(self, datamodel, typeobject, x, y, position, dir)
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, {t = _calc_grid_position(typeobject, self.pickup_object.x, self.pickup_object.y, self.pickup_object.dir)})
+        local status = self.status
+        local srt = {
+            t = _calc_grid_position(typeobject, status.x, status.y, status.dir)
+        }
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, srt)
     end
 end
 
@@ -533,6 +561,7 @@ local function create()
     m.clean = clean
     m.build = build
     m.selected_boxes = {}
+    m.status = {}
     return m
 end
 return create
