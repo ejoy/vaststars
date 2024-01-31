@@ -300,7 +300,7 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     flush_sprite()
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, {t = _calc_grid_position(self, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = _calc_grid_position(self, typeobject, dir)})
     end
 end
 

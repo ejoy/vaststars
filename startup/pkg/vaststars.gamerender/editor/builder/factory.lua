@@ -9,6 +9,7 @@ local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local ROAD_WIDTH_COUNT <const> = CONSTANT.ROAD_WIDTH_COUNT
 local ROAD_HEIGHT_COUNT <const> = CONSTANT.ROAD_HEIGHT_COUNT
 local ROAD_WIDTH_SIZE <const> = CONSTANT.ROAD_WIDTH_SIZE
+local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
@@ -292,7 +293,7 @@ local function new(self, datamodel, typeobject, position_type)
     end
 
     _new_entity(self, datamodel, self.typeobject, x, y, position, dir)
-    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // w, MAP_HEIGHT_COUNT // h, ROAD_WIDTH_SIZE, {t = _calc_grid_position(x, y, w, h)})
+    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // w, MAP_HEIGHT_COUNT // h, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, {t = _calc_grid_position(x, y, w, h)})
 end
 
 local build_t = {}

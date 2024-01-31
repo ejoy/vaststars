@@ -32,12 +32,12 @@ function m.init(map)
         local w, h = typeobject.mineral_area:match("^(%d+)x(%d+)$")
         w, h = w + 0, h + 0
 
-        local hash = iprototype.packcoord(x, y)
+        local hash = icoord.pack(x, y)
         mineral_hash[hash] = {x = x, y = y, w = w, h = h, mineral = mineral}
 
         for i = 0, w - 1 do
             for j = 0, h - 1 do
-                mineral_cache[iprototype.packcoord(x + i, y + j)] = hash
+                mineral_cache[icoord.pack(x + i, y + j)] = hash
             end
         end
 
@@ -52,7 +52,7 @@ function m.init(map)
 end
 
 function m.get(x, y)
-    local hash = mineral_cache[iprototype.packcoord(x, y)]
+    local hash = mineral_cache[icoord.pack(x, y)]
     if not hash then
         return
     end
@@ -62,7 +62,7 @@ end
 
 function m.can_place(x, y, w, h)
     local mid_x, mid_y = x + w // 2, y + h // 2
-    local hash = mineral_cache[iprototype.packcoord(mid_x, mid_y)]
+    local hash = mineral_cache[icoord.pack(mid_x, mid_y)]
     local m = mineral_hash[hash]
     if not m then
         return false

@@ -6,6 +6,7 @@ local imineral = ecs.require "mineral"
 local objects = require "objects"
 local iminer = require "gameplay.interface.miner"
 local iprototype = require "gameplay.interface.prototype"
+local icoord = require "coord"
 
 return function (x, y, dir, typeobject, exclude_coords)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
@@ -15,7 +16,7 @@ return function (x, y, dir, typeobject, exclude_coords)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
             local dx, dy = x + i, y + j
-            if not exclude_coords[iprototype.packcoord(dx, dy)] then
+            if not exclude_coords[icoord.pack(dx, dy)] then
                 -- building
                 if objects:coord(dx, dy) then
                     return false, "cannot place here"

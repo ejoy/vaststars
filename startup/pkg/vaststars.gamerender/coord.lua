@@ -118,12 +118,12 @@ function coord.align(position, w, h)
 end
 
 --base 0
-function coord.idx2coord(idx)
+function coord.unpack(idx)
     return (idx % MAP_WIDTH_COUNT), (idx // MAP_WIDTH_COUNT)
 end
 
 --base 0
-function coord.coord2idx(x, y)
+function coord.pack(x, y)
     return y * MAP_WIDTH_COUNT + x
 end
 

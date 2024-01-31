@@ -150,7 +150,7 @@ local function _new_entity(self, datamodel, typeobject, x, y, pos, dir)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
     end
 
     self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)
@@ -286,7 +286,7 @@ local function place_one(self, datamodel)
         group_id = 0,
     }
     objects:set(object, "CONFIRM")
-    self.pending[iprototype.packcoord(object.x, object.y)] = object
+    self.pending[icoord.pack(object.x, object.y)] = object
     print("place_one", object.x, object.y, object.prototype_name)
 
     --
@@ -303,7 +303,7 @@ local function place_one(self, datamodel)
                 local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
                 o.prototype_name = prototype
                 o.dir = dir
-                self.pending[iprototype.packcoord(o.x, o.y)] = o
+                self.pending[icoord.pack(o.x, o.y)] = o
                 print("place_one", o.x, o.y, o.prototype_name)
             elseif iprototype.is_pipe_to_ground(neighbor.prototype_name) then
                 local m = iprototype_cache.get("pipe_to_ground").PrototypeDirToMask(neighbor.prototype_name, neighbor.dir)
@@ -313,7 +313,7 @@ local function place_one(self, datamodel)
                 local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
                 o.prototype_name = prototype
                 o.dir = dir
-                self.pending[iprototype.packcoord(o.x, o.y)] = o
+                self.pending[icoord.pack(o.x, o.y)] = o
                 print("place_one", o.x, o.y, o.prototype_name)
             end
         end

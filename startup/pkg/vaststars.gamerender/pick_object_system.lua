@@ -47,7 +47,7 @@ end
 
 local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
     if blur then
-        local lorry_ids = lorries[iprototype.packcoord(icoord.road_coord(x, y))]
+        local lorry_ids = lorries[icoord.pack(icoord.road_coord(x, y))]
         if lorry_ids then
             for _, lorry_id in ipairs(lorry_ids) do
                 local lorry = ilorry.get(lorry_id)
@@ -135,10 +135,10 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
     end
 
     if imountain:has_mountain(x, y) then
-        mark.mountain[iprototype.packcoord(x, y)] = {
+        mark.mountain[icoord.pack(x, y)] = {
             class = CLASS.Mountain,
             name = MountainName,
-            id = iprototype.packcoord(x, y),
+            id = icoord.pack(x, y),
             dist = distance(pick_x, pick_y, x, y),
             x = x,
             y = y,
@@ -148,10 +148,10 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
         return
     end
 
-    mark.empty[iprototype.packcoord(x, y)] = {
+    mark.empty[icoord.pack(x, y)] = {
         class = CLASS.Empty,
         name = "",
-        id = iprototype.packcoord(x, y),
+        id = icoord.pack(x, y),
         dist = distance(pick_x, pick_y, x, y),
         x = x,
         y = y,
@@ -178,7 +178,7 @@ function ipick_object.pick(x, y, blur)
         if lorry.prototype == 0 then
             goto continue
         end
-        local coord = iprototype.packcoord(icoord.road_coord(lorry.x, lorry.y))
+        local coord = icoord.pack(icoord.road_coord(lorry.x, lorry.y))
         lorries[coord] = lorries[coord] or {}
         lorries[coord][#lorries[coord] + 1] = e.eid
         ::continue::

@@ -25,7 +25,7 @@ local function set_masks(masks, r, v)
     --range:[x1, x1+ww), [y1, y+hh)
     for x=x0, x0+ww-1 do
         for y=y0, y0+hh-1 do
-            masks[icoord.coord2idx(x, y)] = v
+            masks[icoord.pack(x, y)] = v
         end
     end
 end
@@ -78,7 +78,7 @@ local function build_sub_indices(MASKS)
         local m = merge_indices(masks, WIDTH, HEIGHT, range)
         for _, info in ipairs(m) do
             subindices[info.baseidx] = info
-            local x, y = icoord.idx2coord(info.baseidx)
+            local x, y = icoord.unpack(info.baseidx)
             set_masks(masks, {x, y, info.sidx, info.sidx}, 0)
         end
     end
@@ -107,7 +107,7 @@ function M:init(mountain_cfg)
         local sidx = info.sidx
         local idx = idxoffset(baseidx, sidx)
 
-        local x0, y0 = icoord.idx2coord(idx)
+        local x0, y0 = icoord.unpack(idx)
         assert(0<=x0 and x0<WIDTH and 0<=y0 and y0<HEIGHT)
         local indices = groups[igroup.id(x0, y0)]
         indices[#indices+1] = {coord = {x0, y0}, pos = icoord.lefttop_position(x0, y0), sidx=sidx}
@@ -117,7 +117,7 @@ function M:init(mountain_cfg)
 end
 
 function M:has_mountain(x, y)
-    local idx = icoord.coord2idx(x, y)
+    local idx = icoord.pack(x, y)
     return (0 ~= assert(MOUNTAIN_MASKS[idx], ("Invalid x:%d, y:%d, idx"):format(x, y, idx)))
 end
 

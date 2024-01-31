@@ -18,6 +18,7 @@ local igameplay = ecs.require "gameplay.gameplay_system"
 local iui = ecs.require "engine.system.ui_system"
 local interval_call = ecs.require "engine.interval_call"
 local transfer_source_box = ecs.require "transfer_source_box"
+local icoord = require "coord"
 
 local DIRECTION <const> = {
     N = 0,
@@ -81,7 +82,7 @@ function building_sys:gameworld_build()
     building_cache = {}
     local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "road building:in eid:in REMOVED:absent" do
-        building_cache[iprototype.packcoord(e.building.x, e.building.y)] = {
+        building_cache[icoord.pack(e.building.x, e.building.y)] = {
             eid = e.eid,
             x = e.building.x,
             y = e.building.y,
@@ -93,13 +94,13 @@ function building_sys:gameworld_build()
 end
 
 function ibuilding.get(x, y)
-    return building_cache[iprototype.packcoord(x, y)]
+    return building_cache[icoord.pack(x, y)]
 end
 
 function ibuilding.remove(x, y)
     print("remove building", x, y)
     local gameplay_world = gameplay_core.get_world()
-    local coord = iprototype.packcoord(x, y)
+    local coord = icoord.pack(x, y)
     local building = building_cache[coord]
     igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid]) -- TODO: use igameplay.destroy_entity instead
 
@@ -107,7 +108,7 @@ function ibuilding.remove(x, y)
 end
 
 function ibuilding.set(init)
-    local coord = iprototype.packcoord(init.x, init.y)
+    local coord = icoord.pack(init.x, init.y)
     local building = building_cache[coord]
     if building then
         local gameplay_world = gameplay_core.get_world()
@@ -120,7 +121,7 @@ function ibuilding.set(init)
         prototype_name = init.prototype_name,
         dir = init.direction,
     })
-    building_cache[iprototype.packcoord(init.x, init.y)] = {
+    building_cache[icoord.pack(init.x, init.y)] = {
         eid = eid,
         x = init.x,
         y = init.y,

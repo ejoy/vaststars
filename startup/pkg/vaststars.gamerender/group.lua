@@ -20,7 +20,6 @@ local COORD_BOUNDARY <const> = icoord.boundary()
 
 local math3d = require "math3d"
 local ig = ecs.require "ant.group|group"
-local iprototype = require "gameplay.interface.prototype"
 
 local enabled_group_ids = {}
 local group_ids = setmetatable({}, {
@@ -37,7 +36,7 @@ local function _get_gridxy(x, y)
 end
 
 local function _get_grid_id(x, y)
-    return iprototype.packcoord(_get_gridxy(x, y))
+    return icoord.pack(_get_gridxy(x, y))
 end
 
 local group = {}
@@ -89,7 +88,7 @@ function group.enable(lefttop, rightbottom)
     local new = {}
     for x = ltGridCoord[1], rbGridCoord[1] do
         for y = ltGridCoord[2], rbGridCoord[2] do
-            local group_id = assert(group_ids[iprototype.packcoord(x, y)])
+            local group_id = assert(group_ids[icoord.pack(x, y)])
             new[group_id] = true
         end
     end
