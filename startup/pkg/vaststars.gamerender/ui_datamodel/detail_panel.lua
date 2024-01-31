@@ -476,7 +476,7 @@ function M.create(object_id)
         icon = typeobject.icon,
         desc = typeobject.item_description,
         prototype_name = iprototype.display_name(typeobject),
-        model = "mem:/pkg/vaststars.resources/" .. typeobject.model .. " config:d,1,4,1.2",
+        model = "mem:" .. typeobject.model .. " config:d,1,4,1.2",
         areaid = 0
     }
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
