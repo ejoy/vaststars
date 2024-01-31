@@ -45,7 +45,7 @@ value:
   tag:
     work
 ---
-file: work.prefab
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -58,7 +58,7 @@ value:
   tag:
     shelf1
 ---
-file: work.prefab
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -71,7 +71,7 @@ value:
   tag:
     shelf2
 ---
-file: work.prefab
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -84,7 +84,7 @@ value:
   tag:
     shelf3
 ---
-file: work.prefab
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -98,7 +98,7 @@ value:
   tag:
     shelf4
 ---
-file: work.prefab
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -112,7 +112,7 @@ value:
   tag:
     shelf5
 ---
-file: work.prefab
+file: mesh.prefab
 op: add
 path: /-
 value:
