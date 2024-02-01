@@ -300,7 +300,7 @@ prototype "净化气" {
     default_temperature = 25,
     max_temperature = 100,
     item_order = 44,
-    pollution = 150,
+    pollution = -10,
     item_description = "一种被净化过的气体",
 }
 
