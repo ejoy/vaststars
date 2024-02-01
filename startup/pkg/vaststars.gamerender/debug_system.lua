@@ -109,11 +109,11 @@ function debug_sys:ui_update()
         if state.CTRL and key == "S" and press == 1 then
             export_startup()
         end
-        if key == "A" and press == 1 then
-            idm.reset_texture_mipmap(true, 0)
-        end
-        if key == "B" and press == 1 then
-            idm.reset_texture_mipmap(false, 0)
+
+        if state.CTRL and key == "P" and press == 1 then
+            local gameplay_world = gameplay_core.get_world()
+            local e = assert(gameplay_world.ecs:first("global_state:in"))
+            print(("pollution: %f"):format(e.global_state.pollution))
         end
     end
 

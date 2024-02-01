@@ -77,32 +77,17 @@ local function _get_nearby_buldings(x, y, w, h)
 end
 
 local function _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
-    local x1_1, y1_1 = x1, y1
-    local x1_2, y1_2 = x1 + w1 - 1, y1
-    local x1_3, y1_3 = x1, y1 + h1 - 1
-    local x1_4, y1_4 = x1 + w1 - 1, y1 + h1 - 1
-
-    if (x1_1 >= x2 and x1_1 <= x2 + w2 - 1 and y1_1 >= y2 and y1_1 <= y2 + h2 - 1) or
-        (x1_2 >= x2 and x1_2 <= x2 + w2 - 1 and y1_2 >= y2 and y1_2 <= y2 + h2 - 1) or
-        (x1_3 >= x2 and x1_3 <= x2 + w2 - 1 and y1_3 >= y2 and y1_3 <= y2 + h2 - 1) or
-        (x1_4 >= x2 and x1_4 <= x2 + w2 - 1 and y1_4 >= y2 and y1_4 <= y2 + h2 - 1) then
-        return true
+    if x1 + w1 <= x2 or x2 + w2 <= x1 then
+        return false
     end
 
-    local x2_1, y2_1 = x2, y2
-    local x2_2, y2_2 = x2 + w2 - 1, y2
-    local x2_3, y2_3 = x2, y2 + h2 - 1
-    local x2_4, y2_4 = x2 + w2 - 1, y2 + h2 - 1
-
-    if (x2_1 >= x1 and x2_1 <= x1 + w1 - 1 and y2_1 >= y1 and y2_1 <= y1 + h1 - 1) or
-        (x2_2 >= x1 and x2_2 <= x1 + w1 - 1 and y2_2 >= y1 and y2_2 <= y1 + h1 - 1) or
-        (x2_3 >= x1 and x2_3 <= x1 + w1 - 1 and y2_3 >= y1 and y2_3 <= y1 + h1 - 1) or
-        (x2_4 >= x1 and x2_4 <= x1 + w1 - 1 and y2_4 >= y1 and y2_4 <= y1 + h1 - 1) then
-        return true
+    if y1 + h1 <= y2 or y2 + h2 <= y1 then
+        return false
     end
 
-    return false
+    return true
 end
+
 
 local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
     local nearby_buldings = _get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, dir))
