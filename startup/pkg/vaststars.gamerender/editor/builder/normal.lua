@@ -399,9 +399,14 @@ local function confirm(self, datamodel)
         srt = srt.new(self.status.srt),
         group_id = igroup.id(status.x, status.y),
         render_layer = RENDER_LAYER.BUILDING,
+    }
+    object.gameplay_eid = igameplay.create_entity {
+        prototype_name = typeobject.name,
+        dir = status.dir,
+        x = status.x,
+        y = status.y,
         recipe = _get_mineral_recipe(typeobject.name, status.x, status.y, w, h),
     }
-    object.gameplay_eid = igameplay.create_entity(object)
     object.PREPARE = true
 
     objects:set(object, "CONSTRUCTED")

@@ -120,7 +120,7 @@ function M.update(datamodel)
             local typeobject = iprototype.queryByName(item_name)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
-            datamodel.item_icon = typeobject.item_icon
+            datamodel.item_icon = typeobject.icon
 
             datamodel.item_ingredients = {}
             for _, v in pairs(iprototype_cache.get("item_ingredients").item_ingredients[item_name] or {}) do

@@ -261,6 +261,7 @@ local function place(self, datamodel)
     end
 
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
+    task.update_progress("is_road_connected")
 
     local dx, dy = iprototype.move_coord(status.x, status.y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
     icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)), function ()
@@ -269,8 +270,6 @@ local function place(self, datamodel)
         end
         _new_entity(self, datamodel, typeobject, dx, dy)
     end)
-
-    task.update_progress("is_road_connected")
 end
 
 local function clean(self, datamodel)

@@ -8,12 +8,12 @@
         <li><a href="vfs">Virtual File System</a></li>
         <li><a href="log">Log Directory</a></li>
         <li><a href="app">App Directory</a></li>
-        <li><a href="debug/call/ping">Ping Info</a></li>
+        <li><a href="debug/command/ping">Ping Info</a></li>
         <li>
             <form name="mipmap-form" style = "margin: 0;" onsubmit="
                     var debug = document.forms['mipmap-form']['debug'].checked;
                     var level = document.forms['mipmap-form']['level'].value;
-                    sendRequest('debug/send/mipmap?debug=' + debug + '&level=' + level); return false;">
+                    sendRequest('debug/world_command/mipmap?debug=' + debug + '&level=' + level); return false;">
                 <label>Mipmap Debug:</label>
                 <input name="debug" type="checkbox" />
                 <label>Mipmap Level:</label>
@@ -22,7 +22,7 @@
             </form>
         </li>
         <li>
-            <a href="#" onclick="sendRequest('debug/send/debug');">Show Debug</a>
+            <a href="#" onclick="sendRequest('debug/world_command/debug');">Show Debug</a>
         </li>
         <li><a href="texture">Texture</a></li>
     </ul>

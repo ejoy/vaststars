@@ -16,7 +16,7 @@ local export_startup = ecs.require "export_startup"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local idm = ecs.require "ant.debug|debug_mipmap"
 local kb_mb = world:sub {"keyboard"}
-local game_debug_mb = world:sub {"game_debug"}
+local web_cgi_cmd_mb = world:sub {"web_cgi_cmd"}
 local gesture_tap_mb = world:sub {"gesture", "tap"}
 local gesture_mb = world:sub {"gesture"}
 local debug_sys = ecs.system "debug_system"
@@ -172,7 +172,7 @@ function debug_sys:ui_update()
         end
     end
 
-    for _, cmd, params in game_debug_mb:unpack() do
+    for _, cmd, params in web_cgi_cmd_mb:unpack() do
         log.info("message: ", cmd)
         for k, v in pairs(params) do
             log.info(k, v, type(v))

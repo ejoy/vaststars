@@ -227,7 +227,12 @@ local function build(self, v)
         local x, y = v.x + dx, v.y + dy
         local dir = iprototype.rotate_dir(b[3], v.dir)
 
-        local gameplay_eid = igameplay.create_entity({dir = iprototype.dir_tostring(dir), x = x, y = y, prototype_name = prototype_name})
+        local gameplay_eid = igameplay.create_entity {
+            dir = iprototype.dir_tostring(dir),
+            x = x,
+            y = y,
+            prototype_name = prototype_name
+        }
 
         local w, h = iprototype.rotate_area(typeobject_inner.area, v.dir)
         inner_building:set(gameplay_eid, x, y, w, h)
