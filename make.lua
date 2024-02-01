@@ -15,7 +15,7 @@ if lm.os == "ios" then
     lm.arch = "arm64"
     lm.sys = "ios15.0"
 elseif lm.os == "macos" then
-    lm.sys = "macos11.0"
+    lm.sys = "macos13.0"
 end
 
 lm:config "game_config" {
