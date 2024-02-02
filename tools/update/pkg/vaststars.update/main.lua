@@ -20,7 +20,7 @@ local repopath <const> = fs.absolute "../../startup/":string()
 local rootpath <const> = vfs.repopath()
 local reskey <const> = platform.os == "windows" and  {
     "windows-direct3d11",
-    --"ios-metal",
+    "ios-metal",
 } or {
     "ios-metal",
 }
