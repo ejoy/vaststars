@@ -39,10 +39,7 @@ chimney_update(world& w, ecs::entity<component::chimney, component::fluidbox>& v
     while (c.progress <= 0) {
         if (c.status == STATUS_DONE) {
             auto& pollution = w.state->pollution;
-            auto const& results = prototype::get<"results", recipe_items>(w, c.recipe);
-            for (size_t i = 0; i < results.n; ++i) {
-                pollution += prototype::get<"pollution">(w, results.items[i].item) * results.items[i].amount;
-            }
+            pollution += prototype::get<"pollution">(w, c.recipe);
             if (pollution < 0) {
                 pollution = 0;
             }
