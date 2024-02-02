@@ -42,7 +42,7 @@ local function show(tech_node)
                             end
                             if e.animation then
                                 iplayback.set_play(e, "Armature.001Action", true)
-                                iplayback.set_loop(e, "Armature.001Action", true)
+                                iplayback.completion_loop(e, "Armature.001Action")
                             end
                         end
 

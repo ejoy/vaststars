@@ -163,7 +163,7 @@ local function _new_entity(self, datamodel, typeobject, x, y)
                     local e <close> = world:entity(eid, "animation?in")
                     if e.animation then
                         iplayback.set_play(e, "Armature.002Action", true)
-                        iplayback.set_loop(e, "Armature.002Action", true)
+                        iplayback.completion_loop(e, "Armature.002Action")
                     end
                 end
             end,
