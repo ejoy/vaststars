@@ -27,7 +27,7 @@ local reskey <const> = platform.os == "windows" and  {
 
 for _ in ltask.parallel {
     { compile_vfs, repopath, reskey },
-    { download_patch, rootpath..".download/", shortver, reskey },
+    { download_patch, fs.path(rootpath) / ".download", shortver, reskey },
 } do
 end
 

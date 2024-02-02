@@ -129,3 +129,9 @@ function m:init_world()
     init_game(template)
     world:import_feature "vaststars.gamerender|gameplay_update"
 end
+
+local ltask = require "ltask"
+
+ltask.fork(function ()
+    ltask.spawn "vaststars.gameupdate|download"
+end)

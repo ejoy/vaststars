@@ -9,7 +9,7 @@ return function (dir, version, reskey, min_index)
     local fetch_dir_tasks = {}
     local fetch_file_tasks = {}
     local function fetch_file(path)
-        local filepath = fs.path(dir..path)
+        local filepath = dir / path
         if not fs.exists(filepath) then
             fs.create_directories(filepath:parent_path())
             download(CDN..version.."/"..path, filepath:string())
