@@ -5,9 +5,10 @@ local ltask = require "ltask"
 local zip = require "zip"
 
 local version = import_package "vaststars.version"
+local gameupdate = import_package "vaststars.gameupdate"
 local compile_vfs = require "compile_vfs"
 local create_zip = require "create_zip"
-local download_patch = require "download_patch"
+local download_patch = gameupdate.download_patch
 
 local shortver = version.game:sub(1, 6)
 
