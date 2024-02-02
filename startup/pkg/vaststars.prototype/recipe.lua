@@ -3952,6 +3952,7 @@ prototype "地下卤水排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  101,
+    pollution = 0,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"地下卤水", 100},
@@ -3967,6 +3968,7 @@ prototype "纯水排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  102,
+    pollution = 0,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"纯水", 100},
@@ -3982,6 +3984,7 @@ prototype "碱性溶液排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  103,
+    pollution = 150,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"碱性溶液", 100},
@@ -3997,6 +4000,7 @@ prototype "盐酸排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  104,
+    pollution = 150,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"盐酸", 100},
@@ -4012,6 +4016,7 @@ prototype "润滑油排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  105,
+    pollution = 50,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"润滑油", 100},
@@ -4022,11 +4027,77 @@ prototype "润滑油排泄" {
     description = "润滑油排泄",
 }
 
+prototype "硫酸排泄" {
+    type = { "recipe" },
+    recipe_craft_category = "流体液体排泄",
+    --recipe_category =  "化工",
+    recipe_order =  105,
+    pollution = 150,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"硫酸", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "硫酸排泄",
+}
+
+prototype "地热气排泄" {
+    type = { "recipe" },
+    recipe_craft_category = "流体液体排泄",
+    --recipe_category =  "化工",
+    recipe_order =  105,
+    pollution = 100,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"地热气", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "地热气排泄",
+}
+
+prototype "氨气排泄" {
+    type = { "recipe" },
+    recipe_craft_category = "流体液体排泄",
+    --recipe_category =  "化工",
+    recipe_order =  105,
+    pollution = 75,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"氨气", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "氨气排泄",
+}
+
+prototype "氦气排泄" {
+    type = { "recipe" },
+    recipe_craft_category = "流体液体排泄",
+    --recipe_category =  "化工",
+    recipe_order =  105,
+    pollution = 0,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"氦气", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "氦气排泄",
+}
+
+
 prototype "氮气排泄" {
     type = { "recipe" },
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  110,
+    pollution = 0,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氮气", 100},
@@ -4042,6 +4113,7 @@ prototype "氧气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  111,
+    pollution = 0,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氧气", 100},
@@ -4057,6 +4129,7 @@ prototype "二氧化碳排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  112,
+    pollution = 25,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"二氧化碳", 100},
@@ -4067,11 +4140,45 @@ prototype "二氧化碳排泄" {
     description = "二氧化碳排泄",
 }
 
+prototype "四氯化钛排泄" {
+    type = { "recipe" },
+    recipe_craft_category = "流体气体排泄",
+    --recipe_category =  "化工",
+    recipe_order =  112,
+    pollution = 150,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"四氯化钛", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "四氯化钛排泄",
+}
+
+prototype "乙烯排泄" {
+    type = { "recipe" },
+    recipe_craft_category = "流体气体排泄",
+    --recipe_category =  "化工",
+    recipe_order =  112,
+    pollution = 25,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
+    ingredients = {
+        {"乙烯", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "乙烯排泄",
+}
+
+
 prototype "氢气排泄" {
     type = { "recipe" },
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  113,
+    pollution = 0,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氢气", 100},
@@ -4088,6 +4195,7 @@ prototype "蒸汽排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  114,
+    pollution = 0,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"蒸汽", 100},
@@ -4103,6 +4211,7 @@ prototype "甲烷排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  115,
+    pollution = 25,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"甲烷", 100},
@@ -4118,6 +4227,7 @@ prototype "废水排泄" {
     recipe_craft_category = "流体液体排泄",
     --recipe_category =  "化工",
     recipe_order =  116,
+    pollution = 150,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"废水", 100},
@@ -4133,6 +4243,7 @@ prototype "氯气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  117,
+    pollution = 150,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"氯气", 100},
@@ -4148,6 +4259,7 @@ prototype "空气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  118,
+    pollution = 0,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"空气", 100},
@@ -4163,6 +4275,7 @@ prototype "一氧化碳排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  119,
+    pollution = 50,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"一氧化碳", 100},
@@ -4178,6 +4291,7 @@ prototype "丁二烯排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  120,
+    pollution = 75,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"丁二烯", 100},
@@ -4193,6 +4307,7 @@ prototype "净化气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  121,
+    pollution = -10,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"净化气", 500},
