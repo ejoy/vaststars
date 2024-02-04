@@ -3919,13 +3919,13 @@ prototype "沙子回收" {
     recipe_order =  102,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/sand-recycle.texture",
     ingredients = {
-        {"地下卤水", 80},
+        {"地下卤水", 250},
         {"沙子", 4},
     },
     results = {
-        {"废水", 100},
+        {"废水", 200},
     },
-    time = "1s",
+    time = "20s",
     description = "沙子排泄",
 }
 
