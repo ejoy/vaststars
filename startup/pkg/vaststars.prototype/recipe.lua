@@ -4388,12 +4388,12 @@ prototype "过滤器" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"石墨", 1},
-        {"铁板", 4},
+        {"铁板", 5},
     },
     results = {
         {"过滤器", 1},
     },
-    time = "2s",
+    time = "3s",
     description = "使用石墨和铝棒生成过滤器",
 }
 
