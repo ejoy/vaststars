@@ -1,3 +1,5 @@
+local DIRECTION <const> = require "gameplay.interface.constant".DIRECTION
+
 local mt = {}
 mt.__index = function (t, k)
     t[k] = {}
@@ -9,6 +11,7 @@ return function()
 
     local accel = setmetatable({}, mt)
     local accel_rev = setmetatable({}, mt)
+
     for _, typeobject in pairs(iprototype.each_type "pipe_to_ground") do
         assert(typeobject.building_direction)
         for _, entity_dir in ipairs(typeobject.building_direction) do
@@ -23,20 +26,20 @@ return function()
             end
 
             assert(not accel[typeobject.building_category][m])
-            accel[typeobject.building_category][m] = {prototype_name = typeobject.name, entity_dir = entity_dir}
+            accel[typeobject.building_category][m] = {prototype = typeobject.id, entity_dir = DIRECTION[entity_dir]}
 
-            assert(not accel_rev[typeobject.name][entity_dir])
-            accel_rev[typeobject.name][entity_dir] = m
+            assert(not accel_rev[typeobject.id][DIRECTION[entity_dir]])
+            accel_rev[typeobject.id][DIRECTION[entity_dir]] = m
         end
     end
 
     local function MaskToPrototypeDir(building_category, mask)
         local c = accel[building_category][mask]
-        return c.prototype_name, c.entity_dir
+        return c.prototype, c.entity_dir
     end
 
-    local function PrototypeDirToMask(prototype_name, dir)
-        return accel_rev[prototype_name][dir]
+    local function PrototypeDirToMask(prototype, dir)
+        return accel_rev[prototype][dir]
     end
 
     return {

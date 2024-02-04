@@ -26,18 +26,18 @@ local function unpack(coord)
     return coord & 0xFF, coord >> 8
 end
 
-local function open(bits, dir)
-    assert(bits & (1 << dir) == 0)
-    return bits | (1 << dir)
+local function open(m, dir)
+    assert(m & (1 << dir) == 0)
+    return m | (1 << dir)
 end
 
-local function close(bits, dir)
-    assert(bits & (1 << dir) ~= 0)
-    return bits & ~(1 << dir)
+local function close(m, dir)
+    assert(m & (1 << dir) ~= 0)
+    return m & ~(1 << dir)
 end
 
-local function check(bits, dir)
-    return (bits & (1 << dir)) ~= 0
+local function check(m, dir)
+    return (m & (1 << dir)) ~= 0
 end
 
 local function move(d)

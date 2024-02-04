@@ -138,11 +138,15 @@ local function _clear_moving_objs()
 end
 
 local function _move_building(object, x, y)
+    object.x, object.y = x, y
+
     local e = gameplay_core.get_entity(object.gameplay_eid)
     e.building_changed = true
     igameplay.move(object.gameplay_eid, x, y)
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+end
 
+local function _update_building_cache(object, x, y)
     iobject.coord(object, x, y)
     objects:coord_update(object)
 end
@@ -316,11 +320,13 @@ function M.update(datamodel)
 
         _clear_selected()
 
+        local objs = {}
         for coord, v in pairs(moving_objs) do
             local x, y = icoord.unpack(coord)
             local object = objects:coord(x, y)
             if object then
                 _move_building(object, v.x, v.y)
+                objs[object.id] = object
             end
             local r = ibuilding.get(x, y)
             if r then
@@ -334,6 +340,10 @@ function M.update(datamodel)
                     road = true,
                 }
             end
+        end
+
+        for _, object in pairs(objs) do
+            _update_building_cache(object, object.x, object.y)
         end
 
         _clear_moving_objs()

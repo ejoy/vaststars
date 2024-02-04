@@ -14,6 +14,7 @@ local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
+local DIRECTION <const> = require "gameplay.interface.constant".DIRECTION
 
 local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
@@ -53,54 +54,25 @@ local function countNeighboringFluids(x, y)
 end
 
 local function _builder_init(self, datamodel)
-    local coord_indicator = self.coord_indicator
+    local indicator = self.indicator
 
-    local object = objects:coord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES)
-    if object then
-        datamodel.show_place_one = false
-    else
-        datamodel.show_place_one = true
-    end
+    local valid = false
+    local object = objects:coord(indicator.x, indicator.y, EDITOR_CACHE_NAMES)
+    valid = (object == nil)
 
-    if countNeighboringFluids(coord_indicator.x, coord_indicator.y) > 1 then
-        datamodel.show_place_one = false
+    if countNeighboringFluids(indicator.x, indicator.y) > 1 then
+        valid = false
     end
 
     for _, c in pairs(self.pickup_components) do
-        c:on_status_change(datamodel.show_place_one)
+        c:on_status_change(valid)
     end
 end
 
-local function __calc_grid_position(building_position, typeobject, dir)
+local function _calc_grid_position(building_position, typeobject, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local _, originPosition = icoord.align(math3d.vector(0, 0, 0), w, h)
     return math3d.add(math3d.sub(building_position, originPosition), GRID_POSITION_OFFSET)
-end
-
-local function confirm(self, datamodel)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
-    iobject.remove(self.coord_indicator)
-    self.coord_indicator = nil
-
-    for _, object in pairs(self.pending) do
-        local object_id = object.id
-        local old = objects:get(object_id, {"CONSTRUCTED"})
-        if not old then
-            object.gameplay_eid = igameplay.create_entity(object)
-        else
-            if old.prototype_name ~= object.prototype_name then
-                igameplay.destroy_entity(object.gameplay_eid)
-                object.gameplay_eid = igameplay.create_entity(object)
-            elseif old.dir ~= object.dir then
-                igameplay.rotate(object.gameplay_eid, object.dir)
-            end
-        end
-    end
-    objects:commit("CONFIRM", "CONSTRUCTED")
-    gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
 end
 
 local function getPlacedPrototypeName(x, y, default_prototype_name, default_dir)
@@ -134,10 +106,10 @@ end
 local function _new_entity(self, datamodel, typeobject, x, y, pos, dir)
     assert(x and y)
 
-    iobject.remove(self.coord_indicator)
+    iobject.remove(self.indicator)
     local prototype_name, dir = getPlacedPrototypeName(x, y, typeobject.name, dir)
 
-    self.coord_indicator = iobject.new {
+    self.indicator = iobject.new {
         prototype_name = prototype_name,
         dir = dir,
         x = x,
@@ -150,10 +122,10 @@ local function _new_entity(self, datamodel, typeobject, x, y, pos, dir)
     }
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = __calc_grid_position(self.coord_indicator.srt.t, typeobject, dir)})
+        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = _calc_grid_position(self.indicator.srt.t, typeobject, dir)})
     end
 
-    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.indicator.srt.t, typeobject.area, dir, true)
 
     --
     _builder_init(self, datamodel)
@@ -161,24 +133,23 @@ end
 --------------------------------------------------------------------------------------------------
 
 local function touch_move(self, datamodel, delta_vec)
-    if not self.coord_indicator then
+    if not self.indicator then
         return
     end
-    iobject.move_delta(self.coord_indicator, delta_vec)
+    iobject.move_delta(self.indicator, delta_vec)
 
-    local coord_indicator = self.coord_indicator
-    local typeobject = iprototype.queryByName(coord_indicator.prototype_name)
-    local x, y = align(self.position_type, typeobject.area, coord_indicator.dir)
+    local indicator = self.indicator
+    local typeobject = iprototype.queryByName(indicator.prototype_name)
+    local x, y = align(self.position_type, typeobject.area, indicator.dir)
     if not x then
         return
     end
     local prototype_name, dir = getPlacedPrototypeName(x, y, self.typeobject.name, DEFAULT_DIR)
-    if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
-        local srt = self.coord_indicator.srt
-        local x, y = self.coord_indicator.x, self.coord_indicator.y
-        iobject.remove(self.coord_indicator)
-        print("touch_move", x, y, prototype_name, dir)
-        self.coord_indicator = iobject.new {
+    if prototype_name ~= self.indicator.prototype_name or dir ~= self.indicator.dir then
+        local srt = self.indicator.srt
+        local x, y = self.indicator.x, self.indicator.y
+        iobject.remove(self.indicator)
+        self.indicator = iobject.new {
             prototype_name = prototype_name,
             dir = dir,
             x = x,
@@ -188,34 +159,33 @@ local function touch_move(self, datamodel, delta_vec)
         }
     end
     if self.grid_entity then
-        local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
-        local grid_position = icoord.position(self.coord_indicator.x, self.coord_indicator.y, w, h)
-        self.grid_entity:set_position(__calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
+        local typeobject = iprototype.queryByName(self.indicator.prototype_name)
+        local w, h = iprototype.rotate_area(typeobject.area, self.indicator.dir)
+        local grid_position = icoord.position(self.indicator.x, self.indicator.y, w, h)
+        self.grid_entity:set_position(_calc_grid_position(grid_position, typeobject, self.indicator.dir))
     end
     for _, c in pairs(self.pickup_components) do
-        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
+        c:on_position_change(self.indicator.srt, self.indicator.dir)
     end
 end
 
 local function touch_end(self, datamodel)
-    if not self.coord_indicator then
+    if not self.indicator then
         return
     end
 
-    local x, y, pos = align(self.position_type, self.typeobject.area, self.coord_indicator.dir)
+    local x, y, pos = align(self.position_type, self.typeobject.area, self.indicator.dir)
     if not x then
         return
     end
 
-    self.coord_indicator.srt.t, self.coord_indicator.x, self.coord_indicator.y = pos, x, y
+    self.indicator.srt.t, self.indicator.x, self.indicator.y = pos, x, y
 
-    local prototype_name, dir = getPlacedPrototypeName(self.coord_indicator.x, self.coord_indicator.y, self.typeobject.name, DEFAULT_DIR)
-    if prototype_name ~= self.coord_indicator.prototype_name or dir ~= self.coord_indicator.dir then
-        local x, y = self.coord_indicator.x, self.coord_indicator.y
-        iobject.remove(self.coord_indicator)
-        print("touch_move", x, y, prototype_name, dir)
-        self.coord_indicator = iobject.new {
+    local prototype_name, dir = getPlacedPrototypeName(self.indicator.x, self.indicator.y, self.typeobject.name, DEFAULT_DIR)
+    if prototype_name ~= self.indicator.prototype_name or dir ~= self.indicator.dir then
+        local x, y = self.indicator.x, self.indicator.y
+        iobject.remove(self.indicator)
+        self.indicator = iobject.new {
             prototype_name = prototype_name,
             dir = dir,
             x = x,
@@ -229,28 +199,28 @@ local function touch_end(self, datamodel)
     end
 
     if self.grid_entity then
-        local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
-        local w, h = iprototype.rotate_area(typeobject.area, self.coord_indicator.dir)
-        local grid_position = icoord.position(self.coord_indicator.x, self.coord_indicator.y, w, h)
-        self.grid_entity:set_position(__calc_grid_position(grid_position, typeobject, self.coord_indicator.dir))
+        local typeobject = iprototype.queryByName(self.indicator.prototype_name)
+        local w, h = iprototype.rotate_area(typeobject.area, self.indicator.dir)
+        local grid_position = icoord.position(self.indicator.x, self.indicator.y, w, h)
+        self.grid_entity:set_position(_calc_grid_position(grid_position, typeobject, self.indicator.dir))
     end
 
     for _, c in pairs(self.pickup_components) do
-        c:on_position_change(self.coord_indicator.srt, self.coord_indicator.dir)
+        c:on_position_change(self.indicator.srt, self.indicator.dir)
     end
 
     _builder_init(self, datamodel)
 end
 
-local function place_one(self, datamodel)
-    local coord_indicator = self.coord_indicator
-    local x, y = coord_indicator.x, coord_indicator.y
+local function place(self, datamodel)
+    local indicator = self.indicator
+    local x, y = indicator.x, indicator.y
     local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
     if object then
         return
     end
     if countNeighboringFluids(x, y) > 1 then
-        print("can not place, too many neighboring fluids") --TODO: show error message
+        show_message("different fluids do not mix")
         return
     end
 
@@ -275,8 +245,8 @@ local function place_one(self, datamodel)
     local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, m)
 
     object = iobject.new {
-        prototype_name = prototype,
-        dir = dir,
+        prototype_name = iprototype.queryById(prototype).name,
+        dir = iprototype.dir_tostring(dir),
         x = x,
         y = y,
         srt = srt.new {
@@ -286,8 +256,9 @@ local function place_one(self, datamodel)
         group_id = 0,
     }
     objects:set(object, "CONFIRM")
-    self.pending[icoord.pack(object.x, object.y)] = object
-    print("place_one", object.x, object.y, object.prototype_name)
+
+    local pending = {}
+    pending[icoord.pack(object.x, object.y)] = object
 
     --
     for _, dir in ipairs(ALL_DIR_NUM) do
@@ -296,32 +267,51 @@ local function place_one(self, datamodel)
         if fluid then
             local neighbor = assert(objects:coord(dx, dy, EDITOR_CACHE_NAMES))
             if iprototype.is_pipe(neighbor.prototype_name) then
-                local m = iprototype_cache.get("pipe").PrototypeDirToMask(neighbor.prototype_name, neighbor.dir)
+                local m = iprototype_cache.get("pipe").PrototypeDirToMask(iprototype.queryByName(neighbor.prototype_name).id, DIRECTION[neighbor.dir])
                 m = m | (1 << iprototype.reverse_dir(dir))
                 local typeobject = iprototype.queryByName(neighbor.prototype_name)
                 local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, m)
                 local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
-                o.prototype_name = prototype
-                o.dir = dir
-                self.pending[icoord.pack(o.x, o.y)] = o
-                print("place_one", o.x, o.y, o.prototype_name)
+                o.prototype_name = iprototype.queryById(prototype).name
+                o.dir = iprototype.dir_tostring(dir)
+                pending[icoord.pack(o.x, o.y)] = o
             elseif iprototype.is_pipe_to_ground(neighbor.prototype_name) then
-                local m = iprototype_cache.get("pipe_to_ground").PrototypeDirToMask(neighbor.prototype_name, neighbor.dir)
+                local m = iprototype_cache.get("pipe_to_ground").PrototypeDirToMask(iprototype.queryByName(neighbor.prototype_name).id, DIRECTION[neighbor.dir])
                 m = m | (1 << (iprototype.reverse_dir(dir)*2))
                 local typeobject = iprototype.queryByName(neighbor.prototype_name)
                 local prototype, dir = iprototype_cache.get("pipe_to_ground").MaskToPrototypeDir(typeobject.building_category, m)
                 local o = assert(objects:modify(dx, dy, {"CONFIRM", "CONSTRUCTED"}, iobject.clone))
-                o.prototype_name = prototype
-                o.dir = dir
-                self.pending[icoord.pack(o.x, o.y)] = o
-                print("place_one", o.x, o.y, o.prototype_name)
+                o.prototype_name = iprototype.queryById(prototype).name
+                o.dir = iprototype.dir_tostring(dir)
+                pending[icoord.pack(o.x, o.y)] = o
             end
         end
     end
 
-    datamodel.show_confirm = true
+    if self.grid_entity then
+        self.grid_entity:remove()
+        self.grid_entity = nil
+    end
+    iobject.remove(self.indicator)
+    self.indicator = nil
 
-    confirm(self, datamodel)
+    for _, object in pairs(pending) do
+        local object_id = object.id
+        local old = objects:get(object_id, {"CONSTRUCTED"})
+        if not old then
+            object.gameplay_eid = igameplay.create_entity(object)
+        else
+            if old.prototype_name ~= object.prototype_name then
+                igameplay.destroy_entity(object.gameplay_eid)
+                object.gameplay_eid = igameplay.create_entity(object)
+            elseif old.dir ~= object.dir then
+                igameplay.rotate(object.gameplay_eid, object.dir)
+            end
+        end
+    end
+    objects:commit("CONFIRM", "CONSTRUCTED")
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
+
     self:clean(self, datamodel)
     _new_entity(self, datamodel, self.typeobject, x, y, object.srt.t, DEFAULT_DIR)
 end
@@ -331,14 +321,13 @@ local function clean(self, datamodel)
         self.grid_entity:remove()
         self.grid_entity = nil
     end
-    iobject.remove(self.coord_indicator)
-    self.coord_indicator = nil
+    iobject.remove(self.indicator)
+    self.indicator = nil
 
     for _, c in pairs(self.pickup_components) do
         c:remove()
     end
     self.pickup_components = {}
-    self.pending = {}
 end
 
 local function new(self, datamodel, typeobject, position_type)
@@ -358,13 +347,10 @@ local function create()
     m.new = new
     m.touch_move = touch_move
     m.touch_end = touch_end
-    m.confirm = place_one
+    m.confirm = place
     m.clean = clean
     m.build = build
-    m.pending = {}
     m.pickup_components = {}
-    m.to_x = nil
-    m.to_y = nil
     return m
 end
 return create

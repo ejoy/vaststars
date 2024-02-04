@@ -1,5 +1,4 @@
 local CONSTANT <const> = require "gameplay.interface.constant"
-local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
 local DIRECTION <const> = CONSTANT.DIRECTION
 
