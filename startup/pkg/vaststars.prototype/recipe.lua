@@ -4395,7 +4395,7 @@ prototype "过滤器" {
     results = {
         {"过滤器", 1},
     },
-    time = "3s",
+    time = "8s",
     description = "使用石墨和铝棒生成过滤器",
 }
 
