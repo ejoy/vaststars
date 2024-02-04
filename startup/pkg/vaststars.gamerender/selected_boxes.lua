@@ -176,6 +176,10 @@ function mt:set_color(color)
 end
 
 function mt:set_color_transition(color, duration)
+    if math3d.isequal(color, self.color) then
+        return
+    end
+
     local t = 0
     local from = self.color
     local to = color

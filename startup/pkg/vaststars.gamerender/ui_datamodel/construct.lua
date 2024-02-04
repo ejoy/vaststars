@@ -83,7 +83,7 @@ local function toggle_view(s, pos, cb)
     end
 end
 
-local function __clean(datamodel, unlock)
+local function _clean(datamodel, unlock)
     if builder then
         builder:clean(builder_datamodel)
         builder, builder_datamodel = nil, nil
@@ -125,7 +125,7 @@ local function _get_daynight_image(gameplay_world)
 end
 
 local MAX_ELECTRICITY_LEN <const> = 3
-local function _format_number(n)
+local function _format_MG_number(n)
     local int_part = math.floor(n)
     local decimal_part = n - int_part
 
@@ -135,6 +135,20 @@ local function _format_number(n)
         local num_digits = MAX_ELECTRICITY_LEN - string.len(tostring(int_part))
         local format_str = "%." .. tostring(num_digits) .. "f"
         return string.format(format_str, n)
+    end
+end
+
+local function _format_number(negative, n)
+    if n > 1000000000 then
+        local v = _format_MG_number(n / 1000000000)
+        return negative and "-" .. v or v, "G"
+    elseif n > 1000000 then
+        local v = _format_MG_number(n / 1000000)
+        return negative and "-" .. v or v, "M"
+    elseif n > 1000 then
+        return negative and -(n // 1000) or n // 1000, "k"
+    else
+        return negative and -n or n, ""
     end
 end
 
@@ -155,17 +169,14 @@ local function _get_electricity(gameplay_world)
     local negative = electricity < 0
     electricity = math.abs(electricity)
 
-    if electricity > 1000000000 then
-        local v = _format_number(electricity / 1000000000)
-        return negative and "-" .. v or v, "GW", negative
-    elseif electricity > 1000000 then
-        local v = _format_number(electricity / 1000000)
-        return negative and "-" .. v or v, "MW", negative
-    elseif electricity > 1000 then
-        return negative and -(electricity // 1000) or electricity // 1000, "kW", negative
-    else
-        return negative and -electricity or electricity, "W", negative
-    end
+    local n, unit = _format_number(negative, electricity)
+    return n, unit .. "W", negative
+end
+
+local function _get_pollution(gameplay_world)
+    local e = assert(gameplay_world.ecs:first("global_state:in"))
+    local n, unit = _format_number(false, e.global_state.pollution)
+    return n, unit .. "μg", e.global_state.pollution
 end
 
 ---------------
@@ -202,11 +213,12 @@ function M.create()
         focus_building_icon = "",
         recipe_list = get_recipe_list(),
         pollution = 0,
+        pollution_raw = 0,
+        pollution_unit = "μg",
         daynight = _get_daynight_image(gameplay_world),
         electricity = 0,
         electricity_unit = "W",
         electricity_negative = false,
-        pollution_unit = "μg",
     }
 end
 
@@ -342,10 +354,10 @@ local function pickupObjectOnBuild(datamodel, position, blur)
         show_selectbox(o.x, o.y, o.w, o.h)
         return
     else
-        __clean(datamodel)
+        _clean(datamodel)
         toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
             gameplay_core.world_update = true
-            __clean(datamodel)
+            _clean(datamodel)
         end)
     end
 end
@@ -457,8 +469,7 @@ local update = interval_call(300, function(datamodel)
     datamodel.transfer_id = itransfer.get_source_eid() or 0
 
     local gameplay_world = gameplay_core.get_world()
-    local e = assert(gameplay_world.ecs:first("global_state:in"))
-    datamodel.pollution = e.global_state.pollution
+    datamodel.pollution, datamodel.pollution_unit, datamodel.pollution_raw = _get_pollution(gameplay_world)
     datamodel.daynight = _get_daynight_image(gameplay_world)
     datamodel.electricity, datamodel.electricity_unit, datamodel.electricity_negative = _get_electricity(gameplay_world)
 
@@ -506,28 +517,28 @@ function M.update(datamodel)
         if builder and builder.confirm then
             builder:confirm(builder_datamodel)
             if builder.CONFIRM_EXIT then
-                __clean(datamodel)
+                _clean(datamodel)
                 toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
                     gameplay_core.world_update = true
-                    __clean(datamodel)
+                    _clean(datamodel)
                 end)
             end
         end
     end
 
     for _ in quit_mb:unpack() do
-        __clean(datamodel)
+        _clean(datamodel)
         toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
             gameplay_core.world_update = true
-            __clean(datamodel)
+            _clean(datamodel)
         end)
     end
 
     for _ in guide_on_going_mb:unpack() do
-        __clean(datamodel)
+        _clean(datamodel)
         toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
             gameplay_core.world_update = true
-            __clean(datamodel)
+            _clean(datamodel)
         end)
     end
 
@@ -641,7 +652,7 @@ function M.update(datamodel)
 
     if longpress_startpoint and longpress_startpoint.x and longpress_startpoint.y then
         log.info("longpress_startpoint", longpress_startpoint.x, longpress_startpoint.y)
-        __clean(datamodel, false)
+        _clean(datamodel, false)
         local pos = icamera_controller.screen_to_world(longpress_startpoint.x, longpress_startpoint.y, XZ_PLANE)
         pickupObject(datamodel, pos)
     end

@@ -90,8 +90,9 @@ end
 
 local function _get_nearby_buldings(x, y, w, h)
     local r = {}
-    local begin_x, begin_y = icoord.bound(x - ((10 - w) // 2), y - ((10 - h) // 2))
-    local end_x, end_y = icoord.bound(x + ((10 - w) // 2) + w, y + ((10 - h) // 2) + h)
+    local offset_x, offset_y = (10 - w) // 2, (10 - h) // 2
+    local begin_x, begin_y = icoord.bound(x - offset_x, y - offset_y)
+    local end_x, end_y = icoord.bound(x + offset_x + w, y + offset_y + h)
     for x = begin_x, end_x do
         for y = begin_y, end_y do
             local object = objects:coord(x, y)
@@ -104,82 +105,55 @@ local function _get_nearby_buldings(x, y, w, h)
 end
 
 local function _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
-    local x1_1, y1_1 = x1, y1
-    local x1_2, y1_2 = x1 + w1 - 1, y1
-    local x1_3, y1_3 = x1, y1 + h1 - 1
-    local x1_4, y1_4 = x1 + w1 - 1, y1 + h1 - 1
-
-    if (x1_1 >= x2 and x1_1 <= x2 + w2 - 1 and y1_1 >= y2 and y1_1 <= y2 + h2 - 1) or
-        (x1_2 >= x2 and x1_2 <= x2 + w2 - 1 and y1_2 >= y2 and y1_2 <= y2 + h2 - 1) or
-        (x1_3 >= x2 and x1_3 <= x2 + w2 - 1 and y1_3 >= y2 and y1_3 <= y2 + h2 - 1) or
-        (x1_4 >= x2 and x1_4 <= x2 + w2 - 1 and y1_4 >= y2 and y1_4 <= y2 + h2 - 1) then
-        return true
+    if x1 + w1 <= x2 or x2 + w2 <= x1 then
+        return false
     end
 
-    local x2_1, y2_1 = x2, y2
-    local x2_2, y2_2 = x2 + w2 - 1, y2
-    local x2_3, y2_3 = x2, y2 + h2 - 1
-    local x2_4, y2_4 = x2 + w2 - 1, y2 + h2 - 1
-
-    if (x2_1 >= x1 and x2_1 <= x1 + w1 - 1 and y2_1 >= y1 and y2_1 <= y1 + h1 - 1) or
-        (x2_2 >= x1 and x2_2 <= x1 + w1 - 1 and y2_2 >= y1 and y2_2 <= y1 + h1 - 1) or
-        (x2_3 >= x1 and x2_3 <= x1 + w1 - 1 and y2_3 >= y1 and y2_3 <= y1 + h1 - 1) or
-        (x2_4 >= x1 and x2_4 <= x1 + w1 - 1 and y2_4 >= y1 and y2_4 <= y1 + h1 - 1) then
-        return true
+    if y1 + h1 <= y2 or y2 + h2 <= y1 then
+        return false
     end
 
-    return false
+    return true
 end
 
-local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
-    local nearby_buldings = _get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, dir))
+local function _get_selected_boxes_color(x1, y1, w1, h1, dir1, typeobject1, x2, y2, w2, h2, dir2, typeobject2)
+    if _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2) then
+        return SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
+    end
+
+    -- all buildings within the drone's range need to be displayed in a specific color
+    if typeobject1.supply_area then
+        local aw, ah = iprototype.rotate_area(typeobject1.area, dir1)
+        local sw, sh = iprototype.rotate_area(typeobject1.supply_area, dir1)
+        if _is_building_intersect(x1 - (sw - aw) // 2, y1 - (sh - ah) // 2, sw, sh, x2, y2, w2, h2) then
+            return SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+        end
+    end
+
+    return SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+end
+
+local function _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
-    local redraw = {}
+    local new = {}
     for object_id, object in pairs(nearby_buldings) do
-        redraw[object_id] = object
+        if not self.selected_boxes[object_id] then
+            new[object_id] = object
+        end
     end
 
     for object_id, o in pairs(self.selected_boxes) do
-        o:remove()
-        self.selected_boxes[object_id] = nil
+        if not nearby_buldings[object_id] then
+            o:remove()
+            self.selected_boxes[object_id] = nil
+        end
     end
 
-    for object_id, object in pairs(redraw) do
+    for object_id, object in pairs(new) do
         local otypeobject = iprototype.queryByName(object.prototype_name)
         local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
-
-        local color
-        if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
-        else
-            if typeobject.supply_area then
-                local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
-                local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
-                if _is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
-                else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                end
-            else
-                if iprototype.has_types(typeobject.type, "station") then
-                    if otypeobject.supply_area then
-                        local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
-                        local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
-                        if _is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
-                        else
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                        end
-                    else
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                    end
-                else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                end
-            end
-        end
-
+        local color = _get_selected_boxes_color(x, y, w, h, dir, typeobject, object.x, object.y, ow, oh, object.dir, otypeobject)
         self.selected_boxes[object_id] = create_selected_boxes(
             {
                 "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
@@ -193,57 +167,45 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
         local object = assert(objects:get(object_id))
         local otypeobject = iprototype.queryByName(object.prototype_name)
         local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
-
-        local color
-        if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
-        else
-            if typeobject.supply_area then
-                local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
-                local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
-                if _is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
-                else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                end
-            else
-                if iprototype.has_types(typeobject.type, "station") then
-                    if otypeobject.supply_area then
-                        local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
-                        local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
-                        if _is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
-                        else
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                        end
-                    else
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                    end
-                else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
-                end
-            end
-        end
+        local color = _get_selected_boxes_color(x, y, w, h, dir, typeobject, object.x, object.y, ow, oh, object.dir, otypeobject)
         o:set_color_transition(color, 400)
     end
 end
 
-local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
-    if ichest.has_chest(typeobject.type) then
-        local sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER
-        for _, object in objects:all() do
-            local otypeobject = iprototype.queryByName(object.prototype_name)
-            if otypeobject.supply_area then
-                local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
-                local ow, oh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
-                if not self.sprites[object.id] then
-                    self.sprites[object.id] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, sprite_color)
-                end
-            end
+local function _show_nearby_buildings_sprite(self, nearby_buldings, typeobject)
+    if not ichest.has_chest(typeobject.type) then
+        return
+    end
+
+    local new = {}
+    for object_id, object in pairs(nearby_buldings) do
+        if not self.sprites[object_id] then
+            new[object_id] = object
         end
     end
 
-    _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+    for object_id, o in pairs(self.sprites) do
+        if not nearby_buldings[object_id] then
+            o:remove()
+            self.sprites[object_id] = nil
+        end
+    end
+
+    local sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER
+    for _, object in pairs(new) do
+        local otypeobject = iprototype.queryByName(object.prototype_name)
+        if otypeobject.supply_area then
+            local w, h = iprototype.rotate_area(otypeobject.area, object.dir)
+            local ow, oh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
+            self.sprites[object.id] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, sprite_color)
+        end
+    end
+end
+
+local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
+    local nearby_buldings = _get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, dir))
+    _show_nearby_buildings_sprite(self, nearby_buldings, typeobject)
+    _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, x, y, dir)
 
     local sprite_color
     if not self._check_coord(x, y, dir, self.typeobject) then
@@ -271,8 +233,8 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
         },
     }
 
-    iobject.remove(self.pickup_object)
-    self.pickup_object = iobject.new {
+    iobject.remove(self.indicator)
+    self.indicator = iobject.new {
         prototype_name = typeobject.name,
         dir = dir,
         x = x,
@@ -314,11 +276,11 @@ local function _align(position_type, area, dir)
 end
 
 local function touch_move(self, datamodel, delta_vec)
-    local pickup_object = assert(self.pickup_object)
+    local indicator = assert(self.indicator)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
 
-    iobject.move_delta(pickup_object, delta_vec)
+    iobject.move_delta(indicator, delta_vec)
 
     local x, y, pos = _align(self.position_type, typeobject.area, status.dir)
     if not x then
@@ -326,7 +288,6 @@ local function touch_move(self, datamodel, delta_vec)
         return
     end
     status.srt.t, status.x, status.y = pos, x, y
-    pickup_object.srt.t, pickup_object.x, pickup_object.y = pos, x, y
 
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(status.srt, status.dir)
@@ -335,11 +296,6 @@ local function touch_move(self, datamodel, delta_vec)
     if self.grid_entity then
         self.grid_entity:set_position(_calc_grid_position(self, typeobject, status.dir))
     end
-
-    if self.last_x == x and self.last_y == y then
-        return
-    end
-    self.last_x, self.last_y = x, y
 
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     if not self._check_coord(x, y, status.dir, typeobject) then
@@ -362,7 +318,9 @@ local function touch_move(self, datamodel, delta_vec)
         _show_self_selected_boxes(self, status.srt.t, typeobject, status.dir, true)
     end
 
-    _show_nearby_buildings_selected_boxes(self, x, y, status.dir, typeobject)
+    local nearby_buldings = _get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, status.dir))
+    _show_nearby_buildings_sprite(self, nearby_buldings, typeobject)
+    _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, x, y, status.dir)
     for _, c in pairs(self.pickup_components) do
         c:on_status_change(datamodel.show_confirm)
     end
@@ -417,7 +375,7 @@ local function confirm(self, datamodel)
 end
 
 local function rotate(self, datamodel, dir, delta_vec)
-    local pickup_object = assert(self.pickup_object)
+    local indicator = assert(self.indicator)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
 
@@ -425,8 +383,8 @@ local function rotate(self, datamodel, dir, delta_vec)
     status.dir = iprototype.dir_tostring(dir)
     status.srt.r = ROTATORS[status.dir]
 
-    pickup_object.dir = iprototype.dir_tostring(dir)
-    pickup_object.srt.r = ROTATORS[pickup_object.dir]
+    indicator.dir = iprototype.dir_tostring(dir)
+    indicator.srt.r = ROTATORS[indicator.dir]
 
     local x, y, pos = _align(self.position_type, typeobject.area, status.dir)
     if not x then
@@ -434,7 +392,7 @@ local function rotate(self, datamodel, dir, delta_vec)
         return
     end
     status.srt.t, status.x, status.y = pos, x, y
-    pickup_object.srt.t, pickup_object.x, pickup_object.y = pos, x, y
+    indicator.srt.t, indicator.x, indicator.y = pos, x, y
 
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(status.srt, status.dir)
@@ -497,8 +455,8 @@ local function clean(self, datamodel)
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    if self.pickup_object then
-        iobject.remove(self.pickup_object)
+    if self.indicator then
+        iobject.remove(self.indicator)
     end
 end
 
@@ -528,7 +486,6 @@ local function create()
     m.sprites = {}
     m.self_selected_boxes = nil
     m.selected_boxes = {}
-    m.last_x, m.last_y = -1, -1
     m.pickup_components = {}
     m.status = {}
     return m

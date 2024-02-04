@@ -110,27 +110,23 @@ local function _get_placed_road_prototype_name(self, x, y, default_prototype_nam
 end
 
 local function _new_entity(self, datamodel, typeobject, x, y)
-    local prototype_name, dir = _get_placed_road_prototype_name(self, x, y, typeobject.name, DEFAULT_DIR)
-    self.status = {
-        x = x,
-        y = y,
-        dir = dir,
-        srt = srt.new {
-            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
-            r = ROTATORS[dir],
-        },
-        prototype_name = prototype_name,
-    }
+    local status = assert(self.status)
 
-    local status = self.status
+    status.srt.t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, DEFAULT_DIR)))
+    local prototype_name, dir = _get_placed_road_prototype_name(self, x, y, self.typeobject.name, DEFAULT_DIR)
+    if prototype_name ~= status.prototype_name or dir ~= status.dir then
+        status.srt.r = ROTATORS[dir]
+        status.prototype_name = prototype_name
+        status.dir = dir
 
-    if self.indicator then
         self.indicator:remove()
+        self.indicator = igame_object.create {
+            prefab = iprototype.queryByName(prototype_name).model,
+            srt = status.srt,
+        }
+    else
+        self.indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
     end
-    self.indicator = igame_object.create {
-        prefab = typeobject.model,
-        srt = status.srt,
-    }
 
     if not self.pickup_components.grid_entity then
         local position = _align(status.srt.t, iprototype.packarea(8 * ROAD_WIDTH_COUNT, 8 * ROAD_HEIGHT_COUNT), dir)
@@ -190,59 +186,66 @@ end
 --------------------------------------------------------------------------------------------------
 local function touch_move(self, datamodel, delta_vec)
     local indicator = assert(self.indicator)
-    local typeobject = assert(self.typeobject)
     local status = assert(self.status)
+    local typeobject = iprototype.queryByName(status.prototype_name)
 
-    indicator:send("obj_motion", "set_position", math3d.live(math3d.add(status.srt.t, delta_vec)))
+    local pos, x, y = icamera_controller.get_screen_world_position(self.position_type)
+    pos, x, y = _align(pos, self.typeobject.area, status.dir)
+    status.srt.t, status.x, status.y = math3d.add(status.srt.t, delta_vec), x, y
 
-    local pos = icamera_controller.get_screen_world_position(self.position_type)
-    local _, x, y = _align(pos, self.typeobject.area, status.dir)
     local prototype_name, dir = _get_placed_road_prototype_name(self, x, y, typeobject.name, DEFAULT_DIR)
     if prototype_name ~= status.prototype_name or dir ~= status.dir then
-        status.x, status.y, status.dir = x, y, dir
+        status.srt.r = ROTATORS[dir]
+        status.prototype_name = prototype_name
+        status.dir = dir
 
-        if self.indicator then
-            self.indicator:remove()
-        end
+        self.indicator:remove()
         self.indicator = igame_object.create {
             prefab = iprototype.queryByName(prototype_name).model,
             srt = status.srt,
         }
+    else
+        indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
     end
+
     _update_components_position(self)
 end
 
 local function touch_end(self, datamodel)
     local indicator = assert(self.indicator)
     local status = assert(self.status)
-
     local typeobject = iprototype.queryByName(status.prototype_name)
-    local pos = icamera_controller.get_screen_world_position(self.position_type)
-    status.srt.t, status.x, status.y = _align(pos, typeobject.area, status.dir)
 
-    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
+    local pos, x, y = icamera_controller.get_screen_world_position(self.position_type)
+    pos, x, y = _align(pos, typeobject.area, status.dir)
+    status.srt.t, status.x, status.y = pos, x, y
 
     local prototype_name, dir = _get_placed_road_prototype_name(self, status.x, status.y, self.typeobject.name, DEFAULT_DIR)
     if prototype_name ~= status.prototype_name or dir ~= status.dir then
         status.srt.r = ROTATORS[dir]
+        status.prototype_name = prototype_name
+        status.dir = dir
 
-        if self.indicator then
-            self.indicator:remove()
-        end
+        self.indicator:remove()
         self.indicator = igame_object.create {
             prefab = iprototype.queryByName(prototype_name).model,
             srt = status.srt,
         }
+    else
+        indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
     end
 
     _update_components_position(self)
     _update_components_status(self)
-    return false
 end
 
 local function place(self, datamodel)
     local typeobject = assert(self.typeobject)
     local status = assert(self.status)
+
+    if self.moving then
+        return
+    end
 
     if not self._check_coord(status.x, status.y, status.dir, typeobject) then
         return
@@ -263,20 +266,23 @@ local function place(self, datamodel)
     gameplay_core.set_changed(CHANGED_FLAG_ROADNET)
     task.update_progress("is_road_connected")
 
+    self.moving = true
     local dx, dy = iprototype.move_coord(status.x, status.y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
     icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)), function ()
         if self.destroy then
             return
         end
+
+        status.x, status.y = dx, dy
         _new_entity(self, datamodel, typeobject, dx, dy)
+
+        self.moving = false
     end)
 end
 
 local function clean(self, datamodel)
     self.destroy = true
-    if self.indicator then
-        self.indicator:remove()
-    end
+    self.indicator:remove()
     self.indicator = nil
 
     for _, c in pairs(self.pickup_components) do
@@ -305,6 +311,23 @@ local function new(self, datamodel, typeobject, position_type)
 
     local coord = assert(icoord.position2coord(icamera_controller.get_screen_world_position(position_type)))
     local x, y = icoord.road_coord(coord[1], coord[2])
+    local prototype_name, dir = _get_placed_road_prototype_name(self, x, y, typeobject.name, DEFAULT_DIR)
+    self.status = {
+        x = x,
+        y = y,
+        dir = dir,
+        srt = srt.new {
+            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, dir))),
+            r = ROTATORS[dir],
+        },
+        prototype_name = prototype_name,
+    }
+
+    self.indicator = igame_object.create {
+        prefab = typeobject.model,
+        srt = self.status.srt,
+    }
+
     _new_entity(self, datamodel, typeobject, x, y)
 end
 
@@ -322,6 +345,7 @@ local function create()
     m.clean = clean
     m.build = build
     m.destroy = false
+    m.moving = false
     m.pickup_components = {}
     m.typeobject = nil
     m.forward_dir = DEFAULT_DIR

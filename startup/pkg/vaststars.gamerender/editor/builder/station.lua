@@ -88,7 +88,6 @@ local function _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
     return true
 end
 
-
 local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
     local nearby_buldings = _get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, dir))
     local w, h = iprototype.rotate_area(typeobject.area, dir)
@@ -113,7 +112,7 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 
         local color
         if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
                 local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
@@ -158,7 +157,7 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 
         local color
         if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_FARAWAY_BUILDINGS_INTERSECTION
+            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
                 local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
