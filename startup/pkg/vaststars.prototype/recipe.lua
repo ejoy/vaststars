@@ -4355,6 +4355,7 @@ prototype "净化气1" {
     recipe_order =  121,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
     ingredients = {
+        {"空气", 60},
     },
     results = {
         {"净化气", 50},
@@ -4371,6 +4372,7 @@ prototype "净化气2" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
     ingredients = {
         {"过滤器", 1},
+        {"空气", 1200},
     },
     results = {
         {"净化气", 1000},
