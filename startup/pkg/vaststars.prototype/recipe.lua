@@ -4410,7 +4410,7 @@ prototype "过滤器回收" {
     results = {
         {"过滤器", 1},
     },
-    time = "2s",
+    time = "30s",
     description = "使用纯水净化用够的过滤器",
 }
 
