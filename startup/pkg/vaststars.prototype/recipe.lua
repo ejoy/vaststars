@@ -4307,7 +4307,7 @@ prototype "净化气排泄" {
     recipe_craft_category = "流体气体排泄",
     --recipe_category =  "化工",
     recipe_order =  121,
-    pollution = -10,
+    pollution = -100,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/waste-recycle.texture",
     ingredients = {
         {"净化气", 500},
@@ -4352,7 +4352,7 @@ prototype "净化气1" {
     type = { "recipe" },
     recipe_craft_category = "环境净化",
     recipe_category =  "化工",
-    recipe_order =  119,
+    recipe_order =  121,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
     ingredients = {
     },
@@ -4367,7 +4367,7 @@ prototype "净化气2" {
     type = { "recipe" },
     recipe_craft_category = "环境净化",
     recipe_category =  "化工",
-    recipe_order =  119,
+    recipe_order =  122,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/neutralization.texture",
     ingredients = {
         {"过滤器", 1},
