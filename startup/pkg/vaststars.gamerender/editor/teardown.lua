@@ -55,9 +55,10 @@ return function(gameplay_eid)
         end
 
         if #items > 0 then
+            local d = ("%sx%s"):format(w, h)
             -- Add a ruined building
             local new_object = iobject.new {
-                prototype_name = assert(DEBRIS[("%sx%s"):format(w, h)]),
+                prototype_name = DEBRIS[d] or error("No debris for " .. d),
                 dir = old_object.dir,
                 x = e.building.x,
                 y = e.building.y,

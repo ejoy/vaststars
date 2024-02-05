@@ -116,6 +116,7 @@
             local ui_sys = ui.ui_system
             local scrollToItem = ui.scrolltoitem
             local start = ui_sys.createDataMode(window, ...)
+            local inited = false
 
             window.flush()
             scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
@@ -126,6 +127,7 @@
 
             function start.clickClose()
                 ui_sys.close(window)
+                inited = false
             end
 
             function start.clickClearRecipe()
@@ -140,7 +142,6 @@
                 ui_sys.pub(window, {"click_item", id})
             end
 
-            local inited = false
             function init()
                 inited = true
 
@@ -252,6 +253,5 @@
                 </flex-row>
             </div>
         </div>
-        <!-- <div style = "position: absolute; left: 0; top: 0; width: 100%; height: 100%;" data-event-click = "clickClose()" /> -->
     </body>
 </html>
