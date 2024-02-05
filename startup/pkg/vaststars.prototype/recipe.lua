@@ -1773,7 +1773,7 @@ prototype "科研中心2" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/lab-design.texture",
     ingredients = {
         {"化工厂II", 1},
-        {"广播塔I", 1},
+        {"科研中心I", 1},
     },
     results = {
         {"科研中心II", 1},
@@ -1978,7 +1978,7 @@ prototype "电梯绳缆" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  110,
+    recipe_order =  910,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"碳纳米管", 20},
@@ -1995,7 +1995,7 @@ prototype "电梯配重" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  111,
+    recipe_order =  911,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"隔热板", 10},
@@ -2012,7 +2012,7 @@ prototype "电梯厢体" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  112,
+    recipe_order =  912,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"钢板", 20},
@@ -2030,7 +2030,7 @@ prototype "电梯空间站" {
     type = { "recipe" },
     recipe_craft_category = "生产大型制造",
     recipe_category =  "加工",
-    recipe_order =  113,
+    recipe_order =  913,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
         {"电梯绳缆", 100},
@@ -4378,7 +4378,7 @@ prototype "净化气2" {
         {"净化气", 1000},
         {"用过的过滤器", 1},
     },
-    time = "2s",
+    time = "5s",
     description = "环境过滤生成净化气",
 }
 
@@ -4413,7 +4413,7 @@ prototype "过滤器回收" {
     results = {
         {"过滤器", 1},
     },
-    time = "25s",
+    time = "24s",
     description = "使用纯水净化用够的过滤器",
 }
 
