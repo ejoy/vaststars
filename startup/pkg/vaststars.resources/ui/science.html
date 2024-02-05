@@ -164,6 +164,15 @@
                 end
             end
 
+            local function update_techitems()
+                if start.tech_index then
+                    selected_index = start.tech_index and start.tech_index or 0
+                else
+                    unselect_tech()
+                end
+                start.list:on_dirty_all(#start.techitems)
+            end
+
             local function unselect_recipe()
                 if selected_recipe_index > 0 then
                     local index = selected_recipe_index
@@ -367,6 +376,7 @@
 
             window.customElements.define("detaillist", function(e)
                 start.detaillist = ui.list.create(document, e, detail_item_init, detail_item_update)
+                update_techitems()
             end)
 
             local inited = false
@@ -374,15 +384,7 @@
                 {
                     "techitems",
                     function()
-                        if not inited then
-                            return
-                        end
-                        if start.tech_index then
-                            selected_index = start.tech_index and start.tech_index or 0
-                        else
-                            unselect_tech()
-                        end
-                        start.list:on_dirty_all(#start.techitems)
+                        update_techitems()
                     end
                 },
                 {
