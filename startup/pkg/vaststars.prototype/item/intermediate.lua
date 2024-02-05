@@ -208,7 +208,7 @@ prototype "砂岩" {
     item_model = "/pkg/vaststars.resources/glbs/stackeditems/gravel.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/gravel.texture",
     item_description = "伴生在矿物里的小块石头",
-    item_category = "金属",
+    --item_category = "金属",
     mineral_model = "/pkg/vaststars.resources/glbs/mineral/sandstone.glb|mesh.prefab",
     mineral_area = "3x3",
 }
@@ -327,7 +327,7 @@ prototype "沙石矿" {
     item_model = "/pkg/vaststars.resources/glbs/stackeditems/limestone.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/limestone.texture",
     item_description = "含沙石的矿石",
-    item_category = "金属",
+    --item_category = "金属",
 }
 
 prototype "氢氧化钠" {
