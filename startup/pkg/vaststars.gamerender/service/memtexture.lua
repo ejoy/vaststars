@@ -1,5 +1,5 @@
 local ltask 		= require "ltask"
-local ServiceWorld  = ltask.queryservice "ant.window|world"
+local ServiceWindow  = ltask.queryservice "ant.window|window"
 local S 			= {}
 
 local function init()
@@ -8,7 +8,7 @@ local function init()
 end
 
 function S.load(name, path, config)
-	local type, size, rot, dis = ltask.call(ServiceWorld, "parse_prefab_config", config)
+	local type, size, rot, dis = ltask.call(ServiceWindow, "parse_prefab_config", config)
 
 	local c = {
 		info = {
@@ -27,13 +27,13 @@ function S.load(name, path, config)
 		handle = nil,
 	}
 
-	c.handle = ltask.call(ServiceWorld, "get_portrait_handle", name, size.width, size.height)
-	ltask.call(ServiceWorld, "set_portrait_prefab", name, path, rot, dis, type)
+	c.handle = ltask.call(ServiceWindow, "get_portrait_handle", name, size.width, size.height)
+	ltask.call(ServiceWindow, "set_portrait_prefab", name, path, rot, dis, type)
 	return c, true
 end
 
 function S.unload(handle)
-	ltask.call(ServiceWorld, "destroy_portrait_handle", handle)
+	ltask.call(ServiceWindow, "destroy_portrait_handle", handle)
 end
 
 init()

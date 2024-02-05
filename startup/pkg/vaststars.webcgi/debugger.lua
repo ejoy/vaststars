@@ -2,7 +2,7 @@ local ltask = require "ltask"
 
 local M = {}
 
-local ServiceGame = ltask.queryservice "ant.window|world"
+local ServiceGame = ltask.queryservice "ant.window|window"
 
 local tconcat = table.concat
 local tinsert = table.insert
