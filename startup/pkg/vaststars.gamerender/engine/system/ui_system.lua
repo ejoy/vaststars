@@ -90,6 +90,8 @@ local function open(v, ...)
 
     binding.param = {...}
     binding.datamodel = tracedoc.new(binding.template.create(...))
+    tracedoc.commit(binding.datamodel)
+
     binding.datamodel.guide_progress = guide_progress
     binding.window = irmlui.open(rml, rml, binding.datamodel)
 

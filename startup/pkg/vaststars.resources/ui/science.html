@@ -384,6 +384,9 @@
                 {
                     "techitems",
                     function()
+                        if not inited then
+                            return
+                        end
                         update_techitems()
                     end
                 },
@@ -449,6 +452,7 @@
             end
             function init()
                 inited = true
+                update_techitems()
             end
         </script>
     </head>

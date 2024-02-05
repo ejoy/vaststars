@@ -140,9 +140,15 @@
                 ui_sys.pub(window, {"click_item", id})
             end
 
+            local inited = false
             function init()
+                inited = true
+
                 local e = assert(document.getElementById "recipe-list")
                 e.scrollInsets(0, 0, 0, 200)
+
+                window.flush()
+                scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
 
                 local last_y
                 e.addEventListener("pan", function(param)
@@ -156,7 +162,10 @@
             ui_sys.mapping(start, {
                 {
                     function(start)
-                        -- window.flush()
+                        if not inited then
+                            return
+                        end
+                        window.flush()
                         scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
                     end,
                     "category_idx", "recipe_idx",
@@ -243,5 +252,6 @@
                 </flex-row>
             </div>
         </div>
+        <!-- <div style = "position: absolute; left: 0; top: 0; width: 100%; height: 100%;" data-event-click = "clickClose()" /> -->
     </body>
 </html>
