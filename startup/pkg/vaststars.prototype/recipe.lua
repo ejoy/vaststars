@@ -4391,6 +4391,7 @@ prototype "过滤器" {
     ingredients = {
         {"石墨", 1},
         {"铁板", 5},
+        {"钢齿轮", 2},
     },
     results = {
         {"过滤器", 1},
@@ -4406,13 +4407,13 @@ prototype "过滤器回收" {
     recipe_order =  71,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/capacitor-1.texture",
     ingredients = {
-        {"用过的过滤器", 3},
-        {"纯水", 20},
+        {"用过的过滤器", 4},
+        {"纯水", 40},
     },
     results = {
         {"过滤器", 1},
     },
-    time = "30s",
+    time = "25s",
     description = "使用纯水净化用够的过滤器",
 }
 
