@@ -117,6 +117,9 @@
             local scrollToItem = ui.scrolltoitem
             local start = ui_sys.createDataMode(window, ...)
 
+            window.flush()
+            scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
+
             function start.clickButton(...)
                 ui_sys.pub(window, {...})
             end
@@ -153,7 +156,7 @@
             ui_sys.mapping(start, {
                 {
                     function(start)
-                        window.flush()
+                        -- window.flush()
                         scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
                     end,
                     "category_idx", "recipe_idx",

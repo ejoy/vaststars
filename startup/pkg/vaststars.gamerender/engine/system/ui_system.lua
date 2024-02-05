@@ -111,7 +111,6 @@ local function open(v, ...)
         end
     end
 
-    binding.template.flush()
     if binding.template.update then
         updateWindows[rml] = true
     end
