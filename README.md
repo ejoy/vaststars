@@ -1,4 +1,8 @@
+Please visit these Chinese pages by using something like Google or Deepl translate.
+
 # Red Frontier
+
+![Screenshot](https://github.com/ejoy/vaststars/blob/master/screenshot/startup.jpg)
 
 Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxigames.com/)开发的一款工厂建设类手机游戏。
 
@@ -14,6 +18,8 @@ Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxi
 
 目前游戏的技术部分基本完成，可以用于 Ant Engine 的使用参考。但游戏部分还在开发中，游戏性方面尚有很多工作要做，目前并未达到可畅玩的水准。
 
-如果希望体验一下游戏的雏形，建议先进入教学模式完成教学关卡，了解游戏的基本操作。然后可以从冒险模式开始沙盒游玩。注意：在目前这一开发阶段，所有游戏存档文件都不保证随着开发一直可用。
+如果希望体验一下游戏的雏形，建议先进入教学模式完成教学关卡，了解游戏的基本操作。然后可以从冒险模式开始沙盒游玩。
+
+**注意：在目前这一开发阶段，所有游戏存档文件都不保证随着开发一直可用。**
 
 # Build Game
