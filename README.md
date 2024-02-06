@@ -14,7 +14,7 @@ Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxi
 
 游戏专门为手机设计，在触摸屏操作上做了大量的设计，且暂时没有考虑在 PC 上发行。虽然可以从本仓库中构建出 Windows 或 Mac 版本，但仅供开发测试使用。如想获得较佳的游戏体验，需要自行构建 iOS 版本。
 
-# Play Game
+## Play Game
 
 目前游戏的技术部分基本完成，可以用于 Ant Engine 的使用参考。但游戏部分还在开发中，游戏性方面尚有很多工作要做，目前并未达到可畅玩的水准。
 
@@ -22,15 +22,15 @@ Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxi
 
 **注意：在目前这一开发阶段，所有游戏存档文件都不保证随着开发一直可用。**
 
-# Build Game
+## Build Game
 
-## 编译
+### 编译
 
-可参考ant的[编译指南](https://github.com/ejoy/ant/blob/master/README.md)
+PC 版本可参考 Ant 的 [编译指南](https://github.com/ejoy/ant/blob/master/README.md)
 
-## 运行
+### 运行
 
-运行游戏
+运行 PC 版游戏
 ``` bash
 ./bin/msvc/debug/vaststars.exe
 ```
@@ -54,3 +54,9 @@ Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxi
 ``` bash
 ./bin/msvc/debug/vaststars.exe [lua path]
 ```
+
+### iOS 版本
+
+构建完 iOS App 后，可将手机通过 USB 连接到 PC 开发机上，并在 PC 上运行 iTunes 以及 Ant 文件服务器。
+
+在开发机的文件服务器开启时，在 PC 上的大多数修改，都能在 iOS App 运行期间同步到手机，在下次 App 运行时生效。另可通过浏览器查看本地 9000 端口打开 web 控制台。
