@@ -23,3 +23,34 @@ Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxi
 **注意：在目前这一开发阶段，所有游戏存档文件都不保证随着开发一直可用。**
 
 # Build Game
+
+## 编译
+
+可参考ant的[编译指南](https://github.com/ejoy/ant/blob/master/README.md)
+
+## 运行
+
+运行游戏
+``` bash
+./bin/msvc/debug/vaststars.exe
+```
+
+运行编辑器
+``` bash
+./bin/msvc/debug/vaststars.exe -d
+```
+
+运行文件服务器
+``` bash
+./bin/msvc/debug/vaststars.exe -s
+```
+
+资源打包
+``` bash
+./bin/msvc/debug/vaststars.exe -p
+```
+
+运行其他工具(例如运行ant中的test/simple)
+``` bash
+./bin/msvc/debug/vaststars.exe [lua path]
+```
