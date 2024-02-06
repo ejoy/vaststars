@@ -329,7 +329,7 @@ prototype "硅1" {
 prototype "锅炉" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
-    recipe_category =  "化工",
+    --recipe_category =  "化工",
     recipe_order =  68,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
