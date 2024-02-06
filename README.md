@@ -43,7 +43,7 @@ luamake -os ios
 ```
 3. 资源打包
 ``` bash
-./bin/macos/debug/vaststars -p
+./bin/macos/debug/vaststars -p ios
 ```
 4. 用xcode打开[ios工程](https://github.com/ejoy/vaststars/tree/master/runtime/ios/vaststars)，生成ipa
 
