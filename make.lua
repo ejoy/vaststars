@@ -13,7 +13,7 @@ lm.c = "c17"
 lm.cxx = "c++20"
 if lm.os == "ios" then
     lm.arch = "arm64"
-    lm.sys = "ios15.0"
+    lm.sys = "ios16.0"
 elseif lm.os == "macos" then
     lm.sys = "macos13.0"
 end
