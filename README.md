@@ -8,7 +8,7 @@ Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxi
 
 它深受 Factorio 、Plan B: Terraform 等游戏的启发，讲述的是一个关于修建自动化工厂开拓红色星球的故事。
 
-它是 [开源游戏引擎 Ant](https://github.com/ejoy/ant) 的第一个项目，由引擎开发组配合三人游戏开发组（其中，程序、策划、美术各一人）从 2022 年底开发至今。灵犀互娱于 2024 年初将此游戏项目全部（包括并不限于代码以及美术资产）捐赠给 Ant 引擎项目，以作为引擎的使用范例，帮助 Ant Engine 用户理解引擎。本游戏项目和 Ant Engine 同样采用了 MIT 开源许可证。
+它是 [开源游戏引擎 Ant](https://github.com/ejoy/ant) 的第一个项目，由引擎开发组配合三人游戏开发组（其中，程序、策划、美术各一人）从 2021 年底开发至今。灵犀互娱于 2024 年初将此游戏项目全部（包括并不限于代码以及美术资产）捐赠给 Ant 引擎项目，以作为引擎的使用范例，帮助 Ant Engine 用户理解引擎。本游戏项目和 Ant Engine 同样采用了 MIT 开源许可证。
 
 由于游戏项目开始之初所用的 Ant Engine 和今天的引擎版本已有了巨大的变化。游戏实现一直在跟随着这些变化，但难免还有许多旧的使用模式未能及时更新到引擎最新的推荐方法。所以，不应把游戏的全部实现当作 Ant 引擎的最佳实践。如有疑问，可在 [Discussions](https://github.com/ejoy/vaststars/discussions) 区参与讨论。
 
