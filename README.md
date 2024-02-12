@@ -1,4 +1,4 @@
-Please visit these Chinese pages by using something like Google or Deepl translate.
+Please visit these Chinese pages by using something like Google or Deepl translate or view [English Documentation](https://github.com/ejoy/vaststars/blob/master/README.en.md).
 
 # Red Frontier
 
