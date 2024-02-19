@@ -184,7 +184,7 @@ local function _get_covers_fluidbox(object, groud)
     end
 
     local iotypes = {"input", "output"}
-    funcs["fluidboxes"] = function(typeobject, x, y, dir, fluid_name, result)
+    funcs["fluidboxes"] = function(typeobject, x, y, dir, result)
         for _, iotype in ipairs(iotypes) do
             for idx, v in ipairs(typeobject.fluidboxes[iotype]) do
                 for _, conn in ipairs(v.connections) do

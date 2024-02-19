@@ -371,7 +371,6 @@ local function confirm(self, datamodel)
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
     datamodel.show_confirm = false
-    datamodel.show_rotate = false
 end
 
 local function rotate(self, datamodel, dir, delta_vec)
