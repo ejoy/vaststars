@@ -1232,12 +1232,6 @@ local entities = { {
   x = 93,
   y = 149
 }, {
-  dir = "S",
-  fluid_name = "地下卤水",
-  prototype_name = "地下管1-JI型",
-  x = 89,
-  y = 148
-}, {
   dir = "N",
   fluid_name = "地下卤水",
   prototype_name = "地下管1-JI型",
@@ -2468,9 +2462,9 @@ local entities = { {
   x = 89,
   y = 146
 }, {
-  dir = "N",
+  dir = "S",
   fluid_name = "地下卤水",
-  prototype_name = "管道1-X型",
+  prototype_name = "管道1-T型",
   x = 89,
   y = 147
 }, {
