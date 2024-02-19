@@ -20,6 +20,7 @@ local COORD_BOUNDARY <const> = icoord.boundary()
 
 local math3d = require "math3d"
 local ig = ecs.require "ant.group|group"
+local irender = ecs.require "ant.render|render"
 
 local enabled_group_ids = {}
 local group_ids = setmetatable({}, {
@@ -103,10 +104,7 @@ function group.enable(lefttop, rightbottom)
         go:enable(group_id, false)
     end
 
-    go:flush()
-    go:filter("render_object_visible", "render_object")
-    go:filter("hitch_visible", "hitch")
-    --go:filter("efk_visible", "efk")
+    irender.group_flush(go)
 end
 
 return group
