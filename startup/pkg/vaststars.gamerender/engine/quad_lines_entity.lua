@@ -15,7 +15,7 @@ local DELTA_VEC <const> = {
     ['W'] = math3d.constant("v4", {5, 0, 0}),
 }
 
-local ientity = ecs.require "ant.render|components.entity"
+local ientity = ecs.require "ant.entity|entity"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local M = {}
