@@ -67,7 +67,7 @@ local function get_source_slots(gameplay_world)
     if not source_eid then
         return EMPTY_FUNCTION
     end
-    local e = gameplay_world.entity[source_eid]
+    local e = gameplay_world:fetch_entity(source_eid)
     if not e then
         return EMPTY_FUNCTION
     end
@@ -79,8 +79,8 @@ local function get_transfer_info(gameplay_world)
         return {}
     end
 
-    local se = gameplay_world.entity[source_eid]
-    local de = gameplay_world.entity[dest_eid]
+    local se = gameplay_world:fetch_entity(source_eid)
+    local de = gameplay_world:fetch_entity(dest_eid)
     if not (se and de and se.chest and de.chest) then
         return {}
     end
@@ -130,8 +130,8 @@ local function transfer(gameplay_world, func)
         return {}
     end
 
-    local se = gameplay_world.entity[source_eid]
-    local de = gameplay_world.entity[dest_eid]
+    local se = gameplay_world:fetch_entity(source_eid)
+    local de = gameplay_world:fetch_entity(dest_eid)
     if not (se and de and se.chest and de.chest) then
         return {}
     end

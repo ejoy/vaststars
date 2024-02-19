@@ -80,7 +80,7 @@ local function repair(world, map, road_cache)
         if mask ~= m then
             map[coord] = m
 
-            local e = assert(world.entity[road_cache[coord]])
+            local e = assert(world:fetch_entity(road_cache[coord]))
             local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(m)
 
             igameplay_building.destroy(gameplay_core.get_world(), gameplay_core.get_entity(road_cache[coord]))

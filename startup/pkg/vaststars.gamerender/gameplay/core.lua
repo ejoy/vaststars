@@ -103,7 +103,7 @@ function m.fluidflow_query(...)
 end
 
 function m.get_entity(eid)
-    return world.entity[eid]
+    return world:fetch_entity(eid)
 end
 
 function m.get_world()

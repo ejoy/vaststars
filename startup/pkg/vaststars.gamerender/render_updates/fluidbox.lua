@@ -83,7 +83,7 @@ local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
 
         local eid = map[icoord.pack(dx, dy)]
         if eid then
-            local e = assert(gameplay_world.entity[eid])
+            local e = assert(gameplay_world:fetch_entity(eid))
             local typeobject = iprototype.queryById(e.building.prototype)
             if ground then
                 if not typeobject.fluidbox then
@@ -128,7 +128,7 @@ local function _find_neighbor_fluid(...)
     end
 
     local gameplay_world = gameplay_core.get_world()
-    local e = assert(gameplay_world.entity[eid])
+    local e = assert(gameplay_world:fetch_entity(eid))
     if e.fluidbox then
         if e.fluidbox.fluid == 0 then
             return
@@ -150,7 +150,7 @@ local function _update_neighbor_fluid(gameplay_world, e, typeobject, map)
         local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
         local eid = _find_neighbor(gameplay_world, map, e.building.x + x, e.building.y + y, dir, connection.ground)
         if eid then
-            local neighbor = assert(gameplay_world.entity[eid])
+            local neighbor = assert(gameplay_world:fetch_entity(eid))
             if neighbor.fluidbox and neighbor.fluidbox.fluid == 0 then
                 igameplay_fluidbox.update_fluidbox(gameplay_world, neighbor, e.fluidbox.fluid)
                 _update_neighbor_fluid(gameplay_world, neighbor, iprototype.queryById(neighbor.building.prototype), map)
@@ -190,7 +190,7 @@ function fluidbox_sys:gameworld_prebuild()
     end
 
     for eid in pairs(new) do
-        local e = gameplay_world.entity[eid]
+        local e = gameplay_world:fetch_entity(eid)
         local typeobject = iprototype.queryById(e.building.prototype)
         local fluid = e.fluidbox.fluid or 0
 

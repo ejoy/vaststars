@@ -264,7 +264,7 @@ local function builder_finish(world)
     end
     for _, c in pairs(builder) do
         for _, v in pairs(c.map) do
-            local e = assert(world.entity[v.eid])
+            local e = assert(world:fetch_entity(v.eid))
             local pt = query(e.building.prototype)
             if is_pipeid(pt) then
                 local bits = assert(pipebits[e.building.prototype][e.building.direction])

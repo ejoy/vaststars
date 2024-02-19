@@ -6,7 +6,7 @@ local irecipe = require "gameplay.interface.recipe"
 local M = {}
 
 function M.get_entity(world, eid)
-    return world.entity[eid]
+    return world:fetch_entity(eid)
 end
 
 function M.set_recipe(world, e, recipe_name, option)

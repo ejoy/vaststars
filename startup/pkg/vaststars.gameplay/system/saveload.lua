@@ -39,7 +39,6 @@ do
         local ecs = world.ecs
         local metafile = world.storage_path.."/ecs.json"
         local binfile = world.storage_path.."/ecs.bin"
-        world:visitor_clear()
         ecs:clearall()
         local reader = luaecs.reader(binfile)
         for _, meta in ipairs(json.decode(readall(metafile))) do

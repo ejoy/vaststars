@@ -102,7 +102,7 @@ function ibuilding.remove(x, y)
     local gameplay_world = gameplay_core.get_world()
     local coord = icoord.pack(x, y)
     local building = building_cache[coord]
-    igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid]) -- TODO: use igameplay.destroy_entity instead
+    igameplay_building.destroy(gameplay_world, gameplay_world:fetch_entity(building.eid)) -- TODO: use igameplay.destroy_entity instead
 
     building_cache[coord] = nil
 end
@@ -112,7 +112,7 @@ function ibuilding.set(init)
     local building = building_cache[coord]
     if building then
         local gameplay_world = gameplay_core.get_world()
-        igameplay_building.destroy(gameplay_world, gameplay_world.entity[building.eid])
+        igameplay_building.destroy(gameplay_world, gameplay_world:fetch_entity(building.eid))
         building_cache[coord] = nil
     end
     local eid = igameplay.create_entity({

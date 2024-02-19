@@ -64,50 +64,43 @@ return function ()
         return iBuilding.create(self, type)
     end
 
-    local visitor = {}
-    local function visitor_create()
-        local proxy_mt = {}
-        function proxy_mt:__index(name)
-            local eid = self.eid
-            local t = ecs:access(eid, name)
+    function world:fetch_entity(token)
+        local proxy = token
+        if type(token) == "number" then
+            if not ecs:exist(token) then
+                return
+            end
+            proxy = { eid = token }
+        end
+        local mt = {}
+        function mt:__index(name)
+            local t = proxy[name]
+            if t == nil then
+                t = ecs:access(token, name)
+                if t == nil then
+                    return
+                end
+                proxy[name] = t
+            end
             if type(t) ~= "table" or ecs:type(name) ~= "c" then
                 return t
             end
-            local mt = {}
-            mt.__index = t
-            function mt:__newindex(k, v)
+            local submt = {}
+            submt.__index = t
+            function submt:__newindex(k, v)
                 if t[k] ~= v then
                     t[k] = v
-                    ecs:access(eid, name, t)
+                    ecs:access(token, name, t)
                 end
             end
-            return setmetatable({}, mt)
+            return setmetatable({}, submt)
         end
-        function proxy_mt:__newindex(name, value)
-            ecs:access(self.eid, name, value)
+        function mt:__newindex(name, value)
+            proxy[name] = value
+            ecs:access(token, name, value)
         end
-        local visitor_mt = {}
-        function visitor_mt:__index(eid)
-            if not ecs:exist(eid) then
-                return
-            end
-            local proxy = setmetatable({eid=eid}, proxy_mt)
-            visitor[eid] = proxy
-            return proxy
-        end
-        return setmetatable(visitor, visitor_mt)
+        return setmetatable({}, mt)
     end
-    function world:visitor_update()
-        for e in ecs:select "REMOVED eid:in" do
-            visitor[e.eid] = nil
-        end
-    end
-    function world:visitor_clear()
-        for eid in pairs(visitor) do
-            visitor[eid] = nil
-        end
-    end
-    world.entity = visitor_create()
 
     local pipeline_init = pipeline(world, cworld, "init")
     local pipeline_update = pipeline(world, cworld, "update")
