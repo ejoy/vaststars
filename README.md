@@ -1,4 +1,4 @@
-Please visit these Chinese pages by using something like Google or Deepl translate.
+Please visit these Chinese pages by using something like Google or Deepl translate or view [English Documentation](https://github.com/ejoy/vaststars/blob/master/README.en.md).
 
 # Red Frontier
 
@@ -26,7 +26,26 @@ Red Frontier （项目名为 vaststars）是由[灵犀互娱](https://www.lingxi
 
 ### 编译
 
-PC 版本可参考 Ant 的 [编译指南](https://github.com/ejoy/ant/blob/master/README.md)
+#### PC版本
+
+可参考 Ant 的 [编译指南](https://github.com/ejoy/ant/blob/master/README.md)
+
+#### iOS版本
+
+1. 编译macos版本，用于运行构建工具
+``` bash
+luamake
+luamake tools -mode release
+```
+2. 编译ios版本
+``` bash
+luamake -os ios
+```
+3. 资源打包
+``` bash
+./bin/macos/debug/vaststars -p ios
+```
+4. 用xcode打开[ios工程](https://github.com/ejoy/vaststars/tree/master/runtime/ios/vaststars)，生成ipa
 
 ### 运行
 
