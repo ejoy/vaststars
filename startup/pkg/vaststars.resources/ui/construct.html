@@ -180,7 +180,7 @@
             <div style = "position: absolute; left: 11vmin; top: 1vmin; width: 4vmin; height: 4vmin; background-color: rgb(234, 75, 26); font-size: 3.25vmin; border-radius: 50%;" />
         </tech-or-task-bar>
 
-        <div style = "position: absolute; top: 20vmin; right: 3.995vmax; flex-direction: column; gap: 0.5vmin;">
+        <div style = "position: absolute; top: 20vmin; right: 3.995vmax; flex-direction: column; gap: 0.5vmin;" data-if = "status ~= 'BUILD' and status ~= 'BULK_OPT'">
             <div style = "width: 10vmin; height: 10vmin; background-size: 100% 100%; animation :1s sine-in-out 0s enlarge1;" data-style-background-image="it.icon" data-event-click="clickButton('click_recipe', it.recipe_name)" data-for = "it, it_index : recipe_list">
                 <div style = "position: absolute;left:-3vmin;top:1.5vmin; width:3vmin; height:7.4vmin; background-size: cover; animation :0.5s linear 0s infinite alternate enlarge2; background-image: '/pkg/vaststars.resources/ui/textures/common/exclamation2.texture';"/>
             </div>

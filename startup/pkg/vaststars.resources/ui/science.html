@@ -183,6 +183,15 @@
                 end
             end
 
+            local function update_current_tech()
+                if start.recipe_index then
+                    selected_recipe_index = start.recipe_index and start.recipe_index or 0
+                else
+                    unselect_recipe()
+                end
+                start.detaillist:on_dirty_all(start.current_tech and #start.current_tech.detail or 0)
+            end
+
             local function clickTech(index)
                 ui_sys.pub(window, {"click_tech", index})
             end
@@ -377,6 +386,7 @@
             window.customElements.define("detaillist", function(e)
                 start.detaillist = ui.list.create(document, e, detail_item_init, detail_item_update)
                 update_techitems()
+                update_current_tech()
             end)
 
             local inited = false
@@ -396,12 +406,7 @@
                         if not inited then
                             return
                         end
-                        if start.recipe_index then
-                            selected_recipe_index = start.recipe_index and start.recipe_index or 0
-                        else
-                            unselect_recipe()
-                        end
-                        start.detaillist:on_dirty_all(start.current_tech and #start.current_tech.detail or 0)
+                        update_current_tech()
                     end
                 },
                 {
@@ -453,6 +458,7 @@
             function init()
                 inited = true
                 update_techitems()
+                update_current_tech()
             end
         </script>
     </head>
