@@ -4,7 +4,7 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local ivs = ecs.require "ant.render|visible_state"
-local ientity = ecs.require "ant.render|components.entity"
+local ientity = ecs.require "ant.entity|entity"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 local imotion = ecs.require "engine.motion"
