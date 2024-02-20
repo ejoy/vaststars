@@ -1,5 +1,17 @@
 ---
 file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /2/tag
+value:
+  Cylinder_P1
+---
+file: mesh.prefab
 op: add
 path: /-
 value:
@@ -113,6 +125,7 @@ path: /-
 value:
   data:
     efk:
+      fadeout: true
       path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
       speed: 1
     scene:
@@ -125,6 +138,20 @@ value:
     ant.efk|efk
   tag:
     work
+---
+file: work.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event: {}
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline
 ---
 file: mesh.prefab
 op: createfile
