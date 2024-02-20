@@ -252,7 +252,7 @@ prototype "浮选器II" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"N"}},
+                    {type="input", position={1,0,"N"}},
                 }
             },
             {
@@ -260,7 +260,7 @@ prototype "浮选器II" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"W"}},
+                    {type="input", position={0,1,"W"}},
                 }
             },
         },
@@ -270,7 +270,7 @@ prototype "浮选器II" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,3,"S"}},
+                    {type="output", position={2,3,"S"}},
                 }
             },
             {
@@ -278,7 +278,7 @@ prototype "浮选器II" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,3,"E"}},
+                    {type="output", position={3,2,"E"}},
                 }
             },
         },
@@ -309,7 +309,7 @@ prototype "浮选器III" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"N"}},
+                    {type="input", position={1,0,"N"}},
                 }
             },
             {
@@ -317,7 +317,7 @@ prototype "浮选器III" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"W"}},
+                    {type="input", position={0,1,"W"}},
                 }
             },
         },
@@ -327,7 +327,7 @@ prototype "浮选器III" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,3,"S"}},
+                    {type="output", position={2,3,"S"}},
                 }
             },
             {
@@ -335,7 +335,7 @@ prototype "浮选器III" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,3,"E"}},
+                    {type="output", position={3,2,"E"}},
                 }
             },
         },
@@ -366,7 +366,7 @@ prototype "特殊浮选器" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"N"}},
+                    {type="input", position={1,0,"N"}},
                 }
             },
             {
@@ -374,7 +374,7 @@ prototype "特殊浮选器" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"W"}},
+                    {type="input", position={0,1,"W"}},
                 }
             },
         },
@@ -384,7 +384,7 @@ prototype "特殊浮选器" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,3,"S"}},
+                    {type="output", position={2,3,"S"}},
                 }
             },
             {
@@ -392,7 +392,7 @@ prototype "特殊浮选器" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,3,"E"}},
+                    {type="output", position={3,2,"E"}},
                 }
             },
         },
