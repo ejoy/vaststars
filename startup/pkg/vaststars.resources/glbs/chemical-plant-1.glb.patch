@@ -158,30 +158,6 @@ value:
   tag:
     timeline
 ---
-file: idle_start.prefab
-op: add
-path: /-
-value:
-  data:
-    timeline:
-      duration: 3
-      key_event:
-        ---
-        event_list:
-          ---
-          action: idle_start
-          event_type: Animation
-          forwards: true
-          name: Animation4
-          pause_frame: -1
-        tick: 0
-        time: 0
-      loop: false
-  policy:
-    ant.timeline|timeline
-  tag:
-    timeline
----
 file: idle.prefab
 op: add
 path: /-
@@ -240,6 +216,57 @@ value:
           forwards: false
           pause_frame: -1
           target: Cylinder.001_P1
+        tick: 45
+        time: 1.5
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline
+---
+file: idle_start.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      fadeout: true
+      path: /pkg/vaststars.resources/effects/chemical-plant_smoke.efk
+      speed: 1
+    scene:
+      s: {10, 10, 10}
+      t: {0, 18, 0}
+    visible_state: ""
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    chemical-plant_smoke
+---
+file: idle_start.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          action: idle_start
+          event_type: Animation
+          forwards: true
+          name: Animation4
+          pause_frame: -1
+        tick: 0
+        time: 0
+        ---
+        event_list:
+          ---
+          action: chemical-plant_smoke
+          event_type: Effect
         tick: 45
         time: 1.5
       loop: false
