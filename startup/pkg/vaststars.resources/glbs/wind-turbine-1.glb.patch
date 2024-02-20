@@ -1,19 +1,13 @@
 ---
 file: mesh.prefab
 op: replace
-path: /1/tag
-value:
-  Scene
----
-file: mesh.prefab
-op: replace
-path: /3/tag
+path: /2/tag
 value:
   Plane.003_P1
 ---
 file: mesh.prefab
 op: replace
-path: /2/tag
+path: /1/tag
 value:
   animation
 ---
@@ -84,7 +78,7 @@ value:
 ---
 file: work.prefab
 op: replace
-path: /2/data/animation
+path: /1/data/animation
 value: ./animations/work.ozz
 ---
 file: mesh.prefab
