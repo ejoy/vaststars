@@ -3,16 +3,10 @@ file: mesh.prefab
 op: replace
 path: /1/tag
 value:
-  Scene
----
-file: mesh.prefab
-op: replace
-path: /2/tag
-value:
   animation
 ---
 file: mesh.prefab
 op: replace
-path: /3/tag
+path: /2/tag
 value:
   Plane_P1

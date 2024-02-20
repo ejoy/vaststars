@@ -1,7 +1,7 @@
 ---
 file: mesh.prefab
 op: replace
-path: /2/tag
+path: /1/tag
 value:
   animation
 ---
@@ -91,7 +91,7 @@ value:
 ---
 file: mesh.prefab
 op: replace
-path: /4/tag
+path: /3/tag
 value:
   no_color_factors
 ---
