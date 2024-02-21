@@ -59,7 +59,7 @@ local function restore_world(gameplay_world)
     -- restore
     local all_object = {}
     local map = {} -- coord -> id
-    for v in gameplay_world.ecs:select("eid:in building:in road:absent inner_building:absent fluidbox?in fluidboxes?in assembling?in debris?in") do
+    for v in gameplay_world.ecs:select("eid:in building:in road:absent inner_building:absent debris?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
         local debris
@@ -170,7 +170,6 @@ function M:restore(fullpath)
     restore_camera_setting()
 
     self.running = true
-    world:pipeline_func "gameworld_clean" ()
     gameplay_core.restore(fullpath)
     iprototype_cache.reload()
     world:pipeline_func "prototype" ()
@@ -192,7 +191,6 @@ function M:restore(fullpath)
 end
 
 function M:restart(game_template_file)
-    world:pipeline_func "gameworld_clean" ()
     gameplay_core.restart()
     gameplay_core.get_storage().game_template = assert(game_template_file)
 

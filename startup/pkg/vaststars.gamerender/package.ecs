@@ -37,11 +37,8 @@ pipeline "gameworld_prebuild"
     .stage "gameworld_prebuild"
 
 pipeline "gameworld_build"
-    .stage "gameworld_beforebuild"
+    .stage "update_power_status"
     .stage "gameworld_build"
-
-pipeline "gameworld_clean"
-    .stage "gameworld_clean"
 
 pipeline "prototype"
     .stage "prototype_prerestore"

@@ -4,28 +4,13 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local FLUIDBOXES <const> = CONSTANT.FLUIDBOXES
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
-    [0] = 0,
-    [1] = 1,
-    [2] = 2,
-    [3] = 3,
+local DIRECTION <const> = CONSTANT.DIRECTION
+local PIPE_DIRECTION <const> = {
+    N = DIRECTION.N,
+    E = DIRECTION.E,
+    S = DIRECTION.S,
+    W = DIRECTION.W,
 }
-
-local PipeDirection <const> = {
-    ["N"] = 0,
-    ["E"] = 1,
-    ["S"] = 2,
-    ["W"] = 3,
-}
-
-local N <const> = 0
-local E <const> = 1
-local S <const> = 2
-local W <const> = 3
 
 local iprototype = require "gameplay.interface.prototype"
 local icoord = require "coord"
@@ -38,8 +23,10 @@ local iworld = require "gameplay.interface.world"
 local igameplay_chimney = gameplay.interface "chimney"
 
 local FluidboxCache = {}
+local PipeMasks = {}
+local RevPipeMasks = {}
 
-local function length(t)
+local function _length(t)
     local n = 0
     for _ in pairs(t) do
         n = n + 1
@@ -47,23 +34,23 @@ local function length(t)
     return n
 end
 
-local function pack(x, y, dir)
+local function _uniquekey(x, y, dir)
     return x << 16 | y << 8 | dir
 end
 
-local function rotate(position, direction, area)
+local function _rotate(position, direction, area)
     local w, h = area >> 8, area & 0xFF
     local x, y = position[1], position[2]
-    local dir = (PipeDirection[position[3]] + direction) % 4
+    local dir = (DIRECTION[position[3]] + direction) % 4
     w = w - 1
     h = h - 1
-    if direction == N then
+    if direction == DIRECTION.N then
         return x, y, dir
-    elseif direction == E then
+    elseif direction == DIRECTION.E then
         return h - y, x, dir
-    elseif direction == S then
+    elseif direction == DIRECTION.S then
         return w - x, h - y, dir
-    elseif direction == W then
+    elseif direction == DIRECTION.W then
         return y, w - x, dir
     end
 end
@@ -75,7 +62,7 @@ end
 
 local function _find_neighbor(gameplay_world, map, x, y, dir, ground)
     local succ, dx, dy = false, x, y
-    for i = 1, ground or 1 do
+    for _ = 1, ground or 1 do
         succ, dx, dy = icoord.move(dx, dy, dir, 1)
         if not succ then
             return
@@ -159,31 +146,119 @@ local function _update_neighbor_fluid(gameplay_world, e, typeobject, map)
     end
 end
 
-function fluidbox_sys:gameworld_prebuild()
-    local gameplay_world = gameplay_core.get_world()
-    local gameplay_ecs = gameplay_world.ecs
+local function _check(m, d)
+    return (m & (1 << (d * 2))) ~= 0
+end
 
+local function _open(m, d)
+    return m | (1 << (d * 2))
+end
+
+local PileMask = 0
+for _, d in pairs(PIPE_DIRECTION) do
+    PileMask = _open(PileMask, d)
+end
+
+local function _update_pipe_shape(gameplay_world)
+    local gameplay_ecs = gameplay_world.ecs
     local map = {}
-    local function cache_building(e)
-        local w, h = iprototype.rotate_area(iprototype.queryById(e.building.prototype).area, e.building.direction)
-        for i = 0, w - 1 do
-            for j = 0, h - 1 do
-                local coord = icoord.pack(e.building.x + i, e.building.y + j)
-                -- assert(map[coord] == nil)
-                map[coord] = e.eid
+
+    for e in gameplay_ecs:select "fluidbox:in building:in eid:in REMOVED:absent" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if iprototype.has_type(typeobject.type, "pipe") then
+            local coord = icoord.pack(e.building.x, e.building.y)
+            assert(map[coord] == nil)
+            map[coord] = {mask = PileMask, eid = e.eid}
+        elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
+            local d = (DIRECTION.S + e.building.direction) % 4
+            local coord = icoord.pack(e.building.x, e.building.y)
+            assert(map[coord] == nil)
+            map[coord] = {mask = _open(0, d), eid = e.eid}
+        else
+            for _, connection in ipairs(typeobject.fluidbox.connections) do
+                local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+                local coord = icoord.pack(e.building.x + x, e.building.y + y)
+                assert(map[coord] == nil)
+                map[coord] = {mask = _open(0, DIRECTION[dir]), eid = e.eid}
             end
         end
     end
 
-    for e in gameplay_ecs:select "fluidbox:in building:in eid:in" do
-        cache_building(e)
+    for e in gameplay_ecs:select "fluidboxes:in building:in eid:in REMOVED:absent" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        for _, v in ipairs(FLUIDBOXES) do
+            if typeobject.fluidboxes[v.classify][v.index] then
+                for _, connection in ipairs(typeobject.fluidboxes[v.classify][v.index].connections) do
+                    local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+                    local coord = icoord.pack(e.building.x + x, e.building.y + y)
+                    assert(map[coord] == nil)
+                    map[coord] = {mask = _open(0, DIRECTION[dir]), eid = e.eid}
+                end
+            end
+        end
     end
 
-    for e in gameplay_ecs:select "fluidboxes:in building:in eid:in" do
-        cache_building(e)
+    local pipe = {}
+    local pipe_to_ground = {}
+    for e in gameplay_ecs:select "building:in fluidbox:in eid:in" do
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local coord = icoord.pack(e.building.x, e.building.y)
+        if iprototype.has_type(typeobject.type, "pipe") then
+            pipe[coord] = true
+        elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
+            pipe_to_ground[coord] = true
+        end
     end
 
-    -----
+    for coord in pairs(pipe) do
+        local x, y = icoord.unpack(coord)
+        local mask = 0
+        for _, d in pairs(PIPE_DIRECTION) do
+            local _, dx, dy = icoord.move(x, y, d, 1)
+            local neighbor = map[icoord.pack(dx, dy)]
+            if neighbor and _check(neighbor.mask, iprototype.reverse_dir(d)) then
+                mask = _open(mask, d)
+            end
+        end
+        local v = assert(map[coord])
+        if v.mask ~= mask then
+            local e = assert(gameplay_world:fetch_entity(v.eid))
+            local vv = assert(RevPipeMasks[iprototype.queryById(e.building.prototype).building_category][mask])
+            e.building.prototype = vv.id
+            e.building.direction = vv.direction
+            e.building_changed = true
+            v.mask = mask
+        end
+    end
+
+    for coord in pairs(pipe_to_ground) do
+        local x, y = icoord.unpack(coord)
+        local v = assert(map[coord])
+        local e = assert(gameplay_world:fetch_entity(v.eid))
+
+        local mask = PipeMasks[e.building.prototype][e.building.direction]
+        local d = (DIRECTION.S + e.building.direction) % 4
+        local _, dx, dy = icoord.move(x, y, d, 1)
+        local neighbor = map[icoord.pack(dx, dy)]
+        if neighbor and _check(neighbor.mask, iprototype.reverse_dir(d)) then
+            mask = _open(mask, d)
+        end
+
+        local v = assert(map[coord])
+        if v.mask ~= mask then
+            local e = assert(gameplay_world:fetch_entity(v.eid))
+            local vv = assert(RevPipeMasks[iprototype.queryById(e.building.prototype).building_category][mask])
+            e.building.prototype = vv.id
+            e.building.direction = vv.direction
+            e.building_changed = true
+            v.mask = mask
+        end
+    end
+end
+
+local function _update_fluidbox_fluid(gameplay_world, map)
+    local gameplay_ecs = gameplay_world.ecs
+
     local new = {}
     for e in gameplay_ecs:select "building_new:in fluidbox:in eid:in" do
         new[e.eid] = true
@@ -203,8 +278,8 @@ function fluidbox_sys:gameworld_prebuild()
                     fluids[neighbor_fluid] = true
                 end
             end
-            if length(fluids) > 0 then
-                assert(length(fluids) == 1)
+            if _length(fluids) > 0 then
+                assert(_length(fluids) == 1)
                 local fluid = next(fluids)
                 igameplay_fluidbox.update_fluidbox(gameplay_world, e, fluid)
                 _update_neighbor_fluid(gameplay_world, e, typeobject, map)
@@ -213,9 +288,12 @@ function fluidbox_sys:gameworld_prebuild()
             _update_neighbor_fluid(gameplay_world, e, typeobject, map)
         end
     end
+end
 
-    -- 
-    for e in gameplay_world.ecs:select "auto_set_recipe:in assembling:update building:in chest:update fluidboxes:update REMOVED:absent" do
+local function _auto_set_recipe(gameplay_world, map)
+    local gameplay_ecs = gameplay_world.ecs
+
+    for e in gameplay_ecs:select "auto_set_recipe assembling:update building:in chest:update fluidboxes:update REMOVED:absent" do
         local typeobject = iprototype.queryById(e.building.prototype)
         local cache = iprototype_cache.get("recipe_config").assembling_recipes_2[typeobject.name]
 
@@ -231,7 +309,7 @@ function fluidbox_sys:gameworld_prebuild()
                 end
             end
         end
-        assert(length(fluids) <= 1)
+        assert(_length(fluids) <= 1)
         local fluid = next(fluids)
         if fluid then
             local recipe_name = cache[iprototype.queryById(fluid).name]
@@ -244,7 +322,7 @@ function fluidbox_sys:gameworld_prebuild()
         end
     end
 
-    for e in gameplay_world.ecs:select "auto_set_recipe:in chimney:update building:in fluidbox:update REMOVED:absent" do
+    for e in gameplay_ecs:select "auto_set_recipe chimney:update building:in fluidbox:update REMOVED:absent" do
         local typeobject = iprototype.queryById(e.building.prototype)
         local cache = iprototype_cache.get("recipe_config").chimney_recipes[typeobject.name]
 
@@ -255,9 +333,8 @@ function fluidbox_sys:gameworld_prebuild()
             if neighbor_fluid then
                 fluids[neighbor_fluid] = true
             end
-            ::continue::
         end
-        assert(length(fluids) <= 1)
+        assert(_length(fluids) <= 1)
         local fluid = next(fluids)
         if fluid then
             local recipe_name = cache[iprototype.queryById(fluid).name]
@@ -275,6 +352,71 @@ function fluidbox_sys:gameworld_prebuild()
     end
 end
 
+local function _get_cache(gameplay_ecs)
+    local map = {}
+
+    local function cache_building(e)
+        local w, h = iprototype.rotate_area(iprototype.queryById(e.building.prototype).area, e.building.direction)
+        for i = 0, w - 1 do
+            for j = 0, h - 1 do
+                local coord = icoord.pack(e.building.x + i, e.building.y + j)
+                assert(map[coord] == nil)
+                map[coord] = e.eid
+            end
+        end
+    end
+
+    for e in gameplay_ecs:select "fluidbox:in building:in eid:in REMOVED:absent" do
+        cache_building(e)
+    end
+
+    for e in gameplay_ecs:select "fluidboxes:in building:in eid:in REMOVED:absent" do
+        cache_building(e)
+    end
+
+    return map
+end
+
+local function _calc_pipe_mask(pt, direction)
+    local mask = 0
+    for _, c in ipairs(pt.fluidbox.connections) do
+        local dir = (DIRECTION[c.position[3]] + direction) % 4
+        mask = mask | ((c.ground and 2 or 1) << (dir * 2))
+    end
+    return mask
+end
+
+function fluidbox_sys:prototype_restore()
+    for _, pt in pairs(iprototype.each_type("building")) do
+        if not iprototype.has_types(pt.type, "pipe", "pipe_to_ground") then
+            goto continue
+        end
+        for _, dir in pairs(pt.building_direction) do
+            local mask = _calc_pipe_mask(pt, DIRECTION[dir])
+
+            PipeMasks[pt.id] = PipeMasks[pt.id] or {}
+            assert(PipeMasks[pt.id][DIRECTION[dir]] == nil)
+            PipeMasks[pt.id][DIRECTION[dir]] = mask
+
+            RevPipeMasks[pt.building_category] = RevPipeMasks[pt.building_category] or {}
+            assert(RevPipeMasks[pt.building_category][mask] == nil)
+            RevPipeMasks[pt.building_category][mask] = {id = pt.id, direction = DIRECTION[dir]}
+        end
+        ::continue::
+    end
+end
+
+function fluidbox_sys:gameworld_prebuild()
+    local gameplay_world = gameplay_core.get_world()
+    local gameplay_ecs = gameplay_world.ecs
+
+    _update_pipe_shape(gameplay_world)
+
+    local map = _get_cache(gameplay_ecs)
+    _update_fluidbox_fluid(gameplay_world, map)
+    _auto_set_recipe(gameplay_world, map)
+end
+
 function fluidbox_sys:gameworld_build()
     local gameplay_world = gameplay_core.get_world()
     local gameplay_ecs = gameplay_world.ecs
@@ -284,22 +426,22 @@ function fluidbox_sys:gameworld_build()
     for e in gameplay_ecs:select "fluidbox:in building:in" do
         local typeobject = iprototype.queryById(e.building.prototype)
         if iprototype.has_type(typeobject.type, "pipe") then
-            for _, dir in pairs(PipeDirection) do
-                assert(FluidboxCache[pack(e.building.x, e.building.y, dir)] == nil)
-                FluidboxCache[pack(e.building.x, e.building.y, dir)] = e.fluidbox.fluid
+            for _, dir in pairs(PIPE_DIRECTION) do
+                assert(FluidboxCache[_uniquekey(e.building.x, e.building.y, dir)] == nil)
+                FluidboxCache[_uniquekey(e.building.x, e.building.y, dir)] = e.fluidbox.fluid
             end
         elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
-            local dir = (S + e.building.direction) % 4
-            assert(FluidboxCache[pack(e.building.x, e.building.y, dir)] == nil)
-            FluidboxCache[pack(e.building.x, e.building.y, dir)] = e.fluidbox.fluid
+            local dir = (DIRECTION.S + e.building.direction) % 4
+            assert(FluidboxCache[_uniquekey(e.building.x, e.building.y, dir)] == nil)
+            FluidboxCache[_uniquekey(e.building.x, e.building.y, dir)] = e.fluidbox.fluid
         else
             for _, c in ipairs(typeobject.fluidbox.connections) do
                 assert(not c.ground)
-                local dx, dy, dir = rotate(c.position, e.building.direction, typeobject.area)
+                local dx, dy, dir = _rotate(c.position, e.building.direction, typeobject.area)
                 local x = e.building.x + dx
                 local y = e.building.y + dy
-                assert(FluidboxCache[pack(x, y, dir)] == nil)
-                FluidboxCache[pack(x, y, dir)] = e.fluidbox.fluid
+                assert(FluidboxCache[_uniquekey(x, y, dir)] == nil)
+                FluidboxCache[_uniquekey(x, y, dir)] = e.fluidbox.fluid
             end
         end
     end
@@ -311,11 +453,11 @@ function fluidbox_sys:gameworld_build()
         for i = 1, #inputs do
             local fluid = e.fluidboxes["in"..i.."_fluid"]
             for _, c in ipairs(inputs[i].connections) do
-                local dx, dy, dir = rotate(c.position, e.building.direction, typeobject.area)
+                local dx, dy, dir = _rotate(c.position, e.building.direction, typeobject.area)
                 local x = e.building.x + dx
                 local y = e.building.y + dy
-                assert(FluidboxCache[pack(x, y, dir)] == nil)
-                FluidboxCache[pack(x, y, dir)] = fluid
+                assert(FluidboxCache[_uniquekey(x, y, dir)] == nil)
+                FluidboxCache[_uniquekey(x, y, dir)] = fluid
             end
         end
 
@@ -323,11 +465,11 @@ function fluidbox_sys:gameworld_build()
         for i = 1, #outputs do
             local fluid = e.fluidboxes["out"..i.."_fluid"]
             for _, c in ipairs(outputs[i].connections) do
-                local dx, dy, dir = rotate(c.position, e.building.direction, typeobject.area)
+                local dx, dy, dir = _rotate(c.position, e.building.direction, typeobject.area)
                 local x = e.building.x + dx
                 local y = e.building.y + dy
-                assert(FluidboxCache[pack(x, y, dir)] == nil)
-                FluidboxCache[pack(x, y, dir)] = fluid
+                assert(FluidboxCache[_uniquekey(x, y, dir)] == nil)
+                FluidboxCache[_uniquekey(x, y, dir)] = fluid
             end
         end
     end
@@ -335,19 +477,17 @@ function fluidbox_sys:gameworld_build()
     gameplay_ecs:clear("building_new")
 end
 
-function fluidbox_sys:gameworld_clean()
-    FluidboxCache = {}
-end
-
 function fluidbox_sys:exit()
     FluidboxCache = {}
+    PipeMasks = {}
+    RevPipeMasks = {}
 end
 
 local ifluidbox = {}
 function ifluidbox.get(x, y, dir)
-    return FluidboxCache[pack(x, y, DIRECTION[dir])]
+    return FluidboxCache[_uniquekey(x, y, DIRECTION[dir])]
 end
 
-ifluidbox.rotate = rotate
+ifluidbox.rotate = _rotate
 
 return ifluidbox

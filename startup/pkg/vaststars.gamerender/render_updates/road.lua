@@ -52,7 +52,7 @@ local function move(d)
     end
 end
 
-local function repair(world, map, road_cache)
+local function _update_road_shape(world, map, road_cache)
     local m
     for coord, mask in pairs(map) do
         m = mask
@@ -105,7 +105,7 @@ function road_sys:gameworld_prebuild()
         map[key] = iroadnet_converter.prototype_name_dir_to_mask(iprototype.queryById(e.building.prototype).name, iprototype.dir_tostring(e.building.direction))
         road[key] = e.eid
     end
-    repair(world, map, road)
+    _update_road_shape(world, map, road)
 end
 
 function road_sys:gameworld_build()

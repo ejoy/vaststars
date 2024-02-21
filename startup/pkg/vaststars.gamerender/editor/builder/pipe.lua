@@ -243,15 +243,15 @@ local function place(self, datamodel)
 
     local typeobject = iprototype.queryByName("管道1-O型")
     local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, m)
-
+    local d = iprototype.dir_tostring(dir)
     object = iobject.new {
         prototype_name = iprototype.queryById(prototype).name,
         dir = iprototype.dir_tostring(dir),
         x = x,
         y = y,
         srt = srt.new {
-            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, "N"))),
-            r = ROTATORS["N"],
+            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, d))),
+            r = ROTATORS[d],
         },
         group_id = 0,
     }

@@ -32,7 +32,7 @@ local function updateStatus(ecs)
     end
 end
 
-function power_check_sys:gameworld_beforebuild()
+function power_check_sys:update_power_status()
     local gameplay_world = gameplay_core.get_world()
     local ecs = gameplay_world.ecs
     updateStatus(ecs)
@@ -47,7 +47,7 @@ function power_check_sys:gameworld_update()
     end
 end
 
-function power_check_sys:gameworld_clean()
+function power_check_sys:exit()
     PowerGrids = {}
 end
 

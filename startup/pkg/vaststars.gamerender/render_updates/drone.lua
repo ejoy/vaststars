@@ -287,7 +287,7 @@ function drone_sys:gameworld_update()
     gameplay_ecs:clear("drone_changed")
 end
 
-function drone_sys:gameworld_clean()
+function drone_sys:exit()
     for _, drone in pairs(lookup_drones) do
         drone:destroy()
     end
