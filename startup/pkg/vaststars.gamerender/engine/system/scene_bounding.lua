@@ -12,6 +12,7 @@ local mathpkg   = import_package "ant.math"
 local mu        = mathpkg.util
 
 local irq       = ecs.require "ant.render|render_system.renderqueue"
+local ishadow   = ecs.require "ant.render|shadow.shadow_system"
 
 local sb_sys = ecs.system "scene_bounding_system"
 
@@ -44,12 +45,17 @@ local function find_zn_zf(points, Cv)
 end
 
 function sb_sys:update_camera_bounding()
-    local C = irq.main_camera_changed()
-    if not C then
+    local changed, C = ishadow.shadow_changed()
+    if not changed then
         return
     end
 
-    w:extend(C, "camera:in")
+    if C then
+        w:extend(C, "scene:in camera:in")
+    else
+        C = irq.main_camera_entity "scene:in camera:in"
+    end
+    
     local sbe = w:first "shadow_bounding:in"
     local sb = sbe.shadow_bounding
 
