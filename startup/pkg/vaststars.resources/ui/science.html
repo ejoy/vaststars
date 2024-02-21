@@ -311,13 +311,17 @@
                 local margin_top = '0'
                 local margin_left = '0'
                 local inoutstr = [[
-                    <div style='flex-direction:row; justify-content: center; align-items:center; width: 40vmin; height: 15vmin; margin-right: 2vmin;'>
-                    <div style='width: 18vmin; height: 16vmin; flex-direction:row; justify-content:center; align-items:center;flex-wrap: wrap;'>]]
+                    <div style='flex-direction:row; justify-content: center; align-items:center; width: 45vmin; height: 15vmin; margin-right: 0.5vmin;'>
+                    <div style='flex-direction:column;width:18vmin; height:15vmin; justify-content:center; align-items:center; flex-wrap: wrap;'>]]
                 if #detail.input == 1 then
-                    margin_top = '5vmin'
-                    margin_left = '6vmin'
+                    margin_top = '0vmin'
+                    margin_left = '9vmin'
                 elseif #detail.input == 2 then
-                    margin_top = '5vmin'
+                    margin_top = '0vmin'
+                    margin_left = '9vmin'
+                elseif #detail.input > 2 then
+                    margin_top = '0vmin'
+                    margin_left = '1.5vmin'
                 end
                 for _, indata in ipairs(detail.input) do
                     inoutstr = inoutstr .. ([[
@@ -330,19 +334,20 @@
                     ]]):format(margin_top, margin_left, indata.icon, indata.name, indata.count)
                 end
                 inoutstr = inoutstr .. "</div>"
-                inoutstr = inoutstr .. ([[<div style='margin-left: 1vmin; margin-right: 1vmin; height: 7vmin; flex-direction:column;justify-content:center ;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
-                inoutstr = inoutstr .. "<div style='width:18vmin; height: 16vmin; flex-direction:row; justify-content:center; align-items:center; flex-wrap:wrap;'>"
+                inoutstr = inoutstr .. ([[<div style='width:9vmin; height: 15vmin; flex-direction:column;justify-content:center ;align-items:center;'><div class="recipe-time">%s</div><div class="small-arrow"/></div>]]):format(detail.time)
+                inoutstr = inoutstr .. "<div style='width:18vmin; height:15vmin;justify-content:center; align-items:center; flex-wrap:wrap;'>"
                 margin_top = '0'
                 margin_left = '0'
                 if #detail.output == 1 then
-                    margin_top = '5vmin'
-                    margin_left = '-4vmin'
+                    margin_top = '0vmin'
+                    margin_left = '2vmin'
                 elseif #detail.output == 2 then
-                    margin_top = '5vmin'
+                    margin_top = '0vmin'
+                    margin_left = '2vmin'
                 end
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
-                    <div style='flex-direction: column; align-items: center; justify-content: center;'>
+                    <div style='flex-direction:column; align-items: center; justify-content: center;'>
                         <div class="small-item-new" style='margin-top: %s; margin-left: %s; background-image: "%s"; flex-direction:row; justify-content:center; align-items:center;'>
                             <div style='position:absolute; bottom:-1.1vmin; width:8.5vmin; font-size: 2vmin; text-align: center; background-color:rgba(50,50,50,200); border-radius:0.7vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.1vmin rgb(0,0,0);'>%s</div> 
                             <div style='position:absolute; right:0.1vmin; top:0vmin; font-size: 2vmin; -webkit-text-stroke: 0.2vmin rgb(0,0,0);'>x%d</div>   
