@@ -132,6 +132,11 @@ local property_list = {
 		value = "$drone_count$",
 		pos = 29,
 	},
+	["pollution"] = {
+		-- icon = "/pkg/vaststars.resources/ui/textures/property/drone.texture",
+		desc = "污染排放",
+		pos = 30,
+	},
 }
 
 -- for debug

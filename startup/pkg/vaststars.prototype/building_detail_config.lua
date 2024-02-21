@@ -121,10 +121,12 @@ local building_detail_config = {
 	["烟囱"] = {
 		"fluid_name",
 		"fluid_volume",
+		"pollution",
 	},
 	["排水口"] = {
 		"fluid_name",
 		"fluid_volume",
+		"pollution",
 	},
 	["压力泵"] = {
 		"work_power",
