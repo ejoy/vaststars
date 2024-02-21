@@ -10,11 +10,13 @@ local gameplay_core = require "gameplay.core"
 local daynight_sys = ecs.system "daynight_system"
 
 local daynight_update; do
-    if DAYNIGHT_DEBUG == "" then
+    if not DAYNIGHT_DEBUG then
         function daynight_update()
         end
     elseif DAYNIGHT_DEBUG then
-        local total_sec = tostring(DAYNIGHT_DEBUG)
+        assert(tonumber(DAYNIGHT_DEBUG), "daynight must be a number")
+
+        local total_sec = DAYNIGHT_DEBUG
         local total_ms = total_sec * 1000
 
         local ltask = require "ltask"
