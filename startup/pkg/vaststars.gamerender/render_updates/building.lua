@@ -20,16 +20,7 @@ local interval_call = ecs.require "engine.interval_call"
 local transfer_source_box = ecs.require "transfer_source_box"
 local icoord = require "coord"
 
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
-    [0] = 'N',
-    [1] = 'E',
-    [2] = 'S',
-    [3] = 'W',
-}
+local BuildingCache = {}
 
 local check_debris = interval_call(300, function(gameplay_world, gameplay_ecs)
     for e in gameplay_ecs:select "debris:in building:in chest:in eid:in" do
@@ -63,26 +54,25 @@ end)
 function building_sys:gameworld_update()
     local gameplay_world = gameplay_core.get_world()
     local gameplay_ecs = gameplay_world.ecs
+    check_debris(gameplay_world, gameplay_ecs)
+end
+
+function building_sys:gameworld_build()
+    BuildingCache = {}
+    local gameplay_world = gameplay_core.get_world()
+    local gameplay_ecs = gameplay_world.ecs
 
     for e in gameplay_ecs:select "building_changed building:in road:absent inner_building:absent" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         object.prototype_name = typeobject.name
-        object.dir = DIRECTION[e.building.direction]
+        object.dir = iprototype.dir_tostring(e.building.direction)
         objects:set(object, "CONSTRUCTED")
     end
     gameplay_ecs:clear("building_changed")
 
-    check_debris(gameplay_world, gameplay_ecs)
-end
-
-local building_cache = {}
-
-function building_sys:gameworld_build()
-    building_cache = {}
-    local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "road building:in eid:in REMOVED:absent" do
-        building_cache[icoord.pack(e.building.x, e.building.y)] = {
+        BuildingCache[icoord.pack(e.building.x, e.building.y)] = {
             eid = e.eid,
             x = e.building.x,
             y = e.building.y,
@@ -93,27 +83,31 @@ function building_sys:gameworld_build()
     itask.update_progress("in_one_power_grid")
 end
 
+function building_sys:exit()
+    BuildingCache = {}
+end
+
 function ibuilding.get(x, y)
-    return building_cache[icoord.pack(x, y)]
+    return BuildingCache[icoord.pack(x, y)]
 end
 
 function ibuilding.remove(x, y)
     print("remove building", x, y)
     local gameplay_world = gameplay_core.get_world()
     local coord = icoord.pack(x, y)
-    local building = building_cache[coord]
+    local building = BuildingCache[coord]
     igameplay_building.destroy(gameplay_world, gameplay_world:fetch_entity(building.eid)) -- TODO: use igameplay.destroy_entity instead
 
-    building_cache[coord] = nil
+    BuildingCache[coord] = nil
 end
 
 function ibuilding.set(init)
     local coord = icoord.pack(init.x, init.y)
-    local building = building_cache[coord]
+    local building = BuildingCache[coord]
     if building then
         local gameplay_world = gameplay_core.get_world()
         igameplay_building.destroy(gameplay_world, gameplay_world:fetch_entity(building.eid))
-        building_cache[coord] = nil
+        BuildingCache[coord] = nil
     end
     local eid = igameplay.create_entity({
         x = init.x,
@@ -121,7 +115,7 @@ function ibuilding.set(init)
         prototype_name = init.prototype_name,
         dir = init.direction,
     })
-    building_cache[icoord.pack(init.x, init.y)] = {
+    BuildingCache[icoord.pack(init.x, init.y)] = {
         eid = eid,
         x = init.x,
         y = init.y,

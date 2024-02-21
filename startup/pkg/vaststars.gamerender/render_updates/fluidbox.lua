@@ -168,18 +168,27 @@ local function _update_pipe_shape(gameplay_world)
         if iprototype.has_type(typeobject.type, "pipe") then
             local coord = icoord.pack(e.building.x, e.building.y)
             assert(map[coord] == nil)
-            map[coord] = {mask = PileMask, eid = e.eid}
+            map[coord] = {check = PileMask, eid = e.eid}
+
         elseif iprototype.has_type(typeobject.type, "pipe_to_ground") then
             local d = (DIRECTION.S + e.building.direction) % 4
             local coord = icoord.pack(e.building.x, e.building.y)
             assert(map[coord] == nil)
-            map[coord] = {mask = _open(0, d), eid = e.eid}
-        else
-            for _, connection in ipairs(typeobject.fluidbox.connections) do
-                local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
-                local coord = icoord.pack(e.building.x + x, e.building.y + y)
-                assert(map[coord] == nil)
-                map[coord] = {mask = _open(0, DIRECTION[dir]), eid = e.eid}
+            map[coord] = {check = _open(0, d), eid = e.eid}
+        end
+
+        for _, connection in ipairs(typeobject.fluidbox.connections) do
+            local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
+            local coord = icoord.pack(e.building.x + x, e.building.y + y)
+            local m = _open(0, DIRECTION[dir])
+
+            if not connection.ground then
+                if not map[coord] then
+                    map[coord] = {mask = m, check = m, eid = e.eid}
+                else
+                    map[coord].mask = _open(map[coord].mask or 0, DIRECTION[dir])
+                    map[coord].check = _open(map[coord].check, DIRECTION[dir])
+                end
             end
         end
     end
@@ -192,7 +201,7 @@ local function _update_pipe_shape(gameplay_world)
                     local x, y, dir = iprototype.rotate_connection(connection.position, DIRECTION[e.building.direction], typeobject.area)
                     local coord = icoord.pack(e.building.x + x, e.building.y + y)
                     assert(map[coord] == nil)
-                    map[coord] = {mask = _open(0, DIRECTION[dir]), eid = e.eid}
+                    map[coord] = {mask = _open(0, DIRECTION[dir]), check = _open(0, DIRECTION[dir]), eid = e.eid}
                 end
             end
         end
@@ -200,7 +209,7 @@ local function _update_pipe_shape(gameplay_world)
 
     local pipe = {}
     local pipe_to_ground = {}
-    for e in gameplay_ecs:select "building:in fluidbox:in eid:in" do
+    for e in gameplay_ecs:select "building:in fluidbox:in eid:in REMOVED:absent" do
         local typeobject = iprototype.queryById(e.building.prototype)
         local coord = icoord.pack(e.building.x, e.building.y)
         if iprototype.has_type(typeobject.type, "pipe") then
@@ -216,7 +225,7 @@ local function _update_pipe_shape(gameplay_world)
         for _, d in pairs(PIPE_DIRECTION) do
             local _, dx, dy = icoord.move(x, y, d, 1)
             local neighbor = map[icoord.pack(dx, dy)]
-            if neighbor and _check(neighbor.mask, iprototype.reverse_dir(d)) then
+            if neighbor and _check(neighbor.check, iprototype.reverse_dir(d)) then
                 mask = _open(mask, d)
             end
         end

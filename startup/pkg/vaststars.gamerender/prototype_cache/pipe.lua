@@ -34,12 +34,7 @@ return function()
         return c.prototype, c.entity_dir
     end
 
-    local function PrototypeDirToMask(prototype, dir)
-        return accel_rev[prototype][dir]
-    end
-
     return {
         MaskToPrototypeDir = MaskToPrototypeDir,
-        PrototypeDirToMask = PrototypeDirToMask,
     }
 end
