@@ -80,7 +80,7 @@ value:
         event_list:
           ---
           action: light
-          asset_path: /pkg/vaststars.resources/animations/boiler_light.anim
+          asset_path: /pkg/vaststars.resources/animations/boiler_light.ant
           event_type: Animation
           pause_frame: -1
           target: Plane.001_P1

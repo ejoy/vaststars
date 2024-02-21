@@ -70,7 +70,7 @@ value:
         event_list:
           ---
           action: light
-          asset_path: /pkg/vaststars.resources/animations/accumulator_light.anim
+          asset_path: /pkg/vaststars.resources/animations/accumulator_light.ant
           event_type: Animation
           pause_frame: -1
           target: Cube_P1

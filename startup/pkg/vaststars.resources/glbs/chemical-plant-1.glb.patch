@@ -200,7 +200,7 @@ value:
           pause_frame: 90
           ---
           action: light
-          asset_path: /pkg/vaststars.resources/animations/chemical_light.anim
+          asset_path: /pkg/vaststars.resources/animations/chemical_light.ant
           event_type: Animation
           forwards: false
           pause_frame: -1
@@ -211,7 +211,7 @@ value:
         event_list:
           ---
           action: light
-          asset_path: /pkg/vaststars.resources/animations/chemical_light.anim
+          asset_path: /pkg/vaststars.resources/animations/chemical_light.ant
           event_type: Animation
           forwards: false
           pause_frame: -1
