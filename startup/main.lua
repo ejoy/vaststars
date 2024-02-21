@@ -1,9 +1,14 @@
 package.path = "/engine/?.lua"
 require "bootstrap"
 
+local options = {}
+
+if arg[1] == "-f" then
+	options.window_size = "1280x720"
+end
+
 import_package "ant.window".start {
-    -- todo: read user config
-    -- window_size = "1280x720",
+    window_size = options.window_size,
     feature = {
         "vaststars.gamerender|login",
     }

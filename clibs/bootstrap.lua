@@ -39,6 +39,9 @@ elseif arg[0] == "-d" then
     arg[0] = "3rd/ant/tools/editor/launch/main.lua"
 elseif arg[0] == nil or arg[0] == "" then
     arg[0] = "startup/main.lua"
+elseif arg[0]:sub(1,1) == "-" then
+	table.move(arg, 0, #arg, 1)
+	arg[0] = "startup/main.lua"
 end
 
 local MainPath = fs.relative(ProjectDir / arg[0], antdir)
