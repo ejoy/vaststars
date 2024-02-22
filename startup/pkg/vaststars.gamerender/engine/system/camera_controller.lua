@@ -379,6 +379,8 @@ function icamera_controller.get_screen_world_position(position_type)
 end
 
 function icamera_controller.get_interset_points(ce)
+    w:extend(ce, "scene:in camera:in")
+
     local points = math3d.frustum_points(ce.camera.viewprojmat)
     local lb_raydir = math3d.sub(math3d.array_index(points, 5), math3d.array_index(points, 1))
     local lt_raydir = math3d.sub(math3d.array_index(points, 6), math3d.array_index(points, 2))

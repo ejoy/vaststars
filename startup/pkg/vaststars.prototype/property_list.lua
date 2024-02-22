@@ -135,6 +135,7 @@ local property_list = {
 	["pollution"] = {
 		-- icon = "/pkg/vaststars.resources/ui/textures/property/drone.texture",
 		desc = "污染排放",
+		value = "$pollution$",
 		pos = 30,
 	},
 }

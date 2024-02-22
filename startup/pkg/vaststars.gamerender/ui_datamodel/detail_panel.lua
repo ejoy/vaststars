@@ -322,6 +322,15 @@ local function get_property(e, typeobject)
         local typeobject = iprototype.queryById(e.building.prototype)
         t.values['drone_count'] = #typeobject.drone
     end
+    if e.chimney then
+        local typeobject = iprototype.queryById(e.chimney.recipe)
+        local s = typeobject.ingredients
+        assert(#s // 4 == 2)
+        for idx = 2, #s // 4 do
+            local _, n = string.unpack("<I2I2", s, 4 * idx - 3)
+            t.values['pollution'] = ("%s/%s"):format(typeobject.pollution, n)
+        end
+    end
     return t
 end
 

@@ -25,6 +25,89 @@
             green-button:active {
                 background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/green-button-bg-active.texture";
             }
+
+            @keyframes top-border-move {
+                0% {
+                    background-position-x: 0vmin;
+                }
+                100% {
+                    background-position-x: 5.16vmin;
+                }
+            }
+
+            @keyframes bottom-border-move {
+                0% {
+                    background-position-x: 0vmin;
+                }
+                100% {
+                    background-position-x: -5.16vmin;
+                }
+            }
+
+            @keyframes left-border-move {
+                0% {
+                    background-position-y: 0vmin;
+                }
+                100% {
+                    background-position-y: -5.16vmin;
+                }
+            }
+
+            @keyframes right-border-move {
+                0% {
+                    background-position-y: 0vmin;
+                }
+                100% {
+                    background-position-y: 5.16vmin;
+                }
+            }
+
+            top-border, bottom-border, left-border, right-border{
+                pointer-events: none;
+                background-size: 5.16vmin 5.16vmin;
+            }
+
+            top-border, bottom-border {
+                background: "/pkg/vaststars.resources/ui/textures/bulk-opt/border-horizontal.texture";
+                background-repeat: repeat-x;
+            }
+
+            top-border {
+                animation: top-border-move 2s infinite linear;
+            }
+
+            bottom-border {
+                animation: bottom-border-move 2s infinite linear;
+            }
+
+            left-border, right-border {
+                background: "/pkg/vaststars.resources/ui/textures/bulk-opt/border-vertical.texture";
+                background-repeat: repeat-y;
+            }
+
+            left-border {
+                animation: left-border-move 2s infinite linear;
+            }
+
+            right-border {
+                animation: right-border-move 2s infinite linear;
+            }
+
+            border-corner {
+                pointer-events: none;
+                width: 6.75vmin;
+                height: 6.75vmin;
+                background: "/pkg/vaststars.resources/ui/textures/bulk-opt/border-corner.texture";
+                background-size: 100% 100%;
+            }
+
+            select-bg {
+                pointer-events: none;
+                width: 100%;
+                height: 20.54vmin;
+                background: "/pkg/vaststars.resources/ui/textures/bulk-opt/select-bg.texture";
+                background-size: 100% 100%;
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = import_package "vaststars.ui".ui_system
@@ -50,7 +133,18 @@
     </head>
     <body style = "pointer-events: none; align-items: center;" onload = "init()">
         <div style = "pointer-events: none; height: 10%;" />
-        <select-box style = "pointer-events: none; border: 0.25vmin rgb(189, 149, 43); width: 80%; height: 70%;" />
+        <select-box style = "pointer-events: none; width: 80%; height: 70%;" >
+            <select-bg style = "position: absolute; top: 0; transform: rotate(180deg);" />
+            <select-bg style = "position: absolute; bottom: 0;" />
+            <top-border style = "width: 100%; height: 5.16vmin; top: -2vmin; position: absolute;" />
+            <bottom-border style = "width: 100%; height: 5.16vmin; bottom: -2vmin; position: absolute;" />
+            <left-border style = "width: 5.16vmin; height: 100%; left: -2vmin; position: absolute;" />
+            <right-border style = "width: 5.16vmin; height: 100%; right: -2vmin; position: absolute;" />
+            <border-corner style = "top: -2.5vmin; left: -2.5vmin; position: absolute;" />
+            <border-corner style = "top: -2.5vmin; right: -2.5vmin; position: absolute;" />
+            <border-corner style = "bottom: -2.5vmin; left: -2.5vmin; position: absolute;" />
+            <border-corner style = "bottom: -2.5vmin; right: -2.5vmin; position: absolute;" />
+        </select-box>
         <div style = "width: 80%; height: 10%; flex-direction: row; gap: 2vmin; justify-content: flex-end;">
             <red-button data-event-click = "clickButton('teardown')"  style="position:absolute; left:0;"  data-if = "teardown">
                 <div style = "width: 8.64vmin; height: 11.76vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/teardown.texture'; background-size: 100% 100%;" />
