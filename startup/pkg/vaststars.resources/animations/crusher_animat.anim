@@ -1,5 +1,5 @@
 ---
-duration: 0.6
+duration: 3
 name: work
 sample_ratio: 30
 target_anims:
@@ -10,8 +10,8 @@ target_anims:
     amplitude_rot: -360
     direction: 2
     random_amplitude: false
-    range: {0, 17}
-    repeat_count: 1
+    range: {0, 89}
+    repeat_count: 3
     rot_axis: 2
     tween: 1
     type: 1
@@ -24,8 +24,8 @@ target_anims:
     amplitude_rot: 360
     direction: 2
     random_amplitude: false
-    range: {0, 17}
-    repeat_count: 1
+    range: {0, 89}
+    repeat_count: 3
     rot_axis: 2
     tween: 1
     type: 1

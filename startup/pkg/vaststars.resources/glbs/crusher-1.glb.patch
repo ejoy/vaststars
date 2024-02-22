@@ -158,6 +158,7 @@ value:
           ---
           action: work
           event_type: Animation
+          forwards: false
           name: Animation2
           pause_frame: -1
         tick: 0
