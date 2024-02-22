@@ -46,6 +46,21 @@ end)()
 lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
 lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
 
+if lm.sanitize then
+    lm.builddir = ("build/%s/sanitize"):format(plat)
+    lm.bindir = ("bin/%s/sanitize"):format(plat)
+    lm.mode = "debug"
+    lm:conf {
+        flags = "-fsanitize=address",
+        gcc = {
+            ldflags = "-fsanitize=address"
+        },
+        clang = {
+            ldflags = "-fsanitize=address"
+        }
+    }
+end
+
 lm:import(lm.AntDir .. "/make.lua")
 lm:import "clibs/make.lua"
 
@@ -66,6 +81,7 @@ if lm.os == "windows" then
         "copy_dll",
         "vaststars_rt",
         "vaststars",
+        lm.sanitize and "copy_asan",
     }
     return
 end
