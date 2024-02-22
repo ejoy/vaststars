@@ -241,6 +241,8 @@
                 --else
                 --    ingredient_items = [[<div class="research-req" style='margin-top: 1vmin; margin-right: 5vmin; width: 4vmin; height: 4vmin;'/>]]
                 end
+
+                local completion = (item_data.progress == item_data.count) and ([[<div style="text-align: center; font-size: 3vmin; top: -8.5vmin; left:0vmin; -webkit-text-stroke:0.2vmin #000; color:rgb(0,255,0);">研究完成</div>]]) or ([[<div style="text-align: center; font-size: 4vmin; top: -9vmin; left:0vmin; -webkit-text-stroke:0.2vmin #000;">%d/%d</div>]]):format(item_data.progress, item_data.count)
                 local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
                 local sign = item_data.sign_icon and [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; background-size: 100% 100%; width: 4.46vmin; height: 4vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/key_sign.texture";'/>]] or [[<div style='margin-left: 0.5vmin; margin-right: 0.5vmin; width: 6%; height: 4vmin;'/>]]
                 local item_icon = item_data.task and "/pkg/vaststars.resources/ui/textures/science/task.texture" or "/pkg/vaststars.resources/ui/textures/science/tech.texture"
@@ -262,13 +264,13 @@
                             <div style="width: 95%%; height: 45%%; flex-direction: column;">
                                 <div class="progress_bar" style="height: 4.5vmin; width: %d%%;"/>
                                 <div class="indicator" style='top: -4.5vmin; height: 4.5vmin; width: 1vmin; left: %d%%;'/>
-                                <div style="text-align: center; font-size: 4vmin; top: -9vmin; -webkit-text-stroke:0.2vmin #000;" data-style-color = " %d == %d and 'rgb(0,255,0)' or 'rgb(255,255,255)' ">%d/%d</div>
+                                %s
                             </div>
                         </div>
                     </div>
                     <div class="icon-researching" style="color: rgb(0, 255, 34);" data-if="%s">新</div>
                     %s
-                ]]):format(sign, item_icon, font_color, item_data.name, ingredient_items, percent, percent, item_data.progress, item_data.count, item_data.progress, item_data.count, tostring(item_data.new), highlight)
+                ]]):format(sign, item_icon, font_color, item_data.name, ingredient_items, percent, percent, completion, tostring(item_data.new), highlight)
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
