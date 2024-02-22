@@ -4408,7 +4408,7 @@ prototype "过滤器回收" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/capacitor-1.texture",
     ingredients = {
         {"用过的过滤器", 4},
-        {"纯水", 40},
+        {"纯水", 120},
     },
     results = {
         {"过滤器", 1},
