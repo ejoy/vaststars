@@ -1,45 +1,35 @@
 local lm = require "luamake"
 
-lm:required_version "1.4"
+lm:required_version "1.6"
 
-lm.mode = "debug"
---lm.optimize = "speed"
 lm.compile_commands = "build"
-lm.visibility = "default"
 
 lm.AntDir = lm:path "3rd/ant"
 
-lm.c = "c17"
-lm.cxx = "c++20"
-if lm.os == "ios" then
-    lm.arch = "arm64"
-    lm.sys = "ios16.0"
-elseif lm.os == "macos" then
-    lm.sys = "macos13.0"
-end
-
-lm:config "game_config" {
-    msvc = {
-        flags = "/utf-8",
+lm:conf {
+    mode = "debug",
+    --optimize = "speed"
+    visibility = "default",
+    c = "c17",
+    cxx = "c++20",
+    macos = {
+        sys = "macos13.0",
     },
-}
-
-lm.ios = {
-    flags = {
-        "-fembed-bitcode",
-        "-fobjc-arc"
+    ios = {
+        arch = "arm64",
+        sys = "ios16.0",
+        flags = {
+            "-fembed-bitcode",
+            "-fobjc-arc"
+        }
+    },
+    android  = {
+        flags = "-fPIC",
+        arch = "aarch64",
+        vendor = "linux",
+        sys = "android33",
     }
 }
-
-lm.android  = {
-    flags = "-fPIC",
-}
-
-if lm.os == "android" then
-    lm.arch = "aarch64"
-    lm.vendor = "linux"
-    lm.sys = "android33"
-end
 
 local plat = (function ()
     if lm.os == "windows" then
@@ -55,35 +45,6 @@ local plat = (function ()
 end)()
 lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
 lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
-
-lm.configs = {
-    "game_config",
-}
-
-local EnableSanitize = false
-
-if EnableSanitize then
-    lm.builddir = ("build/%s/sanitize"):format(plat)
-    lm.bindir = ("bin/%s/sanitize"):format(plat)
-    lm.mode = "debug"
-    lm:config "sanitize" {
-        flags = "-fsanitize=address",
-        gcc = {
-            ldflags = "-fsanitize=address"
-        },
-        clang = {
-            ldflags = "-fsanitize=address"
-        }
-    }
-    lm.configs = {
-        "game_config",
-        "sanitize"
-    }
-    lm:msvc_copydll "copy_asan" {
-        type = "asan",
-        output = lm.bindir,
-    }
-end
 
 lm:import(lm.AntDir .. "/make.lua")
 lm:import "clibs/make.lua"
@@ -103,7 +64,6 @@ if lm.os == "windows" then
     }
     lm:default {
         "copy_dll",
-        lm.compiler == "msvc" and EnableSanitize and "copy_asan",
         "vaststars_rt",
         "vaststars",
     }
