@@ -1668,7 +1668,8 @@ prototype "电解厂2" {
     recipe_order =  91,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
-        {"远程电线杆", 4},
+        {"液罐II", 4},
+        {"铝板", 10},
         {"电解厂I", 1},
     },
     results = {
@@ -1685,7 +1686,8 @@ prototype "电解厂3" {
     recipe_order =  92,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electrolysis-design.texture",
     ingredients = {
-        {"广域电线杆", 4},
+        {"液罐III", 4},
+        {"钛板", 10},
         {"电解厂II", 1},
     },
     results = {
