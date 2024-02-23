@@ -66,15 +66,15 @@ lm:import "clibs/make.lua"
 
 if lm.os == "windows" then
     lm:copy "copy_dll" {
-        input = {
+        inputs = {
             lm.AntDir .. "/3rd/fmod/windows/core/lib/x64/fmod.dll",
             lm.AntDir .. "/3rd/fmod/windows/studio/lib/x64/fmodstudio.dll",
             lm.AntDir .. "/3rd/vulkan/x64/vulkan-1.dll",
         },
-        output = {
-            lm.bindir .. "/fmod.dll",
-            lm.bindir .. "/fmodstudio.dll",
-            lm.bindir .. "/vulkan-1.dll",
+        outputs = {
+            "$bin/fmod.dll",
+            "$bin/fmodstudio.dll",
+            "$bin/vulkan-1.dll",
         },
     }
     lm:default {

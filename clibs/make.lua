@@ -4,8 +4,8 @@ lm:import "gameplay/make.lua"
 lm:import "version/make.lua"
 
 lm:copy "bootstrap_lua" {
-    input = "bootstrap.lua",
-    output = "../" .. lm.bindir .. "/main.lua",
+    inputs = "bootstrap.lua",
+    outputs = "$bin/main.lua",
 }
 
 local modules = {

@@ -7,21 +7,21 @@ end
 lm:runlua {
     script = "update_version.lua",
     args = { ".", "$out" },
-    output = "GameVersion.h",
+    outputs = "GameVersion.h",
 }
 
 lm:runlua {
     script = "update_version.lua",
     args = { "3rd/ant", "$out" },
-    output = "EngineVersion.h",
+    outputs = "EngineVersion.h",
 }
 
 lm:phony {
-    input = {
+    inputs = {
         "GameVersion.h",
         "EngineVersion.h",
     },
-    output = "version.cpp",
+    outputs = "version.cpp",
 }
 
 lm:lua_source "version" {

@@ -5,8 +5,8 @@ lm:runlua "compile_gameplay_ecs" {
     args = {
         lm.AntDir
     },
-    input = "../../startup/pkg/vaststars.gameplay/init/component.lua",
-    output = "../../clibs/gameplay/src/util/component.h",
+    inputs = "../../startup/pkg/vaststars.gameplay/init/component.lua",
+    outputs = "../../clibs/gameplay/src/util/component.h",
 }
 
 lm:lua_source "gameplay" {
