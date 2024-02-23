@@ -34,6 +34,7 @@ local igameplay = ecs.require "gameplay.gameplay_system"
 local show_message = ecs.require "show_message".show_message
 local igroup = ecs.require "group"
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
+local igame_object = ecs.require "engine.game_object"
 
 local function _create_self_sprite(typeobject, x, y, dir, sprite_color)
     local sprite
@@ -88,7 +89,7 @@ local function _calc_grid_position(self, typeobject, dir)
     return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
 end
 
-local function _get_nearby_buldings(x, y, w, h)
+local function _get_nearby_buildings(x, y, w, h)
     local r = {}
     local offset_x, offset_y = (10 - w) // 2, (10 - h) // 2
     local begin_x, begin_y = icoord.bound(x - offset_x, y - offset_y)
@@ -203,12 +204,12 @@ local function _show_nearby_buildings_sprite(self, nearby_buldings, typeobject)
 end
 
 local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
-    local nearby_buldings = _get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, dir))
+    local nearby_buldings = _get_nearby_buildings(x, y, iprototype.rotate_area(typeobject.area, dir))
     _show_nearby_buildings_sprite(self, nearby_buldings, typeobject)
     _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, x, y, dir)
 
     local sprite_color
-    if not self._check_coord(x, y, dir, self.typeobject) then
+    if not self.check_coord(x, y, dir, self.typeobject) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -232,38 +233,26 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
             r = ROTATORS[dir],
         },
     }
+    local status = self.status
 
-    iobject.remove(self.indicator)
-    self.indicator = iobject.new {
-        prototype_name = typeobject.name,
-        dir = dir,
-        x = x,
-        y = y,
-        srt = srt.new(self.status.srt),
-        group_id = 0,
-        state = "translucent",
+    local model = typeobject.model:gsub("^(.*%.glb|)(.*%.prefab)$", "%1translucent.prefab")
+    self.indicator = igame_object.create {
+        prefab = model,
+        srt = status.srt,
         color = SPRITE_COLOR.CONSTRUCT_SELF,
         emissive_color = SPRITE_COLOR.CONSTRUCT_SELF_EMISSIVE,
         render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING,
     }
 
-    if self.pickup_components.fluid_indicators then
-        self.pickup_components.fluid_indicators:remove()
-    end
     if typeobject.fluid_indicators ~= false and iprototype.has_types(typeobject.type, "chimney", "fluidbox", "fluidboxes") then
-        self.pickup_components.fluid_indicators = create_fluid_indicators(dir, self.status.srt, typeobject)
+        self.pickup_components.fluid_indicators = create_fluid_indicators(dir, status.srt, typeobject)
     end
 
-    if self.sprite then
-        self.sprite:remove()
-    end
     self.sprite = _create_self_sprite(typeobject, x, y, dir, sprite_color)
 
     flush_sprite()
 
-    if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = _calc_grid_position(self, typeobject, dir)})
-    end
+    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = _calc_grid_position(self, typeobject, dir)})
 end
 
 local function _align(position_type, area, dir)
@@ -275,30 +264,18 @@ local function _align(position_type, area, dir)
     return coord[1], coord[2], math3d.vector(pos)
 end
 
-local function touch_move(self, datamodel, delta_vec)
-    local indicator = assert(self.indicator)
+local function _update(self, datamodel)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
-
-    iobject.move_delta(indicator, delta_vec)
-
-    local x, y, pos = _align(self.position_type, typeobject.area, status.dir)
-    if not x then
-        datamodel.show_confirm = false
-        return
-    end
-    status.srt.t, status.x, status.y = pos, x, y
 
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(status.srt, status.dir)
     end
 
-    if self.grid_entity then
-        self.grid_entity:set_position(_calc_grid_position(self, typeobject, status.dir))
-    end
+    self.grid_entity:set_position(_calc_grid_position(self, typeobject, status.dir))
 
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
-    if not self._check_coord(x, y, status.dir, typeobject) then
+    if not self.check_coord(status.x, status.y, status.dir, typeobject) then
         datamodel.show_confirm = false
 
         if typeobject.supply_area then
@@ -318,24 +295,54 @@ local function touch_move(self, datamodel, delta_vec)
         _show_self_selected_boxes(self, status.srt.t, typeobject, status.dir, true)
     end
 
-    local nearby_buldings = _get_nearby_buldings(x, y, iprototype.rotate_area(typeobject.area, status.dir))
+    local nearby_buldings = _get_nearby_buildings(status.x, status.y, iprototype.rotate_area(typeobject.area, status.dir))
     _show_nearby_buildings_sprite(self, nearby_buldings, typeobject)
-    _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, x, y, status.dir)
+    _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, status.x, status.y, status.dir)
     for _, c in pairs(self.pickup_components) do
         c:on_status_change(datamodel.show_confirm)
     end
     flush_sprite()
 end
 
+local function touch_move(self, datamodel, delta_vec)
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local x, y = _align(self.position_type, typeobject.area, status.dir)
+    if not x then
+        datamodel.show_confirm = false
+        return
+    end
+    status.x, status.y = x, y
+
+    status.srt.t = math3d.add(status.srt.t, delta_vec)
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
+
+    _update(self, datamodel)
+end
+
 local function touch_end(self, datamodel)
-    touch_move(self, datamodel, {0, 0, 0})
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local x, y, pos = _align(self.position_type, typeobject.area, status.dir)
+    if not x then
+        datamodel.show_confirm = false
+        return
+    end
+    status.x, status.y, status.srt.t = x, y, pos
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
+
+    _update(self, datamodel)
 end
 
 local function confirm(self, datamodel)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
 
-    local succ, msg = self._check_coord(status.x, status.y, status.dir, typeobject)
+    local succ, msg = self.check_coord(status.x, status.y, status.dir, typeobject)
     if not succ then
         show_message(msg)
         return
@@ -382,8 +389,7 @@ local function rotate(self, datamodel, dir, delta_vec)
     status.dir = iprototype.dir_tostring(dir)
     status.srt.r = ROTATORS[status.dir]
 
-    indicator.dir = iprototype.dir_tostring(dir)
-    indicator.srt.r = ROTATORS[indicator.dir]
+    indicator:send("obj_motion", "set_rotation", math3d.live(status.srt.r))
 
     local x, y, pos = _align(self.position_type, typeobject.area, status.dir)
     if not x then
@@ -391,14 +397,14 @@ local function rotate(self, datamodel, dir, delta_vec)
         return
     end
     status.srt.t, status.x, status.y = pos, x, y
-    indicator.srt.t, indicator.x, indicator.y = pos, x, y
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
     for _, c in pairs(self.pickup_components) do
         c:on_position_change(status.srt, status.dir)
     end
     local sprite_color
     local valid
-    if not self._check_coord(status.x, status.y, status.dir, typeobject) then
+    if not self.check_coord(status.x, status.y, status.dir, typeobject) then
         valid = false
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
@@ -422,45 +428,35 @@ local function rotate(self, datamodel, dir, delta_vec)
 end
 
 local function clean(self, datamodel)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
+    self.grid_entity:remove()
 
     for _, sprite in pairs(self.sprites) do
         sprite:remove()
     end
-    self.sprites = {}
 
     if self.sprite then
         self.sprite:remove()
-        self.sprite = nil
     end
     flush_sprite()
 
     for _, o in pairs(self.selected_boxes) do
         o:remove()
     end
-    self.selected_boxes = {}
 
     for _, c in pairs(self.pickup_components) do
         c:remove()
     end
 
-    if self.self_selected_boxes then
-        self.self_selected_boxes:remove()
-        self.self_selected_boxes = nil
-    end
+    self.self_selected_boxes:remove()
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    if self.indicator then
-        iobject.remove(self.indicator)
-    end
+
+    self.indicator:remove()
 end
 
 local function new(self, datamodel, typeobject, position_type)
-    self._check_coord = get_check_coord(typeobject)
+    self.check_coord = get_check_coord(typeobject)
 
     self.typeobject = typeobject
     self.position_type = position_type

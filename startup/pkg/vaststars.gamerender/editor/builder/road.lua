@@ -48,7 +48,7 @@ local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 
 local function _update_components_status(self)
     local status = self.status
-    local show_confirm = self._check_coord(status.x, status.y, status.dir, self.typeobject)
+    local show_confirm = self.check_coord(status.x, status.y, status.dir, self.typeobject)
     for _, c in pairs(self.pickup_components) do
         c:on_status_change(show_confirm)
     end
@@ -93,7 +93,7 @@ local function _get_road(x, y)
 end
 
 local function _get_placed_road_prototype_name(self, x, y, default_prototype_name, default_dir)
-    if not self._check_coord(x, y, default_dir, self.typeobject) then
+    if not self.check_coord(x, y, default_dir, self.typeobject) then
         return default_prototype_name, default_dir
     end
 
@@ -247,7 +247,7 @@ local function place(self, datamodel)
         return
     end
 
-    if not self._check_coord(status.x, status.y, status.dir, typeobject) then
+    if not self.check_coord(status.x, status.y, status.dir, typeobject) then
         return
     end
     icoord.assert_road_coord(status.x, status.y)
@@ -305,7 +305,7 @@ local function rotate(self)
 end
 
 local function new(self, datamodel, typeobject, position_type)
-    self._check_coord = get_check_coord(typeobject)
+    self.check_coord = get_check_coord(typeobject)
     self.typeobject = typeobject
     self.position_type = position_type
 

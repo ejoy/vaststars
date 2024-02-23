@@ -53,7 +53,7 @@ local function _lefttop_position(pos, dir, host_area, area)
     assert(false)
 end
 
-local function _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
+local function check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
     local sx_min, sx_max = check_x, check_x + check_w - 1
     local sy_min, sy_max = check_y, check_y + check_h - 1
 
@@ -113,7 +113,7 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     local self_selected_boxes_position = icoord.position(x, y, w, h)
     local check_x, check_y = _lefttop_position(self.typeobject.check_pos, dir, typeobject.area, typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(typeobject.check_area, dir)
-    local valid = _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
+    local valid = check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
     datamodel.show_confirm = valid
     datamodel.show_rotate = true
 
@@ -159,7 +159,7 @@ local function _update_state(self, datamodel)
 
     local check_x, check_y = _lefttop_position(self.typeobject.check_pos, status.dir, self.typeobject.area, self.typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, status.dir)
-    local valid = _check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
+    local valid = check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
 
     datamodel.show_confirm = valid
     self.self_selected_boxes:set_color(valid and COLOR_GREEN or COLOR_RED)
@@ -249,7 +249,7 @@ local function confirm(self, datamodel)
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     local check_x, check_y = _lefttop_position(typeobject.check_pos, status.dir, typeobject.area, typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(typeobject.check_area, status.dir)
-    local succ, errmsg = _check_coord(status.x, status.y, w, h, check_x, check_y, check_w, check_h)
+    local succ, errmsg = check_coord(status.x, status.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
         show_message(errmsg)
         return
@@ -354,7 +354,7 @@ function move_t:confirm(datamodel)
     local w, h = iprototype.rotate_area(self.typeobject.area, status.dir)
     local check_x, check_y = _lefttop_position(self.typeobject.check_pos, status.dir, self.typeobject.area, self.typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(self.typeobject.check_area, status.dir)
-    local succ, errmsg = _check_coord(status.x, status.y, w, h, check_x, check_y, check_w, check_h)
+    local succ, errmsg = check_coord(status.x, status.y, w, h, check_x, check_y, check_w, check_h)
     if not succ then
         show_message(errmsg)
         return

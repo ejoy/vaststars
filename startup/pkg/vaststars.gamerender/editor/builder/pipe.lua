@@ -10,7 +10,6 @@ local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local CHANGED_FLAG_FLUIDFLOW <const> = CONSTANT.CHANGED_FLAG_FLUIDFLOW
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
-local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local DIRECTION <const> = CONSTANT.DIRECTION
 local PIPE_DIRECTION <const> = {
     N = DIRECTION.N,
@@ -22,7 +21,6 @@ local PIPE_DIRECTION <const> = {
 local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
-local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local igrid_entity = ecs.require "engine.grid_entity"
 local icoord = require "coord"
@@ -36,14 +34,7 @@ local iinventory = require "gameplay.interface.inventory"
 local show_message = ecs.require "show_message".show_message
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 local ifluidbox = ecs.require "render_updates.fluidbox"
-
-local function _update_indicator_status(self)
-    local indicator = self.indicator
-    local valid = self._check_coord(indicator.x, indicator.y, indicator.dir, self.typeobject)
-    for _, c in pairs(self.pickup_components) do
-        c:on_status_change(valid)
-    end
-end
+local igame_object = ecs.require "engine.game_object"
 
 local function _calc_grid_position(building_position, typeobject, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
@@ -63,7 +54,7 @@ local function _get_placed_pipe(typeobject, x, y)
     return iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, mask)
 end
 
-local function align(position_type, area, dir)
+local function _align(position_type, area, dir)
     local p = icamera_controller.get_screen_world_position(position_type)
     local coord, pos = icoord.align(p, iprototype.rotate_area(area, dir))
     if not coord then
@@ -72,123 +63,79 @@ local function align(position_type, area, dir)
     return coord[1], coord[2], math3d.vector(pos)
 end
 
-local function _new_entity(self, datamodel, typeobject, x, y, pos, dir)
-    assert(x and y)
-
-    iobject.remove(self.indicator)
-    local prototype, dir = _get_placed_pipe(typeobject, x, y)
-
-    self.indicator = iobject.new {
-        prototype_name = iprototype.queryById(prototype).name,
-        dir = dir,
-        x = x,
-        y = y,
-        srt = srt.new {
-            t = pos,
-            r = ROTATORS[dir],
-        },
-        group_id = 0,
-    }
-
-    if not self.grid_entity then
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = _calc_grid_position(self.indicator.srt.t, typeobject, dir)})
-    end
-
-    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.indicator.srt.t, typeobject.area, dir, true)
-
-    --
-    _update_indicator_status(self)
+local function _update_indicator(indicator, status)
+    indicator:update({prefab = iprototype.queryById(status.prototype).model})
+    indicator:send("obj_motion", "set_rotation", math3d.live(status.srt.r))
 end
---------------------------------------------------------------------------------------------------
+
+local function _update_status(status, typeobject, x, y)
+    local prototype, new_dir = _get_placed_pipe(typeobject, x, y)
+    if prototype ~= status.prototype or new_dir ~= status.dir then
+        status.prototype = prototype
+        status.dir = new_dir
+        status.srt.r = ROTATORS[new_dir]
+        return true
+    end
+end
+
+local function _update_grid_entity(grid_entity, status, typeobject, dir)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+    local grid_position = icoord.position(status.x, status.y, w, h)
+    grid_entity:set_position(_calc_grid_position(grid_position, typeobject, dir))
+end
+
+local function _update_pickup_components(check_coord, pickup_components, status, typeobject)
+    local valid = check_coord(status.x, status.y, status.dir, typeobject)
+    for _, c in pairs(pickup_components) do
+        c:on_position_change(status.srt, status.dir)
+        c:on_status_change(valid)
+    end
+end
 
 local function touch_move(self, datamodel, delta_vec)
-    if not self.indicator then
-        return
-    end
-    iobject.move_delta(self.indicator, delta_vec)
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
 
-    local indicator = self.indicator
-    local typeobject = iprototype.queryByName(indicator.prototype_name)
-    local x, y = align(self.position_type, typeobject.area, indicator.dir)
+    local x, y = _align(self.position_type, typeobject.area, status.dir)
     if not x then
         return
     end
-    local prototype, dir = _get_placed_pipe(typeobject, x, y)
-    local prototype_name = iprototype.queryById(prototype).name
-    if prototype_name ~= self.indicator.prototype_name or dir ~= self.indicator.dir then
-        local srt = self.indicator.srt
-        local x, y = self.indicator.x, self.indicator.y
-        iobject.remove(self.indicator)
-        self.indicator = iobject.new {
-            prototype_name = prototype_name,
-            dir = dir,
-            x = x,
-            y = y,
-            srt = srt,
-            group_id = 0,
-        }
+    status.x, status.y = x, y
+    status.srt.t = math3d.add(status.srt.t, delta_vec)
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
+
+    if _update_status(status, typeobject, x, y) then
+        _update_indicator(indicator, status)
     end
-    if self.grid_entity then
-        local typeobject = iprototype.queryByName(self.indicator.prototype_name)
-        local w, h = iprototype.rotate_area(typeobject.area, self.indicator.dir)
-        local grid_position = icoord.position(self.indicator.x, self.indicator.y, w, h)
-        self.grid_entity:set_position(_calc_grid_position(grid_position, typeobject, self.indicator.dir))
-    end
-    for _, c in pairs(self.pickup_components) do
-        c:on_position_change(self.indicator.srt, self.indicator.dir)
-    end
+    _update_grid_entity(self.grid_entity, status, typeobject, status.dir)
+    _update_pickup_components(self.check_coord, self.pickup_components, status, typeobject)
 end
 
 local function touch_end(self, datamodel)
-    if not self.indicator then
-        return
-    end
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
 
-    local x, y, pos = align(self.position_type, self.typeobject.area, self.indicator.dir)
+    local x, y, pos = _align(self.position_type, typeobject.area, status.dir)
     if not x then
         return
     end
+    status.x, status.y, status.srt.t = x, y, pos
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
-    self.indicator.srt.t, self.indicator.x, self.indicator.y = pos, x, y
-
-    local prototype, dir = _get_placed_pipe(self.typeobject, self.indicator.x, self.indicator.y)
-    local prototype_name = iprototype.queryById(prototype).name
-    if prototype_name ~= self.indicator.prototype_name or dir ~= self.indicator.dir then
-        local x, y = self.indicator.x, self.indicator.y
-        iobject.remove(self.indicator)
-        self.indicator = iobject.new {
-            prototype_name = prototype_name,
-            dir = dir,
-            x = x,
-            y = y,
-            srt = srt.new {
-                t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(self.typeobject.area, dir))),
-                r = ROTATORS[dir],
-            },
-            group_id = 0,
-        }
+    if _update_status(status, typeobject, x, y) then
+        _update_indicator(indicator, status)
     end
-
-    if self.grid_entity then
-        local typeobject = iprototype.queryByName(self.indicator.prototype_name)
-        local w, h = iprototype.rotate_area(typeobject.area, self.indicator.dir)
-        local grid_position = icoord.position(self.indicator.x, self.indicator.y, w, h)
-        self.grid_entity:set_position(_calc_grid_position(grid_position, typeobject, self.indicator.dir))
-    end
-
-    for _, c in pairs(self.pickup_components) do
-        c:on_position_change(self.indicator.srt, self.indicator.dir)
-    end
-
-    _update_indicator_status(self)
+    _update_grid_entity(self.grid_entity, status, typeobject, status.dir)
+    _update_pickup_components(self.check_coord, self.pickup_components, status, typeobject)
 end
 
 local function place(self, datamodel)
-    local indicator = self.indicator
-    local x, y = indicator.x, indicator.y
-    local typeobject = self.typeobject
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
 
-    local succ, msg = self._check_coord(x, y, indicator.dir, typeobject)
+    local succ, msg = self.check_coord(status.x, status.y, status.dir, typeobject)
     if not succ then
         show_message(msg)
         return
@@ -203,55 +150,58 @@ local function place(self, datamodel)
     assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
 
     local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, 0)
-    local d = iprototype.dir_tostring(dir)
     local object = iobject.new {
         prototype_name = iprototype.queryById(prototype).name,
         dir = iprototype.dir_tostring(dir),
-        x = x,
-        y = y,
-        srt = srt.new {
-            t = math3d.vector(icoord.position(x, y, iprototype.rotate_area(typeobject.area, d))),
-            r = ROTATORS[d],
-        },
+        x = status.x,
+        y = status.y,
+        srt = srt.new(status.srt),
         group_id = 0,
     }
     object.gameplay_eid = igameplay.create_entity(object)
     objects:set(object, "CONSTRUCTED")
 
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
-    iobject.remove(self.indicator)
-    self.indicator = nil
-
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING | CHANGED_FLAG_FLUIDFLOW)
-
-    self:clean(self, datamodel)
-    _new_entity(self, datamodel, typeobject, x, y, object.srt.t, DEFAULT_DIR)
 end
 
 local function clean(self, datamodel)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
-    iobject.remove(self.indicator)
-    self.indicator = nil
-
+    self.grid_entity:remove()
+    self.indicator:remove()
     for _, c in pairs(self.pickup_components) do
         c:remove()
     end
-    self.pickup_components = {}
 end
 
 local function new(self, datamodel, typeobject, position_type)
     self.typeobject = typeobject
     self.position_type = position_type
-    self._check_coord = get_check_coord(typeobject)
+    self.check_coord = get_check_coord(typeobject)
 
-    local x, y, pos = align(self.position_type, self.typeobject.area, DEFAULT_DIR)
-    _new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
+    local x, y, pos = _align(self.position_type, self.typeobject.area, DEFAULT_DIR)
+    local prototype, dir = _get_placed_pipe(typeobject, x, y)
+    self.status = {
+        prototype = prototype,
+        dir = dir,
+        x = x,
+        y = y,
+        srt = srt.new {
+            t = pos,
+            r = ROTATORS[dir],
+        },
+    }
+    local status = self.status
+
+    self.indicator = igame_object.create {
+        prefab = typeobject.model,
+        srt = status.srt,
+    }
+
+    self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = _calc_grid_position(status.srt.t, typeobject, dir)})
+
+    local valid = self.check_coord(status.x, status.y, status.dir, self.typeobject)
+
+    self.pickup_components = {}
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(status.srt.t, typeobject.area, dir, valid)
 end
 
 local function build(self, v)
@@ -266,7 +216,6 @@ local function create()
     m.confirm = place
     m.clean = clean
     m.build = build
-    m.pickup_components = {}
     return m
 end
 return create

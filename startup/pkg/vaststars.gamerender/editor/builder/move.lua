@@ -235,7 +235,7 @@ local function _new_entity(self, datamodel, typeobject)
     local building_positon = icoord.position(x, y, w, h)
 
     local sprite_color
-    if not self._check_coord(x, y, dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
+    if not self.check_coord(x, y, dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -376,7 +376,7 @@ local function touch_move(self, datamodel, delta_vec)
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     local object = assert(objects:get(self.move_object_id))
 
-    if not self._check_coord(lx, ly, pickup_object.dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
+    if not self.check_coord(lx, ly, pickup_object.dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -501,7 +501,7 @@ local function rotate(self, datamodel, dir, delta_vec)
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     local object = assert(objects:get(self.move_object_id))
 
-    if not self._check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
+    if not self.check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         if typeobject.supply_area then
             sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -580,7 +580,7 @@ end
 local function new(self, move_object_id, datamodel, typeobject)
     self.move_object_id = move_object_id
     self.typeobject = typeobject
-    self._check_coord = _get_check_coord(typeobject)
+    self.check_coord = _get_check_coord(typeobject)
 
     _new_entity(self, datamodel, typeobject)
 

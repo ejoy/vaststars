@@ -190,7 +190,7 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 end
 
 local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
-    if not self._check_coord(x, y, dir, self.typeobject) then
+    if not self.check_coord(x, y, dir, self.typeobject) then
         datamodel.show_confirm = false
         datamodel.show_rotate = true
     else
@@ -334,7 +334,7 @@ local function touch_move(self, datamodel, delta_vec)
     _show_nearby_buildings_selected_boxes(self, x, y, status.dir, typeobject)
 
     local dx, dy = icoord.road_coord(x, y)
-    if x == dx and y == dy and self._check_coord(x, y, status.dir, typeobject) then
+    if x == dx and y == dy and self.check_coord(x, y, status.dir, typeobject) then
         local dir = _calc_dir(self._adjacent_coords, x, y, status.dir)
         if dir and dir ~= status.dir then
             self:rotate(datamodel, dir)
@@ -359,7 +359,7 @@ local function touch_end(self, datamodel)
 
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
 
-    if not self._check_coord(x, y, status.dir, typeobject) then
+    if not self.check_coord(x, y, status.dir, typeobject) then
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -389,7 +389,7 @@ local function confirm(self, datamodel)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
 
-    local succ, errmsg = self._check_coord(status.x, status.y, status.dir, typeobject)
+    local succ, errmsg = self.check_coord(status.x, status.y, status.dir, typeobject)
     if not succ then
         show_message(errmsg)
         return
@@ -494,7 +494,7 @@ local function _get_adjacent_coords(typeobject)
 end
 
 local function new(self, datamodel, typeobject, position_type)
-    self._check_coord = get_check_coord(typeobject)
+    self.check_coord = get_check_coord(typeobject)
     self._adjacent_coords = _get_adjacent_coords(typeobject)
 
     self.typeobject = typeobject

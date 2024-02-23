@@ -666,7 +666,7 @@ local function _builder_start(self, datamodel)
             end
         end
 
-        if not self._check_coord(to_x, to_y, dir, self.typeobject) then
+        if not self.check_coord(to_x, to_y, dir, self.typeobject) then
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
@@ -674,7 +674,7 @@ local function _builder_start(self, datamodel)
         _builder_end(self, datamodel, State, dir, delta)
         return
     else
-        if not self._check_coord(from_x, from_y, dir, self.typeobject) then
+        if not self.check_coord(from_x, from_y, dir, self.typeobject) then
             State.succ = false
         end
         State.from_x, State.from_y = from_x, from_y
@@ -714,7 +714,7 @@ local function _builder_start(self, datamodel)
         if not succ then
             State.succ = false
         end
-        if not self._check_coord(to_x, to_y, dir, self.typeobject) then
+        if not self.check_coord(to_x, to_y, dir, self.typeobject) then
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
@@ -803,7 +803,7 @@ local function touch_end(self, datamodel)
             c:on_status_change(self.State.succ)
         end
     else
-        if not self._check_coord(self.coord_indicator.x, self.coord_indicator.y, self.coord_indicator.dir, self.typeobject) then
+        if not self.check_coord(self.coord_indicator.x, self.coord_indicator.y, self.coord_indicator.dir, self.typeobject) then
             self.State = {succ = false}
         else
             self.State = {succ = true}
@@ -953,7 +953,7 @@ local function confirm(self, datamodel)
 end
 
 local function new(self, datamodel, typeobject, position_type)
-    self._check_coord = get_check_coord(typeobject)
+    self.check_coord = get_check_coord(typeobject)
 
     self.typeobject = typeobject
     self.position_type = position_type
