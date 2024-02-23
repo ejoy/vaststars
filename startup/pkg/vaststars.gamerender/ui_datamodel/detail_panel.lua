@@ -328,7 +328,7 @@ local function get_property(e, typeobject)
         assert(#s // 4 == 2)
         for idx = 2, #s // 4 do
             local _, n = string.unpack("<I2I2", s, 4 * idx - 3)
-            t.values['pollution'] = ("%s/%s"):format(typeobject.pollution, n)
+            t.values['pollution'] = (typeobject.pollution == 0) and ("无"):format(typeobject.pollution, n) or ("%sμg/%s单位"):format(typeobject.pollution, n)
         end
     end
     return t
