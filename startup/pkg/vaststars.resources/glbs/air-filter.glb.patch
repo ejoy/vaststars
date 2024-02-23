@@ -131,7 +131,7 @@ value:
           event_type: Effect
         tick: 60
         time: 2
-      loop: true
+      loop: false
   policy:
     ant.timeline|timeline
   tag:
