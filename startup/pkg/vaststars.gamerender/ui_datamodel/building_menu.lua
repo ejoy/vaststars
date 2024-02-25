@@ -351,7 +351,7 @@ function M.update(datamodel, gameplay_eid)
         end
         if #msgs > 0 then
             local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
-            sp_x, sp_y= mu.convert_screen_to_device_coord(iviewport.device_size, iviewport.viewrect, sp_x, sp_y)
+            sp_x, sp_y= mu.convert_screen_to_device_coord(iviewport.device_viewrect, iviewport.viewrect, sp_x, sp_y)
             show_items_mesage(sp_x, sp_y, msgs)
         end
 

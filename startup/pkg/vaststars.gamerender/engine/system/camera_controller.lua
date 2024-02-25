@@ -79,7 +79,7 @@ local function get_screen_world_position(ce, position_type)
         local ray = {o = iom.get_position(ce), d = math3d.todirection(iom.get_rotation(ce))}
         return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
     elseif position_type == "RIGHT_CENTER" then
-        local vp = iviewport.device_size
+        local vp = iviewport.device_viewrect
         return icamera_controller.screen_to_world(vp.x + vp.w * (3/4), vp.y + vp.h / 2, XZ_PLANE)
     else
         error(("invalid type : %s"):format(position_type))
@@ -111,7 +111,7 @@ local function toggle_view(v, cur_xzpoint)
         local dst_vp = math3d.mul(pm, dst_vm)
 
         local sx, sy = math3d.index(screen_point, 1, 2)
-        sx, sy = mu.convert_screen_to_device_coord(iviewport.device_size, iviewport.viewrect, sx, sy)
+        sx, sy = mu.convert_screen_to_device_coord(iviewport.device_viewrect, iviewport.viewrect, sx, sy)
         local src_dir = math3d.inverse(math3d.todirection(sr))
         local src_plane = math3d.plane(xzpoint, src_dir)
         local src_dis = math3d.dot(st, src_dir) - math3d.index(src_plane, 4)
@@ -351,7 +351,7 @@ end
 
 -- the following interfaces must be called after the `camera_usage` stage
 function icamera_controller.screen_to_world(x, y, plane, vp)
-    x, y = mu.convert_device_to_screen_coord(iviewport.device_size, iviewport.viewrect, x, y)
+    x, y = mu.convert_device_to_screen_coord(iviewport.device_viewrect, iviewport.viewrect, x, y)
     local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vpmat = vp and vp or ce.camera.viewprojmat
 
