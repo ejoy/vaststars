@@ -2,7 +2,7 @@
 file: materials/Material.003.material
 op: replace
 path: /state/DEPTH_TEST
-value: ALWAYS
+value: GREATER
 ---
 file: mesh.prefab
 op: createfile
