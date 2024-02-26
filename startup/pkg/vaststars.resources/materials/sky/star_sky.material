@@ -1,8 +1,10 @@
 fx:
     vs: /pkg/ant.resources/shaders/fullscreen/vs_quad.sc
     fs: /pkg/ant.resources/shaders/fullscreen/fs_fullscreen.sc
+setting:
+    no_pre_depth: true
 properties:
     s_tex:
         stage: 0
         texture: /pkg/vaststars.resources/textures/sky/star_sky.texture
-state: /pkg/ant.resources/materials/states/quad.state
+state: /pkg/ant.resources/materials/states/default.state
