@@ -46,11 +46,6 @@ local function init_game(template)
 
     rhwi.set_profie(setting.get("debug", false))
 
-    local scene_ratio = setting.get("scene_ratio")
-    if scene_ratio then
-        irender.set_framebuffer_ratio("scene_ratio", scene_ratio)
-    end
-
     iinventory.set_infinite_item(game_settings.infinite_item)
     iinventory.set_lorry_list(get_lorrys())
 
