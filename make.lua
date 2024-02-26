@@ -42,6 +42,9 @@ local plat = (function ()
         if lm.compiler == "gcc" then
             return "mingw"
         end
+        if lm.cc == "clang-cl" then
+            return "clang_cl"
+        end
         return "msvc"
     end
     if lm.os == "android" then
@@ -49,6 +52,7 @@ local plat = (function ()
     end
     return lm.os
 end)()
+
 lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
 lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
 

@@ -22,16 +22,23 @@ constexpr bool enum_is_valid(std::string_view name) noexcept {
 
 template <typename E, E V>
 constexpr auto enum_is_valid() noexcept {
-#if defined(_MSC_VER)
+#if __GNUC__ || __clang__
+    return enum_is_valid({__PRETTY_FUNCTION__, sizeof(__PRETTY_FUNCTION__) - 2});
+#elif _MSC_VER
     return enum_is_valid({__FUNCSIG__, sizeof(__FUNCSIG__) - 17});
 #else
-    return enum_is_valid({__PRETTY_FUNCTION__, sizeof(__PRETTY_FUNCTION__) - 2});
+    static_assert(false, "Unsupported compiler");
 #endif
 }
 
 template <typename E, std::size_t I = 0>
 constexpr auto enum_count() noexcept {
-    if constexpr (!enum_is_valid<E, static_cast<E>(static_cast<std::underlying_type_t<E>>(I))>()) {
+#if defined(__clang__) && __clang_major__ >= 16
+    constexpr E e = __builtin_bit_cast(E, static_cast<std::underlying_type_t<E>>(I));
+#else
+    constexpr E e = static_cast<E>(static_cast<std::underlying_type_t<E>>(I));
+#endif
+    if constexpr (!enum_is_valid<E, e>()) {
         return I;
     } else {
         return enum_count<E, I+1>();
