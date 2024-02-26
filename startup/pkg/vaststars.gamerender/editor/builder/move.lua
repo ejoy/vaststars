@@ -81,7 +81,7 @@ local function _create_self_sprite(typeobject, x, y, dir, sprite_color)
     return sprite
 end
 
-local function _get_nearby_buldings(x, y, w, h)
+local function _get_nearby_buildings(x, y, w, h)
     local r = {}
     local offset_x, offset_y = (10 - w) // 2, (10 - h) // 2
     local begin_x, begin_y = icoord.bound(x - offset_x, y - offset_y)
@@ -110,7 +110,7 @@ local function _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
 end
 
 local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
-    local nearby_buldings = _get_nearby_buldings(self.move_object_id, x, y, iprototype.rotate_area(typeobject.area, dir))
+    local nearby_buldings = _get_nearby_buildings(self.move_object_id, x, y, iprototype.rotate_area(typeobject.area, dir))
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     local redraw = {}
