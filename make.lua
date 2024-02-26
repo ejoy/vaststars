@@ -8,7 +8,6 @@ lm.AntDir = lm:path "3rd/ant"
 
 lm:conf {
     mode = "debug",
-    --optimize = "speed"
     visibility = "default",
     c = "c17",
     cxx = "c++20",
@@ -30,6 +29,13 @@ lm:conf {
         sys = "android33",
     }
 }
+
+-- lm:conf {
+--     optimize = "speed",
+--     defines = {
+--         "NDEBUG"
+--     }
+-- }
 
 local plat = (function ()
     if lm.os == "windows" then
