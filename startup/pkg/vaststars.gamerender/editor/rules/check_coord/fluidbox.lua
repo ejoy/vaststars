@@ -10,7 +10,7 @@ local function _count_neighboring_fluids(typeobject, x, y, dir)
         local dx, dy, ddir = iprototype.rotate_connection(connection.position, dir, typeobject.area)
         dx, dy = iprototype.move_coord(x + dx, y + dy, ddir, 1)
         local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir(ddir))
-        if fluid then
+        if fluid and fluid ~= 0 then
             fluids[fluid] = true
         end
     end
