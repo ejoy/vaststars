@@ -3,6 +3,7 @@ local ecs = ...
 local world = ecs.world
 
 local CONSTANT = require "gameplay.interface.constant"
+local UNIT<const> = CONSTANT.TILE_SIZE
 local ROTATORS = CONSTANT.ROTATORS
 local MATERIAL <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
 
@@ -18,9 +19,8 @@ local ientity = ecs.require "ant.entity|entity"
 
 local M = {}
 function M.create(position, quad_num, dir)
-    local UNIT<const> = 10.0
-    local ww = UNIT
-    local eid = ientity.create_quad_entity(MATERIAL, {t=math3d.add(position, DELTA_VEC[dir]), r=ROTATORS[dir]}, {x=-0.5*ww, y=0, w=ww, h=UNIT*quad_num}, {x=0, y=0, w=1.0, h=quad_num})
+    local ww, hh = UNIT, UNIT*quad_num
+    local eid = ientity.create_quad_entity(MATERIAL, {t=math3d.add(position, DELTA_VEC[dir]), r=ROTATORS[dir]}, {x=-0.5*ww, y=0, w=ww, h=hh}, {x=0, y=0, w=1.0, h=quad_num})
     return {
         remove = function ()
             world:remove_entity(eid)
