@@ -52,18 +52,18 @@ function M.create()
     }
 end
 
-local function _update_object_state(coord, state, color, emissive_color, render_layer)
-    local x, y = icoord.unpack(coord)
-    local object = objects:coord(x, y)
+local function _update_object_state(gameplay_eid, state, color, emissive_color, render_layer)
+    local e = assert(gameplay_core.get_entity(gameplay_eid))
+    local object = objects:coord(e.building.x, e.building.y)
     if object then
         local vsobject = assert(vsobject_manager:get(object.id))
         vsobject:update {state = state, color = color, emissive_color = emissive_color, render_layer = render_layer}
     end
 end
 
-local function _update_road_state(coord, color)
-    local x, y = icoord.unpack(coord)
-    local v = ibuilding.get(x, y)
+local function _update_road_state(gameplay_eid, color)
+    local e = assert(gameplay_core.get_entity(gameplay_eid))
+    local v = ibuilding.get(e.building.x, e.building.y)
     if v then
         local typeobject = iprototype.queryByName(v.prototype)
         local shape = iroadnet_converter.to_shape(typeobject.name)
@@ -80,31 +80,23 @@ local function _to_road_color(color)
     return r | g<<8 | b<<16 | a<<24
 end
 
-local function _update_selected_coords(coords, state, color, render_layer)
-    for _, coord in ipairs(coords) do
-        _update_object_state(coord, state, color, color, render_layer)
-        _update_road_state(coord, _to_road_color(color))
+local function _update_selected_coords(gameplay_eids, state, color, render_layer)
+    for _, gameplay_eid in ipairs(gameplay_eids) do
+        _update_object_state(gameplay_eid, state, color, color, render_layer)
+        _update_road_state(gameplay_eid, _to_road_color(color))
     end
 end
 
-local function _get_info(x, y)
-    local object = objects:coord(x, y)
-    if object then
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        return typeobject.area, object.dir
-    end
-    local v = ibuilding.get(x, y)
-    if v then
-        local typeobject = iprototype.queryByName(v.prototype)
-        return typeobject.area, v.direction
-    end
-    assert(false)
+local function _get_info(eid)
+    local e = assert(gameplay_core.get_entity(eid))
+    local typeobject = iprototype.queryById(e.building.prototype)
+    return typeobject.area, e.building.direction
 end
 
 local function _clear_selected()
     local t = {}
-    for coord in pairs(selected) do
-        t[#t+1] = coord
+    for gameplay_eid in pairs(selected) do
+        t[#t+1] = gameplay_eid
     end
     _update_selected_coords(t, "opaque", "null", RENDER_LAYER.BUILDING)
     iroadnet:flush()
@@ -158,6 +150,7 @@ function M.update(datamodel)
 
         local ltcoord = icoord.position2coord(lefttop) or {0, 0}
         local rbcoord = icoord.position2coord(rightbottom) or {COORD_BOUNDARY[2][1], COORD_BOUNDARY[2][2]}
+        local aabb_select = math3d.aabb(math3d.vector(ltcoord[1], 0, ltcoord[2]), math3d.vector(rbcoord[1], 0, rbcoord[2]))
 
         local new = {}
         for x = ltcoord[1], rbcoord[1] do
@@ -166,14 +159,23 @@ function M.update(datamodel)
                 if object then
                     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
                     local typeobject = iprototype.queryById(e.building.prototype)
-                    if not e.debris and typeobject.teardown ~= false and typeobject.bulk_opt ~= false then
-                        new[icoord.pack(object.x, object.y)] = true
+                    local w, h = iprototype.rotate_area(typeobject.area, object.dir)
+                    local inside = math3d.aabb_test_point(aabb_select, math3d.vector(e.building.x, 0, e.building.y)) >= 0 and
+                            math3d.aabb_test_point(aabb_select, math3d.vector(e.building.x + w, 0, e.building.y + h)) >= 0
+                    if inside and not e.debris and typeobject.teardown ~= false and typeobject.bulk_opt ~= false then
+                        new[e.eid] = true
                     end
                 end
                 local road_x, road_y = icoord.road_coord(x, y)
                 local v = ibuilding.get(road_x, road_y)
                 if v then
-                    new[icoord.pack(road_x, road_y)] = true
+                    local typeobject = iprototype.queryByName(v.prototype)
+                    local w, h = iprototype.rotate_area(typeobject.area, v.direction)
+                    local inside = math3d.aabb_test_point(aabb_select, math3d.vector(road_x, 0, road_y)) >= 0 and
+                            math3d.aabb_test_point(aabb_select, math3d.vector(road_x + w, 0, road_y + h)) >= 0
+                    if inside then
+                        new[v.eid] = true
+                    end
                 end
             end
         end
@@ -181,15 +183,15 @@ function M.update(datamodel)
         local old = selected
         local add, del = {}, {}
 
-        for coord in pairs(old) do
-            if new[coord] == nil then
-                del[#del+1] = coord
+        for gameplay_eid in pairs(old) do
+            if new[gameplay_eid] == nil then
+                del[#del+1] = gameplay_eid
             end
         end
 
-        for coord in pairs(new) do
-            if old[coord] == nil then
-                add[#add+1] = coord
+        for gameplay_eid in pairs(new) do
+            if old[gameplay_eid] == nil then
+                add[#add+1] = gameplay_eid
             end
         end
 
@@ -202,23 +204,11 @@ function M.update(datamodel)
 
     for _ in teardown_mb:unpack() do
         local full = false
-        for coord in pairs(selected) do
-            local x, y = icoord.unpack(coord)
-            local object = objects:coord(x, y)
-            if object then
-                teardown(object.gameplay_eid)
-                local e = assert(gameplay_core.get_entity(object.gameplay_eid))
-                if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
-                    full = true
-                end
-            end
-            local v = ibuilding.get(icoord.road_coord(x, y))
-            if v then
-                teardown(v.eid)
-                local e = assert(gameplay_core.get_entity(v.eid))
-                if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
-                    full = true
-                end
+        for gameplay_eid in pairs(selected) do
+            teardown(gameplay_eid)
+            local e = assert(gameplay_core.get_entity(gameplay_eid))
+            if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
+                full = true
             end
         end
 
@@ -238,16 +228,17 @@ function M.update(datamodel)
         datamodel.move_confirm = true
 
         local t = {}
-        for coord in pairs(selected) do
-            t[#t+1] = coord
+        for gameplay_eid in pairs(selected) do
+            t[#t+1] = gameplay_eid
         end
         _update_selected_coords(t, "translucent", SPRITE_COLOR.MOVE_SELF, RENDER_LAYER.TRANSLUCENT_BUILDING)
         iroadnet:flush()
 
         moving = true
 
-        for coord in pairs(selected) do
-            local x, y = icoord.unpack(coord)
+        for gameplay_eid in pairs(selected) do
+            local e = assert(gameplay_core.get_entity(gameplay_eid))
+            local x, y = e.building.x, e.building.y
             local object = objects:coord(x, y)
             if object then
                 local typeobject = iprototype.queryByName(object.prototype_name)
@@ -259,7 +250,7 @@ function M.update(datamodel)
                 end
 
                 local srt = isrt.new(object.srt)
-                moving_objs[coord] = {
+                moving_objs[object.gameplay_eid] = {
                     obj = igame_object.create {
                         prefab = typeobject.model,
                         group_id = 0,
@@ -281,7 +272,7 @@ function M.update(datamodel)
                 end
 
                 local srt = isrt.new {r = ROTATORS[v.direction], t = icoord.position(x, y, w, h)}
-                moving_objs[coord] = {
+                moving_objs[v.eid] = {
                     obj = igame_object.create {
                         prefab = typeobject.model,
                         group_id = 0,
@@ -296,8 +287,9 @@ function M.update(datamodel)
     end
 
     for _ in move_confirm_mb:unpack() do
-        for coord, v in pairs(moving_objs) do
-            local x, y = icoord.unpack(coord)
+        for gameplay_eid, v in pairs(moving_objs) do
+            local e = assert(gameplay_core.get_entity(gameplay_eid))
+            local x, y = e.building.x, e.building.y
             local object = objects:coord(x, y)
             if object then
                 local typeobject = iprototype.queryByName(object.prototype_name)
@@ -321,8 +313,9 @@ function M.update(datamodel)
         _clear_selected()
 
         local objs = {}
-        for coord, v in pairs(moving_objs) do
-            local x, y = icoord.unpack(coord)
+        for gameplay_eid, v in pairs(moving_objs) do
+            local e = assert(gameplay_core.get_entity(gameplay_eid))
+            local x, y = e.building.x, e.building.y
             local object = objects:coord(x, y)
             if object then
                 _move_building(object, v.x, v.y)
@@ -378,11 +371,11 @@ function M.gesture_pan_changed(datamodel, delta_vec)
 end
 
 local function _get_first_moving_obj(moving_objs)
-    for coord, v in pairs(moving_objs) do
-        local x, y = icoord.unpack(coord)
-        local r = ibuilding.get(x, y)
+    for gameplay_eid, v in pairs(moving_objs) do
+        local e = assert(gameplay_core.get_entity(gameplay_eid))
+        local r = ibuilding.get(e.building.x, e.building.y)
         if r then
-            return coord, v, true
+            return gameplay_eid, v, true
         end
     end
     return next(moving_objs)
@@ -393,17 +386,15 @@ function M.gesture_pan_ended(datamodel)
         return
     end
 
-    local coord, v, road = _get_first_moving_obj(moving_objs)
-    if not coord then
+    local gameplay_eid, v, road = _get_first_moving_obj(moving_objs)
+    if not gameplay_eid then
         return
     end
+    assert(v)
 
-    local area, dir = _get_info(icoord.unpack(coord))
+    local area, dir = _get_info(gameplay_eid)
     local c, position = icoord.align(v.srt.t, iprototype.rotate_area(area, dir))
-    if not c then
-        assert(false)
-        return
-    end
+    assert(c)
     if road then
         c[1], c[2] = icoord.road_coord(c[1], c[2])
         position = math3d.vector(icoord.position(c[1], c[2], iprototype.rotate_area(area, dir)))
@@ -412,19 +403,19 @@ function M.gesture_pan_ended(datamodel)
     local dx, dy = c[1] - v.x, c[2] - v.y
 
     local positions = {}
-    for coord, v in pairs(moving_objs) do
+    for gameplay_eid, v in pairs(moving_objs) do
         v.x = v.x + dx
         v.y = v.y + dy
-        local area, dir = _get_info(icoord.unpack(coord))
+        local area, dir = _get_info(gameplay_eid)
         local position = icoord.position(v.x, v.y, iprototype.rotate_area(area, dir))
         if not position then
             return
         end
-        positions[coord] = position
+        positions[gameplay_eid] = position
     end
 
-    for coord, position in pairs(positions) do
-        local v = assert(moving_objs[coord])
+    for gameplay_eid, position in pairs(positions) do
+        local v = assert(moving_objs[gameplay_eid])
         v.srt.t = position
         v.obj:send("obj_motion", "set_position", math3d.live(v.srt.t))
     end
