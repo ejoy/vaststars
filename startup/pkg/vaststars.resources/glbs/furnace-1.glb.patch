@@ -1,9 +1,8 @@
 ---
-file: mesh.prefab
+file: materials/Material.001.material
 op: replace
-path: /1/tag
-value:
-  animation
+path: /properties/u_emissive_factor
+value: {5, 5, 5, 5}
 ---
 file: mesh.prefab
 op: add
@@ -88,6 +87,12 @@ value:
     ant.scene|scene_object
   tag:
     shelf6
+---
+file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  animation
 ---
 file: mesh.prefab
 op: replace
