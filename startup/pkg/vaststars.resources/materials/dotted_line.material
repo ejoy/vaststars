@@ -3,7 +3,14 @@ fx:
   setting:
     lighting: off
   varyings: /pkg/ant.resources/materials/nolighting.varyings
-state: /pkg/ant.resources/materials/states/translucent.state
+state:
+  ALPHA_REF: 0
+  CULL: CCW
+  PT: TRISTRIP
+  DEPTH_TEST: ALWAYS
+  MSAA: true
+  BLEND: ALPHA
+  WRITE_MASK: RGBA
 properties:
   s_basecolor:
     stage: 0
