@@ -1022,7 +1022,7 @@ prototype "电路板" {
     station_limit = 15,
     chest_limit = 30,
     backpack_limit = 100,
-    item_order = 54,
+    item_order = 57,
     pollution = 1000,
     item_model = "/pkg/vaststars.resources/glbs/stackeditems/logic-circuit.glb|mesh.prefab",
     item_icon = "/pkg/vaststars.resources/textures/icons/item/logic-circuit.texture",
