@@ -12,3 +12,10 @@ sampler:
     U: WRAP
     V: WRAP
 type: texture
+lattice:
+    x1: 4.22
+    y1: 6.27
+    x2: 4.22
+    y2: 6.27
+    u: 49.22
+    v: 49.22
