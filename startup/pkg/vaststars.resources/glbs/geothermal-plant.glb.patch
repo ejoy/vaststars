@@ -1,4 +1,18 @@
 ---
+file: materials/Material_work.material
+op: copyfile
+path: materials/Material_work_work.material
+---
+file: materials/Material_work_work.material
+op: replace
+path: /properties/u_emissive_factor
+value: {1, 1, 1, 1}
+---
+file: materials/Material.material
+op: replace
+path: /properties/u_emissive_factor
+value: {5, 5, 5, 5}
+---
 file: mesh.prefab
 op: replace
 path: /1/tag
@@ -37,6 +51,22 @@ path: /-
 value:
   mount: 3
   prefab: /pkg/vaststars.resources/glbs/scaffold/5x5.glb|mesh.prefab
+---
+file: work.prefab
+op: replace
+path: /2/data/material
+value: materials/Material_work.material
+---
+file: work.prefab
+op: replace
+path: /3/tag
+value:
+  no_color_factors
+---
+file: work.prefab
+op: replace
+path: /2/data/material
+value: materials/Material_work_work.material
 ---
 file: mesh.prefab
 op: createfile
