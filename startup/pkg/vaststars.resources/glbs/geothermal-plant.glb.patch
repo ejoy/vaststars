@@ -1,12 +1,7 @@
 ---
-file: materials/Material_work.material
+file: materials/Material.material
 op: copyfile
-path: materials/Material_work_work.material
----
-file: materials/Material_work_work.material
-op: replace
-path: /properties/u_emissive_factor
-value: {1, 1, 1, 1}
+path: materials/Material_work.material
 ---
 file: materials/Material.material
 op: replace
@@ -62,11 +57,6 @@ op: replace
 path: /3/tag
 value:
   no_color_factors
----
-file: work.prefab
-op: replace
-path: /2/data/material
-value: materials/Material_work_work.material
 ---
 file: mesh.prefab
 op: createfile
