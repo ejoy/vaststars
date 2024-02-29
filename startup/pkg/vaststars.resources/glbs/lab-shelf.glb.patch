@@ -1,0 +1,43 @@
+---
+file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: add
+path: /-
+value:
+  data:
+    scene:
+      t: {0, 6.400000095367432, 0}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    slot
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+    scene: {}
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag:
+    hitch
+  ---
+  data:
+    scene:
+      t: {0, 6.400000095367432, 0}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    slot

@@ -133,7 +133,7 @@ function debug_sys:data_changed()
                 local gameplay_eid = object.gameplay_eid
                 local vsobject = vsobject_manager:get(object.id) or error(("(%s) vsobject not found"):format(object.prototype_name))
                 local game_object = vsobject.game_object
-                log.info(("hitch id: %s"):format(game_object.instance.tag.hitch[1]))
+                log.info(("hitch id: %s"):format(game_object.hitch_instance.tag.hitch[1]))
 
                 log.info(([[
                     {

@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: ../../images/bulk-opt/close.png
+path: ../../images/bulk-opt/mark.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

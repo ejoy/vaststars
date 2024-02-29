@@ -153,7 +153,7 @@ local function _new_entity(self, datamodel, typeobject, x, y)
             on_ready = function (instance)
                 local root <close> = world:entity(instance.tag['*'][1])
                 iom.set_position(root, math3d.vector(icoord.position(dx, dy, iprototype.rotate_area(typeobject.area, dir))))
-                iom.set_rotation(root, ROTATORS[self.forward_dir])
+                iom.set_rotation(root, ROTATORS[iprototype.rotate_dir_times(self.forward_dir, -1)])
 
                 for _, eid in ipairs(instance.tag["*"]) do
                     local e <close> = world:entity(eid, "animation?in")
@@ -172,7 +172,7 @@ local function _new_entity(self, datamodel, typeobject, x, y)
 
                     local root <close> = world:entity(instance.tag['*'][1])
                     iom.set_position(root, math3d.vector(x, math3d.index(position, 2), z))
-                    iom.set_rotation(root, ROTATORS[self.forward_dir])
+                    iom.set_rotation(root, ROTATORS[iprototype.rotate_dir_times(self.forward_dir, -1)])
                 end
             end
         }, {"on_position_change", "on_status_change", "set_forward_dir"})

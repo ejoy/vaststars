@@ -4,26 +4,6 @@
             body {
                 font: 100% "阿里巴巴普惠体";
             }
-            red-button, green-button {
-                width: 14.95vmin;
-                height: 14.95vmin;
-                font-size: 5vmin;
-                align-items: center;
-                justify-content: center;
-                background-size: 100% 100%;
-            }
-            red-button {
-                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/red-button-bg.texture";
-            }
-            red-button:active {
-                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/red-button-bg-active.texture";
-            }
-            green-button {
-                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/green-button-bg.texture";
-            }
-            green-button:active {
-                background-image: "/pkg/vaststars.resources/ui/textures/bulk-opt/green-button-bg-active.texture";
-            }
 
             @keyframes top-border-move {
                 0% {
@@ -107,14 +87,32 @@
                 background: "/pkg/vaststars.resources/ui/textures/bulk-opt/select-bg.texture";
                 background-size: 100% 100%;
             }
+
+            main-button {
+                width: 29.90vmin;
+                height: 29.90vmin;
+            }
+            main-button:active {
+                transform: scale(1.2);
+            }
+            main-button-icon {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 50%;
+                background-size: 100% 100%;
+                width: 58.49%;
+                height: 58.49%;
+            }
         </style>
+        <style path = "/pkg/vaststars.resources/ui/common/sector_menu.css" />
         <script type="text/x-lua" >
             local ui_sys = import_package "vaststars.ui".ui_system
             local start = ui_sys.createDataMode(window, ...)
 
-            local function _send()
+            local function _update_selecting_building()
                 local e = assert(document.getElementsByTagName("select-box")[1])
-                ui_sys.pub(window, {"select", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight})
+                ui_sys.pub(window, {"update_selecting_building", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight})
             end
 
             function start.clickButton(...)
@@ -122,41 +120,44 @@
             end
 
             function init()
-                _send()
+                _update_selecting_building()
 
                 window.onMessage(window.getName() .. "-message", function(param)
-                    _send()
+                    if param.event == "update_selecting_building" then
+                        _update_selecting_building()
+                    elseif param.event == "tap" then
+                        start.clickButton('close')
+                    end
                 end)
             end
         </script>
     </head>
-    <body style = "pointer-events: none; align-items: center;" onload = "init()">
-        <div style = "pointer-events: none; height: 10%;" />
-        <select-box style = "pointer-events: none; width: 80%; height: 70%;" >
-            <select-bg style = "position: absolute; top: 0; transform: rotate(180deg);" />
-            <select-bg style = "position: absolute; bottom: 0;" />
-            <top-border style = "width: 100%; height: 5.16vmin; top: -2vmin; position: absolute;" />
-            <bottom-border style = "width: 100%; height: 5.16vmin; bottom: -2vmin; position: absolute;" />
-            <left-border style = "width: 5.16vmin; height: 100%; left: -2vmin; position: absolute;" />
-            <right-border style = "width: 5.16vmin; height: 100%; right: -2vmin; position: absolute;" />
-            <border-corner style = "top: -2.5vmin; left: -2.5vmin; position: absolute;" />
-            <border-corner style = "top: -2.5vmin; right: -2.5vmin; position: absolute;" />
-            <border-corner style = "bottom: -2.5vmin; left: -2.5vmin; position: absolute;" />
-            <border-corner style = "bottom: -2.5vmin; right: -2.5vmin; position: absolute;" />
-        </select-box>
-        <div style = "width: 80%; height: 10%; flex-direction: row; gap: 2vmin; justify-content: flex-end;">
-            <red-button data-event-click = "clickButton('teardown')"  style="position:absolute; left:0;"  data-if = "teardown">
-                <div style = "width: 8.64vmin; height: 11.76vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/teardown.texture'; background-size: 100% 100%;" />
-            </red-button>
-            <green-button data-event-click = "clickButton('close')">
-                <div style = "width: 9.11vmin; height: 9.11vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/close.texture'; background-size: 100% 100%;" />
-            </green-button>
-            <green-button data-event-click = "clickButton('move')" data-if = "move">
-                <div style = "width: 12.07vmin; height: 12.15vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/move.texture'; background-size: 100% 100%;" />
-            </green-button>
-            <green-button data-event-click = "clickButton('move_confirm')" data-if = "move_confirm">
-                <div style = "width: 10.75vmin; height: 8.57vmin; background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/move-confirm.texture'; background-size: 100% 100%;" />
-            </green-button>
+    <body style = "pointer-events: none;" onload = "init()">
+        <div style = "pointer-events: none; width: 52%; height: 100%; align-items: flex-end; justify-content: center;">
+            <select-box style = "pointer-events: none; width: 70vmin; height: 70vmin;" >
+                <select-bg style = "position: absolute; top: 0; transform: rotate(180deg);" />
+                <select-bg style = "position: absolute; bottom: 0;" />
+                <top-border style = "width: 100%; height: 5.16vmin; top: -2vmin; position: absolute;" />
+                <bottom-border style = "width: 100%; height: 5.16vmin; bottom: -2vmin; position: absolute;" />
+                <left-border style = "width: 5.16vmin; height: 100%; left: -2vmin; position: absolute;" />
+                <right-border style = "width: 5.16vmin; height: 100%; right: -2vmin; position: absolute;" />
+                <border-corner style = "top: -2.5vmin; left: -2.5vmin; position: absolute;" />
+                <border-corner style = "top: -2.5vmin; right: -2.5vmin; position: absolute;" />
+                <border-corner style = "bottom: -2.5vmin; left: -2.5vmin; position: absolute;" />
+                <border-corner style = "bottom: -2.5vmin; right: -2.5vmin; position: absolute;" />
+            </select-box>
         </div>
+
+        <main-button style = "position: absolute; right: 3.995vmax; bottom: 7.00vmin; background-image: '/pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture'; background-size: 100% 100%;" data-event-click = "clickButton('focus')">
+            <main-button-icon style = "background-image: '/pkg/vaststars.resources/ui/textures/bulk-opt/focus.texture';" />
+        </main-button>
+
+        <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons">
+            <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
+                <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
+                    <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
+                </sector-menu-button>
+            </div>
+        </sector-menu-button-container>
     </body>
 </html>

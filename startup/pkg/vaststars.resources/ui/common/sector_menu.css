@@ -1,0 +1,20 @@
+sector-menu-button-container {
+	flex-direction: row-reverse;
+	align-items: flex-start;
+	transform-origin: 100% 100%;
+	right: 3.995vmax;
+	bottom: 7vmin;
+	width: 69.00vmin;
+	height: 69.00vmin;
+	padding: 0vmin;
+	margin: 0vmin;
+	position: absolute;
+	pointer-events: none;
+}
+sector-menu-button {
+	position: absolute;
+	background-size: cover;
+}
+sector-menu-button:active {
+	transform: scale(1.2);
+}

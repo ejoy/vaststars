@@ -17,6 +17,8 @@ local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
+local igame_object = ecs.require "engine.game_object"
+local igroup = ecs.require "group"
 
 local cache = {}
 
@@ -25,29 +27,23 @@ local function _get_game_object(object_id)
     return vsobject.game_object
 end
 
-local function _create_shelf(game_object, idx, item, amount)
-    local shelf = world:create_instance {
-        prefab = "/pkg/vaststars.resources/glbs/lab-table.glb|mesh.prefab",
+local function _create_shelf(e, game_object, idx, item, amount)
+    local shelf; shelf = igame_object.create {
+        prefab = "/pkg/vaststars.resources/glbs/lab-shelf.glb|mesh.prefab",
+        group_id = igroup.id(e.building.x, e.building.y),
         on_ready = function(self)
             if amount > 0 then
-                local eid = self.tag["slot"][1]
                 local typeobject = iprototype.queryById(item)
-                local instance; instance = world:create_instance {
+                local item_object = igame_object.create {
                     prefab = typeobject.item_model,
-                    on_ready = function (self)
-                        local e = world:entity(eid)
-                        if e then
-                            world:instance_set_parent(self, eid)
-                        else
-                            world:remove_instance(instance)
-                        end
-                    end
+                    group_id = igroup.id(e.building.x, e.building.y),
                 }
+                shelf:send("attach", "slot", item_object.hitch_instance)
             end
         end
     }
-    game_object:send("attach", assert(SLOTS[idx]), shelf)
-    return shelf 
+    game_object:send("attach", assert(SLOTS[idx]), shelf.hitch_instance)
+    return shelf
 end
 
 function laboratory_sys:gameworld_update()
@@ -70,14 +66,14 @@ function laboratory_sys:gameworld_update()
             end
             assert(slot.item ~= 0)
             if not t[idx] then
-                t[idx] = {item = slot.item, show_item = slot.amount > 0, instance = _create_shelf(game_object, idx, slot.item, slot.amount)}
+                t[idx] = {item = slot.item, show_item = slot.amount > 0, shelf = _create_shelf(e, game_object, idx, slot.item, slot.amount)}
             else
                 if t[idx].item ~= slot.item or t[idx].show_item ~= (slot.amount > 0) then
                     t[idx].item = slot.item
                     t[idx].show_item = slot.amount > 0
 
-                    world:remove_instance(t[idx].instance)
-                    t[idx].instance = _create_shelf(game_object, idx, slot.item, slot.amount)
+                    t[idx].shelf:remove()
+                    t[idx].shelf = _create_shelf(e, game_object, idx, slot.item, slot.amount)
                 end
             end
 
@@ -85,7 +81,7 @@ function laboratory_sys:gameworld_update()
         end
         if c ~= #t then
             for i = c + 1, #t do
-                world:remove_instance(t[i].instance)
+                t[i].shelf:remove()
                 t[i] = nil
             end
         end

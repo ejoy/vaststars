@@ -607,6 +607,7 @@ function M.update(datamodel)
 
     for _, _, v in gesture_tap_mb:unpack() do
         if datamodel.status == "BULK_OPT" then
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_tap")
             goto continue
         end
 

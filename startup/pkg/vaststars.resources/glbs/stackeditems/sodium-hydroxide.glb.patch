@@ -1,4 +1,10 @@
 ---
+file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
 file: materials/item-Material.material
 op: replace
 path: /fx/vs_code
@@ -8,3 +14,18 @@ file: materials/item-Material.material
 op: replace
 path: /fx/setting/no_predepth
 value: true
+---
+file: mesh.prefab
+op: createfile
+path: hitch.prefab
+value:
+  ---
+  data:
+    hitch:
+      group: 0
+    scene: {}
+    visible_state: main_view|cast_shadow|selectable
+  policy:
+    ant.render|hitch_object
+  tag:
+    hitch

@@ -14,6 +14,7 @@ local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local igroup = ecs.require "group"
+local igame_object = ecs.require "engine.game_object"
 
 local mt = {}
 mt.__index = mt
@@ -32,10 +33,9 @@ local function create_item(group_id, item, amount)
     local typeobject_item = iprototype.queryById(item)
     local _ = typeobject_item.item_model or error(("no pile model: %s"):format(typeobject_item.name))
     local prefab = typeobject_item.item_model
-
-    return world:create_instance {
-        group = group_id,
+    return igame_object.create {
         prefab = prefab,
+        group_id = group_id,
         on_message = function (self, event, ...)
             assert(item_events[event], "invalid message")
             item_events[event](self, ...)
@@ -54,22 +54,18 @@ local function create_shelf(self, gameplay_world, e, game_object, shelf_prefab, 
     assert(slot.item ~= 0)
     local typeobject_item = iprototype.queryById(slot.item)
     if iprototype.has_type(typeobject_item.type, "item") then
-        local shelf = world:create_instance {
+        local shelf = igame_object.create {
             prefab = shelf_prefab,
-            group = group_id,
-            on_message = function(self, msg, slot_name, instance)
-                assert(msg == "attach")
-                local eid = assert(self.tag[slot_name][1])
-                world:instance_set_parent(instance, eid)
-            end
+            group_id = group_id,
         }
-        game_object:send("attach", shelf_slot_name, shelf)
+
+        game_object:send("attach", shelf_slot_name, shelf.hitch_instance)
         self._shelves[idx] = shelf
 
         local item = create_item(group_id, slot.item, slot.amount)
-        world:instance_message(shelf, "attach", "item_slot", item)
-        self._items[idx] = item
+        shelf:send("attach", "item_slot", item.hitch_instance)
 
+        self._items[idx] = item
         self._item_shows[idx] = slot.amount > 0
     end
 end
@@ -83,18 +79,18 @@ function mt:get_item_position(idx)
     if not item then
         return
     end
-    local _, _, t = math3d.srt(iom.worldmat(world:entity(item.tag["*"][1])))
+    local _, _, t = math3d.srt(iom.worldmat(world:entity(item.hitch_instance.tag["*"][1])))
     return t
 end
 
 --
 function mt:remove()
     for _, o in pairs(self._items) do
-        world:remove_instance(o)
+        o:remove()
     end
     self._items = {}
     for _, o in pairs(self._shelves) do
-        world:remove_instance(o)
+        o:remove()
     end
     self._shelves = {}
     self._item_shows = {}
@@ -141,7 +137,7 @@ function mt:update_item(idx, amount)
 
     local show = amount > 0
     if self._item_shows[idx] ~= show then
-        world:instance_message(self._items[idx], "show", show)
+        self._items[idx]:send("show", show)
         self._item_shows[idx] = show
     end
 end

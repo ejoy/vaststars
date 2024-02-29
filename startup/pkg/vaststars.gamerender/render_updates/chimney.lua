@@ -22,20 +22,20 @@ local ROTATORS <const> = {
     W = math.rad(-270),
 }
 
-local function __calc_begin_xy(x, y, w, h)
+local function _calc_begin_xy(x, y, w, h)
     local begin_x = x - (w * TILE_SIZE) / 2
     local begin_y = y + (h * TILE_SIZE) / 2
     return begin_x, begin_y
 end
 
-local function __get_texture_size(materialpath)
+local function _get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
     local texobj = assetmgr.resource(res.properties.s_basecolor.texture)
     local ti = texobj.texinfo
     return tonumber(ti.width), tonumber(ti.height)
 end
 
-local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
+local function _get_draw_rect(x, y, icon_w, icon_h, multiple)
     multiple = multiple or 1
     local tile_size = TILE_SIZE * multiple
     y = y - tile_size
@@ -47,9 +47,9 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     return draw_x, draw_y, draw_w, draw_h
 end
 
-local function __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
+local function _draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
     local typeobject = iprototype.queryById(prototype)
-    local begin_x, begin_y = __calc_begin_xy(math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3), iprototype.rotate_area(typeobject.area, dir))
+    local begin_x, begin_y = _calc_begin_xy(math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3), iprototype.rotate_area(typeobject.area, dir))
     for _, conn in ipairs(typeobject.fluidbox.connections) do
         local connection_x, connection_y, connection_dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
         local material_path
@@ -59,9 +59,9 @@ local function __draw_fluid_indication_arrow(object_id, building_srt, dir, proto
             material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material"
         end
         local dx, dy = iprototype.move_coord(connection_x, connection_y, connection_dir, 1, 1)
-        local icon_w, icon_h = __get_texture_size(material_path)
+        local icon_w, icon_h = _get_texture_size(material_path)
         local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-        local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+        local draw_x, draw_y, draw_w, draw_h = _get_draw_rect(
             begin_x + dx * TILE_SIZE + TILE_SIZE / 2,
             begin_y - dy * TILE_SIZE - TILE_SIZE / 2,
             icon_w,
@@ -88,16 +88,16 @@ local function __draw_fluid_indication_arrow(object_id, building_srt, dir, proto
     end
 end
 
-local function __create_icon(object_id, building_srt, dir, prototype)
+local function _create_icon(object_id, building_srt, dir, prototype)
     local function on_position_change(self, building_srt)
         local object = assert(objects:get(object_id))
         icanvas.remove_item("icon", object_id)
-        __draw_fluid_indication_arrow(object_id, building_srt, object.dir, prototype)
+        _draw_fluid_indication_arrow(object_id, building_srt, object.dir, prototype)
     end
     local function remove(self)
         icanvas.remove_item("icon", object_id)
     end
-    __draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
+    _draw_fluid_indication_arrow(object_id, building_srt, dir, prototype)
 
     return {
         on_position_change = on_position_change,
@@ -112,7 +112,7 @@ function chimney_sys:gameworld_build()
         local object = assert(objects:coord(e.building.x, e.building.y))
         local building = global.buildings[object.id]
         if not building.chimney_icon then
-            building.chimney_icon = __create_icon(object.id, object.srt, object.dir, e.building.prototype)
+            building.chimney_icon = _create_icon(object.id, object.srt, object.dir, e.building.prototype)
         end
     end
 end

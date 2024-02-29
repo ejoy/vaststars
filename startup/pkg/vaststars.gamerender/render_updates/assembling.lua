@@ -38,14 +38,14 @@ local ichest = require "gameplay.interface.chest"
 local math3d = require "math3d"
 local vsobject_manager = ecs.require "vsobject_manager"
 
-local function __get_texture_size(materialpath)
+local function _get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
     local texobj = assetmgr.resource(res.properties.s_basecolor.texture)
     local ti = texobj.texinfo
     return tonumber(ti.width), tonumber(ti.height)
 end
 
-local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
+local function _get_draw_rect(x, y, icon_w, icon_h, multiple)
     multiple = multiple or 1
     local tile_size = TILE_SIZE * multiple
     y = y - tile_size
@@ -57,19 +57,19 @@ local function __get_draw_rect(x, y, icon_w, icon_h, multiple)
     return draw_x, draw_y, draw_w, draw_h
 end
 
-local function __calc_begin_xy(x, y, w, h)
+local function _calc_begin_xy(x, y, w, h)
     local begin_x = x - (w * TILE_SIZE) / 2
     local begin_y = y + (h * TILE_SIZE) / 2
     return begin_x, begin_y
 end
 
-local function __draw_icon(e, object_id, building_srt, status, recipe)
+local function _draw_icon(e, object_id, building_srt, status, recipe)
     local x, y = math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3)
     if status == ICON_STATUS_NOPOWER then
         local material_path = "/pkg/vaststars.resources/materials/canvas/no-power.material"
-        local icon_w, icon_h = __get_texture_size(material_path)
+        local icon_w, icon_h = _get_texture_size(material_path)
         local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-        local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
+        local draw_x, draw_y, draw_w, draw_h = _get_draw_rect(x, y, icon_w, icon_h, 1.5)
         icanvas.add_item("icon",
             object_id,
             icanvas.get_key(material_path, RENDER_LAYER.ICON),
@@ -89,9 +89,9 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
         local typeobject = iprototype.queryById(e.building.prototype)
         if status == ICON_STATUS_NORECIPE then
             local material_path = "/pkg/vaststars.resources/materials/canvas/no-recipe.material"
-            local icon_w, icon_h = __get_texture_size(material_path)
+            local icon_w, icon_h = _get_texture_size(material_path)
             local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-            local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
+            local draw_x, draw_y, draw_w, draw_h = _get_draw_rect(x, y, icon_w, icon_h, 1.5)
             icanvas.add_item("icon",
                 object_id,
                 icanvas.get_key(material_path, RENDER_LAYER.ICON),
@@ -122,7 +122,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                 end
                 material_path = "/pkg/vaststars.resources/materials/canvas/recipes.material"
                 texture_x, texture_y, texture_w, texture_h = cfg.x, cfg.y, cfg.width, cfg.height
-                draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
+                draw_x, draw_y, draw_w, draw_h = _get_draw_rect(x, y, cfg.width, cfg.height, 1.5)
                 icanvas.add_item("icon",
                     object_id,
                     icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT),
@@ -149,7 +149,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                     {"results", "output"},
                 }
 
-                local begin_x, begin_y = __calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, e.building.direction))
+                local begin_x, begin_y = _calc_begin_xy(x, y, iprototype.rotate_area(typeobject.area, e.building.direction))
                 for _, r in ipairs(t) do
                     local i = 0
                     for _, v in ipairs(irecipe.get_elements(recipe_typeobject[r[1]])) do
@@ -173,9 +173,9 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
                                 material_path = "/pkg/vaststars.resources/materials/canvas/fluid-indication-arrow-output.material"
                             end
 
-                            icon_w, icon_h = __get_texture_size(material_path)
+                            icon_w, icon_h = _get_texture_size(material_path)
                             texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-                            draw_x, draw_y, draw_w, draw_h = __get_draw_rect(
+                            draw_x, draw_y, draw_w, draw_h = _get_draw_rect(
                                 begin_x + dx * TILE_SIZE + TILE_SIZE / 2,
                                 begin_y - dy * TILE_SIZE - TILE_SIZE / 2,
                                 icon_w,
@@ -208,7 +208,7 @@ local function __draw_icon(e, object_id, building_srt, status, recipe)
     end
 end
 
-local function create_icon(object_id, e, building_srt)
+local function _create_icon(object_id, e, building_srt)
     local status = 0
     local recipe = 0
     local typeobject = iprototype.queryById(e.building.prototype)
@@ -218,7 +218,7 @@ local function create_icon(object_id, e, building_srt)
         local object = assert(objects:get(object_id))
         local e = assert(gameplay_core.get_entity(object.gameplay_eid))
         icanvas.remove_item("icon", object_id)
-        __draw_icon(e, object_id, building_srt, status, recipe)
+        _draw_icon(e, object_id, building_srt, status, recipe)
     end
     local function remove(self)
         icanvas.remove_item("icon", object_id)
@@ -241,7 +241,7 @@ local function create_icon(object_id, e, building_srt)
 
         status, recipe = s, e.assembling.recipe
         icanvas.remove_item("icon", object_id)
-        __draw_icon(e, object_id, building_srt, status, recipe)
+        _draw_icon(e, object_id, building_srt, status, recipe)
     end
     return {
         on_position_change = on_position_change,
@@ -251,12 +251,12 @@ local function create_icon(object_id, e, building_srt)
     }
 end
 
-local function __draw_consumer_icon(object_id, building_srt)
+local function _draw_consumer_icon(object_id, building_srt)
     local x, y = math3d.index(building_srt.t, 1), math3d.index(building_srt.t, 3)
     local material_path = "/pkg/vaststars.resources/materials/canvas/no-power.material"
-    local icon_w, icon_h = __get_texture_size(material_path)
+    local icon_w, icon_h = _get_texture_size(material_path)
     local texture_x, texture_y, texture_w, texture_h = 0, 0, icon_w, icon_h
-    local draw_x, draw_y, draw_w, draw_h = __get_draw_rect(x, y, icon_w, icon_h, 1.5)
+    local draw_x, draw_y, draw_w, draw_h = _get_draw_rect(x, y, icon_w, icon_h, 1.5)
     icanvas.add_item("icon",
         object_id,
         icanvas.get_key(material_path, RENDER_LAYER.ICON_CONTENT),
@@ -274,14 +274,14 @@ local function __draw_consumer_icon(object_id, building_srt)
     )
 end
 
-local function create_consumer_icon(object_id, building_srt)
-    __draw_consumer_icon(object_id, building_srt)
+local function _create_consumer_icon(object_id, building_srt)
+    _draw_consumer_icon(object_id, building_srt)
     local function remove()
         icanvas.remove_item("icon", object_id)
     end
     local function on_position_change(self, building_srt)
         icanvas.remove_item("icon", object_id)
-        __draw_consumer_icon(object_id, building_srt)
+        _draw_consumer_icon(object_id, building_srt)
     end
     return {
         on_position_change = on_position_change,
@@ -289,7 +289,7 @@ local function create_consumer_icon(object_id, building_srt)
     }
 end
 
-local function getGameObject(object)
+local function _get_game_object(object)
     local vsobject = vsobject_manager:get(object.id) or error(("(%s) vsobject not found"):format(object.prototype_name))
     return vsobject.game_object
 end
@@ -297,11 +297,7 @@ end
 function assembling_sys:gameworld_build()
     local gameplay_world = gameplay_core.get_world()
     for e in gameplay_world.ecs:select "assembling:in building:in chest:in" do
-        local object = objects:coord(e.building.x, e.building.y)
-        if not object then
-            goto continue
-        end
-
+        local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
         if typeobject.io_shelf == false then
             goto continue
@@ -319,25 +315,20 @@ function assembling_sys:gameworld_build()
         else
             local io_shelves = building.io_shelves
             if io_shelves then
-                building.io_shelves:update(gameplay_world, e, getGameObject(object))
+                building.io_shelves:update(gameplay_world, e, _get_game_object(object))
             else
-                building.io_shelves = create_io_shelves(gameplay_world, e, getGameObject(object))
+                building.io_shelves = create_io_shelves(gameplay_world, e, _get_game_object(object))
             end
         end
         ::continue::
     end
 end
 
-local update = interval_call(300, function()
+local _update = interval_call(300, function()
     local gameplay_world = gameplay_core.get_world()
 
     for e in gameplay_world.ecs:select "assembling:in chest:in building:in capacitance?in eid:in" do
-        -- object may not have been fully created yet
-        local object = objects:coord(e.building.x, e.building.y)
-        if not object then
-            goto continue
-        end
-
+        local object = assert(objects:coord(e.building.x, e.building.y))
         local building = global.buildings[object.id]
 
         local io_shelves = building.io_shelves
@@ -356,24 +347,18 @@ local update = interval_call(300, function()
         end
 
         if not building.assembling_icon then
-            building.assembling_icon = create_icon(object.id, e, object.srt)
+            building.assembling_icon = _create_icon(object.id, e, object.srt)
         end
         building.assembling_icon:update(e)
-        ::continue::
     end
 
     -- special handling for the display of the 'no power' icon on the laboratory or airport
     for e in gameplay_world.ecs:select "consumer:in assembling:absent building:in capacitance:in eid:in" do
-        -- object may not have been fully created yet
-        local object = objects:coord(e.building.x, e.building.y)
-        if not object then
-            goto continue
-        end
-
+        local object = assert(objects:coord(e.building.x, e.building.y))
         local building = global.buildings[object.id]
         if not ipower_check.is_powered_on(gameplay_world, e) then
             if not building.consumer_icon then
-                building.consumer_icon = create_consumer_icon(object.id, object.srt)
+                building.consumer_icon = _create_consumer_icon(object.id, object.srt)
             end
         else
             if building.consumer_icon then
@@ -381,10 +366,9 @@ local update = interval_call(300, function()
                 building.consumer_icon = nil
             end
         end
-        ::continue::
     end
 end)
 
 function assembling_sys:gameworld_update()
-    update()
+    _update()
 end

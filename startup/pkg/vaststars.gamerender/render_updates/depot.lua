@@ -13,19 +13,20 @@ local gameplay_core = require "gameplay.core"
 local igroup = ecs.require "group"
 local ivs = ecs.require "ant.render|visible_state"
 local vsobject_manager = ecs.require "vsobject_manager"
+local igame_object = ecs.require "engine.game_object"
 
-local meta = {}
-function meta:remove()
+local mt = {}
+function mt:remove()
     for idx = 1, #self.items do
         local v = assert(self.items[idx])
-        world:remove_instance(v.inst)
+        v.item_object:remove()
     end
     self.items = {}
 end
-function meta:on_position_change()
+function mt:on_position_change()
     -- do nothing
 end
-function meta:update(gameplay_world, e)
+function mt:update(gameplay_world, e)
     for idx = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
         local slot = ichest.get(gameplay_world, e.chest, idx)
         if not slot then
@@ -35,7 +36,7 @@ function meta:update(gameplay_world, e)
         local v = assert(self.items[idx])
         local show = slot.amount <= 0
         if v.show ~= show then
-            world:instance_message(v.inst, "show", v.show)
+            v.item_object:send("show", v.show)
             v.show = show
         end
     end
@@ -66,25 +67,26 @@ local function create(gameplay_world, e, game_object)
         if item ~= 0 then
             local typeobject_item = iprototype.queryById(item)
             local prefab = typeobject_item.item_model
-            local inst = world:create_instance {
-                group = igroup.id(e.building.x, e.building.y),
+            local item_object = igame_object.create {
                 prefab = prefab,
+                group_id = igroup.id(e.building.x, e.building.y),
                 on_message = function (self, event, ...)
                     assert(item_events[event], "invalid message")
                     item_events[event](self, ...)
                 end,
                 on_ready = function (self)
-                    if show then
-                        item_events["show"](self, false)
+                    if not show then
+                        item_events["show"](self, show)
                     end
                 end
             }
-            game_object:send("attach", assert(SLOTS[idx]), inst)
-            o.items[idx] = {inst = inst, show = show}
+
+            game_object:send("attach", assert(SLOTS[idx]), item_object.hitch_instance)
+            o.items[idx] = {item_object = item_object, show = show}
         end
     end
 
-    return setmetatable(o, {__index = meta})
+    return setmetatable(o, {__index = mt})
 end
 
 local function get_game_object(object_id)
