@@ -92,7 +92,7 @@ local function _detail_str(eid)
     return table.concat(res, "\n\t")
 end
 
-function debug_sys:ui_update()
+function debug_sys:data_changed()
     local w = world.w
 
     for _, key, press, state in kb_mb:unpack() do

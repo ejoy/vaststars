@@ -125,7 +125,7 @@ local function close(rml)
 end
 
 local ui_system = ecs.system "ui_system"
-function ui_system.ui_update()
+function ui_system.data_changed()
     for rml in pairs(updateWindows) do
         if not closeWindows[rml] then
             local binding = windowBindings[rml]
