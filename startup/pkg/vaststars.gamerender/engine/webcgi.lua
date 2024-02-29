@@ -25,12 +25,5 @@ local function register_command()
 end
 
 return function ()
-	local webserver = import_package "vaststars.webcgi"
 	register_command()
-
-	if __ANT_RUNTIME__ then
-		webserver.start "redirect"
-	else
-		webserver.start "direct"
-	end
 end
