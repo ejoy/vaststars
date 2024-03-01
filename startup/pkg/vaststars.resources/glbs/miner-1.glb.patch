@@ -1,36 +1,6 @@
 ---
 file: mesh.prefab
 op: replace
-path: /2/tag
-value:
-  Cylinder.001_P1
----
-file: mesh.prefab
-op: replace
-path: /3/tag
-value:
-  BezierCurve.001_P1
----
-file: mesh.prefab
-op: replace
-path: /4/tag
-value:
-  Cylinder_P1
----
-file: mesh.prefab
-op: replace
-path: /5/tag
-value:
-  Cylinder.005_P1
----
-file: mesh.prefab
-op: replace
-path: /6/tag
-value:
-  Plane_P1
----
-file: mesh.prefab
-op: replace
 path: /1/tag
 value:
   animation

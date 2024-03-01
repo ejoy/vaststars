@@ -1,12 +1,6 @@
 ---
 file: mesh.prefab
 op: replace
-path: /2/tag
-value:
-  Plane.003_P1
----
-file: mesh.prefab
-op: replace
 path: /1/tag
 value:
   animation

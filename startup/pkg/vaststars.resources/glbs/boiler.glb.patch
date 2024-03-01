@@ -10,18 +10,6 @@ path: /properties/u_emissive_factor
 value: {0.5, 0.5, 0.5, 0}
 ---
 file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  Scene
----
-file: mesh.prefab
-op: replace
-path: /2/tag
-value:
-  Plane.001_P1
----
-file: mesh.prefab
 op: copyfile
 path: debris.prefab
 ---
@@ -83,7 +71,7 @@ value:
           asset_path: /pkg/vaststars.resources/animations/boiler_light.ant
           event_type: Animation
           pause_frame: -1
-          target: Plane.001_P1
+          target: Plane.003
         tick: 0
         time: 0
       loop: false

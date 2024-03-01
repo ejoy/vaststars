@@ -85,12 +85,6 @@ value:
 ---
 file: mesh.prefab
 op: replace
-path: /2/tag
-value:
-  Cylinder.001_P1
----
-file: mesh.prefab
-op: replace
 path: /1/tag
 value:
   animation
@@ -204,7 +198,7 @@ value:
           event_type: Animation
           forwards: false
           pause_frame: -1
-          target: Cylinder.001_P1
+          target: Cylinder.001
         tick: 0
         time: 0
         ---
@@ -215,7 +209,7 @@ value:
           event_type: Animation
           forwards: false
           pause_frame: -1
-          target: Cylinder.001_P1
+          target: Cylinder.001
         tick: 45
         time: 1.5
       loop: false

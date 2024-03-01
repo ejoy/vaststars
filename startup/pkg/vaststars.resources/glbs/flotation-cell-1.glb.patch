@@ -1,17 +1,5 @@
 ---
 file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  Scene
----
-file: mesh.prefab
-op: replace
-path: /2/tag
-value:
-  Cylinder_P1
----
-file: mesh.prefab
 op: add
 path: /-
 value:

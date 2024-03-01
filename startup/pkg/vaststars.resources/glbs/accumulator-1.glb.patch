@@ -15,18 +15,6 @@ path: /maxsize
 value: 64
 ---
 file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  Scene
----
-file: mesh.prefab
-op: replace
-path: /2/tag
-value:
-  Cube_P1
----
-file: mesh.prefab
 op: copyfile
 path: debris.prefab
 ---
@@ -73,7 +61,7 @@ value:
           asset_path: /pkg/vaststars.resources/animations/accumulator_light.ant
           event_type: Animation
           pause_frame: -1
-          target: Cube_P1
+          target: Cube
         tick: 0
         time: 0
       loop: false
