@@ -80,3 +80,6 @@ system "camera_system"
 
 system "update_system"
     .implement "update_system.lua"
+
+system "message_system"
+    .implement "message_system.lua"
