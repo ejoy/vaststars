@@ -40,17 +40,6 @@ file: debris.prefab
 op: add
 path: /-
 value:
-  data:
-    scene: {}
-  mount: 1
-  policy:
-    ant.scene|scene_object
----
-file: debris.prefab
-op: add
-path: /-
-value:
-  mount: 4
   prefab: /pkg/vaststars.resources/glbs/scaffold/1x1.glb|mesh.prefab
 ---
 file: mesh.prefab
