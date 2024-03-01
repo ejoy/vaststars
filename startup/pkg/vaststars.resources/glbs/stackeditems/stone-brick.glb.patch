@@ -1,10 +1,4 @@
 ---
-file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  Scene
----
 file: materials/Material.material
 op: replace
 path: /fx/vs_code

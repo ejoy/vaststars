@@ -1,10 +1,4 @@
 ---
-file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  animation
----
 file: images/miner_color.texture
 op: add
 path: /maxsize

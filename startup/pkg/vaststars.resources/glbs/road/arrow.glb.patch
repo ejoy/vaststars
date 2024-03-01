@@ -28,12 +28,6 @@ path: /2/data/visible_state
 value: main_view|selectable
 ---
 file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  animation
----
-file: mesh.prefab
 op: createfile
 path: hitch.prefab
 value:

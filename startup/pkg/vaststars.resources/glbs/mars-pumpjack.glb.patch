@@ -1,10 +1,4 @@
 ---
-file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  animation
----
 file: images/anything_light.texture
 op: add
 path: /maxsize

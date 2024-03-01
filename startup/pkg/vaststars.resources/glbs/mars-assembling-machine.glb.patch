@@ -1,11 +1,5 @@
 ---
 file: mesh.prefab
-op: replace
-path: /1/tag
-value:
-  animation
----
-file: mesh.prefab
 op: add
 path: /-
 value:

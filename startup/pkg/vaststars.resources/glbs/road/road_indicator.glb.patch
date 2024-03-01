@@ -1,17 +1,5 @@
 ---
 file: mesh.prefab
 op: replace
-path: /1/tag
-value:
-  animation
----
-file: mesh.prefab
-op: replace
-path: /2/tag
-value:
-  Plane.003_P1
----
-file: mesh.prefab
-op: replace
 path: /1/data/scene/r
 value: {0, -0.7071067690849304, 0, 0.7071067690849304}
