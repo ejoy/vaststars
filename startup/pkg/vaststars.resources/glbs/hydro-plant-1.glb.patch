@@ -91,18 +91,38 @@ file: mesh.prefab
 op: copyfile
 path: debris.prefab
 ---
+file: debris.prefab
+op: add
+path: /-
+value:
+  data:
+    scene: {}
+  mount: 1
+  policy:
+    ant.scene|scene_object
+  tag:
+    mesh
+---
+file: debris.prefab
+op: add
+path: /-
+value:
+  mount: 9
+  prefab: /pkg/vaststars.resources/glbs/scaffold/5x5.glb|mesh.prefab
+---
 file: work.prefab
 op: add
 path: /-
 value:
   data:
     efk:
+      fadeout: true
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     scene:
       s: {2, 2, 2}
       t: {-8.439987182617188, 23.299999237060547, -9.138055801391602}
-    visible_state: main_queue
+    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -116,12 +136,13 @@ path: /-
 value:
   data:
     efk:
+      fadeout: true
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     scene:
       s: {2, 2, 2}
       t: {8.663139343261719, 23.300060272216797, 8.26727294921875}
-    visible_state: main_queue
+    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -135,12 +156,13 @@ path: /-
 value:
   data:
     efk:
+      fadeout: true
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     scene:
       s: {2, 2, 2}
       t: {8.903579711914062, 23.299938201904297, -8.594120025634766}
-    visible_state: main_queue
+    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -154,12 +176,13 @@ path: /-
 value:
   data:
     efk:
+      fadeout: true
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     scene:
       s: {2, 2, 2}
       t: {-9.286720275878906, 23.299999237060547, 9.0322265625}
-    visible_state: main_queue
+    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -186,22 +209,103 @@ value:
   tag:
     work
 ---
-file: debris.prefab
+file: work.prefab
 op: add
 path: /-
 value:
   data:
-    scene: {}
-  mount: 1
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          action: work1
+          event_type: Effect
+        tick: 0
+        time: 0
+        ---
+        event_list:
+          ---
+          action: work2
+          event_type: Effect
+        tick: 2
+        time: 0.06666666666666667
+        ---
+        event_list:
+          ---
+          action: work3
+          event_type: Effect
+        tick: 4
+        time: 0.13333333333333333
+        ---
+        event_list:
+          ---
+          action: work4
+          event_type: Effect
+        tick: 6
+        time: 0.2
+        ---
+        event_list:
+          ---
+          action: work1
+          event_type: Effect
+        tick: 30
+        time: 1
+        ---
+        event_list:
+          ---
+          action: work2
+          event_type: Effect
+        tick: 32
+        time: 1.0666666666666667
+        ---
+        event_list:
+          ---
+          action: work3
+          event_type: Effect
+        tick: 34
+        time: 1.1333333333333333
+        ---
+        event_list:
+          ---
+          action: work4
+          event_type: Effect
+        tick: 36
+        time: 1.2
+        ---
+        event_list:
+          ---
+          action: work1
+          event_type: Effect
+        tick: 60
+        time: 2
+        ---
+        event_list:
+          ---
+          action: work2
+          event_type: Effect
+        tick: 62
+        time: 2.066666666666667
+        ---
+        event_list:
+          ---
+          action: work3
+          event_type: Effect
+        tick: 64
+        time: 2.1333333333333333
+        ---
+        event_list:
+          ---
+          action: work4
+          event_type: Effect
+        tick: 66
+        time: 2.2
+      loop: false
   policy:
-    ant.scene|scene_object
----
-file: debris.prefab
-op: add
-path: /-
-value:
-  mount: 9
-  prefab: /pkg/vaststars.resources/glbs/scaffold/5x5.glb|mesh.prefab
+    ant.timeline|timeline
+  tag:
+    timeline
 ---
 file: mesh.prefab
 op: createfile
