@@ -101,8 +101,6 @@ value:
   mount: 1
   policy:
     ant.scene|scene_object
-  tag:
-    mesh
 ---
 file: debris.prefab
 op: add
