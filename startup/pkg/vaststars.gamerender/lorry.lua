@@ -93,7 +93,7 @@ local function create(prefab, s, r, t)
         world:remove_entity(shadow_entity)
         world:remove_instance(arrow_instance)
         if self.item then
-            world:remove_instance(self.item)
+            self.item:remove()
         end
     end
     function outer:show_arrow(b)
@@ -108,20 +108,20 @@ local function create(prefab, s, r, t)
 
         if item_classid == 0 or item_amount == 0 then
             if self.item then
-                world:remove_instance(self.item)
+                self.item:remove()
                 self.item = nil
             end
             return
         end
 
         if self.item then
-            world:remove_instance(self.item)
+            self.item:remove()
         end
 
         local typeobject = iprototype.queryById(item_classid) or error(("item_classid %d not found"):format(item_classid))
         assert(typeobject.item_model)
 
-        self.item = world:create_instance {
+        self.item = igame_object.create {
             prefab = typeobject.item_model,
             on_ready = function(self)
                 for _, eid in ipairs(self.tag['*']) do
@@ -132,7 +132,7 @@ local function create(prefab, s, r, t)
                 end
             end,
         }
-        lorry_obj:send("attach", "item", self.item)
+        lorry_obj:send("attach", "item", self.item.hitch_instance)
     end
     return outer
 end
