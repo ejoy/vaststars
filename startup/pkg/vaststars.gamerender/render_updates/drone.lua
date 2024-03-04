@@ -20,7 +20,6 @@ local icoord = require "coord"
 local irl   = ecs.require "ant.render|render_layer.render_layer"
 local igroup = ecs.require "group"
 local vsobject_manager = ecs.require "vsobject_manager"
-local igame_object = ecs.require "engine.game_object"
 
 -- enum defined in c 
 local STATUS_HAS_ERROR = 1
@@ -164,12 +163,12 @@ local function create_drone(x, y, slot)
             if not self.item then
                 return
             end
-            self.item:remove()
+            world:remove_instance(self.item)
             self.item = nil
         end,
         destroy = function (self)
             self:destroy_item()
-            self.prefab:remove()
+            world:remove_instance(self.prefab)
             w:remove(self.motion_y)
             w:remove(self.motion_xz)
         end,
@@ -178,11 +177,10 @@ local function create_drone(x, y, slot)
     task.motion_xz = motion_xz
     local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)
     task.motion_y = motion_y
-    task.group_id = igroup.id(x, y)
-    task.prefab = igame_object.create {
+    task.prefab = world:create_instance {
         prefab = "/pkg/vaststars.resources/glbs/drone.glb|mesh.prefab",
         parent = motion_y,
-        group_id = task.group_id,
+        group = igroup.id(x, y),
         on_ready = function(self)
             for _, eid in ipairs(self.tag["*"]) do
                 local e <close> = world:entity(eid, "render_object?update")
@@ -236,10 +234,10 @@ function drone_sys:gameworld_update()
             local current = lookup_drones[e.eid]
             if drone.item ~= 0 then
                 local typeobject_item = iprototype.queryById(drone.item)
-                local item_prefab = igame_object.create {
+                local item_prefab = world:create_instance {
                     prefab = typeobject_item.item_model,
-                    parent = current.prefab.hitch_instance.tag["*"][1],
-                    group_id = current.group_id,
+                    parent = current.prefab.tag["*"][1],
+                    group = current.prefab.group,
                     on_ready = function(inst)
                         local re <close> = world:entity(inst.tag["*"][1])
                         iom.set_position(re, math3d.vector(0.0, -4.0, 0.0))
