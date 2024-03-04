@@ -18,3 +18,25 @@ sector-menu-button {
 sector-menu-button:active {
 	transform: scale(1.2);
 }
+
+sector-menu-main-button {
+	width: 29.90vmin;
+	height: 29.90vmin;
+	position: absolute;
+	right: 3.995vmax;
+	bottom: 7.00vmin;
+	background-image: '/pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture';
+	background-size: 100% 100%;
+}
+sector-menu-main-button:active {
+	transform: scale(1.2);
+}
+sector-menu-main-button-icon {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	background-size: 100% 100%;
+	width: 58.49%;
+	height: 58.49%;
+}

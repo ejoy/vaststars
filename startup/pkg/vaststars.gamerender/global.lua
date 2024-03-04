@@ -8,4 +8,5 @@ return {
         valid = false,
     },
     buildings = create_buildings(), -- { object-id = {}, ...}
+    selected_buildings = {}, -- {gameplay_eid = true, ...}
 }

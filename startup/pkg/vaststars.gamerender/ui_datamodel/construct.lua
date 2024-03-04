@@ -49,7 +49,7 @@ local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local settings_mb = mailbox:sub {"settings"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
-local bulk_opt_mb = mailbox:sub {"bulk_opt"}
+local bulk_select_mb = mailbox:sub {"bulk_select"}
 local bulk_opt_exit_mb = mailbox:sub {"bulk_opt_exit"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selected_boxes = ecs.require "selected_boxes"
@@ -552,7 +552,7 @@ function M.update(datamodel)
         dragdrop_delta = delta
     end
     if dragdrop_delta then
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pan_changed", dragdrop_delta)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_select.html", "gesture_pan_changed", dragdrop_delta)
         if builder then
             builder:touch_move(builder_datamodel, dragdrop_delta)
         end
@@ -572,7 +572,7 @@ function M.update(datamodel)
                 selected_obj = nil
             end
         elseif e.state == "ended" then
-            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pan_ended", dragdrop_delta)
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_select.html", "gesture_pan_ended", dragdrop_delta)
         end
 
         if builder then
@@ -602,11 +602,12 @@ function M.update(datamodel)
     end
 
     for _ in gesture_pinch:unpack() do
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pinch")
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_select.html", "gesture_pinch")
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
         if datamodel.status == "BULK_OPT" then
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_select.html", "gesture_tap")
             iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_tap")
             goto continue
         end
@@ -881,23 +882,21 @@ function M.update(datamodel)
         datamodel.recipe_list = get_recipe_list()
     end
 
-    for _ in bulk_opt_mb:unpack() do
+    for _ in bulk_select_mb:unpack() do
         idetail.unselected()
 
         datamodel.status = "BULK_OPT"
         toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), function()
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/bulk_opt.html"})
-            gameplay_core.world_update = false
+            iui.open({rml = "/pkg/vaststars.resources/ui/bulk_select.html"})
         end)
     end
 
     for _ in bulk_opt_exit_mb:unpack() do
+        iui.close("/pkg/vaststars.resources/ui/bulk_select.html")
         iui.close("/pkg/vaststars.resources/ui/bulk_opt.html")
         datamodel.status = "NORMAL"
-        toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
-            gameplay_core.world_update = true
-        end)
+        toggle_view("default", icamera_controller.get_screen_world_position("CENTER"))
     end
 
     iobject.flush()

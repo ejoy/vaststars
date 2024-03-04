@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: 100% "阿里巴巴普惠体";
+            }
+
+            @keyframes top-border-move {
+                0% {
+                    background-position-x: 0vmin;
+                }
+                100% {
+                    background-position-x: 5.16vmin;
+                }
+            }
+
+            @keyframes bottom-border-move {
+                0% {
+                    background-position-x: 0vmin;
+                }
+                100% {
+                    background-position-x: -5.16vmin;
+                }
+            }
+
+            @keyframes left-border-move {
+                0% {
+                    background-position-y: 0vmin;
+                }
+                100% {
+                    background-position-y: -5.16vmin;
+                }
+            }
+
+            @keyframes right-border-move {
+                0% {
+                    background-position-y: 0vmin;
+                }
+                100% {
+                    background-position-y: 5.16vmin;
+                }
+            }
+
+            top-border, bottom-border, left-border, right-border{
+                pointer-events: none;
+                background-size: 5.16vmin 5.16vmin;
+            }
+
+            top-border, bottom-border {
+                background: "/pkg/vaststars.resources/ui/textures/bulk-select/border-horizontal.texture";
+                background-repeat: repeat-x;
+            }
+
+            top-border {
+                animation: top-border-move 2s infinite linear;
+            }
+
+            bottom-border {
+                animation: bottom-border-move 2s infinite linear;
+            }
+
+            left-border, right-border {
+                background: "/pkg/vaststars.resources/ui/textures/bulk-select/border-vertical.texture";
+                background-repeat: repeat-y;
+            }
+
+            left-border {
+                animation: left-border-move 2s infinite linear;
+            }
+
+            right-border {
+                animation: right-border-move 2s infinite linear;
+            }
+
+            border-corner {
+                pointer-events: none;
+                width: 6.75vmin;
+                height: 6.75vmin;
+                background: "/pkg/vaststars.resources/ui/textures/bulk-select/border-corner.texture";
+                background-size: 100% 100%;
+            }
+
+            select-bg {
+                pointer-events: none;
+                width: 100%;
+                height: 20.54vmin;
+                background: "/pkg/vaststars.resources/ui/textures/bulk-select/select-bg.texture";
+                background-size: 100% 100%;
+            }
+        </style>
+        <style path = "/pkg/vaststars.resources/ui/common/sector_menu.css" />
+        <script type="text/x-lua" >
+            local ui_sys = import_package "vaststars.ui".ui_system
+            local start = ui_sys.createDataMode(window, ...)
+
+            local function _update_selecting_building()
+                local e = assert(document.getElementsByTagName("select-box")[1])
+                ui_sys.pub(window, {"update_selecting_building", e.clientLeft, e.clientTop, e.clientWidth, e.clientHeight})
+            end
+
+            function start.clickButton(...)
+                ui_sys.pub(window, {...})
+            end
+
+            function init()
+                _update_selecting_building()
+
+                window.onMessage(window.getName() .. "-message", function(param)
+                    if param.event == "update_selecting_building" then
+                        _update_selecting_building()
+                    end
+                end)
+            end
+        </script>
+    </head>
+    <body style = "pointer-events: none;" onload = "init()">
+        <div style = "pointer-events: none; width: 52%; height: 100%; align-items: flex-end; justify-content: center;">
+            <select-box style = "pointer-events: none; width: 70vmin; height: 70vmin;" >
+                <select-bg style = "position: absolute; top: 0; transform: rotate(180deg);" />
+                <select-bg style = "position: absolute; bottom: 0;" />
+                <top-border style = "width: 100%; height: 5.16vmin; top: -2vmin; position: absolute;" />
+                <bottom-border style = "width: 100%; height: 5.16vmin; bottom: -2vmin; position: absolute;" />
+                <left-border style = "width: 5.16vmin; height: 100%; left: -2vmin; position: absolute;" />
+                <right-border style = "width: 5.16vmin; height: 100%; right: -2vmin; position: absolute;" />
+                <border-corner style = "top: -2.5vmin; left: -2.5vmin; position: absolute;" />
+                <border-corner style = "top: -2.5vmin; right: -2.5vmin; position: absolute;" />
+                <border-corner style = "bottom: -2.5vmin; left: -2.5vmin; position: absolute;" />
+                <border-corner style = "bottom: -2.5vmin; right: -2.5vmin; position: absolute;" />
+            </select-box>
+        </div>
+
+        <sector-menu-main-button data-event-click = "clickButton('focus')">
+            <sector-menu-main-button-icon style = "background-image: '/pkg/vaststars.resources/ui/textures/bulk-select/focus.texture';" />
+        </sector-menu-main-button>
+
+        <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons">
+            <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
+                <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
+                    <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
+                </sector-menu-button>
+            </div>
+        </sector-menu-button-container>
+    </body>
+</html>

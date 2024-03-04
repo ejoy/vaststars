@@ -8,7 +8,6 @@ local FPS <const> = CONSTANT.FPS
 local bgfx = require "bgfx"
 local rhwi = import_package "ant.hwi"
 local font = import_package "ant.font"
-local irender = ecs.require "ant.render|render"
 local irq = ecs.require "ant.render|render_system.renderqueue"
 local iui = ecs.require "engine.system.ui_system"
 local iroadnet = ecs.require "engine.roadnet"

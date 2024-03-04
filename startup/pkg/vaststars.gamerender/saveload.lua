@@ -34,6 +34,7 @@ local inner_building = require "editor.inner_building"
 
 local function clean()
     global.buildings = create_buildings()
+    global.selected_buildings = {}
     objects:clear()
     inner_building:clear()
 end

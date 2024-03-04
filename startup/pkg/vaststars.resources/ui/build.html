@@ -1,23 +1,8 @@
 <html>
     <head>
         <style path = "/pkg/vaststars.resources/ui/common.css"/>
+        <style path = "/pkg/vaststars.resources/ui/common/sector_menu.css" />
         <style>
-            main-button {
-                width: 29.90vmin;
-                height: 29.90vmin;
-            }
-            main-button:active {
-                transform: scale(1.2);
-            }
-            main-button-icon {
-                position: absolute;
-                transform: translate(-50%, -50%);
-                top: 50%;
-                left: 50%;
-                background-size: 100% 100%;
-                width: 58.49%;
-                height: 58.49%;
-            }
             construct-box {
                 position: absolute;
                 left: 6.03vmax;
@@ -70,10 +55,10 @@
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;" onload="init()">
-        <main-button style = "position: absolute; left: 72.20vmax; top: 67.00vmin; background-image: '/pkg/vaststars.resources/ui/textures/construct/main-button-bg.texture'; background-size: 100% 100%;" data-event-click = "clickButton('click_main_button')">
-            <main-button-icon style = "background-image: '/pkg/vaststars.resources/ui/textures/build/main-button-unknown.texture';" data-if = "main_button_icon == ''" />
-            <main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" />
-        </main-button>
+        <sector-menu-main-button data-event-click = "clickButton('click_main_button')">
+            <sector-menu-main-button-icon style = "background-image: '/pkg/vaststars.resources/ui/textures/build/main-button-unknown.texture';" data-if = "main_button_icon == ''" />
+            <sector-menu-main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" />
+        </sector-menu-main-button>
 
         <construct-box>
             <construct-list>
