@@ -6,7 +6,7 @@ local iefk = ecs.require "ant.efk|efk"
 local eids = {}
 
 local efk_sys = ecs.system "efk"
-function efk_sys:final()
+function efk_sys:data_changed()
     for eid in pairs(eids) do
         local e = world:entity(eid, "efk?in light?in")
         if not iefk.is_playing(e) then
