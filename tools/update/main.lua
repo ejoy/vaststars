@@ -3,5 +3,5 @@ require "bootstrap"
 
 dofile "/engine/ltask.lua" {
     bootstrap = { "vaststars.update|boot" },
-    exclusive = { "timer", "subprocess" },
+    exclusive = { "timer" },
 }
