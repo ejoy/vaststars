@@ -2,8 +2,6 @@ local ltask = require "ltask"
 
 local M = {}
 
-local ServiceGame = ltask.queryservice "ant.window|window"
-
 local tconcat = table.concat
 local tinsert = table.insert
 local srep = string.rep
@@ -32,7 +30,10 @@ local function debugstring(root)
 	return _dump(root, "","")
 end
 
+local ServiceGame
+
 function M.get(path, q)
+	ServiceGame = ServiceGame or ltask.queryservice "ant.window|window"
 	local cmd, path = path:match "^([^/]+)/(.*)"
 	print(cmd, path)
 	local debug = ltask.call(ServiceGame, cmd, path, q)
