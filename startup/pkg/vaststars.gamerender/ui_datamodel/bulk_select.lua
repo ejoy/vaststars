@@ -10,7 +10,7 @@ local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local icoord = require "coord"
 local COORD_BOUNDARY <const> = icoord.boundary()
 
-local BUTTONS = {
+local BUTTONS <const> = {
     { command = "reset",    icon = "/pkg/vaststars.resources/ui/textures/bulk-select/reset.texture", },
     { command = "operate",  icon = "/pkg/vaststars.resources/ui/textures/bulk-select/operate.texture", },
     { command = "unselect", icon = "/pkg/vaststars.resources/ui/textures/bulk-select/unselect.texture", },
@@ -100,12 +100,12 @@ function M.update(datamodel)
             end
         end
 
-        local old = selecting
         local add, del = {}, {}
+        local selected_buildings = global.selected_buildings
 
-        for gameplay_eid in pairs(old) do
+        for gameplay_eid in pairs(selecting) do
             if t[gameplay_eid] == nil then
-                if global.selected_buildings[gameplay_eid] == nil then
+                if selected_buildings[gameplay_eid] == nil then
                     del[gameplay_eid] = true
                 end
                 selecting[gameplay_eid] = nil
@@ -113,7 +113,7 @@ function M.update(datamodel)
         end
 
         for gameplay_eid in pairs(t) do
-            if old[gameplay_eid] == nil then
+            if selecting[gameplay_eid] == nil and selected_buildings[gameplay_eid] == nil then
                 add[gameplay_eid] = true
                 selecting[gameplay_eid] = true
             end

@@ -182,3 +182,10 @@ function m:exit()
     itransfer.set_source_eid(nil)
     itransfer.set_dest_eid(nil)
 end
+
+function m:gameworld_prebuild()
+    local world = gameplay_core.get_world()
+    for e in world.ecs:select "REMOVED eid:in" do
+        global.selected_buildings[e.eid] = nil
+    end
+end

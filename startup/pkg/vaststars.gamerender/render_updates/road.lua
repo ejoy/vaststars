@@ -6,6 +6,8 @@ local N <const> = 0
 local E <const> = 1
 local S <const> = 2
 local W <const> = 3
+local CONSTANT <const> = require "gameplay.interface.constant"
+local DIRECTION <const> = CONSTANT.DIRECTION
 
 local gameplay_core = require "gameplay.core"
 local road_sys = ecs.system "road_system"
@@ -80,17 +82,11 @@ local function _update_road_shape(world, map, road_cache)
         if mask ~= m then
             map[coord] = m
 
-            local e = assert(world:fetch_entity(road_cache[coord]))
             local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(m)
-
-            igameplay_building.destroy(gameplay_core.get_world(), gameplay_core.get_entity(road_cache[coord]))
-            local eid = igameplay_building.create(gameplay_core.get_world(), prototype_name)({
-                x = e.building.x,
-                y = e.building.y,
-                dir = dir,
-                road = true,
-            })
-            road_cache[coord] = eid
+            local e = assert(world:fetch_entity(road_cache[coord]))
+            e.building.prototype = iprototype.queryByName(prototype_name).id
+            e.building.direction = DIRECTION[dir]
+            igameplay_building.dirty(gameplay_core.get_world(), "roadnet")
         end
     end
     return map

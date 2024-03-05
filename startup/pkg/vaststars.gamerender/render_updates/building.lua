@@ -99,6 +99,7 @@ function ibuilding.remove(x, y)
     igameplay_building.destroy(gameplay_world, gameplay_world:fetch_entity(building.eid)) -- TODO: use igameplay.destroy_entity instead
 
     BuildingCache[coord] = nil
+    return building.eid
 end
 
 function ibuilding.set(init)
@@ -122,6 +123,7 @@ function ibuilding.set(init)
         prototype = init.prototype_name,
         direction = init.direction,
     }
+    return eid
 end
 
 return ibuilding

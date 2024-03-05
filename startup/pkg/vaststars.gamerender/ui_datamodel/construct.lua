@@ -553,6 +553,7 @@ function M.update(datamodel)
     end
     if dragdrop_delta then
         iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_select.html", "gesture_pan_changed", dragdrop_delta)
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pan_changed", dragdrop_delta)
         if builder then
             builder:touch_move(builder_datamodel, dragdrop_delta)
         end
@@ -573,6 +574,7 @@ function M.update(datamodel)
             end
         elseif e.state == "ended" then
             iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_select.html", "gesture_pan_ended", dragdrop_delta)
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/bulk_opt.html", "gesture_pan_ended", dragdrop_delta)
         end
 
         if builder then
