@@ -2,7 +2,12 @@ local ltask = require "ltask"
 
 local M = {}
 
-local ServiceMgr = ltask.queryservice "ant.resource_manager|resource"
+local ServiceMgr
+
+local function getMgr()
+	ServiceMgr = ServiceMgr or ltask.queryservice "ant.resource_manager|resource"
+	return ServiceMgr
+end
 
 local html_header = [[
 <html>
@@ -87,7 +92,7 @@ end
 
 local function get_list()
 	local html = { html_header }
-	local tl = ltask.call(ServiceMgr, "texture_list")
+	local tl = ltask.call(getMgr(), "texture_list")
 	for _, item in ipairs(tl) do
 		format_texture(html, item)
 	end
@@ -100,7 +105,7 @@ local png_header = {
 }
 
 local function get_png(id)
-	local png = ltask.call(ServiceMgr, "texture_png", id)
+	local png = ltask.call(getMgr(), "texture_png", id)
 	if png then
 		return 200, png, png_header
 	else
