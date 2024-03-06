@@ -18,6 +18,7 @@ local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_butt
 local remove_mb = mailbox:sub {"remove"}
 local move_mb = mailbox:sub {"move"}
 local move_confirm_mb = mailbox:sub {"move_confirm"}
+local focus_mb = mailbox:sub {"focus"}
 local global = require "global"
 local teardown = ecs.require "editor.teardown"
 local gameplay_core = require "gameplay.core"
@@ -103,6 +104,34 @@ local function _close()
     igame_object.restart_world()
 end
 
+local function _focus(func)
+    local aabb = math3d.aabb()
+    for gameplay_eid in pairs(global.selected_buildings) do
+        local e = assert(gameplay_core.get_entity(gameplay_eid))
+        local x, y = e.building.x, e.building.y
+        local object = objects:coord(x, y)
+        if object then
+            local typeobject = iprototype.queryByName(object.prototype_name)
+            local w, h = iprototype.rotate_area(typeobject.area, object.dir)
+            local aabb_ = math3d.aabb(math3d.vector(x, 0, y), math3d.vector(x+w, 0, y+h))
+            aabb = math3d.aabb_merge(aabb, aabb_)
+        end
+        local v = ibuilding.get(x, y)
+        if v then
+            local typeobject = iprototype.queryByName(v.prototype)
+            local w, h = iprototype.rotate_area(typeobject.area, v.direction)
+            local aabb_ = math3d.aabb(math3d.vector(x, 0, y), math3d.vector(x+w, 0, y+h))
+            aabb = math3d.aabb_merge(aabb, aabb_)
+        end
+    end
+
+    local lt = math3d.array_index(aabb, 1)
+    local rb = math3d.array_index(aabb, 2)
+    local l, t = math3d.index(lt, 1, 3)
+    local r, b = math3d.index(rb, 1, 3)
+    icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(l, t, r - l, b - t)), func)
+end
+
 local M = {}
 function M.create()
     gameplay_core.world_update = false
@@ -146,31 +175,7 @@ function M.update(datamodel)
         update_buildings_state(global.selected_buildings, "translucent", SPRITE_COLOR.MOVE_SELF, RENDER_LAYER.TRANSLUCENT_BUILDING)
         iroadnet:flush()
 
-        local aabb = math3d.aabb()
-        for gameplay_eid in pairs(global.selected_buildings) do
-            local e = assert(gameplay_core.get_entity(gameplay_eid))
-            local x, y = e.building.x, e.building.y
-            local object = objects:coord(x, y)
-            if object then
-                local typeobject = iprototype.queryByName(object.prototype_name)
-                local w, h = iprototype.rotate_area(typeobject.area, object.dir)
-                local aabb_ = math3d.aabb(math3d.vector(x, 0, y), math3d.vector(x+w, 0, y+h))
-                aabb = math3d.aabb_merge(aabb, aabb_)
-            end
-            local v = ibuilding.get(x, y)
-            if v then
-                local typeobject = iprototype.queryByName(v.prototype)
-                local w, h = iprototype.rotate_area(typeobject.area, v.direction)
-                local aabb_ = math3d.aabb(math3d.vector(x, 0, y), math3d.vector(x+w, 0, y+h))
-                aabb = math3d.aabb_merge(aabb, aabb_)
-            end
-        end
-
-        local lt = math3d.array_index(aabb, 1)
-        local rb = math3d.array_index(aabb, 2)
-        local l, t = math3d.index(lt, 1, 3)
-        local r, b = math3d.index(rb, 1, 3)
-        icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(l, t, r - l, b - t)), function()
+        _focus(function()
             for gameplay_eid in pairs(global.selected_buildings) do
                 local e = assert(gameplay_core.get_entity(gameplay_eid))
                 local x, y = e.building.x, e.building.y
@@ -271,6 +276,10 @@ function M.update(datamodel)
         datamodel.move_confirm = false
 
         _close()
+    end
+
+    for _ in focus_mb:unpack() do
+        _focus()
     end
 end
 
