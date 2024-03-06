@@ -13,6 +13,17 @@ local iom       = ecs.require "ant.objcontroller|obj_motion"
 local irl       = ecs.require "ant.render|render_layer.render_layer"
 local imaterial = ecs.require "ant.asset|material"
 local iupdate   = ecs.require "update_system"
+local message   = ecs.require "message_sub"
+
+message:sub("set_color", function (instance, color)
+    for _, eid in ipairs(instance.tag['*']) do
+        local e <close> = world:entity(eid, "material?in")
+        if e and e.material then
+            imaterial.set_property(e, "u_emissive_factor", color)
+            imaterial.set_property(e, "u_basecolor_factor", color)
+        end
+    end
+end)
 
 local function create_object(prefab, srt)
     return world:create_instance {
@@ -25,24 +36,6 @@ local function create_object(prefab, srt)
                 local e <close> = world:entity(eid, "render_object?in")
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
-                end
-            end
-        end,
-        on_message = function (self, name, ...)
-            if name == "set_color" then
-                local color = ...
-                for _, eid in ipairs(self.tag['*']) do
-                    local e <close> = world:entity(eid, "material?in")
-                    if e and e.material then
-                        imaterial.set_property(e, "u_emissive_factor", color)
-                        imaterial.set_property(e, "u_basecolor_factor", color)
-                    end
-                end
-            elseif name == "obj_motion" then
-                local method, s, r, t = ...
-                local root <close> = world:entity(self.tag['*'][1])
-                if root then
-                    iom[method](root, s, r, t)
                 end
             end
         end
@@ -113,11 +106,11 @@ function mt:set_position(center)
     self.center.v = center
     for idx, o in pairs(self.corners) do
         local position = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center))
-        world:instance_message(o, "obj_motion", "set_position", position)
+        message:pub("obj_motion", o, "set_position", position)
     end
     for idx, o in pairs(self.lines) do
         local position = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx]))
-        world:instance_message(o, "obj_motion", "set_position", position)
+        message:pub("obj_motion", o, "set_position", position)
     end
 end
 
@@ -145,7 +138,7 @@ function mt:set_wh(w, h)
             t = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center)),
         })
         if mc.NULL ~= self.color then
-            world:instance_message(self.corners[idx], "set_color", self.color)
+            message:pub("set_color", self.corners[idx], self.color)
         end
     end
 
@@ -158,7 +151,7 @@ function mt:set_wh(w, h)
                     t = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], self.line_offset, self.center), LINE_OFFSET[idx])),
                 })
                 if mc.NULL ~= self.color then
-                    world:instance_message(self.lines[idx], "set_color", self.color)
+                    message:pub("set_color", self.lines[idx], self.color)
                 end
             end
         end
@@ -168,10 +161,10 @@ end
 function mt:set_color(color)
     self.color.v = math3d.vector(color)
     for _, o in pairs(self.corners) do
-        world:instance_message(o, "set_color", math3d.live(color))
+        message:pub("set_color", o , math3d.live(color))
     end
     for _, o in pairs(self.lines) do
-        world:instance_message(o, "set_color", math3d.live(color))
+        message:pub("set_color", o, math3d.live(color))
     end
 end
 
@@ -214,7 +207,7 @@ return function(prefabs, center, color, w, h)
             t = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], M.corner_offset, M.center)),
         })
         if mc.NULL ~= color then
-            world:instance_message(M.corners[idx], "set_color", color)
+            message:pub("set_color", M.corners[idx], color)
         end
     end
 
@@ -227,7 +220,7 @@ return function(prefabs, center, color, w, h)
                     t = math3d.live(math3d.add(math3d.muladd(LINE_DIRECTIONS[idx], M.line_offset, M.center), LINE_OFFSET[idx])),
                 })
                 if mc.NULL ~= color then
-                    world:instance_message(M.lines[idx], "set_color", color)
+                    message:pub("set_color", M.lines[idx], color)
                 end
             end
         end

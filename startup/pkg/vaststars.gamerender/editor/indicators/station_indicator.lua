@@ -18,7 +18,7 @@ function mt:remove()
 end
 
 function mt:set_srt(s, r, t)
-    world:instance_message(self.arrow, "obj_motion", "set_srt", math3d.live(s), math3d.live(r), math3d.live(t))
+    message:pub("obj_motion", self.arrow, "set_srt", math3d.live(s), math3d.live(r), math3d.live(t))
 end
 
 function mt:set_state(state)
@@ -48,12 +48,6 @@ local function createPrefabInst(prefab, position)
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.ROAD_ENTRANCE_ARROW)
                 end
-            end
-        end,
-        on_message = function (self, msg, method, ...)
-            if msg == "obj_motion" then
-                local root <close> = world:entity(self.tag['*'][1])
-                iom[method](root, ...)
             end
         end
     }

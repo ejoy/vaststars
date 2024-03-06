@@ -107,35 +107,6 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
     end
 end
 
-local hitch_events = {}
-hitch_events["create_group"] = function(self, group)
-    local e <close> = world:entity(self.tag["hitch"][1])
-    w:extend(e, "hitch:update hitch_create?out")
-    e.hitch.group = group
-    e.hitch_create = true
-end
-hitch_events["update_group"] = function(self, group)
-    local e <close> = world:entity(self.tag["hitch"][1])
-    w:extend(e, "hitch:update hitch_update?out")
-    e.hitch.group = group
-    e.hitch_update = true
-end
-hitch_events["obj_motion"] = function(self, method, ...)
-    local e <close> = world:entity(self.tag["hitch"][1])
-    iom[method](e, ...)
-end
-hitch_events["modifier"] = function(self, ...)
-    imodifier.start(imodifier.create_bone_modifier(self.tag["hitch"][1], 0, "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab", "Bone"), ...)
-end
-hitch_events["attach"] = function(self, slot_name, instance)
-    local eid = assert(self.tag[slot_name][1])
-    world:instance_set_parent(instance, eid)
-end
-
-local function _on_message(self, event, ...)
-    assert(hitch_events[event])(self, ...)
-end
-
 local function set_srt(e, srt)
     if srt.s then
         iom.set_scale(e, srt.s)
@@ -159,7 +130,6 @@ init = {
     emissive_color,
     render_layer,
     on_ready,
-    on_message,
 }
 --]]
 function igame_object.create(init)
@@ -172,14 +142,14 @@ function igame_object.create(init)
         prefab = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1hitch.prefab"),
         parent = init.parent,
         on_ready = function(self)
-            local root <close> = world:entity(self.tag["hitch"][1])
+            local root <close> = world:entity(self.tag["*"][1])
             set_srt(root, srt)
-            assert(hitch_events["create_group"])(self, hitch_group_id)
+            message:pub("create_group", self, hitch_group_id)
             if init.on_ready then
                 init.on_ready(self)
             end
         end,
-        on_message = init.on_message or _on_message
+        on_message = init.on_message
     }
 
     local function remove(self)
@@ -205,17 +175,17 @@ function igame_object.create(init)
         )
 
         if existed then
-            world:instance_message(self.hitch_instance, "update_group", hitch_group_id)
+            message:pub("update_group", self.hitch_instance, hitch_group_id)
         else
-            world:instance_message(self.hitch_instance, "create_group", hitch_group_id)
+            message:pub("create_group", self.hitch_instance, hitch_group_id)
         end
         self.hitch_group_id = hitch_group_id
     end
-    local function send(self, ...)
-        world:instance_message(self.hitch_instance, ...)
+    local function send(self, name, ...)
+        message:pub(name, self.hitch_instance, ...)
     end
     local function modifier(self, method, ...)
-        world:instance_message(self.hitch_instance, "modifier", method, ...)
+        message:pub("modifier", self.hitch_instance, method, ...)
     end
     local function get_slot_position(self, slot_name)
         assert(self.hitch_instance)
