@@ -9,6 +9,7 @@ local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 local imotion = ecs.require "engine.motion"
 local itl = ecs.require "ant.timeline|timeline"
+local message = ecs.require "message_sub"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
@@ -67,16 +68,7 @@ local function create(prefab, s, r, t)
                     end
                 end
             end
-        end,
-        on_message = function(self, msg, visible)
-            assert(msg == "show")
-            for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "visible_state?in render_object?in")
-                if e.visible_state then
-                    ivs.set_state(e, "main_view", visible)
-                end
-            end
-        end,
+        end
     }
     lorry_obj:send("attach", "arrow", arrow_instance)
 
@@ -97,7 +89,7 @@ local function create(prefab, s, r, t)
         end
     end
     function outer:show_arrow(b)
-        world:instance_message(arrow_instance, "show", b)
+        message:pub("show", arrow_instance, b)
     end
     function outer:set_item(item_classid, item_amount)
         if self.item_classid == item_classid and self.item_amount == item_amount then

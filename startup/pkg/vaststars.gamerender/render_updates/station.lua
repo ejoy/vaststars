@@ -11,19 +11,9 @@ local iprototype = require "gameplay.interface.prototype"
 local station_sys = ecs.system "station_system"
 local gameplay_core = require "gameplay.core"
 local igroup = ecs.require "group"
-local ivs = ecs.require "ant.render|visible_state"
 local vsobject_manager = ecs.require "vsobject_manager"
 local igame_object = ecs.require "engine.game_object"
-
-local item_events = {}
-item_events["show"] = function (self, show)
-    for _, eid in ipairs(self.tag["*"]) do
-        local e <close> = world:entity(eid, "visible_state?in")
-        if e.visible_state then
-            ivs.set_state(e, "main_view", show)
-        end
-    end
-end
+local message = ecs.require "message_sub"
 
 local function _rebuild(gameplay_world, e, game_object)
     local items = {}
@@ -43,13 +33,9 @@ local function _rebuild(gameplay_world, e, game_object)
             local item_object = igame_object.create {
                 prefab = prefab,
                 group_id = igroup.id(e.building.x, e.building.y),
-                on_message = function (self, event, ...)
-                    assert(item_events[event], "invalid message")
-                    item_events[event](self, ...)
-                end,
                 on_ready = function (self)
                     if show then
-                        item_events["show"](self, false)
+                        message:pub("show", self, false)
                     end
                 end
             }
@@ -84,7 +70,7 @@ function mt:update(gameplay_world, e)
         local v = assert(self.items[idx])
         local show = slot.amount <= 0
         if v.show ~= show then
-            v.item_object:send("show", show)
+            message:pub("show", v.item_object.hitch_instance, show)
             v.show = show
         end
     end

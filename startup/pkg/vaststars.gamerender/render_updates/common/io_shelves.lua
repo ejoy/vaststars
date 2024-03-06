@@ -9,25 +9,15 @@ local PREFABS <const> = {
 local BUILDING_IO_SLOTS <const> = ecs.require "vaststars.prototype|building_io_slots"
 
 local math3d = require "math3d"
-local ivs = ecs.require "ant.render|visible_state"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local igroup = ecs.require "group"
 local igame_object = ecs.require "engine.game_object"
+local message = ecs.require "message_sub"
 
 local mt = {}
 mt.__index = mt
-
-local item_events = {}
-item_events["show"] = function (self, show)
-    for _, eid in ipairs(self.tag["*"]) do
-        local e <close> = world:entity(eid, "visible_state?in")
-        if e.visible_state then
-            ivs.set_state(e, "main_view", show)
-        end
-    end
-end
 
 local function create_item(group_id, item, amount)
     local typeobject_item = iprototype.queryById(item)
@@ -36,13 +26,9 @@ local function create_item(group_id, item, amount)
     return igame_object.create {
         prefab = prefab,
         group_id = group_id,
-        on_message = function (self, event, ...)
-            assert(item_events[event], "invalid message")
-            item_events[event](self, ...)
-        end,
         on_ready = function (self)
             if amount <= 0 then
-                item_events["show"](self, false)
+                message:pub("show", self, false)
             end
         end
     }
@@ -137,7 +123,7 @@ function mt:update_item(idx, amount)
 
     local show = amount > 0
     if self._item_shows[idx] ~= show then
-        self._items[idx]:send("show", show)
+        message:pub("show", self._items[idx].hitch_instance, show)
         self._item_shows[idx] = show
     end
 end
