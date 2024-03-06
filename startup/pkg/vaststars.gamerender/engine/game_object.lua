@@ -148,8 +148,7 @@ function igame_object.create(init)
             if init.on_ready then
                 init.on_ready(self)
             end
-        end,
-        on_message = init.on_message
+        end
     }
 
     local function remove(self)
