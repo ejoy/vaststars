@@ -4,12 +4,12 @@ local w = world.w
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
-local game_object_event = ecs.require "engine.game_object_event"
 local iom               = ecs.require "ant.objcontroller|obj_motion"
 local irl               = ecs.require "ant.render|render_layer.render_layer"
 local ig                = ecs.require "ant.group|group"
 local imodifier         = ecs.require "ant.modifier|modifier"
 local itl               = ecs.require "ant.timeline|timeline"
+local message           = ecs.require "message_sub"
 
 local _calc_hash ; do
     local function get_hash_func(max_value)
@@ -81,21 +81,13 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
                         e.loop_timeline = true
                     end
                 end
-            end,
-            on_message = function (self, cmd, ...)
-                local event = game_object_event[cmd]
-                if event then
-                    event(self, ...)
-                else
-                    log.error(("game_object unknown event `%s`"):format(cmd))
-                end
             end
         }
         if color then
-            world:instance_message(inst, "material", "set_property", "u_basecolor_factor", color)
+            message:pub("material", inst, "set_property", "u_basecolor_factor", color)
         end
         if emissive_color then
-            world:instance_message(inst, "material", "set_property", "u_emissive_factor", emissive_color)
+            message:pub("material", inst, "set_property", "u_emissive_factor", emissive_color)
         end
 
         cache[hash] = {instance = inst, hitch_group_id = hitch_group_id}
@@ -104,13 +96,13 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
 
     function _stop_world()
         for _, v in pairs(cache) do
-            world:instance_message(v.instance, "stop_world")
+            message:pub("stop_world", v.instance)
         end
     end
 
     function _restart_world()
         for _, v in pairs(cache) do
-            world:instance_message(v.instance, "restart_world")
+            message:pub("restart_world", v.instance)
         end
     end
 end

@@ -6,6 +6,7 @@ local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irl = ecs.require "ant.render|render_layer.render_layer"
+local message = ecs.require "message_sub"
 
 local ARROW_VALID <const> = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local ARROW_INVALID <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
@@ -27,7 +28,7 @@ function mt:set_state(state)
     else
         arrow_color = ARROW_INVALID
     end
-    world:instance_message(self.arrow, "material", "set_property", "u_basecolor_factor", arrow_color)
+    message:pub("material", self.arrow, "set_property", "u_basecolor_factor", arrow_color)
 end
 
 local imaterial = ecs.require "ant.asset|material"
@@ -54,14 +55,6 @@ local function createPrefabInst(prefab, position)
                 local root <close> = world:entity(self.tag['*'][1])
                 iom[method](root, ...)
             end
-            if msg == "material" then
-                for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "material?in")
-                    if e.material then
-                        imaterial[method](e, ...)
-                    end
-                end
-            end
         end
     }
 end
@@ -77,7 +70,7 @@ return function(position, state)
     local M = {}
 
     M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|translucent.prefab", position)
-    world:instance_message(M.arrow, "material", "set_property", "u_basecolor_factor", arrow_color)
+    message:pub("material", M.arrow, "set_property", "u_basecolor_factor", arrow_color)
 
     return setmetatable(M, mt)
 end
