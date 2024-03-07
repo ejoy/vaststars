@@ -625,7 +625,7 @@ local entities = {{
   x = 107,
   y = 129
 }, {
-  dir = "S",
+  dir = "N",
   items = { { "碎石", 2 } },
   prototype_name = "特殊采矿机",
   recipe = "碎石挖掘",
