@@ -1246,7 +1246,7 @@ prototype "机械研究" {
   desc = "对可在火星表面作业的机械装置进行改进和开发",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"机械科技包T1"},
+    unlock_recipe = {"机械科技包1"},
     unlock_item = {"机械科技包"},
   },
   prerequisites = {"电磁学1"},

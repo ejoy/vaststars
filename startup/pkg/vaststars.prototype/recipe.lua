@@ -2828,7 +2828,7 @@ prototype "机械科技包1" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
     ingredients = {
         {"电动机I", 1},
-        {"塑料", 3},
+        {"铁齿轮", 3},
     },
     results = {
         {"机械科技包", 1},
