@@ -13,6 +13,7 @@ local imessage  = ecs.require "message_sub"
 local imaterial = ecs.require "ant.asset|material"
 local iefk      = ecs.require "ant.efk|efk"
 local iplayback = ecs.require "ant.animation|playback"
+local ihitch    = ecs.require "ant.render|hitch.hitch"
 
 imessage:sub("game_object|stop_world", function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
@@ -83,8 +84,10 @@ local _create_prefab, _get_hitch_group_id, _stop_world, _restart_world ; do
                 local exclude = self.tag["no_color_factors"] or {}
 
                 for _, eid in ipairs(self.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update dynamic_mesh?out")
-                    e.dynamic_mesh = dynamic_mesh
+                    local e <close> = world:entity(eid, "render_object?update dynamic_mesh?out draw_indirect?in")
+                    if e.draw_indirect then
+                        e.draw_indirect.cid = ihitch.create_compute_entity() 
+                    end
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
                     end
