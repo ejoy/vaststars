@@ -1228,7 +1228,7 @@ prototype "电磁学1" {
   desc = "研究电能转换成机械能的基础供能装置",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"电动机T1"},
+    unlock_recipe = {"电动机1"},
     unlock_item = {"电动机I"},
   },
   prerequisites = {"有机化学1"},
@@ -1246,7 +1246,7 @@ prototype "机械研究" {
   desc = "对可在火星表面作业的机械装置进行改进和开发",
   type = { "tech" },
   effects = {
-    unlock_recipe = {"机械科技包T1"},
+    unlock_recipe = {"机械科技包1"},
     unlock_item = {"机械科技包"},
   },
   prerequisites = {"电磁学1"},

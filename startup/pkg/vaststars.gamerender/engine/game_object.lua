@@ -221,7 +221,7 @@ function igame_object.create(init)
     }
 
     local function remove(self)
-        world:remove_instance(self.hitch_instance)
+        imessage:pub("remove", self.hitch_instance)
     end
 
     local function update(self, t)
@@ -233,7 +233,7 @@ function igame_object.create(init)
             end
         end
 
-        local hitch_group_id, existed = _get_hitch_group_id(
+        local hitch_group_id, ready = _get_hitch_group_id(
             self.data.prefab,
             self.data.color,
             self.data.emissive_color,
@@ -241,7 +241,7 @@ function igame_object.create(init)
             self.data.dynamic
         )
 
-        if existed then
+        if ready then
             imessage:pub("hitch_instance|update_group", self.hitch_instance, hitch_group_id)
         else
             imessage:pub("hitch_instance|create_group", self.hitch_instance, hitch_group_id)

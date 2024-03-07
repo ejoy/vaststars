@@ -426,26 +426,24 @@ prototype "橡胶" {
     description = "使用丁二烯合成橡胶",
 }
 
-prototype "电动机1" {
+prototype "电动机T1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
-    recipe_order =  52,
+    recipe_order =  51,
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/electric-motor.texture",
     ingredients = {
-        -- {"铁棒", 1},
-        -- {"铁丝", 2},
         {"石砖", 2},
         {"铁齿轮", 2},
     },
     results = {
         {"电动机I", 1},
     },
-    time = "6s",
+    time = "8s",
     description = "铁制品和塑料打造初级电动机",
 }
 
-prototype "电动机T1" {
+prototype "电动机1" {
     type = { "recipe" },
     recipe_craft_category = "器件中型制造",
     recipe_category =  "器件",
@@ -458,7 +456,7 @@ prototype "电动机T1" {
     results = {
         {"电动机I", 1},
     },
-    time = "8s",
+    time = "6s",
     description = "铁制品和塑料打造初级电动机",
 }
 
@@ -2828,23 +2826,6 @@ prototype "机械科技包1" {
     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
     ingredients = {
         {"电动机I", 1},
-        {"塑料", 3},
-    },
-    results = {
-        {"机械科技包", 1},
-    },
-    time = "15s",
-    description = "机械原料制造机械科技包",
-}
-
-prototype "机械科技包T1" {
-    type = { "recipe" },
-    recipe_craft_category = "器件中型制造",
-    --recipe_category =  "器件",
-    recipe_order =  205,
-    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
-    ingredients = {
-        {"电动机I", 1},
         {"铁齿轮", 3},
     },
     results = {
@@ -2853,6 +2834,23 @@ prototype "机械科技包T1" {
     time = "15s",
     description = "机械原料制造机械科技包",
 }
+
+-- prototype "机械科技包T1" {
+--     type = { "recipe" },
+--     recipe_craft_category = "器件中型制造",
+--     --recipe_category =  "器件",
+--     recipe_order =  205,
+--     recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/mechanical-pack-1.texture",
+--     ingredients = {
+--         {"电动机I", 1},
+--         {"铁齿轮", 3},
+--     },
+--     results = {
+--         {"机械科技包", 1},
+--     },
+--     time = "15s",
+--     description = "机械原料制造机械科技包",
+-- }
 
 
 prototype "机械科技包2" {

@@ -444,13 +444,6 @@ local function confirm(self, datamodel)
     objects:set(object, "CONSTRUCTED")
     objects:coord_update(object)
 
-    local building = global.buildings[object.id]
-    if building then
-        for _, v in pairs(building) do
-            v:on_position_change(object.srt, object.dir, gameplay_core.get_world(), e, _get_game_object(self.move_object_id))
-        end
-    end
-
     if self.road_entrance then
         self.road_entrance:remove()
         self.road_entrance = nil

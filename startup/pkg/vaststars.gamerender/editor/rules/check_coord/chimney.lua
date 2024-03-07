@@ -17,7 +17,7 @@ return function (x, y, dir, typeobject, exclude_coords)
         local dx, dy, dir = ifluidbox.rotate(conn.position, DIRECTION[dir], typeobject.area)
         dx, dy = iprototype.move_coord(x + dx, y + dy, dir, 1)
         local fluid = ifluidbox.get(dx, dy, iprototype.reverse_dir(dir))
-        if fluid then
+        if fluid and fluid ~= 0 then
             local typeobject = assert(iprototype.queryById(fluid))
             if not t[typeobject.name] then
                 return false, "chimneys cannot emit liquids"
