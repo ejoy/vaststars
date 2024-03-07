@@ -16,8 +16,8 @@ imessage:sub("show", function(instance, visible)
     end
 end)
 
-imessage:sub("material", function(self, method, ...)
-    for _, eid in ipairs(self.tag['*']) do
+imessage:sub("material", function(instance, method, ...)
+    for _, eid in ipairs(instance.tag['*']) do
         local e <close> = world:entity(eid, "material?in")
         if e.material then
             imaterial[method](e, ...)
@@ -25,11 +25,15 @@ imessage:sub("material", function(self, method, ...)
     end
 end)
 
-imessage:sub("obj_motion", function(self, method, ...)
-    for _, eid in ipairs(self.noparent) do
+imessage:sub("obj_motion", function(instance, method, ...)
+    for _, eid in ipairs(instance.noparent) do
         local e <close> = world:entity(eid)
         iom[method](e, ...)
     end
+end)
+
+imessage:sub("remove", function(instance)
+    world:remove_instance(instance)
 end)
 
 return imessage

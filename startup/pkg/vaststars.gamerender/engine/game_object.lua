@@ -218,7 +218,7 @@ function igame_object.create(init)
     }
 
     local function remove(self)
-        world:remove_instance(self.hitch_instance)
+        imessage:pub("remove", self.hitch_instance)
     end
 
     local function update(self, t)

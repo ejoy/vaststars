@@ -20,7 +20,6 @@ local daynight_update; do
         local total_sec = DAYNIGHT_DEBUG
         local total_ms = total_sec * 1000
 
-        local ltask = require "ltask"
         local function gettime()
             local _, now = itimer.now()
             return now * 10
