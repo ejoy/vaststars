@@ -1286,7 +1286,7 @@ local entities = { {
 }, {
   dir = "N",
   prototype_name = "组装机I",
-  recipe = "电动机1",
+  recipe = "电动机T1",
   x = 102,
   y = 130
 }, {

@@ -423,7 +423,7 @@ local entities = { {
   dir = "N",
   items = { { "铁齿轮", 4 }, { "塑料", 0 }, { "电动机I", 0 } },
   prototype_name = "组装机I",
-  recipe = "电动机T1",
+  recipe = "电动机1",
   x = 117,
   y = 139
 }, {
@@ -8783,14 +8783,14 @@ local entities = { {
   dir = "N",
   items = { { "铁齿轮", 4 }, { "塑料", 2 }, { "电动机I", 2 } },
   prototype_name = "组装机I",
-  recipe = "电动机T1",
+  recipe = "电动机1",
   x = 142,
   y = 121
 }, {
   dir = "N",
   items = { { "铁齿轮", 4 }, { "塑料", 2 }, { "电动机I", 2 } },
   prototype_name = "组装机I",
-  recipe = "电动机T1",
+  recipe = "电动机1",
   x = 146,
   y = 121
 }, {
@@ -9678,7 +9678,7 @@ local entities = { {
   dir = "N",
   items = { { "铁齿轮", 4 }, { "塑料", 2 }, { "电动机I", 2 } },
   prototype_name = "组装机I",
-  recipe = "电动机T1",
+  recipe = "电动机1",
   x = 129,
   y = 170
 }, {

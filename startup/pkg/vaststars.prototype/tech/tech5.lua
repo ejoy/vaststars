@@ -847,7 +847,7 @@ local prototype = gameplay.register.prototype
     desc = "研究电动机机械装置",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"电动机1"},
+      unlock_recipe = {"电动机T1"},
       unlock_item = {"电动机I"},
     },
     prerequisites = {"铁齿轮量产"},
