@@ -2,7 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local now = require "engine.time".now
+local itimer = ecs.require "ant.timer|timer_system"
+local now = itimer.now
+
 return function(interval_ms, func, default)
     local last_update_time
     return function(...)

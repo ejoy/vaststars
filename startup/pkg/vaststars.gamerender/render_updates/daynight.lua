@@ -6,6 +6,7 @@ local DAYNIGHT_DEBUG <const> = ecs.require "game_settings".daynight
 local DayTick <const> = require("gameplay.interface.constant").DayTick
 local idn = ecs.require "ant.daynight|daynight"
 local gameplay_core = require "gameplay.core"
+local itimer = ecs.require "ant.timer|timer_system"
 
 local daynight_sys = ecs.system "daynight_system"
 
@@ -21,7 +22,7 @@ local daynight_update; do
 
         local ltask = require "ltask"
         local function gettime()
-            local _, now = ltask.now()
+            local _, now = itimer.now()
             return now * 10
         end
 
