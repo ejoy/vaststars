@@ -9,7 +9,7 @@ local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 local imotion = ecs.require "engine.motion"
 local itl = ecs.require "ant.timeline|timeline"
-local message = ecs.require "message_sub"
+local imessage = ecs.require "message_sub"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
@@ -68,9 +68,9 @@ local function create(prefab, s, r, t)
                     end
                 end
             end
-        end
+        end,
     }
-    lorry_obj:send("attach", "arrow", arrow_instance)
+    lorry_obj:send("hitch_instance|attach", "arrow", arrow_instance)
 
     function outer:work()
         local model = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1work.prefab")
@@ -89,7 +89,7 @@ local function create(prefab, s, r, t)
         end
     end
     function outer:show_arrow(b)
-        message:pub("show", arrow_instance, b)
+        imessage:pub("show", arrow_instance, b)
     end
     function outer:set_item(item_classid, item_amount)
         if self.item_classid == item_classid and self.item_amount == item_amount then
@@ -124,7 +124,7 @@ local function create(prefab, s, r, t)
                 end
             end,
         }
-        lorry_obj:send("attach", "item", self.item.hitch_instance)
+        lorry_obj:send("hitch_instance|attach", "item", self.item.hitch_instance)
     end
     return outer
 end

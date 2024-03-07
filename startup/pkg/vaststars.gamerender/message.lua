@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local m = ecs.system "message_system"
-
 local evInstanceMessage = world:sub { "instance-message" }
 
 local InstanceEvent = {}
@@ -12,12 +11,9 @@ function m:data_changed()
     for msg in evInstanceMessage:each() do
         local name = msg[2]
         local func = InstanceEvent[name]
-        if func then
-            func(table.unpack(msg, 3))
-        end
+        func(table.unpack(msg, 3))
     end
 end
-
 
 local api = {}
 
@@ -27,6 +23,7 @@ function api:sub(name, func)
 end
 
 function api:pub(name, instance, ...)
+    assert(InstanceEvent[name])
     world:pub { "instance-message", name, instance, ... }
 end
 

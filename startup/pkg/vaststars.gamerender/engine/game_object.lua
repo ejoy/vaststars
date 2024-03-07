@@ -4,12 +4,39 @@ local w = world.w
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
-local iom               = ecs.require "ant.objcontroller|obj_motion"
-local irl               = ecs.require "ant.render|render_layer.render_layer"
-local ig                = ecs.require "ant.group|group"
-local imodifier         = ecs.require "ant.modifier|modifier"
-local itl               = ecs.require "ant.timeline|timeline"
-local message           = ecs.require "message_sub"
+local iom       = ecs.require "ant.objcontroller|obj_motion"
+local irl       = ecs.require "ant.render|render_layer.render_layer"
+local ig        = ecs.require "ant.group|group"
+local imodifier = ecs.require "ant.modifier|modifier"
+local itl       = ecs.require "ant.timeline|timeline"
+local imessage  = ecs.require "message_sub"
+local imaterial = ecs.require "ant.asset|material"
+local iefk      = ecs.require "ant.efk|efk"
+local iplayback = ecs.require "ant.animation|playback"
+
+imessage:sub("game_object|stop_world", function(prefab)
+    for _, eid in ipairs(prefab.tag["*"]) do
+        local e <close> = world:entity(eid, "animation?in efk?in")
+        if e.animation then
+            iplayback.set_play_all(e, false)
+        end
+        if e.efk then
+            iefk.pause(e, true)
+        end
+    end
+end)
+
+imessage:sub("game_object|restart_world", function(prefab)
+    for _, eid in ipairs(prefab.tag["*"]) do
+        local e <close> = world:entity(eid, "animation?in efk?in")
+        if e.animation then
+            iplayback.set_play_all(e, true)
+        end
+        if e.efk then
+            iefk.pause(e, false)
+        end
+    end
+end)
 
 local _calc_hash ; do
     local function get_hash_func(max_value)
@@ -29,34 +56,23 @@ local _calc_hash ; do
 
     local prefab_hash = get_hash_func(0xff)
     local color_hash = get_hash_func(0xf)
-    local work_status_hash = get_hash_func(0xf)
     local emissive_color_hash = get_hash_func(0xf)
     local render_layer_hash = get_hash_func(0xf)
 
-    function _calc_hash(prefab, color, work_status, emissive_color, render_layer)
+    function _calc_hash(prefab, color, emissive_color, render_layer)
         local h1 = prefab_hash(prefab or 0) -- 8 bits
         local h2 = color_hash(color or 0) -- 4 bits
-        local h3 = work_status_hash(work_status or 0) -- 1 bits
-        local h4 = emissive_color_hash(emissive_color or 0) -- 4 bits
-        local h5 = render_layer_hash(render_layer or 0) -- 4 bits
-        return h1 | (h2 << 8) | (h3 << 12) | (h4 << 13) | (h5 << 17)
+        local h3 = emissive_color_hash(emissive_color or 0) -- 4 bits
+        local h4 = render_layer_hash(render_layer or 0) -- 4 bits
+        return h1 | (h2 << 8) | (h3 << 12) | (h4 << 16)
     end
 end
 
-local _get_hitch_group_id, _stop_world, _restart_world ; do
+local _create_prefab, _get_hitch_group_id, _stop_world, _restart_world ; do
     local cache = {}
     local next_hitch_group = 1
 
-    function _get_hitch_group_id(prefab, color, work_status, emissive_color, render_layer, dynamic_mesh)
-        if not dynamic_mesh then
-            prefab = prefab:gsub("(%.[^%.]+)$", "_di%1")
-        end
-        render_layer = render_layer or RENDER_LAYER.BUILDING
-        local hash = _calc_hash(prefab, tostring(color), work_status, tostring(emissive_color), render_layer)
-        if cache[hash] then
-            return assert(cache[hash].hitch_group_id), true
-        end
-
+    function _create_prefab(prefab, color, emissive_color, render_layer, dynamic_mesh)
         local hitch_group_id = ig.register("HITCH_GROUP_" .. next_hitch_group)
         next_hitch_group = next_hitch_group + 1
 
@@ -64,11 +80,25 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
             prefab = prefab,
             group = hitch_group_id,
             on_ready = function (self)
+                local exclude = self.tag["no_color_factors"] or {}
+
                 for _, eid in ipairs(self.tag["*"]) do
                     local e <close> = world:entity(eid, "render_object?update dynamic_mesh?out")
                     e.dynamic_mesh = dynamic_mesh
                     if render_layer and e.render_object then
                         irl.set_layer(e, render_layer)
+                    end
+
+                    if not exclude[eid] then
+                        w:extend(e, "material?in")
+                        if e.material then
+                            if color then
+                                imaterial.set_property(e, "u_basecolor_factor", color)
+                            end
+                            if emissive_color then
+                                imaterial.set_property(e, "u_emissive_factor", emissive_color)
+                            end
+                        end
                     end
                 end
 
@@ -81,31 +111,64 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
                         e.loop_timeline = true
                     end
                 end
-            end
+            end,
         }
-        if color then
-            message:pub("material", inst, "set_property", "u_basecolor_factor", color)
+
+
+        return hitch_group_id, inst
+    end
+
+    function _get_hitch_group_id(prefab, color, emissive_color, render_layer, dynamic_mesh)
+        if not dynamic_mesh then
+            prefab = prefab:gsub("(%.[^%.]+)$", "_di%1")
         end
-        if emissive_color then
-            message:pub("material", inst, "set_property", "u_emissive_factor", emissive_color)
+        render_layer = render_layer or RENDER_LAYER.BUILDING
+        local hash = _calc_hash(prefab, tostring(color), tostring(emissive_color), render_layer)
+        if cache[hash] then
+            return assert(cache[hash].hitch_group_id), true
         end
 
+        local hitch_group_id, inst = _create_prefab(prefab, color, emissive_color, render_layer, dynamic_mesh)
         cache[hash] = {instance = inst, hitch_group_id = hitch_group_id}
         return hitch_group_id
     end
 
     function _stop_world()
         for _, v in pairs(cache) do
-            message:pub("stop_world", v.instance)
+            imessage:pub("game_object|stop_world", v.instance)
         end
     end
 
     function _restart_world()
         for _, v in pairs(cache) do
-            message:pub("restart_world", v.instance)
+            imessage:pub("game_object|restart_world", v.instance)
         end
     end
 end
+
+local function _create_group(self, group)
+    local e <close> = world:entity(self.tag["hitch"][1])
+    w:extend(e, "hitch:update hitch_create?out")
+    e.hitch.group = group
+    e.hitch_create = true
+end
+imessage:sub("hitch_instance|create_group", _create_group)
+
+imessage:sub("hitch_instance|update_group", function(self, group)
+    local e <close> = world:entity(self.tag["hitch"][1])
+    w:extend(e, "hitch:update hitch_update?out")
+    e.hitch.group = group
+    e.hitch_update = true
+end)
+
+imessage:sub("hitch_instance|modifier", function(self, ...)
+    imodifier.start(imodifier.create_bone_modifier(self.tag["hitch"][1], 0, "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab", "Bone"), ...)
+end)
+
+imessage:sub("hitch_instance|attach", function(self, slot_name, instance)
+    local eid = assert(self.tag[slot_name][1])
+    world:instance_set_parent(instance, eid)
+end)
 
 local function set_srt(e, srt)
     if srt.s then
@@ -120,6 +183,10 @@ local function set_srt(e, srt)
 end
 
 local igame_object = {}
+function igame_object.preload(init)
+    _create_prefab(init.prefab, init.color, init.emissive_color, init.render_layer, init.dynamic)
+end
+
 --[[
 init = {
     prefab, -- the relative path to the prefab file
@@ -133,22 +200,21 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local prefab = init.prefab
-    local hitch_group_id = _get_hitch_group_id(prefab, init.color, init.work_status or "idle", init.emissive_color, init.render_layer, init.dynamic)
+    local hitch_group_id = _get_hitch_group_id(init.prefab, init.color, init.emissive_color, init.render_layer, init.dynamic)
     local srt = init.srt or {}
 
     local hitch_instance = world:create_instance {
         group = init.group_id,
-        prefab = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1hitch.prefab"),
+        prefab = init.prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1hitch.prefab"),
         parent = init.parent,
         on_ready = function(self)
-            local root <close> = world:entity(self.tag["*"][1])
+            local root <close> = world:entity(self.tag["hitch"][1])
             set_srt(root, srt)
-            message:pub("create_group", self, hitch_group_id)
+            _create_group(self, hitch_group_id)
             if init.on_ready then
                 init.on_ready(self)
             end
-        end
+        end,
     }
 
     local function remove(self)
@@ -167,24 +233,23 @@ function igame_object.create(init)
         local hitch_group_id, existed = _get_hitch_group_id(
             self.data.prefab,
             self.data.color,
-            self.data.work_status,
             self.data.emissive_color,
             self.data.render_layer,
             self.data.dynamic
         )
 
         if existed then
-            message:pub("update_group", self.hitch_instance, hitch_group_id)
+            imessage:pub("hitch_instance|update_group", self.hitch_instance, hitch_group_id)
         else
-            message:pub("create_group", self.hitch_instance, hitch_group_id)
+            imessage:pub("hitch_instance|create_group", self.hitch_instance, hitch_group_id)
         end
         self.hitch_group_id = hitch_group_id
     end
-    local function send(self, name, ...)
-        message:pub(name, self.hitch_instance, ...)
+    local function send(self, msg, ...)
+        imessage:pub(msg, self.hitch_instance, ...)
     end
     local function modifier(self, method, ...)
-        message:pub("modifier", self.hitch_instance, method, ...)
+        imessage:pub("hitch_instance|modifier", self.hitch_instance, method, ...)
     end
     local function get_slot_position(self, slot_name)
         assert(self.hitch_instance)

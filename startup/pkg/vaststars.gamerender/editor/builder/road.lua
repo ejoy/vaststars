@@ -34,7 +34,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local iroadnet = ecs.require "engine.roadnet"
 local gameplay_core = require "gameplay.core"
 local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
-
+local create_road_next_indicator = ecs.require "editor.indicators.road_next_indicator"
 local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iroad = ecs.require "vaststars.gamerender|render_updates.road"
@@ -45,37 +45,6 @@ local iplayback = ecs.require "ant.animation|playback"
 local igame_object = ecs.require "engine.game_object"
 local show_message = ecs.require "show_message".show_message
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
-local message = ecs.require "message_sub"
-
-message:sub("on_position_change", function (instance, obj, building_srt)
-    local position = building_srt.t
-    local delta = WORLD_MOVE_DELTA[obj.forward_dir]
-    local x, z = math3d.index(position, 1) + delta.x * ROAD_WIDTH_SIZE, math3d.index(position, 3) + delta.y * ROAD_HEIGHT_SIZE
-
-    local root <close> = world:entity(instance.tag['*'][1])
-    iom.set_position(root, math3d.vector(x, math3d.index(position, 2), z))
-    iom.set_rotation(root, ROTATORS[iprototype.rotate_dir_times(obj.forward_dir, -1)])
-end)
-
-local function instance_object(obj, instance)
-    local outer = {instance = instance}
-    function outer:send(name, ...)
-        if name == "on_position_change" then
-            message:pub("on_position_change", self.instance, obj, ...)
-        end
-    end
-    function outer:remove()
-        world:remove_instance(self.instance)
-    end
-    function outer:on_position_change(...)
-        message:pub("on_position_change", self.instance, obj, ...)
-    end
-    function outer:on_status_change()
-    end
-    function outer:set_forward_dir()
-    end
-    return outer
-end
 
 local function _update_components_status(self)
     local status = self.status
@@ -179,22 +148,7 @@ local function _new_entity(self, datamodel, typeobject, x, y)
     end
     if not self.pickup_components.next_box then
         local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
-        self.pickup_components.next_box = instance_object(self, world:create_instance {
-            prefab = "/pkg/vaststars.resources/glbs/road/road_indicator.glb|mesh.prefab",
-            on_ready = function (instance)
-                local root <close> = world:entity(instance.tag['*'][1])
-                iom.set_position(root, math3d.vector(icoord.position(dx, dy, iprototype.rotate_area(typeobject.area, dir))))
-                iom.set_rotation(root, ROTATORS[iprototype.rotate_dir_times(self.forward_dir, -1)])
-
-                for _, eid in ipairs(instance.tag["*"]) do
-                    local e <close> = world:entity(eid, "animation?in")
-                    if e.animation then
-                        iplayback.set_play(e, "Armature.002Action", true)
-                        iplayback.completion_loop(e, "Armature.002Action")
-                    end
-                end
-            end
-        })
+        self.pickup_components.next_box = create_road_next_indicator(dx, dy, typeobject, dir, self.forward_dir)
     end
 
     datamodel.show_rotate = true

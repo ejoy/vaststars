@@ -14,7 +14,7 @@ local ichest = require "gameplay.interface.chest"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local igroup = ecs.require "group"
 local igame_object = ecs.require "engine.game_object"
-local message = ecs.require "message_sub"
+local imessage = ecs.require "message_sub"
 
 local mt = {}
 mt.__index = mt
@@ -28,7 +28,7 @@ local function create_item(group_id, item, amount)
         group_id = group_id,
         on_ready = function (self)
             if amount <= 0 then
-                message:pub("show", self, false)
+                imessage:pub("show", self, false)
             end
         end
     }
@@ -45,11 +45,11 @@ local function create_shelf(self, gameplay_world, e, game_object, shelf_prefab, 
             group_id = group_id,
         }
 
-        game_object:send("attach", shelf_slot_name, shelf.hitch_instance)
+        game_object:send("hitch_instance|attach", shelf_slot_name, shelf.hitch_instance)
         self._shelves[idx] = shelf
 
         local item = create_item(group_id, slot.item, slot.amount)
-        shelf:send("attach", "item_slot", item.hitch_instance)
+        shelf:send("hitch_instance|attach", "item_slot", item.hitch_instance)
 
         self._items[idx] = item
         self._item_shows[idx] = slot.amount > 0
@@ -123,7 +123,7 @@ function mt:update_item(idx, amount)
 
     local show = amount > 0
     if self._item_shows[idx] ~= show then
-        message:pub("show", self._items[idx].hitch_instance, show)
+        imessage:pub("show", self._items[idx].hitch_instance, show)
         self._item_shows[idx] = show
     end
 end

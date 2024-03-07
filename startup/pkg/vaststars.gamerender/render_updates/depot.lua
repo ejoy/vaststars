@@ -11,9 +11,10 @@ local iprototype = require "gameplay.interface.prototype"
 local depot_sys = ecs.system "depot_system"
 local gameplay_core = require "gameplay.core"
 local igroup = ecs.require "group"
+local ivs = ecs.require "ant.render|visible_state"
 local vsobject_manager = ecs.require "vsobject_manager"
 local igame_object = ecs.require "engine.game_object"
-local message = ecs.require "message_sub"
+local imessage = ecs.require "message_sub"
 
 local mt = {}
 function mt:remove()
@@ -36,7 +37,7 @@ function mt:update(gameplay_world, e)
         local v = assert(self.items[idx])
         local show = slot.amount <= 0
         if v.show ~= show then
-            message:pub("show", v.item_object.hitch_instance, v.show)
+            imessage:pub("show", v.item_object.hitch_instance, show)
             v.show = show
         end
     end
@@ -61,11 +62,13 @@ local function create(gameplay_world, e, game_object)
                 prefab = prefab,
                 group_id = igroup.id(e.building.x, e.building.y),
                 on_ready = function (self)
-                    message:pub("show", self, show)
+                    if not show then
+                        imessage:pub("show", self, show)
+                    end
                 end
             }
 
-            game_object:send("attach", assert(SLOTS[idx]), item_object.hitch_instance)
+            game_object:send("hitch_instance|attach", assert(SLOTS[idx]), item_object.hitch_instance)
             o.items[idx] = {item_object = item_object, show = show}
         end
     end

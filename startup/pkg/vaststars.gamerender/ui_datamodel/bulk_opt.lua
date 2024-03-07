@@ -8,11 +8,9 @@ local BUTTONS <const> = {
 }
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
+local ROTATORS <const> = CONSTANT.ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
-
-local CONSTANT <const> = require "gameplay.interface.constant"
-local ROTATORS <const> = CONSTANT.ROTATORS
 
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 local remove_mb = mailbox:sub {"remove"}

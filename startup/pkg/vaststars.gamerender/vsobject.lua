@@ -39,7 +39,6 @@ local function update(self, t)
     self.game_object:update {
         prefab = model,
         color = t.color,
-        work_status = t.work_status,
         emissive_color = t.emissive_color,
         render_layer = t.render_layer,
     }

@@ -38,11 +38,11 @@ local function _create_shelf(e, game_object, idx, item, amount)
                     prefab = typeobject.item_model,
                     group_id = igroup.id(e.building.x, e.building.y),
                 }
-                shelf:send("attach", "slot", item_object.hitch_instance)
+                shelf:send("hitch_instance|attach", "slot", item_object.hitch_instance)
             end
         end
     }
-    game_object:send("attach", assert(SLOTS[idx]), shelf.hitch_instance)
+    game_object:send("hitch_instance|attach", assert(SLOTS[idx]), shelf.hitch_instance)
     return shelf
 end
 

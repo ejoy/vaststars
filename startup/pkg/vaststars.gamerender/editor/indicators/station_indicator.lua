@@ -6,7 +6,7 @@ local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local irl = ecs.require "ant.render|render_layer.render_layer"
-local message = ecs.require "message_sub"
+local imessage = ecs.require "message_sub"
 
 local ARROW_VALID <const> = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local ARROW_INVALID <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
@@ -18,7 +18,7 @@ function mt:remove()
 end
 
 function mt:set_srt(s, r, t)
-    message:pub("obj_motion", self.arrow, "set_srt", math3d.live(s), math3d.live(r), math3d.live(t))
+    imessage:pub("obj_motion", self.arrow, "set_srt", math3d.live(s), math3d.live(r), math3d.live(t))
 end
 
 function mt:set_state(state)
@@ -28,10 +28,8 @@ function mt:set_state(state)
     else
         arrow_color = ARROW_INVALID
     end
-    message:pub("material", self.arrow, "set_property", "u_basecolor_factor", arrow_color)
+    imessage:pub("material", self.arrow, "set_property", "u_basecolor_factor", arrow_color)
 end
-
-local imaterial = ecs.require "ant.asset|material"
 
 local function createPrefabInst(prefab, position)
     position = math3d.mark(position)
@@ -49,7 +47,7 @@ local function createPrefabInst(prefab, position)
                     irl.set_layer(e, RENDER_LAYER.ROAD_ENTRANCE_ARROW)
                 end
             end
-        end
+        end,
     }
 end
 
@@ -62,9 +60,8 @@ return function(position, state)
     end
 
     local M = {}
-
     M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|translucent.prefab", position)
-    message:pub("material", M.arrow, "set_property", "u_basecolor_factor", arrow_color)
+    imessage:pub("material", M.arrow, "set_property", "u_basecolor_factor", arrow_color)
 
     return setmetatable(M, mt)
 end
