@@ -33,6 +33,7 @@ local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_butt
 local update_buildings_state = ecs.require "ui_datamodel.common.bulk_opt".update_buildings_state
 local renew_selected_range = ecs.require "ui_datamodel.common.bulk_opt".renew_selected_range
 local remove_selected_range = ecs.require "ui_datamodel.common.bulk_opt".remove_selected_range
+local igame_object = ecs.require "engine.game_object"
 
 local selecting = {}
 
@@ -46,6 +47,9 @@ end
 
 local M = {}
 function M.create()
+    gameplay_core.world_update = false
+    igame_object.stop_world()
+
     local buttons = {}
     for _, v in ipairs(BUTTONS) do
         buttons[#buttons+1] = {
@@ -123,22 +127,36 @@ function M.update(datamodel)
         end
 
         update_buildings_state({
-            {add, "translucent", COLOR.BULK_SELECTED_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING},
+            {add, "translucent", COLOR.BULK_SELECTEING_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING},
             {del, "opaque", "null", RENDER_LAYER.BUILDING},
         })
     end
 
     for _ in select_mb:unpack() do
+        local add = {}
         for gameplay_eid in pairs(selecting) do
-            global.selected_buildings[gameplay_eid] = true
+            if not global.selected_buildings[gameplay_eid] then
+                global.selected_buildings[gameplay_eid] = true
+                add[gameplay_eid] = true
+            end
         end
+        update_buildings_state({
+            {add, "translucent", COLOR.BULK_SELECTED_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING},
+        })
         renew_selected_range()
     end
 
     for _ in unselect_mb:unpack() do
+        local del = {}
         for gameplay_eid in pairs(selecting) do
-            global.selected_buildings[gameplay_eid] = nil
+            if global.selected_buildings[gameplay_eid] then
+                global.selected_buildings[gameplay_eid] = nil
+                del[gameplay_eid] = true
+            end
         end
+        update_buildings_state({
+            {del, "translucent", COLOR.BULK_SELECTEING_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING},
+        })
         renew_selected_range()
     end
 
@@ -149,7 +167,10 @@ function M.update(datamodel)
                 t[gameplay_eid] = true
             end
         end
-        update_buildings_state({{t, "opaque", "null", RENDER_LAYER.BUILDING}})
+        update_buildings_state({
+            {t, "opaque", "null", RENDER_LAYER.BUILDING},
+            {selecting, "translucent", COLOR.BULK_SELECTEING_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING},
+        })
 
         global.selected_buildings = {}
         remove_selected_range()
@@ -169,8 +190,13 @@ end
 
 function M.gesture_tap()
     remove_selected_range()
+
     _clear()
+
     iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_opt_exit")
+
+    gameplay_core.world_update = true
+    igame_object.restart_world()
 end
 
 function M.gesture_pinch()
