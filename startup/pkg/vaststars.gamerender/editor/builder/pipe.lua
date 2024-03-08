@@ -64,7 +64,7 @@ local function _align(position_type, area, dir)
 end
 
 local function _update_indicator(indicator, status)
-    indicator:update({prefab = iprototype.queryById(status.prototype).model})
+    indicator:update {prefab = iprototype.queryById(status.prototype).model}
     indicator:send("obj_motion", "set_rotation", math3d.live(status.srt.r))
 end
 

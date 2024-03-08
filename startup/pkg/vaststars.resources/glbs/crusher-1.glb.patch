@@ -144,7 +144,7 @@ value:
           pause_frame: -1
         tick: 0
         time: 0
-      loop: true
+      loop: false
   policy:
     ant.timeline|timeline
   tag:

@@ -112,7 +112,7 @@ local function _update_work_status()
         work_statuses[e.eid] = current
 
         local vsobject = _get_vsobject(e.building.x, e.building.y)
-        vsobject:update({work_status = STATUS[current], emissive_color = COLOR[current]})
+        vsobject:update {work_status = STATUS[current], emissive_color = COLOR[current]}
         ::continue::
     end
 

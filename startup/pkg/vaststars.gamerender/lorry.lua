@@ -4,7 +4,6 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local ivs = ecs.require "ant.render|visible_state"
-local ientity = ecs.require "ant.entity|entity"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 local imotion = ecs.require "engine.motion"
@@ -52,12 +51,14 @@ local function create(prefab, s, r, t)
     }
     lorry_obj:send("hitch_instance|attach", "arrow", arrow_instance)
 
+    local idle_prefab <const> = prefab
+    local work_prefab <const> = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1work.prefab")
+
     function outer:work()
-        local model = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1work.prefab")
-        lorry_obj:update({work_status = "work", prefab = model})
+        lorry_obj:update {prefab = work_prefab}
     end
     function outer:idle()
-        lorry_obj:update({work_status = "idle", prefab = prefab})
+        lorry_obj:update {prefab = idle_prefab}
     end
     function outer:remove()
         world:remove_entity(motion_entity)
