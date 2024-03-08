@@ -27,26 +27,6 @@ local function create(prefab, s, r, t)
         render_layer = RENDER_LAYER.LORRY,
         dynamic = true,
     }
-    local shadow_minv, shadow_maxv = 1, 0
-    local shadow_x, shadow_z = -5, -5
-    local shadow_w, shadow_h = 10, 10
-    local shadow_entity = world:create_entity {
-        policy = {
-            "ant.render|simplerender",
-        },
-        data = {
-            mesh_result = ientity.create_mesh({"p3|t2", {
-                shadow_x,            0, shadow_z,            0, shadow_minv, --bottom left
-                shadow_x,            0, shadow_z + shadow_h, 0, shadow_maxv, --top left
-                shadow_x + shadow_w, 0, shadow_z,            1, shadow_minv, --bottom right
-                shadow_x + shadow_w, 0, shadow_z + shadow_h, 1, shadow_maxv, --top right
-            }}),
-            material = "/pkg/vaststars.resources/materials/lorry_shadow.material",
-            scene = {t = {0, 0.1, 0}, parent = motion_entity},
-            visible_state = "main_view",
-            render_layer = RENDER_LAYER.LORRY_SHADOW,
-        }
-    }
     local arrow_instance = world:create_instance {
         prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
         on_ready = function(self)
@@ -82,7 +62,6 @@ local function create(prefab, s, r, t)
     function outer:remove()
         world:remove_entity(motion_entity)
         lorry_obj:remove()
-        world:remove_entity(shadow_entity)
         world:remove_instance(arrow_instance)
         if self.item then
             self.item:remove()
