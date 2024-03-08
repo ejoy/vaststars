@@ -2,7 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
@@ -21,27 +21,26 @@ local update_selecting_building_mb = mailbox:sub {"update_selecting_building"}
 local select_mb = mailbox:sub {"select"}
 local unselect_mb = mailbox:sub {"unselect"}
 local reset_mb = mailbox:sub {"reset"}
-local close_mb = mailbox:sub {"close"}
 local operate_mb = mailbox:sub {"operate"}
 local icamera_controller = ecs.require "engine.system.camera_controller"
-local icoord = require "coord"
 local objects = require "objects"
 local ibuilding = ecs.require "render_updates.building"
 local iprototype = require "gameplay.interface.prototype"
-local iroadnet = ecs.require "engine.roadnet"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.require "engine.system.ui_system"
 local global = require "global"
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 local update_buildings_state = ecs.require "ui_datamodel.common.bulk_opt".update_buildings_state
+local renew_selected_range = ecs.require "ui_datamodel.common.bulk_opt".renew_selected_range
+local remove_selected_range = ecs.require "ui_datamodel.common.bulk_opt".remove_selected_range
 
 local selecting = {}
 
 local function _clear()
-    update_buildings_state(global.selected_buildings, "opaque", "null", RENDER_LAYER.BUILDING)
-    update_buildings_state(selecting, "opaque", "null", RENDER_LAYER.BUILDING)
-    iroadnet:flush()
-
+    update_buildings_state({
+        {global.selected_buildings, "opaque", "null", RENDER_LAYER.BUILDING},
+        {selecting, "opaque", "null", RENDER_LAYER.BUILDING},
+    })
     selecting = {}
 end
 
@@ -56,7 +55,9 @@ function M.create()
     end
     set_button_offset(buttons)
 
-    update_buildings_state(global.selected_buildings, "translucent", SPRITE_COLOR.SELECTED, RENDER_LAYER.TRANSLUCENT_BUILDING)
+    update_buildings_state({{global.selected_buildings, "translucent", COLOR.BULK_SELECTED_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING}})
+
+    renew_selected_range()
 
     return {
         buttons = buttons,
@@ -113,30 +114,32 @@ function M.update(datamodel)
         end
 
         for gameplay_eid in pairs(t) do
-            if selecting[gameplay_eid] == nil and selected_buildings[gameplay_eid] == nil then
-                add[gameplay_eid] = true
+            if selecting[gameplay_eid] == nil then
+                if selected_buildings[gameplay_eid] == nil then
+                    add[gameplay_eid] = true
+                end
                 selecting[gameplay_eid] = true
             end
         end
 
-        update_buildings_state(add, "translucent", SPRITE_COLOR.SELECTED, RENDER_LAYER.TRANSLUCENT_BUILDING)
-        update_buildings_state(del, "opaque", "null", RENDER_LAYER.BUILDING)
-
-        iroadnet:flush()
+        update_buildings_state({
+            {add, "translucent", COLOR.BULK_SELECTED_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING},
+            {del, "opaque", "null", RENDER_LAYER.BUILDING},
+        })
     end
 
     for _ in select_mb:unpack() do
         for gameplay_eid in pairs(selecting) do
             global.selected_buildings[gameplay_eid] = true
         end
-        selecting = {}
+        renew_selected_range()
     end
 
     for _ in unselect_mb:unpack() do
         for gameplay_eid in pairs(selecting) do
             global.selected_buildings[gameplay_eid] = nil
         end
-        selecting = {}
+        renew_selected_range()
     end
 
     for _ in reset_mb:unpack() do
@@ -146,21 +149,16 @@ function M.update(datamodel)
                 t[gameplay_eid] = true
             end
         end
-        update_buildings_state(t, "opaque", "null", RENDER_LAYER.BUILDING)
-        iroadnet:flush()
+        update_buildings_state({{t, "opaque", "null", RENDER_LAYER.BUILDING}})
 
         global.selected_buildings = {}
-    end
+        remove_selected_range()
 
-    for _ in close_mb:unpack() do
-        _clear()
-        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_opt_exit")
+        iui.send("/pkg/vaststars.resources/ui/bulk_select.html", "update_selecting_building")
     end
 
     for _ in operate_mb:unpack() do
-        update_buildings_state(selecting, "opaque", "null", RENDER_LAYER.BUILDING)
-        iroadnet:flush()
-
+        update_buildings_state({{selecting, "opaque", "null", RENDER_LAYER.BUILDING}})
         selecting = {}
 
         --
@@ -170,6 +168,7 @@ function M.update(datamodel)
 end
 
 function M.gesture_tap()
+    remove_selected_range()
     _clear()
     iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_opt_exit")
 end

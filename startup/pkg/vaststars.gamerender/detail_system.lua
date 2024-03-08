@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
@@ -11,9 +11,9 @@ local gameplay_core = require "gameplay.core"
 local create_selected_boxes = ecs.require "selected_boxes"
 local icoord = require "coord"
 local audio = import_package "ant.audio"
-local isprite = ecs.require "sprite"
-local create_sprite = isprite.create
-local flush_sprite = isprite.flush
+local itranslucent_plane = ecs.require "translucent_plane"
+local create_translucent_plane = itranslucent_plane.create
+local flush_translucent_plane = itranslucent_plane.flush
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity"
 
 do
@@ -69,7 +69,7 @@ do
             o:remove()
         end
         temp_objects = {}
-        flush_sprite()
+        flush_translucent_plane()
     end
 
     function idetail.add_tmp_object(o)
@@ -114,15 +114,15 @@ do
                 if otypeobject.supply_area and o.id ~= object.id then
                     local w, h = iprototype.rotate_area(otypeobject.area, o.dir)
                     local ow, oh = iprototype.rotate_area(otypeobject.supply_area, o.dir)
-                    temp_objects[#temp_objects+1] = create_sprite(o.x - (ow - w)//2, o.y - (oh - h)//2, ow, oh, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER)
+                    temp_objects[#temp_objects+1] = create_translucent_plane(o.x - (ow - w)//2, o.y - (oh - h)//2, ow, oh, COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_OTHER)
                 end
             end
 
             local w, h = iprototype.rotate_area(typeobject.area, object.dir)
             local ow, oh = iprototype.rotate_area(typeobject.supply_area, object.dir)
-            temp_objects[#temp_objects+1] = create_sprite(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID)
+            temp_objects[#temp_objects+1] = create_translucent_plane(object.x - (ow - w)//2, object.y - (oh - h)//2, ow, oh, COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID)
 
-            flush_sprite()
+            flush_translucent_plane()
         end
 
         --
@@ -134,7 +134,7 @@ do
                         "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
                         "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
                     },
-                    neighbor.srt.t, SPRITE_COLOR.SELECTED_OUTLINE, iprototype.rotate_area(typeobject.area, neighbor.dir)
+                    neighbor.srt.t, COLOR.SELECTED_OUTLINE, iprototype.rotate_area(typeobject.area, neighbor.dir)
                 )
 
                 local quad_num

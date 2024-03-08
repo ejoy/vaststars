@@ -7,14 +7,13 @@ local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local itp = ecs.require "engine.translucent_plane"
 local icoord = require "coord"
-local igroup = ecs.require "group"
 
 local cache = {}
 
 local function add(x, y, w, h, color)
     local pos = assert(icoord.lefttop_position(x, y))
     local id = #cache + 1
-    cache[id] = {x = pos[1], y = pos[3] - TILE_SIZE * h, w = TILE_SIZE * w, h = TILE_SIZE * h, gid = igroup.id(x, y), color = color}
+    cache[id] = {x = pos[1], y = pos[3] - TILE_SIZE * h, w = TILE_SIZE * w, h = TILE_SIZE * h, gid = 0, color = color}
     return id
 end
 

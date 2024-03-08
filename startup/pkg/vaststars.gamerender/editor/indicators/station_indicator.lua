@@ -14,7 +14,7 @@ local mt = {}
 mt.__index = mt
 
 function mt:remove()
-    world:remove_instance(self.arrow)
+    imessage:pub("remove", self.arrow)
 end
 
 function mt:set_srt(s, r, t)

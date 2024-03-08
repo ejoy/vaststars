@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local iprototype = require "gameplay.interface.prototype"
 local create_selected_boxes = ecs.require "selected_boxes"
@@ -11,7 +11,7 @@ local mt = {}
 mt.__index = mt
 
 function mt:on_status_change(valid)
-    local color = valid and SPRITE_COLOR.CONSTRUCT_OUTLINE_SELF_VALID or SPRITE_COLOR.CONSTRUCT_OUTLINE_SELF_INVALID
+    local color = valid and COLOR.CONSTRUCT_OUTLINE_SELF_VALID or COLOR.CONSTRUCT_OUTLINE_SELF_INVALID
     self.selected_boxes:set_color_transition(color, 400)
 end
 
@@ -26,7 +26,7 @@ end
 
 return function (position, area, dir, valid)
     local self = setmetatable({}, mt)
-    local color = valid and SPRITE_COLOR.CONSTRUCT_OUTLINE_SELF_VALID or SPRITE_COLOR.CONSTRUCT_OUTLINE_SELF_INVALID
+    local color = valid and COLOR.CONSTRUCT_OUTLINE_SELF_VALID or COLOR.CONSTRUCT_OUTLINE_SELF_INVALID
 
     self.area = area
     self.selected_boxes = create_selected_boxes(

@@ -13,7 +13,7 @@ local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
 local ALL_DIR <const> = CONSTANT.ALL_DIR
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
@@ -25,10 +25,9 @@ local iminer = require "gameplay.interface.miner"
 local igrid_entity = ecs.require "engine.grid_entity"
 local mc = import_package "ant.math".constant
 local create_station_indicator = ecs.require "editor.indicators.station_indicator"
-local global = require "global"
-local isprite = ecs.require "sprite"
-local create_sprite = isprite.create
-local flush_sprite = isprite.flush
+local itranslucent_plane = ecs.require "translucent_plane"
+local create_translucent_plane = itranslucent_plane.create
+local flush_translucent_plane = itranslucent_plane.flush
 local create_pickup_icon = ecs.require "pickup_icon".create
 local create_fluid_indicators = ecs.require "fluid_indicators".create
 local icoord = require "coord"
@@ -69,16 +68,16 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
     return math3d.vector(icoord.position(neighbor_x, neighbor_y, 1, 1)), neighbor_x, neighbor_y, conn.dir
 end
 
-local function _create_self_sprite(typeobject, x, y, dir, sprite_color)
-    local sprite
+local function _create_self_translucent_plane(typeobject, x, y, dir, translucent_plane_color)
+    local translucent_plane
     local offset_x, offset_y = 0, 0
     if typeobject.supply_area then
         local aw, ah = iprototype.rotate_area(typeobject.supply_area, dir)
         local w, h = iprototype.rotate_area(typeobject.area, dir)
         offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
-        sprite = create_sprite(x + offset_x, y + offset_y, aw, ah, sprite_color)
+        translucent_plane = create_translucent_plane(x + offset_x, y + offset_y, aw, ah, translucent_plane_color)
     end
-    return sprite
+    return translucent_plane
 end
 
 local function _get_nearby_buildings(x, y, w, h)
@@ -133,15 +132,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 
         local color
         if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
+            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
                 local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                 local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
                 if _is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
                 if iprototype.has_types(typeobject.type, "station") then
@@ -149,15 +148,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if _is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
                     else
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             end
         end
@@ -178,15 +177,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 
         local color
         if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
+            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
                 local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                 local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
                 if _is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
                 if iprototype.has_types(typeobject.type, "station") then
@@ -194,15 +193,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if _is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
                     else
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             end
         end
@@ -234,15 +233,15 @@ local function _new_entity(self, datamodel, typeobject)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     local building_positon = icoord.position(x, y, w, h)
 
-    local sprite_color
+    local translucent_plane_color
     if not self.check_coord(x, y, dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
+            translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
         datamodel.show_confirm = false
     else
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
+            translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
         end
         datamodel.show_confirm = true
     end
@@ -250,7 +249,7 @@ local function _new_entity(self, datamodel, typeobject)
 
     local object = assert(objects:get(self.move_object_id))
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
+    vsobject:update {state = "translucent", color = COLOR.MOVE_SELF, emissive_color = COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
 
     local e = assert(gameplay_core.get_entity(object.gameplay_eid))
 
@@ -275,10 +274,10 @@ local function _new_entity(self, datamodel, typeobject)
     self.pickup_components.self_selected_box = create_pickup_selected_box(self.pickup_object.srt.t, typeobject.area, dir, datamodel.show_confirm and true or false)
     _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
 
-    if self.sprite then
-        self.sprite:remove()
+    if self.translucent_plane then
+        self.translucent_plane:remove()
     end
-    self.sprite = _create_self_sprite(typeobject, x, y, dir, sprite_color)
+    self.translucent_plane = _create_self_translucent_plane(typeobject, x, y, dir, translucent_plane_color)
 
     local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, dir)
     if road_entrance_position then
@@ -371,7 +370,7 @@ local function touch_move(self, datamodel, delta_vec)
         self.grid_entity:set_position(__calc_grid_position(self, typeobject, pickup_object.dir))
     end
 
-    local sprite_color
+    local translucent_plane_color
     local offset_x, offset_y = 0, 0
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     local object = assert(objects:get(self.move_object_id))
@@ -383,13 +382,13 @@ local function touch_move(self, datamodel, delta_vec)
             self.road_entrance:set_state("invalid")
         end
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
+            translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
             local aw, ah = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         end
-        if self.sprite then
-            self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
-            flush_sprite()
+        if self.translucent_plane then
+            self.translucent_plane:move(pickup_object.x + offset_x, pickup_object.y + offset_y, translucent_plane_color)
+            flush_translucent_plane()
         end
         for _, c in pairs(self.pickup_components) do
             c:on_status_change(datamodel.show_confirm)
@@ -403,13 +402,13 @@ local function touch_move(self, datamodel, delta_vec)
             self.road_entrance:set_state("valid")
         end
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
+            translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
             local aw, ah = iprototype.rotate_area(typeobject.supply_area, pickup_object.dir)
             offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
         end
-        if self.sprite then
-            self.sprite:move(pickup_object.x + offset_x, pickup_object.y + offset_y, sprite_color)
-            flush_sprite()
+        if self.translucent_plane then
+            self.translucent_plane:move(pickup_object.x + offset_x, pickup_object.y + offset_y, translucent_plane_color)
+            flush_translucent_plane()
         end
         for _, c in pairs(self.pickup_components) do
             c:on_status_change(datamodel.show_confirm)
@@ -448,10 +447,10 @@ local function confirm(self, datamodel)
         self.road_entrance:remove()
         self.road_entrance = nil
     end
-    if self.sprite then
-        self.sprite:remove()
-        self.sprite = nil
-        flush_sprite()
+    if self.translucent_plane then
+        self.translucent_plane:remove()
+        self.translucent_plane = nil
+        flush_translucent_plane()
     end
     if self.grid_entity then
         self.grid_entity:remove()
@@ -490,27 +489,27 @@ local function rotate(self, datamodel, dir, delta_vec)
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
-    local sprite_color
+    local translucent_plane_color
     local w, h = iprototype.rotate_area(typeobject.area, pickup_object.dir)
     local object = assert(objects:get(self.move_object_id))
 
     if not self.check_coord(pickup_object.x, pickup_object.y, pickup_object.dir, self.typeobject, _get_area_coords(object.x, object.y, w, h)) then
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
+            translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
         datamodel.show_confirm = false
     else
         if typeobject.supply_area then
-            sprite_color = SPRITE_COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
+            translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
         end
         datamodel.show_confirm = true
     end
 
-    if self.sprite then
-        self.sprite:remove()
+    if self.translucent_plane then
+        self.translucent_plane:remove()
     end
-    self.sprite = _create_self_sprite(typeobject, x, y, pickup_object.dir, sprite_color)
-    flush_sprite()
+    self.translucent_plane = _create_self_translucent_plane(typeobject, x, y, pickup_object.dir, translucent_plane_color)
+    flush_translucent_plane()
 
     local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
     if road_entrance_position then
@@ -544,10 +543,10 @@ local function clean(self, datamodel)
         self.road_entrance:remove()
         self.road_entrance = nil
     end
-    if self.sprite then
-        self.sprite:remove()
-        self.sprite = nil
-        flush_sprite()
+    if self.translucent_plane then
+        self.translucent_plane:remove()
+        self.translucent_plane = nil
+        flush_translucent_plane()
     end
 
     local vsobject = assert(vsobject_manager:get(self.move_object_id))

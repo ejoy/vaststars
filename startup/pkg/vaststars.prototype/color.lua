@@ -17,5 +17,6 @@ return {
     TRANSFER_SOURCE = math3d.constant("v4", {1.0, 1.0, 0.0, 1}),
     CONSTRUCT_SELF = math3d.constant("v4", {0, 0.85, 1, 0.1}),
     CONSTRUCT_SELF_EMISSIVE = math3d.constant("v4", {0, 0, 1, 0.1}),
-    SELECTED = math3d.constant("v4", {0, 1, 0, 0.15}),
+    BULK_SELECTED_BUILDINGS = math3d.constant("v4", {0, 1, 0, 0.15}), -- 选中的建筑
+    BULK_SELECTED_BUILDINGS_RANGE = {0, 0.77, 0, 0.25},   -- 选中建筑的范围
 }

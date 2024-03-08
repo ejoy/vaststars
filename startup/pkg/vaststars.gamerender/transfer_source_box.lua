@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local create_selected_boxes = ecs.require "selected_boxes"
 local global = require "global"
@@ -48,7 +48,7 @@ local function create(id)
             "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
             "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
         },
-        object.srt.t, SPRITE_COLOR.TRANSFER_SOURCE, iprototype.rotate_area(typeobject.area, object.dir)
+        object.srt.t, COLOR.TRANSFER_SOURCE, iprototype.rotate_area(typeobject.area, object.dir)
     )
     building.transfer_source_box = setmetatable({selected_boxes = selected_boxes, typeobject = typeobject}, mt)
 

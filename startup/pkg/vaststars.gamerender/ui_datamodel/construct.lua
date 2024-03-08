@@ -4,7 +4,7 @@ local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local ipick_object = ecs.require "pick_object_system"
 local CLASS <const> = ipick_object.CLASS
@@ -296,7 +296,7 @@ local function show_selectbox(x, y, w, h)
             "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
             "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
         },
-        pos, SPRITE_COLOR.SELECTED_OUTLINE, w, h
+        pos, COLOR.SELECTED_OUTLINE, w, h
     )
     idetail.add_tmp_object(o)
 end

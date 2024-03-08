@@ -11,7 +11,7 @@ local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
 local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local DEFAULT_DIR <const> = CONSTANT.DEFAULT_DIR
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local BUILDING_EFK_SCALE <const> = CONSTANT.BUILDING_EFK_SCALE
@@ -112,15 +112,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 
         local color
         if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
+            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
                 local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                 local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
                 if _is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
                 if iprototype.has_types(typeobject.type, "station") then
@@ -128,15 +128,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if _is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
                     else
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             end
         end
@@ -157,15 +157,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
 
         local color
         if _is_building_intersect(x, y, w, h, object.x, object.y, ow, oh) then
-            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
+            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
         else
             if typeobject.supply_area then
                 local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                 local sw, sh = iprototype.rotate_area(typeobject.supply_area, object.dir)
                 if _is_building_intersect(x - (sw - aw) // 2, y - (sh - ah) // 2, sw, sh, object.x, object.y, ow, oh) then
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             else
                 if iprototype.has_types(typeobject.type, "station") then
@@ -173,15 +173,15 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
                         local aw, ah = iprototype.rotate_area(typeobject.area, object.dir)
                         local sw, sh = iprototype.rotate_area(otypeobject.supply_area, object.dir)
                         if _is_building_intersect(x, y, ow, oh, object.x  - (sw - aw) // 2, object.y - (sh - ah) // 2, sw, sh) then
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_DRONE_DEPOT_SUPPLY_AREA
                         else
-                            color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                            color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                         end
                     else
-                        color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                        color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                     end
                 else
-                    color = SPRITE_COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
+                    color = COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
                 end
             end
         end

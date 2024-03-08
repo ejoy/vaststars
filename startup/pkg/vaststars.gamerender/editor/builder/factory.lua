@@ -17,7 +17,7 @@ local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
 local COLOR_RED <const> = math3d.constant("v4", {1, 0.03, 0, 1})
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local objects = require "objects"
 local ibuilding = ecs.require "render_updates.building"
@@ -334,7 +334,7 @@ function move_t:new(move_object_id, datamodel, typeobject)
 
     self.move_object_id = move_object_id
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "translucent", color = SPRITE_COLOR.MOVE_SELF, emissive_color = SPRITE_COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
+    vsobject:update {state = "translucent", color = COLOR.MOVE_SELF, emissive_color = COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
 end
 
 local function _get_inner_building_config(inner_buildings, area, dx, dy, dir)

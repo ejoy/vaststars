@@ -10,7 +10,7 @@ local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local ROTATORS <const> = CONSTANT.ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local SPRITE_COLOR <const> = ecs.require "vaststars.prototype|sprite_color"
+local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 local remove_mb = mailbox:sub {"remove"}
@@ -24,7 +24,8 @@ local iinventory = require "gameplay.interface.inventory"
 local show_message = ecs.require "show_message".show_message
 local iui = ecs.require "engine.system.ui_system"
 local update_buildings_state = ecs.require "ui_datamodel.common.bulk_opt".update_buildings_state
-local iroadnet = ecs.require "engine.roadnet"
+local remove_selected_range = ecs.require "ui_datamodel.common.bulk_opt".remove_selected_range
+local get_selected_ltrb = ecs.require "ui_datamodel.common.bulk_opt".get_selected_ltrb
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local icoord = require "coord"
@@ -92,10 +93,11 @@ local function _update_building_cache(object, x, y)
 end
 
 local function _close()
+    remove_selected_range()
+
     _clear_moving_objs()
 
-    update_buildings_state(global.selected_buildings, "opaque", "null", RENDER_LAYER.BUILDING)
-    iroadnet:flush()
+    update_buildings_state({{global.selected_buildings, "opaque", "null", RENDER_LAYER.BUILDING}})
 
     iui.redirect("/pkg/vaststars.resources/ui/construct.html", "bulk_opt_exit")
     gameplay_core.world_update = true
@@ -103,30 +105,10 @@ local function _close()
 end
 
 local function _focus(func)
-    local aabb = math3d.aabb()
-    for gameplay_eid in pairs(global.selected_buildings) do
-        local e = assert(gameplay_core.get_entity(gameplay_eid))
-        local x, y = e.building.x, e.building.y
-        local object = objects:coord(x, y)
-        if object then
-            local typeobject = iprototype.queryByName(object.prototype_name)
-            local w, h = iprototype.rotate_area(typeobject.area, object.dir)
-            local aabb_ = math3d.aabb(math3d.vector(x, 0, y), math3d.vector(x+w, 0, y+h))
-            aabb = math3d.aabb_merge(aabb, aabb_)
-        end
-        local v = ibuilding.get(x, y)
-        if v then
-            local typeobject = iprototype.queryByName(v.prototype)
-            local w, h = iprototype.rotate_area(typeobject.area, v.direction)
-            local aabb_ = math3d.aabb(math3d.vector(x, 0, y), math3d.vector(x+w, 0, y+h))
-            aabb = math3d.aabb_merge(aabb, aabb_)
-        end
+    local l, t, r, b = get_selected_ltrb()
+    if not l then
+        return
     end
-
-    local lt = math3d.array_index(aabb, 1)
-    local rb = math3d.array_index(aabb, 2)
-    local l, t = math3d.index(lt, 1, 3)
-    local r, b = math3d.index(rb, 1, 3)
     icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(l, t, r - l, b - t)), func)
 end
 
@@ -170,8 +152,7 @@ function M.update(datamodel)
         datamodel.move_confirm = true
         datamodel.buttons = _handler(datamodel)
 
-        update_buildings_state(global.selected_buildings, "translucent", SPRITE_COLOR.MOVE_SELF, RENDER_LAYER.TRANSLUCENT_BUILDING)
-        iroadnet:flush()
+        update_buildings_state({{global.selected_buildings, "translucent", COLOR.MOVE_SELF, RENDER_LAYER.TRANSLUCENT_BUILDING}})
 
         _focus(function()
             for gameplay_eid in pairs(global.selected_buildings) do

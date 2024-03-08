@@ -88,15 +88,17 @@ local LINE_CHECK <const> = {
 }
 
 function mt:remove()
+    self.removed = true
     for _, v in pairs(self.corners) do
-        world:remove_instance(v)
+        imessage:pub("remove", v)
     end
     for _, v in pairs(self.lines) do
-        world:remove_instance(v)
+        imessage:pub("remove", v)
     end
 end
 
 function mt:set_position(center)
+    assert(not self.removed)
     self.center.v = center
     for idx, o in pairs(self.corners) do
         local position = math3d.live(math3d.muladd(CORNER_DIRECTIONS[idx], self.corner_offset, self.center))
@@ -109,6 +111,7 @@ function mt:set_position(center)
 end
 
 function mt:set_wh(w, h)
+    assert(not self.removed)
     if self.w == w and self.h == h then
         return
     end
@@ -153,6 +156,7 @@ function mt:set_wh(w, h)
 end
 
 function mt:set_color(color)
+    assert(not self.removed)
     self.color.v = math3d.vector(color)
     for _, o in pairs(self.corners) do
         _set_color(o, math3d.live(color))
@@ -163,6 +167,7 @@ function mt:set_color(color)
 end
 
 function mt:set_color_transition(color, duration)
+    assert(not self.removed)
     if math3d.isequal(color, self.color) then
         return
     end
@@ -172,6 +177,9 @@ function mt:set_color_transition(color, duration)
     local to = color
 
     iupdate.add(function()
+        if self.removed then
+            return
+        end
         t = t + DELTA_TIME
         self:set_color(math3d.lerp(from, to, t/duration))
         return t < duration

@@ -55,7 +55,7 @@ local function create(dx, dy, typeobject, dir, forward_dir)
 
     local m = {forward_dir = forward_dir}
     function m:remove()
-        world:remove_instance(instance)
+        imessage:pub("remove", instance)
     end
 
     function m:on_position_change(...)
