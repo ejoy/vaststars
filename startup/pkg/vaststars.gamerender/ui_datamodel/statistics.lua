@@ -92,8 +92,8 @@ local function update_vb(eid, points)
         vb[#vb + 1] = pt[2]
         vb[#vb + 1] = pt[3]
     end
-    local e <close> = world:entity(eid, "simplemesh:in")
-    local mesh = e.simplemesh
+    local e <close> = world:entity(eid, "mesh_result:in")
+    local mesh = e.mesh_result
     bgfx.update(mesh.vb.handle, 0, bgfx.memory_buffer("fff", vb));
 end
 

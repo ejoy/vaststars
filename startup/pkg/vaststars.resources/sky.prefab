@@ -3,7 +3,7 @@ data:
   material: /pkg/vaststars.resources/materials/sky/star_sky.material
   render_layer: background
   scene: {}
-  simplemesh: true
+  mesh_result: true
   starsky: true
   visible_state: main_view
 policy:

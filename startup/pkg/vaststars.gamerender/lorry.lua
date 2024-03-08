@@ -35,7 +35,7 @@ local function create(prefab, s, r, t)
             "ant.render|simplerender",
         },
         data = {
-            simplemesh = ientity.create_mesh({"p3|t2", {
+            mesh_result = ientity.create_mesh({"p3|t2", {
                 shadow_x,            0, shadow_z,            0, shadow_minv, --bottom left
                 shadow_x,            0, shadow_z + shadow_h, 0, shadow_maxv, --top left
                 shadow_x + shadow_w, 0, shadow_z,            1, shadow_minv, --bottom right
