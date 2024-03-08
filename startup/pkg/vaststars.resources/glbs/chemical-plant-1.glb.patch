@@ -133,30 +133,6 @@ value:
   tag:
     timeline
 ---
-file: idle.prefab
-op: add
-path: /-
-value:
-  data:
-    timeline:
-      duration: 3
-      key_event:
-        ---
-        event_list:
-          ---
-          action: idle_start
-          event_type: Animation
-          forwards: true
-          name: Animation5
-          pause_frame: 90
-        tick: 0
-        time: 0
-      loop: false
-  policy:
-    ant.timeline|timeline
-  tag:
-    timeline
----
 file: work.prefab
 op: add
 path: /-
@@ -244,6 +220,49 @@ value:
           event_type: Effect
         tick: 45
         time: 1.5
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline
+---
+file: idle.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/chemical-plant_water.efk
+      speed: 1
+    scene:
+      s: {2.5, 2.5, 2.5}
+      t: {0, 14, 0}
+    visible_state: main_queue
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    chemical-plant_water
+---
+file: idle.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          action: idle_start
+          event_type: Animation
+          forwards: true
+          name: Animation5
+          pause_frame: 90
+        tick: 0
+        time: 0
       loop: false
   policy:
     ant.timeline|timeline
