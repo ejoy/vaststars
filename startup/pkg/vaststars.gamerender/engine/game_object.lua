@@ -10,7 +10,7 @@ local ig        = ecs.require "ant.group|group"
 local imodifier = ecs.require "ant.modifier|modifier"
 local itl       = ecs.require "ant.timeline|timeline"
 local imessage  = ecs.require "message_sub"
-local imaterial = ecs.require "ant.asset|material"
+local imaterial = ecs.require "ant.render|material"
 local iefk      = ecs.require "ant.efk|efk"
 local iplayback = ecs.require "ant.animation|playback"
 local ihitch    = ecs.require "ant.render|hitch.hitch"
@@ -128,7 +128,7 @@ local _create_prefab, _get_hitch_group_id, _stop_world, _restart_world ; do
         render_layer = render_layer or RENDER_LAYER.BUILDING
         local hash = _calc_hash(prefab, tostring(color), tostring(emissive_color), render_layer)
         if cache[hash] then
-            return assert(cache[hash].hitch_group_id), true
+            return assert(cache[hash].hitch_group_id)
         end
 
         local hitch_group_id, inst = _create_prefab(prefab, color, emissive_color, render_layer, dynamic_mesh)
@@ -149,20 +149,13 @@ local _create_prefab, _get_hitch_group_id, _stop_world, _restart_world ; do
     end
 end
 
-local function _create_group(self, group)
+local function _update_group(self, group)
     local e <close> = world:entity(self.tag["hitch"][1])
     w:extend(e, "hitch:update hitch_update?out")
     e.hitch.group = group
     e.hitch_update = true
 end
-imessage:sub("hitch_instance|create_group", _create_group)
-
-imessage:sub("hitch_instance|update_group", function(self, group)
-    local e <close> = world:entity(self.tag["hitch"][1])
-    w:extend(e, "hitch:update hitch_update?out")
-    e.hitch.group = group
-    e.hitch_update = true
-end)
+imessage:sub("hitch_instance|update_group", _update_group)
 
 imessage:sub("hitch_instance|modifier", function(self, ...)
     imodifier.start(imodifier.create_bone_modifier(self.tag["hitch"][1], 0, "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab", "Bone"), ...)
@@ -213,7 +206,7 @@ function igame_object.create(init)
         on_ready = function(self)
             local root <close> = world:entity(self.tag["hitch"][1])
             set_srt(root, srt)
-            _create_group(self, hitch_group_id)
+            _update_group(self, hitch_group_id)
             if init.on_ready then
                 init.on_ready(self)
             end
@@ -233,7 +226,7 @@ function igame_object.create(init)
             end
         end
 
-        local hitch_group_id, ready = _get_hitch_group_id(
+        local hitch_group_id = _get_hitch_group_id(
             self.data.prefab,
             self.data.color,
             self.data.emissive_color,
@@ -241,11 +234,7 @@ function igame_object.create(init)
             self.data.dynamic
         )
 
-        if ready then
-            imessage:pub("hitch_instance|update_group", self.hitch_instance, hitch_group_id)
-        else
-            imessage:pub("hitch_instance|create_group", self.hitch_instance, hitch_group_id)
-        end
+        imessage:pub("hitch_instance|update_group", self.hitch_instance, hitch_group_id)
         self.hitch_group_id = hitch_group_id
     end
     local function send(self, msg, ...)

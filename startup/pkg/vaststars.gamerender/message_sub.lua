@@ -4,7 +4,7 @@ local w = world.w
 
 local imessage = ecs.require "message"
 local ivs = ecs.require "ant.render|visible_state"
-local imaterial = ecs.require "ant.asset|material"
+local imaterial = ecs.require "ant.render|material"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
 imessage:sub("show", function(instance, visible)

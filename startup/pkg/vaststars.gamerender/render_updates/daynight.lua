@@ -20,14 +20,9 @@ local daynight_update; do
         local total_sec = DAYNIGHT_DEBUG
         local total_ms = total_sec * 1000
 
-        local function gettime()
-            local _, now = itimer.now()
-            return now * 10
-        end
-
         function daynight_update()
             local dne = assert(w:first "daynight:in")
-            idn.update_cycle(dne, (gettime() % total_ms)/total_ms)
+            idn.update_cycle(dne, (itimer.now() % total_ms)/total_ms)
         end
     else
         function daynight_update(gameplayWorld)
