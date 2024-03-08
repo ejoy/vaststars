@@ -151,9 +151,9 @@ end
 
 local function _create_group(self, group)
     local e <close> = world:entity(self.tag["hitch"][1])
-    w:extend(e, "hitch:update hitch_create?out")
+    w:extend(e, "hitch:update hitch_update?out")
     e.hitch.group = group
-    e.hitch_create = true
+    e.hitch_update = true
 end
 imessage:sub("hitch_instance|create_group", _create_group)
 
