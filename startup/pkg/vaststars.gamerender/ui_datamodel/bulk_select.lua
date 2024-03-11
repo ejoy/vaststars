@@ -22,6 +22,7 @@ local select_mb = mailbox:sub {"select"}
 local unselect_mb = mailbox:sub {"unselect"}
 local reset_mb = mailbox:sub {"reset"}
 local operate_mb = mailbox:sub {"operate"}
+local focus_mb = mailbox:sub {"focus"}
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local objects = require "objects"
 local ibuilding = ecs.require "render_updates.building"
@@ -33,6 +34,7 @@ local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_butt
 local update_buildings_state = ecs.require "ui_datamodel.common.bulk_opt".update_buildings_state
 local renew_selected_range = ecs.require "ui_datamodel.common.bulk_opt".renew_selected_range
 local remove_selected_range = ecs.require "ui_datamodel.common.bulk_opt".remove_selected_range
+local get_selected_ltrb = ecs.require "ui_datamodel.common.bulk_opt".get_selected_ltrb
 local igame_object = ecs.require "engine.game_object"
 
 local selecting = {}
@@ -43,6 +45,14 @@ local function _clear()
         {selecting, "opaque", "null", RENDER_LAYER.BUILDING},
     })
     selecting = {}
+end
+
+local function _focus(func)
+    local l, t, r, b = get_selected_ltrb()
+    if not l then
+        return
+    end
+    icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(l, t, r - l, b - t)), func)
 end
 
 local M = {}
@@ -185,6 +195,10 @@ function M.update(datamodel)
         --
         iui.close("/pkg/vaststars.resources/ui/bulk_select.html")
         iui.open({rml = "/pkg/vaststars.resources/ui/bulk_opt.html"})
+    end
+
+    for _ in focus_mb:unpack() do
+        _focus()
     end
 end
 
