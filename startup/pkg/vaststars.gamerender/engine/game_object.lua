@@ -178,10 +178,18 @@ local function set_srt(e, srt)
     end
 end
 
+local function _replace_prefab(p, prefab)
+    p = p:gsub("^(.*%.glb|)(.*%.prefab)$", ("%%1%s"):format(prefab))
+    p = p:gsub("^(.*%.gltf|)(.*%.prefab)$", ("%%1%s"):format(prefab))
+    return p
+end
+
 local igame_object = {}
 function igame_object.preload(init)
     _create_prefab(init.prefab, init.color, init.emissive_color, init.render_layer, init.dynamic)
 end
+
+igame_object.replace_prefab = _replace_prefab
 
 --[[
 init = {
@@ -201,7 +209,7 @@ function igame_object.create(init)
 
     local hitch_instance = world:create_instance {
         group = init.group_id,
-        prefab = init.prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1hitch.prefab"),
+        prefab = _replace_prefab(init.prefab, "hitch.prefab"),
         parent = init.parent,
         on_ready = function(self)
             local root <close> = world:entity(self.tag["hitch"][1])

@@ -3,8 +3,9 @@ local world = ecs.world
 local w = world.w
 
 local COLOR <const> = ecs.require "vaststars.prototype|color"
+local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
 
-local create_selected_boxes = ecs.require "selected_boxes"
+local create_selection_box = ecs.require "selection_box"
 local global = require "global"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
@@ -12,12 +13,12 @@ local iprototype = require "gameplay.interface.prototype"
 local mt = {}; mt.__index = mt
 
 function mt:on_position_change(building_srt, dir)
-    self.selected_boxes:set_position(building_srt.t)
-    self.selected_boxes:set_wh(iprototype.rotate_area(self.typeobject.area, dir))
+    self.selection_box:set_position(building_srt.t)
+    self.selection_box:set_wh(iprototype.rotate_area(self.typeobject.area, dir))
 end
 
 function mt:remove()
-    self.selected_boxes:remove()
+    self.selection_box:remove()
 end
 
 local object_id
@@ -44,13 +45,10 @@ local function create(id)
     local building = global.buildings[object.id]
     assert(building.transfer_source_box == nil)
 
-    local selected_boxes = create_selected_boxes({
-            "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-            "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-        },
+    local selection_box = create_selection_box(SELECTION_BOX_MODEL,
         object.srt.t, COLOR.TRANSFER_SOURCE, iprototype.rotate_area(typeobject.area, object.dir)
     )
-    building.transfer_source_box = setmetatable({selected_boxes = selected_boxes, typeobject = typeobject}, mt)
+    building.transfer_source_box = setmetatable({selection_box = selection_box, typeobject = typeobject}, mt)
 
     object_id = id
 end

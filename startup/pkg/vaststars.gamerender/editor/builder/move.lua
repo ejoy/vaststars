@@ -15,6 +15,7 @@ local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local COLOR <const> = ecs.require "vaststars.prototype|color"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
 
 local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
@@ -33,8 +34,8 @@ local create_fluid_indicators = ecs.require "fluid_indicators".create
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local ibuilding = ecs.require "render_updates.building"
-local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
-local create_selected_boxes = ecs.require "selected_boxes"
+local create_pickup_selection_box = ecs.require "editor.indicators.pickup_selection_box"
+local create_selection_box = ecs.require "selection_box"
 local vsobject_manager = ecs.require "vsobject_manager"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local srt = require "utility.srt"
@@ -108,21 +109,21 @@ local function _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
     return true
 end
 
-local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+local function _show_nearby_buildings_selection_box(self, x, y, dir, typeobject)
     local nearby_buldings = _get_nearby_buildings(self.move_object_id, x, y, iprototype.rotate_area(typeobject.area, dir))
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     local redraw = {}
     for object_id, object in pairs(nearby_buldings) do
-        if not self.selected_boxes[object_id] then
+        if not self.selection_box[object_id] then
             redraw[object_id] = object
         end
     end
 
-    for object_id, o in pairs(self.selected_boxes) do
+    for object_id, o in pairs(self.selection_box) do
         if not nearby_buldings[object_id] then
             o:remove()
-            self.selected_boxes[object_id] = nil
+            self.selection_box[object_id] = nil
         end
     end
 
@@ -161,16 +162,13 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
             end
         end
 
-        self.selected_boxes[object_id] = create_selected_boxes(
-            {
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-            },
+        self.selection_box[object_id] = create_selection_box(
+            SELECTION_BOX_MODEL,
             object.srt.t, color, iprototype.rotate_area(otypeobject.area, object.dir)
         )
     end
 
-    for object_id, o in pairs(self.selected_boxes) do
+    for object_id, o in pairs(self.selection_box) do
         local object = assert(objects:get(object_id))
         local otypeobject = iprototype.queryByName(object.prototype_name)
         local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
@@ -271,8 +269,8 @@ local function _new_entity(self, datamodel, typeobject)
     if e.chimney then
         self.pickup_components.fluid_indicators = create_fluid_indicators(dir, self.pickup_object.srt, typeobject)
     end
-    self.pickup_components.self_selected_box = create_pickup_selected_box(self.pickup_object.srt.t, typeobject.area, dir, datamodel.show_confirm and true or false)
-    _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+    self.pickup_components.self_selection_box = create_pickup_selection_box(self.pickup_object.srt.t, typeobject.area, dir, datamodel.show_confirm and true or false)
+    _show_nearby_buildings_selection_box(self, x, y, dir, typeobject)
 
     if self.translucent_plane then
         self.translucent_plane:remove()
@@ -393,7 +391,7 @@ local function touch_move(self, datamodel, delta_vec)
         for _, c in pairs(self.pickup_components) do
             c:on_status_change(datamodel.show_confirm)
         end
-        _show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
+        _show_nearby_buildings_selection_box(self, x, y, pickup_object.dir, typeobject)
         return
     else
         datamodel.show_confirm = true
@@ -413,7 +411,7 @@ local function touch_move(self, datamodel, delta_vec)
         for _, c in pairs(self.pickup_components) do
             c:on_status_change(datamodel.show_confirm)
         end
-        _show_nearby_buildings_selected_boxes(self, x, y, pickup_object.dir, typeobject)
+        _show_nearby_buildings_selection_box(self, x, y, pickup_object.dir, typeobject)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, x, y, w, h)
@@ -526,10 +524,10 @@ local function clean(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
 
-    for _, o in pairs(self.selected_boxes) do
+    for _, o in pairs(self.selection_box) do
         o:remove()
     end
-    self.selected_boxes = {}
+    self.selection_box = {}
 
     for _, c in pairs(self.pickup_components) do
         c:remove()
@@ -599,7 +597,7 @@ local function create()
     m.clean = clean
     m.build = build
     m.pickup_components = {}
-    m.selected_boxes = {}
+    m.selection_box = {}
     m.continue_construct = false
     m.CONFIRM_EXIT = true
     return m

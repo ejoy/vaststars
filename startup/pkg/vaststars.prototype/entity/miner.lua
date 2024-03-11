@@ -2,9 +2,9 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "采矿机I" {
-    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
@@ -22,9 +22,9 @@ prototype "采矿机I" {
 }
 
 prototype "采矿机II" {
-    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
@@ -42,9 +42,9 @@ prototype "采矿机II" {
 }
 
 prototype "采矿机III" {
-    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
@@ -62,9 +62,9 @@ prototype "采矿机III" {
 }
 
 prototype "轻型采矿机" {
-    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},

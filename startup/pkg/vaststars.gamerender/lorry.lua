@@ -52,7 +52,7 @@ local function create(prefab, s, r, t)
     lorry_obj:send("hitch_instance|attach", "arrow", arrow_instance)
 
     local idle_prefab <const> = prefab
-    local work_prefab <const> = prefab:gsub("^(.*%.glb|)(.*%.prefab)$", "%1work.prefab")
+    local work_prefab <const> = igame_object.replace_prefab(prefab, "work.prefab")
 
     function outer:work()
         lorry_obj:update {prefab = work_prefab}

@@ -5,6 +5,7 @@ local w = world.w
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local COLOR <const> = ecs.require "vaststars.prototype|color"
+local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
 
 local ipick_object = ecs.require "pick_object_system"
 local CLASS <const> = ipick_object.CLASS
@@ -52,7 +53,7 @@ local click_recipe_mb = mailbox:sub {"click_recipe"}
 local bulk_select_mb = mailbox:sub {"bulk_select"}
 local bulk_opt_exit_mb = mailbox:sub {"bulk_opt_exit"}
 local iguide_tips = ecs.require "guide_tips"
-local create_selected_boxes = ecs.require "selected_boxes"
+local create_selection_box = ecs.require "selection_box"
 local interval_call = ecs.require "engine.interval_call"
 local itransfer = require "gameplay.interface.transfer"
 local show_message = ecs.require "show_message".show_message
@@ -291,11 +292,8 @@ end
 
 local function show_selectbox(x, y, w, h)
     local pos = icoord.position(x, y, w, h)
-    local o = create_selected_boxes(
-        {
-            "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-            "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-        },
+    local o = create_selection_box(
+        SELECTION_BOX_MODEL,
         pos, COLOR.SELECTED_OUTLINE, w, h
     )
     idetail.add_tmp_object(o)

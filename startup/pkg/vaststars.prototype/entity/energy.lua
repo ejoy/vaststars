@@ -176,8 +176,8 @@ prototype "轻型太阳能板" {
 }
 
 prototype "蓄电池I" {
-    model = "/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "accumulator"},
@@ -190,8 +190,8 @@ prototype "蓄电池I" {
 }
 
 prototype "蓄电池II" {
-    model = "/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "accumulator"},
@@ -204,8 +204,8 @@ prototype "蓄电池II" {
 }
 
 prototype "蓄电池III" {
-    model = "/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf.glb|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "accumulator"},
@@ -230,8 +230,8 @@ prototype "核反应堆" {
 }
 
 prototype "换热器I" {
-    model = "/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/boiler/boiler.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/boiler/boiler.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -284,8 +284,8 @@ prototype "热管1-X型" {
 }
 
 prototype "锅炉I" {
-    model = "/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/boiler/boiler.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/boiler/boiler.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "assembling", "fluidboxes"},

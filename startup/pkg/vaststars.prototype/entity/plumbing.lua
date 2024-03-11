@@ -291,9 +291,9 @@ prototype "排水口II" {
 }
 
 prototype "空气过滤器I" {
-    model = "/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
+    icon = "mem:/pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|mesh.prefab config:s,1,3,1.2",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -323,9 +323,9 @@ prototype "空气过滤器I" {
 }
 
 prototype "空气过滤器II" {
-    model = "/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
+    icon = "mem:/pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|mesh.prefab config:s,1,3,1.2",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -354,9 +354,9 @@ prototype "空气过滤器II" {
 }
 
 prototype "空气过滤器III" {
-    model = "/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab config:s,1,3,1.2",
+    icon = "mem:/pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|mesh.prefab config:s,1,3,1.2",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},

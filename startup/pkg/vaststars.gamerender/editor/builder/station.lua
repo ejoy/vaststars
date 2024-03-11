@@ -15,6 +15,7 @@ local COLOR <const> = ecs.require "vaststars.prototype|color"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local BUILDING_EFK_SCALE <const> = CONSTANT.BUILDING_EFK_SCALE
+local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
 
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
@@ -26,7 +27,7 @@ local objects = require "objects"
 local iobject = ecs.require "object"
 local igrid_entity = ecs.require "engine.grid_entity"
 local create_station_indicator = ecs.require "editor.indicators.station_indicator"
-local create_selected_boxes = ecs.require "selected_boxes"
+local create_selection_box = ecs.require "selection_box"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local iinventory = require "gameplay.interface.inventory"
@@ -88,21 +89,21 @@ local function _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
     return true
 end
 
-local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+local function _show_nearby_buildings_selection_box(self, x, y, dir, typeobject)
     local nearby_buldings = _get_nearby_buildings(x, y, iprototype.rotate_area(typeobject.area, dir))
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     local redraw = {}
     for object_id, object in pairs(nearby_buldings) do
-        if not self.selected_boxes[object_id] then
+        if not self.selection_box[object_id] then
             redraw[object_id] = object
         end
     end
 
-    for object_id, o in pairs(self.selected_boxes) do
+    for object_id, o in pairs(self.selection_box) do
         if not nearby_buldings[object_id] then
             o:remove()
-            self.selected_boxes[object_id] = nil
+            self.selection_box[object_id] = nil
         end
     end
 
@@ -141,16 +142,13 @@ local function _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject
             end
         end
 
-        self.selected_boxes[object_id] = create_selected_boxes(
-            {
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-            },
+        self.selection_box[object_id] = create_selection_box(
+            SELECTION_BOX_MODEL,
             object.srt.t, color, iprototype.rotate_area(otypeobject.area, object.dir)
         )
     end
 
-    for object_id, o in pairs(self.selected_boxes) do
+    for object_id, o in pairs(self.selection_box) do
         local object = assert(objects:get(object_id))
         local otypeobject = iprototype.queryByName(object.prototype_name)
         local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
@@ -214,11 +212,11 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
         srt = status.srt,
     }
 
-    _show_nearby_buildings_selected_boxes(self, x, y, dir, typeobject)
+    _show_nearby_buildings_selection_box(self, x, y, dir, typeobject)
 
     local srt = _get_road_entrance_srt(typeobject, status.srt)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local self_selected_boxes_position = icoord.position(x, y, w, h)
+    local self_selection_box_position = icoord.position(x, y, w, h)
     if srt then
         if datamodel.show_confirm then
             if not self.road_entrance then
@@ -226,11 +224,8 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
             else
                 self.road_entrance:set_state("valid")
             end
-            if not self.self_selected_boxes then
-                self.self_selected_boxes = create_selected_boxes({
-                    "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                    "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab"
-                }, self_selected_boxes_position, COLOR_GREEN, w, h)
+            if not self.self_selection_box then
+                self.self_selection_box = create_selection_box(SELECTION_BOX_MODEL, self_selection_box_position, COLOR_GREEN, w, h)
             end
         else
             if not self.road_entrance then
@@ -238,11 +233,8 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
             else
                 self.road_entrance:set_state("invalid")
             end
-            if not self.self_selected_boxes then
-                self.self_selected_boxes = create_selected_boxes({
-                    "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                    "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab"
-                }, self_selected_boxes_position, COLOR_RED, w, h)
+            if not self.self_selection_box then
+                self.self_selection_box = create_selection_box(SELECTION_BOX_MODEL, self_selection_box_position, COLOR_RED, w, h)
             end
         end
     end
@@ -284,9 +276,9 @@ local function rotate(self, datamodel, dir)
 
     indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
-    local self_selected_boxes_position = icoord.position(status.x, status.y, w, h)
-    self.self_selected_boxes:set_position(self_selected_boxes_position)
-    self.self_selected_boxes:set_wh(w, h)
+    local self_selection_box_position = icoord.position(status.x, status.y, w, h)
+    self.self_selection_box:set_position(self_selection_box_position)
+    self.self_selection_box:set_wh(w, h)
 end
 
 local function _calc_dir(adjacent_coords, x, y, dir)
@@ -326,12 +318,12 @@ local function touch_move(self, datamodel, delta_vec)
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     local position, x, y = _align(w, h, self.position_type)
     if position then
-        local self_selected_boxes_position = icoord.position(x, y, w, h)
-        self.self_selected_boxes:set_position(self_selected_boxes_position)
-        self.self_selected_boxes:set_wh(w, h)
+        local self_selection_box_position = icoord.position(x, y, w, h)
+        self.self_selection_box:set_position(self_selection_box_position)
+        self.self_selection_box:set_wh(w, h)
     end
 
-    _show_nearby_buildings_selected_boxes(self, x, y, status.dir, typeobject)
+    _show_nearby_buildings_selection_box(self, x, y, status.dir, typeobject)
 
     local dx, dy = icoord.road_coord(x, y)
     if x == dx and y == dy and self.check_coord(x, y, status.dir, typeobject) then
@@ -364,14 +356,14 @@ local function touch_end(self, datamodel)
 
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
-            self.self_selected_boxes:set_color(COLOR_RED)
+            self.self_selection_box:set_color(COLOR_RED)
         end
     else
         datamodel.show_confirm = true
 
         if self.road_entrance then
             self.road_entrance:set_state("valid")
-            self.self_selected_boxes:set_color(COLOR_GREEN)
+            self.self_selection_box:set_color(COLOR_GREEN)
         end
     end
 
@@ -379,9 +371,9 @@ local function touch_end(self, datamodel)
     assert(srt)
     self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
-    local self_selected_boxes_position = icoord.position(status.x, status.y, w, h)
-    self.self_selected_boxes:set_position(self_selected_boxes_position)
-    self.self_selected_boxes:set_wh(w, h)
+    local self_selection_box_position = icoord.position(status.x, status.y, w, h)
+    self.self_selection_box:set_position(self_selection_box_position)
+    self.self_selection_box:set_wh(w, h)
 end
 
 local function confirm(self, datamodel)
@@ -436,10 +428,10 @@ local function clean(self, datamodel)
         self.grid_entity = nil
     end
 
-    for _, o in pairs(self.selected_boxes) do
+    for _, o in pairs(self.selection_box) do
         o:remove()
     end
-    self.selected_boxes = {}
+    self.selection_box = {}
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
@@ -450,8 +442,8 @@ local function clean(self, datamodel)
     if self.road_entrance then
         self.road_entrance:remove()
         self.road_entrance = nil
-        self.self_selected_boxes:remove()
-        self.self_selected_boxes = nil
+        self.self_selection_box:remove()
+        self.self_selection_box = nil
     end
 end
 
@@ -531,7 +523,7 @@ local function create()
     m.rotate = rotate
     m.clean = clean
     m.build = build
-    m.selected_boxes = {}
+    m.selection_box = {}
     m.status = {}
     return m
 end

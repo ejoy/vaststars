@@ -3,12 +3,13 @@ local world = ecs.world
 local w = world.w
 
 local COLOR <const> = ecs.require "vaststars.prototype|color"
+local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
 
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local idetail = {}
 local gameplay_core = require "gameplay.core"
-local create_selected_boxes = ecs.require "selected_boxes"
+local create_selection_box = ecs.require "selection_box"
 local icoord = require "coord"
 local audio = import_package "ant.audio"
 local itranslucent_plane = ecs.require "translucent_plane"
@@ -129,11 +130,8 @@ do
         if iprototype.is_pipe_to_ground(typeobject.name) then
             local neighbor, connection_dir = __find_ground_neighbor(object.prototype_name, object.x, object.y, object.dir)
             if neighbor then
-                temp_objects[#temp_objects+1] = create_selected_boxes(
-                    {
-                        "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                        "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-                    },
+                temp_objects[#temp_objects+1] = create_selection_box(
+                    SELECTION_BOX_MODEL,
                     neighbor.srt.t, COLOR.SELECTED_OUTLINE, iprototype.rotate_area(typeobject.area, neighbor.dir)
                 )
 

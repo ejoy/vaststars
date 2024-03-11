@@ -27,10 +27,10 @@ local function update(self, t)
     local typeobject = iprototype.queryByName(self.prototype_name)
     local model
     if t.state == "translucent" then
-        model = typeobject.model:gsub("^(.*%.glb|)(.*%.prefab)$", "%1translucent.prefab")
+        model = igame_object.replace_prefab(typeobject.model, "translucent.prefab")
     else
         if typeobject.work_status and typeobject.work_status[t.work_status] then
-            model = typeobject.model:gsub("^(.*%.glb|)(.*%.prefab)$", ("%%1%s.prefab"):format(t.work_status))
+            model = igame_object.replace_prefab(typeobject.model, ("%s.prefab"):format(t.work_status))
         else
             model = typeobject.model
         end
@@ -60,10 +60,10 @@ return function (init)
     local model = typeobject.model
     if init.debris then
         local typeobject = iprototype.queryById(init.debris)
-        model = typeobject.model:gsub("^(.*%.glb|)(.*%.prefab)$", "%1debris.prefab")
+        model = igame_object.replace_prefab(typeobject.model, "debris.prefab")
     end
     if init.state == "translucent" then
-        model = typeobject.model:gsub("^(.*%.glb|)(.*%.prefab)$", "%1translucent.prefab")
+        model = igame_object.replace_prefab(typeobject.model, "translucent.prefab")
     end
 
     local game_object = assert(igame_object.create({

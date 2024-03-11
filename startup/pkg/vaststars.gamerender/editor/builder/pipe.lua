@@ -26,7 +26,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local icoord = require "coord"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local gameplay_core = require "gameplay.core"
-local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
+local create_pickup_selection_box = ecs.require "editor.indicators.pickup_selection_box"
 local iprototype_cache = ecs.require "prototype_cache"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local srt = require "utility.srt"
@@ -201,7 +201,7 @@ local function new(self, datamodel, typeobject, position_type)
     local valid = self.check_coord(status.x, status.y, status.dir, self.typeobject)
 
     self.pickup_components = {}
-    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(status.srt.t, typeobject.area, dir, valid)
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selection_box(status.srt.t, typeobject.area, dir, valid)
 end
 
 local function build(self, v)

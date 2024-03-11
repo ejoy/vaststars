@@ -13,6 +13,7 @@ local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
 
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
@@ -28,7 +29,7 @@ local icamera_controller = ecs.require "engine.system.camera_controller"
 local icoord = require "coord"
 local iobject = ecs.require "object"
 local srt = require "utility.srt"
-local create_selected_boxes = ecs.require "selected_boxes"
+local create_selection_box = ecs.require "selection_box"
 local gameplay_core = require "gameplay.core"
 local iinventory = require "gameplay.interface.inventory"
 local igameplay = ecs.require "gameplay.gameplay_system"
@@ -110,7 +111,7 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     iobject.remove(self.pickup_object)
 
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local self_selected_boxes_position = icoord.position(x, y, w, h)
+    local self_selection_box_position = icoord.position(x, y, w, h)
     local check_x, check_y = _lefttop_position(self.typeobject.check_pos, dir, typeobject.area, typeobject.check_area)
     local check_w, check_h = iprototype.rotate_area(typeobject.check_area, dir)
     local valid = check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
@@ -118,10 +119,7 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     datamodel.show_rotate = true
 
     local color = valid and COLOR_GREEN or COLOR_RED
-    self.self_selected_boxes = create_selected_boxes({
-        "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-        "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab"
-    }, self_selected_boxes_position, color, w+1, h+1)
+    self.self_selection_box = create_selection_box(SELECTION_BOX_MODEL, self_selection_box_position, color, w+1, h+1)
 
     self.status = {
         x = x,
@@ -153,8 +151,8 @@ local function _update_state(self, datamodel)
 
     local position, x, y = _align(w, h, self.position_type)
     if position then
-        self.self_selected_boxes:set_position(icoord.position(x, y, w, h))
-        self.self_selected_boxes:set_wh(w, h)
+        self.self_selection_box:set_position(icoord.position(x, y, w, h))
+        self.self_selection_box:set_wh(w, h)
     end
 
     local check_x, check_y = _lefttop_position(self.typeobject.check_pos, status.dir, self.typeobject.area, self.typeobject.check_area)
@@ -162,7 +160,7 @@ local function _update_state(self, datamodel)
     local valid = check_coord(x, y, w, h, check_x, check_y, check_w, check_h)
 
     datamodel.show_confirm = valid
-    self.self_selected_boxes:set_color(valid and COLOR_GREEN or COLOR_RED)
+    self.self_selection_box:set_color(valid and COLOR_GREEN or COLOR_RED)
 end
 
 ---
@@ -270,7 +268,7 @@ local function confirm(self, datamodel)
     pickup_object.PREPARE = true
     self.pickup_object = nil
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
-    self.self_selected_boxes:remove()
+    self.self_selection_box:remove()
 
     _new_entity(self, datamodel, typeobject, status.x, status.y, status.srt.t, status.dir)
 end
@@ -282,7 +280,7 @@ local function clean(self, datamodel)
     iobject.remove(self.pickup_object)
     self.grid_entity:remove()
 
-    self.self_selected_boxes:remove()
+    self.self_selection_box:remove()
 end
 
 local function new(self, datamodel, typeobject, position_type)

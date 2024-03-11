@@ -9,7 +9,7 @@ local icoord = require "coord"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 local objects = require "objects"
-local create_selected_box = ecs.require "selected_boxes"
+local create_selection_box = ecs.require "selection_box"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local math3d = require "math3d"
 local iui = ecs.require "engine.system.ui_system"
@@ -57,7 +57,7 @@ local function show(tech_node)
                     excluded_pickup_id = object.id
                 end
             end
-            selected_tips[#selected_tips + 1] = {create_selected_box({nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
+            selected_tips[#selected_tips + 1] = {create_selection_box({nd.prefab}, center, math3d.vector(nd.color), nd.w, nd.h), prefab}
         elseif nd.camera_x and nd.camera_y then
             iui.leave()
             iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unselected")

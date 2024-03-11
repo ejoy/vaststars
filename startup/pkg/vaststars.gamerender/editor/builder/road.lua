@@ -33,7 +33,7 @@ local iroadnet_converter = require "roadnet_converter"
 local igrid_entity = ecs.require "engine.grid_entity"
 local iroadnet = ecs.require "engine.roadnet"
 local gameplay_core = require "gameplay.core"
-local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
+local create_pickup_selection_box = ecs.require "editor.indicators.pickup_selection_box"
 local create_road_next_indicator = ecs.require "editor.indicators.road_next_indicator"
 local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
@@ -143,8 +143,8 @@ local function _new_entity(self, datamodel, typeobject, x, y)
             self.position_type
         )
     end
-    if not self.pickup_components.selected_box then
-        self.pickup_components.selected_box = create_pickup_selected_box(status.srt.t, typeobject.area, dir, true)
+    if not self.pickup_components.selection_box then
+        self.pickup_components.selection_box = create_pickup_selection_box(status.srt.t, typeobject.area, dir, true)
     end
     if not self.pickup_components.next_box then
         local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)

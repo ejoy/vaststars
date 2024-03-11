@@ -15,7 +15,7 @@ tag:
   work
 ---
 mount: 2
-prefab: /pkg/vaststars.resources/glbs/air-filter.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|work.prefab
 ---
 data:
   scene:
@@ -27,7 +27,7 @@ tag:
   mesh
 ---
 mount: 4
-prefab: /pkg/vaststars.resources/glbs/accumulator-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -39,7 +39,7 @@ tag:
   mesh
 ---
 mount: 6
-prefab: /pkg/vaststars.resources/glbs/air-filter.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/air-filter/air-filter.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -51,7 +51,7 @@ tag:
   mesh
 ---
 mount: 8
-prefab: /pkg/vaststars.resources/glbs/boiler.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/boiler/boiler.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -447,7 +447,7 @@ tag:
   mesh
 ---
 mount: 74
-prefab: /pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -459,7 +459,7 @@ tag:
   work
 ---
 mount: 76
-prefab: /pkg/vaststars.resources/glbs/miner-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|work.prefab
 ---
 data:
   scene:

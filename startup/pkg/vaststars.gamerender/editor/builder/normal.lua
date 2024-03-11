@@ -11,6 +11,7 @@ local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local TILE_SIZE <const> = CONSTANT.TILE_SIZE
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
 
 local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
@@ -22,7 +23,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local itranslucent_plane = ecs.require "translucent_plane"
 local create_translucent_plane = itranslucent_plane.create
 local flush_translucent_plane = itranslucent_plane.flush
-local create_selected_boxes = ecs.require "selected_boxes"
+local create_selection_box = ecs.require "selection_box"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local create_fluid_indicators = ecs.require "fluid_indicators".create
@@ -48,7 +49,7 @@ local function _create_self_translucent_plane(typeobject, x, y, dir, translucent
     return translucent_plane
 end
 
-local function _show_self_selected_boxes(self, position, typeobject, dir, valid)
+local function _show_self_selection_box(self, position, typeobject, dir, valid)
     --
     local color
     if valid then
@@ -56,18 +57,15 @@ local function _show_self_selected_boxes(self, position, typeobject, dir, valid)
     else
         color = COLOR.CONSTRUCT_OUTLINE_SELF_INVALID
     end
-    if not self.self_selected_boxes then
-        self.self_selected_boxes = create_selected_boxes(
-            {
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-            },
+    if not self.self_selection_box then
+        self.self_selection_box = create_selection_box(
+            SELECTION_BOX_MODEL,
             position, color, iprototype.rotate_area(typeobject.area, dir)
         )
     else
-        self.self_selected_boxes:set_wh(iprototype.rotate_area(typeobject.area, dir))
-        self.self_selected_boxes:set_position(position)
-        self.self_selected_boxes:set_color_transition(color, 400)
+        self.self_selection_box:set_wh(iprototype.rotate_area(typeobject.area, dir))
+        self.self_selection_box:set_position(position)
+        self.self_selection_box:set_color_transition(color, 400)
     end
 end
 
@@ -117,7 +115,7 @@ local function _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2)
     return true
 end
 
-local function _get_selected_boxes_color(x1, y1, w1, h1, dir1, typeobject1, x2, y2, w2, h2, dir2, typeobject2)
+local function _get_selection_box_color(x1, y1, w1, h1, dir1, typeobject1, x2, y2, w2, h2, dir2, typeobject2)
     if _is_building_intersect(x1, y1, w1, h1, x2, y2, w2, h2) then
         return COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS_INTERSECTION
     end
@@ -134,41 +132,38 @@ local function _get_selected_boxes_color(x1, y1, w1, h1, dir1, typeobject1, x2, 
     return COLOR.CONSTRUCT_OUTLINE_NEARBY_BUILDINGS
 end
 
-local function _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, x, y, dir)
+local function _show_nearby_buildings_selection_box(self, nearby_buldings, typeobject, x, y, dir)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     local new = {}
     for object_id, object in pairs(nearby_buldings) do
-        if not self.selected_boxes[object_id] then
+        if not self.selection_box[object_id] then
             new[object_id] = object
         end
     end
 
-    for object_id, o in pairs(self.selected_boxes) do
+    for object_id, o in pairs(self.selection_box) do
         if not nearby_buldings[object_id] then
             o:remove()
-            self.selected_boxes[object_id] = nil
+            self.selection_box[object_id] = nil
         end
     end
 
     for object_id, object in pairs(new) do
         local otypeobject = iprototype.queryByName(object.prototype_name)
         local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
-        local color = _get_selected_boxes_color(x, y, w, h, dir, typeobject, object.x, object.y, ow, oh, object.dir, otypeobject)
-        self.selected_boxes[object_id] = create_selected_boxes(
-            {
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation.glb|mesh.prefab",
-                "/pkg/vaststars.resources/glbs/selected-box-no-animation-line.glb|mesh.prefab",
-            },
+        local color = _get_selection_box_color(x, y, w, h, dir, typeobject, object.x, object.y, ow, oh, object.dir, otypeobject)
+        self.selection_box[object_id] = create_selection_box(
+            SELECTION_BOX_MODEL,
             object.srt.t, color, iprototype.rotate_area(otypeobject.area, object.dir)
         )
     end
 
-    for object_id, o in pairs(self.selected_boxes) do
+    for object_id, o in pairs(self.selection_box) do
         local object = assert(objects:get(object_id))
         local otypeobject = iprototype.queryByName(object.prototype_name)
         local ow, oh = iprototype.rotate_area(otypeobject.area, object.dir)
-        local color = _get_selected_boxes_color(x, y, w, h, dir, typeobject, object.x, object.y, ow, oh, object.dir, otypeobject)
+        local color = _get_selection_box_color(x, y, w, h, dir, typeobject, object.x, object.y, ow, oh, object.dir, otypeobject)
         o:set_color_transition(color, 400)
     end
 end
@@ -206,7 +201,7 @@ end
 local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     local nearby_buldings = _get_nearby_buildings(x, y, iprototype.rotate_area(typeobject.area, dir))
     _show_nearby_buildings_translucent_plane(self, nearby_buldings, typeobject)
-    _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, x, y, dir)
+    _show_nearby_buildings_selection_box(self, nearby_buldings, typeobject, x, y, dir)
 
     local translucent_plane_color
     if not self.check_coord(x, y, dir, self.typeobject) then
@@ -214,13 +209,13 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
             translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
         datamodel.show_confirm = false
-        _show_self_selected_boxes(self, position, typeobject, dir, false)
+        _show_self_selection_box(self, position, typeobject, dir, false)
     else
         if typeobject.supply_area then
             translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID
         end
         datamodel.show_confirm = true
-        _show_self_selected_boxes(self, position, typeobject, dir, true)
+        _show_self_selection_box(self, position, typeobject, dir, true)
     end
     datamodel.show_rotate = (typeobject.rotate_on_build == true)
 
@@ -235,7 +230,7 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     }
     local status = self.status
 
-    local model = typeobject.model:gsub("^(.*%.glb|)(.*%.prefab)$", "%1translucent.prefab")
+    local model = igame_object.replace_prefab(typeobject.model, "translucent.prefab")
     self.indicator = igame_object.create {
         prefab = model,
         srt = status.srt,
@@ -283,7 +278,7 @@ local function _update(self, datamodel)
             local offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
             self.translucent_plane:move(status.x + offset_x, status.y + offset_y, COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID)
         end
-        _show_self_selected_boxes(self, status.srt.t, typeobject, status.dir, false)
+        _show_self_selection_box(self, status.srt.t, typeobject, status.dir, false)
     else
         datamodel.show_confirm = true
 
@@ -292,12 +287,12 @@ local function _update(self, datamodel)
             local offset_x, offset_y = -((aw - w)//2), -((ah - h)//2)
             self.translucent_plane:move(status.x + offset_x, status.y + offset_y, COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_VALID)
         end
-        _show_self_selected_boxes(self, status.srt.t, typeobject, status.dir, true)
+        _show_self_selection_box(self, status.srt.t, typeobject, status.dir, true)
     end
 
     local nearby_buldings = _get_nearby_buildings(status.x, status.y, iprototype.rotate_area(typeobject.area, status.dir))
     _show_nearby_buildings_translucent_plane(self, nearby_buldings, typeobject)
-    _show_nearby_buildings_selected_boxes(self, nearby_buldings, typeobject, status.x, status.y, status.dir)
+    _show_nearby_buildings_selection_box(self, nearby_buldings, typeobject, status.x, status.y, status.dir)
     for _, c in pairs(self.pickup_components) do
         c:on_status_change(datamodel.show_confirm)
     end
@@ -418,7 +413,7 @@ local function rotate(self, datamodel, dir, delta_vec)
         datamodel.show_confirm = true
     end
 
-    _show_self_selected_boxes(self, status.srt.t, typeobject, status.dir, valid)
+    _show_self_selection_box(self, status.srt.t, typeobject, status.dir, valid)
 
     if self.translucent_plane then
         self.translucent_plane:remove()
@@ -439,7 +434,7 @@ local function clean(self, datamodel)
     end
     flush_translucent_plane()
 
-    for _, o in pairs(self.selected_boxes) do
+    for _, o in pairs(self.selection_box) do
         o:remove()
     end
 
@@ -447,7 +442,7 @@ local function clean(self, datamodel)
         c:remove()
     end
 
-    self.self_selected_boxes:remove()
+    self.self_selection_box:remove()
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
@@ -479,8 +474,8 @@ local function create()
     m.clean = clean
     m.build = build
     m.translucent_planes = {}
-    m.self_selected_boxes = nil
-    m.selected_boxes = {}
+    m.self_selection_box = nil
+    m.selection_box = {}
     m.pickup_components = {}
     m.status = {}
     return m

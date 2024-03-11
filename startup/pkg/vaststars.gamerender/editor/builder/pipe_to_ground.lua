@@ -26,7 +26,7 @@ local math_abs = math.abs
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
 local igrid_entity = ecs.require "engine.grid_entity"
 local icoord = require "coord"
-local create_pickup_selected_box = ecs.require "editor.indicators.pickup_selected_box"
+local create_pickup_selection_box = ecs.require "editor.indicators.pickup_selection_box"
 local global = require "global"
 local gameplay_core = require "gameplay.core"
 local srt = require "utility.srt"
@@ -760,7 +760,7 @@ local function _new_entity(self, typeobject, x, y, position, dir)
         self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT, MAP_HEIGHT_COUNT, TILE_SIZE, TILE_SIZE, {t = __calc_grid_position(self, typeobject, x, y, dir)})
     end
 
-    self.pickup_components[#self.pickup_components + 1] = create_pickup_selected_box(self.coord_indicator.srt.t, typeobject.area, dir, true)
+    self.pickup_components[#self.pickup_components + 1] = create_pickup_selection_box(self.coord_indicator.srt.t, typeobject.area, dir, true)
 end
 
 --------------------------------------------------------------------------------------------------

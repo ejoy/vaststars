@@ -3,8 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local PREFABS <const> = {
-    ["in"]  = "/pkg/vaststars.resources/glbs/belt.glb|input.prefab",
-    ["out"] = "/pkg/vaststars.resources/glbs/belt.glb|output.prefab",
+    ["in"]  = "/pkg/vaststars.resources/glbs/belt/belt.gltf|input.prefab",
+    ["out"] = "/pkg/vaststars.resources/glbs/belt/belt.gltf|output.prefab",
 }
 local BUILDING_IO_SLOTS <const> = ecs.require "vaststars.prototype|building_io_slots"
 

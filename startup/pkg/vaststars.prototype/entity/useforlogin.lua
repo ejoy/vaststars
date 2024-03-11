@@ -330,9 +330,9 @@ prototype "特殊熔炼炉" {
 }
 
 prototype "特殊采矿机" {
-    model = "/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/miner-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/miner-1/miner-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"miner"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "mining"},
