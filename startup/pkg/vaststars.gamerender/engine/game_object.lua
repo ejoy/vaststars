@@ -80,10 +80,13 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
         local inst = world:create_instance {
             prefab = prefab,
             group = hitch_group_id,
-            on_ready = function (self)
-                local exclude = self.tag["no_color_factors"] or {}
+            on_ready = function (instance)
+                local exclude = {}
+                for _, eid in ipairs(instance.tag["no_color_factors"] or {}) do
+                    exclude[eid] = true
+                end
 
-                for _, eid in ipairs(self.tag["*"]) do
+                for _, eid in ipairs(instance.tag["*"]) do
                     local e <close> = world:entity(eid, "render_object?update dynamic_mesh?out draw_indirect?in")
                     if e.draw_indirect then
                         e.draw_indirect.cid = ihitch.create_compute_entity() 
@@ -105,9 +108,9 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
                     end
                 end
 
-                for _, eid in ipairs(self.tag["timeline"] or {}) do
+                for _, eid in ipairs(instance.tag["timeline"] or {}) do
                     local e <close> = world:entity(eid, "timeline?in loop_timeline?out")
-                    e.timeline.eid_map = self.tag
+                    e.timeline.eid_map = instance.tag
                     itl:start(e)
 
                     if e.timeline.loop == true then
@@ -116,8 +119,6 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
                 end
             end,
         }
-
-
         return hitch_group_id, inst
     end
 
