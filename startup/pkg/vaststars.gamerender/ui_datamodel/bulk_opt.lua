@@ -145,6 +145,8 @@ function M.update(datamodel)
         end
 
         global.selected_buildings = {}
+
+        _close()
     end
 
     for _ in move_mb:unpack() do
