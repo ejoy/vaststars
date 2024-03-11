@@ -141,7 +141,7 @@
         </top-bar-container>
 
         <div style = "position: absolute; top: 1.32vmin; left: 4.97vmax; width: 10vmin; height: 10vmin; background-size: 100% 100%; background-image: '/pkg/vaststars.resources/ui/textures/construct/settings.texture';" data-event-click = "clickButton('settings')" data-if = "status ~= 'BUILD' and status ~= 'BULK_OPT'" />
-        <div style = "position: absolute; bottom: 1.32vmin; left: 4.97vmax; width: 10.67vmin; height: 11.14vmin; background-size: 100% 100%; background-image: '/pkg/vaststars.resources/ui/textures/construct/bulk-opt.texture';" data-event-click = "clickButton('bulk_select')" data-if = "status ~= 'BUILD' and status ~= 'BULK_OPT' and show_construct_button" />
+        <div style = "position: absolute; bottom: 8.32vmin; left: 4.97vmax; width: 15vmin; height: 15vmin; background-size: 100% 100%; background-image: '/pkg/vaststars.resources/ui/textures/bulk-select/focus.texture';" data-event-click = "clickButton('bulk_select')" data-if = "status ~= 'BUILD' and status ~= 'BULK_OPT' and show_construct_button" />
 
         <tech-or-task-bar style = "flex-direction: row; align-items: center; gap: 1vmin;" data-if = "status ~= 'BUILD' and status ~= 'BULK_OPT' and show_tech_progress" data-event-click="clickButton('click_techortaskicon', is_task)">
             <div style = "width: 16.28vmin; height: 16.28vmin; background-size: 100% 100%;" data-style-background-image="is_task and '/pkg/vaststars.resources/ui/textures/construct/task-icon.texture' or '/pkg/vaststars.resources/ui/textures/construct/tech-icon.texture'" />
