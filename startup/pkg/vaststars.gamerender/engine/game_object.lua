@@ -69,11 +69,11 @@ local _calc_hash ; do
     end
 end
 
-local _create_prefab, _get_hitch_group_id, _stop_world, _restart_world ; do
+local _get_hitch_group_id, _stop_world, _restart_world ; do
     local cache = {}
     local next_hitch_group = 1
 
-    function _create_prefab(prefab, color, emissive_color, render_layer, dynamic_mesh)
+    local function _create_prefab(prefab, color, emissive_color, render_layer, dynamic_mesh)
         local hitch_group_id = ig.register("HITCH_GROUP_" .. next_hitch_group)
         next_hitch_group = next_hitch_group + 1
 
@@ -166,7 +166,7 @@ imessage:sub("hitch_instance|attach", function(self, slot_name, instance)
     world:instance_set_parent(instance, eid)
 end)
 
-local function set_srt(e, srt)
+local function _set_srt(e, srt)
     if srt.s then
         iom.set_scale(e, srt.s)
     end
@@ -185,10 +185,6 @@ local function _replace_prefab(p, prefab)
 end
 
 local igame_object = {}
-function igame_object.preload(init)
-    _create_prefab(init.prefab, init.color, init.emissive_color, init.render_layer, init.dynamic)
-end
-
 igame_object.replace_prefab = _replace_prefab
 
 --[[
@@ -213,7 +209,7 @@ function igame_object.create(init)
         parent = init.parent,
         on_ready = function(self)
             local root <close> = world:entity(self.tag["hitch"][1])
-            set_srt(root, srt)
+            _set_srt(root, srt)
             _update_group(self, hitch_group_id)
             if init.on_ready then
                 init.on_ready(self)
