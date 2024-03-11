@@ -63,7 +63,7 @@ tag:
   mesh
 ---
 mount: 10
-prefab: /pkg/vaststars.resources/glbs/chemical-plant-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf|mesh.prefab
 ---
 data:
   scene:
