@@ -44,7 +44,7 @@ local CAMERA_POSITION_MAX <const> = math3d.constant { type = "v4",  1000, CAMERA
 local CAMERA_BOUNDS_AABB <const> = math3d.constant_array("v4", math3d.aabb(CAMERA_POSITION_MIN, CAMERA_POSITION_MAX))
 
 local iom = ecs.require "ant.objcontroller|obj_motion"
-local irq = ecs.require "ant.render|render_system.renderqueue"
+local irq = ecs.require "ant.render|renderqueue"
 local create_queue = require "utility.queue"
 local create_mathqueue = require "utility.mathqueue"
 

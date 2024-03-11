@@ -11,7 +11,7 @@ local CUSTOM_FAR_PLANE <const>  = math3d.constant("v4", {0, 1, 0, 0})
 local mathpkg   = import_package "ant.math"
 local mu        = mathpkg.util
 
-local irq       = ecs.require "ant.render|render_system.renderqueue"
+local irq       = ecs.require "ant.render|renderqueue"
 local ishadow   = ecs.require "ant.render|shadow.shadow_system"
 
 local sb_sys = ecs.system "scene_bounding_system"
