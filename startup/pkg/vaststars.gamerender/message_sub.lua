@@ -3,16 +3,13 @@ local world = ecs.world
 local w = world.w
 
 local imessage = ecs.require "message"
-local ivs = ecs.require "ant.render|visible_state"
 local imaterial = ecs.require "ant.render|material"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
 imessage:sub("show", function(instance, visible)
     for _, eid in ipairs(instance.tag['*']) do
-        local e <close> = world:entity(eid, "visible_state?in")
-        if e.visible_state then
-            ivs.set_state(e, "main_view", visible)
-        end
+        local e <close> = world:entity(eid, "visible?out")
+        e.visible = visible
     end
 end)
 

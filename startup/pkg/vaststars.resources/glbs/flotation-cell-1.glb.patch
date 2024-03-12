@@ -104,9 +104,9 @@ value:
       path: /pkg/vaststars.resources/effects/flotation-cell_popo.efk
       speed: 1
     scene:
-      s: {4, 4, 4}
+      s: 4
       t: {0, 3, 0}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -137,7 +137,7 @@ value:
     hitch:
       group: 0
     scene: {}
-    visible_state: main_view|cast_shadow|selectable
+    visible: true
   policy:
     ant.render|hitch_object
   tag:

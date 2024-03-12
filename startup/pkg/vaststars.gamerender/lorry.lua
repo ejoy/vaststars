@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
-local ivs = ecs.require "ant.render|visible_state"
 local irl = ecs.require "ant.render|render_layer.render_layer"
 local igame_object = ecs.require "engine.game_object"
 local imotion = ecs.require "engine.motion"
@@ -30,11 +29,8 @@ local function create(prefab, s, r, t)
         prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
         on_ready = function(self)
             for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "visible_state?in render_object?in timeline?in loop_timeline?out")
-                if e.visible_state then
-                    ivs.set_state(e, "cast_shadow", false)
-                    ivs.set_state(e, "main_view", false)
-                end
+                local e <close> = world:entity(eid, "visible?out render_object?in timeline?in loop_timeline?out")
+                e.visible = false
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
                 end

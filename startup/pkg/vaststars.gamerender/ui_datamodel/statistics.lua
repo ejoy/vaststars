@@ -1,19 +1,22 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
-local bgfx          = require "bgfx"
-local math3d        = require "math3d"
+
 local iUiRt         = ecs.require "ant.rmlui|ui_rt_system"
 local ig            = ecs.require "ant.group|group"
 local ientity       = ecs.require "ant.entity|entity"
 local imaterial     = ecs.require "ant.render|material"
-local ivs		    = ecs.require "ant.render|visible_state"
-local global = require "global"
+local ivm           = ecs.require "ant.render|visible_mask"
+
+local global        = require "global"
+local bgfx          = require "bgfx"
+local math3d        = require "math3d"
+
 local statistics_mb = mailbox:sub {"statistics"}
 
 local M = {}
 
-local queuename = "statistic_chart_queue"
+local STATISTIC_CHART_QUEUE<const> = "statistic_chart_queue"
 local canvas_size_w = 0
 local canvas_size_h = 0
 local chart_type = 0
@@ -24,7 +27,7 @@ local chart_color_table = {}
 local function hide_chart()
     for _, eid in ipairs(chart_eid) do
         local e <close> = world:entity(eid)
-        ivs.set_state(e, queuename, false)
+        ivm.set_masks(e, STATISTIC_CHART_QUEUE, false)
     end
 end
 local grid = {}
@@ -40,7 +43,7 @@ local function create_grid(row, col)
         lines[#lines + 1] = {index * colstep, 0, 0, 0.5}
         lines[#lines + 1] = {index * colstep, canvas_size_h, 0, 0.5}
     end
-    grid[#grid + 1] = ientity.create_screen_line_list(lines, nil, {u_color = {0.05, 0.05, 0.05, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
+    grid[#grid + 1] = ientity.create_screen_line_list(lines, nil, {u_color = {0.05, 0.05, 0.05, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", STATISTIC_CHART_QUEUE)
 end
 function M.create(object_id)
     if #chart_color_table < 1 then
@@ -148,11 +151,11 @@ local function update_chart(group, total, color)
     end
     if group.eid then
         local e <close> = world:entity(group.eid)
-        ivs.set_state(e, queuename, curve_state[group.cfg.name])
+        ivm.set_masks(e, STATISTIC_CHART_QUEUE, curve_state[group.cfg.name])
         imaterial.set_property(e, "u_color", math3d.vector(color))
         update_vb(group.eid, line_list)
     else
-        group.eid = ientity.create_screen_line_list(line_list, nil, {u_color = color, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
+        group.eid = ientity.create_screen_line_list(line_list, nil, {u_color = color, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", STATISTIC_CHART_QUEUE)
         chart_eid[#chart_eid + 1] = group.eid
     end
 end
@@ -199,7 +202,7 @@ function M.update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
         ig.enable(gid, "view_visible", true)
-        local qe = w:first(queuename .." render_target:in")
+        local qe = w:first(STATISTIC_CHART_QUEUE .." render_target:in")
         if qe then
             local rt = qe.render_target
             local vr = rt.view_rect

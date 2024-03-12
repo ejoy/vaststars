@@ -30,7 +30,7 @@ function m.play(f, srt)
                 path = f,
                 speed = 1.0,
             },
-            visible_state = "main_queue",
+            visible = true,
             on_ready = function(e)
                 w:extend(e, "efk?in light?in")
                 iefk.play(e)

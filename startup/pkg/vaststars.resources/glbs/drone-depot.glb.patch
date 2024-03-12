@@ -51,7 +51,7 @@ value:
     hitch:
       group: 0
     scene: {}
-    visible_state: main_view|cast_shadow|selectable
+    visible: true
   policy:
     ant.render|hitch_object
   tag:

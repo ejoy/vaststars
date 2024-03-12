@@ -109,7 +109,6 @@ value:
     scene:
       s: {2, 2, 2}
       t: {-8.439987182617188, 23.299999237060547, -9.138055801391602}
-    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -127,9 +126,8 @@ value:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     scene:
-      s: {2, 2, 2}
+      s: 2
       t: {8.663139343261719, 23.300060272216797, 8.26727294921875}
-    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -147,9 +145,8 @@ value:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     scene:
-      s: {2, 2, 2}
+      s: 2
       t: {8.903579711914062, 23.299938201904297, -8.594120025634766}
-    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -167,9 +164,8 @@ value:
       path: /pkg/vaststars.resources/effects/hydro-plant_smoke.efk
       speed: 1
     scene:
-      s: {2, 2, 2}
+      s: 2
       t: {-9.286720275878906, 23.299999237060547, 9.0322265625}
-    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -186,9 +182,9 @@ value:
       path: /pkg/vaststars.resources/effects/furnace_smoke.efk
       speed: 1
     scene:
-      s: {6, 6, 6}
+      s: 6
       t: {0, 12.270214080810547, 0}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -303,7 +299,7 @@ value:
     hitch:
       group: 0
     scene: {}
-    visible_state: main_view|cast_shadow|selectable
+    visible: true
   policy:
     ant.render|hitch_object
   tag:

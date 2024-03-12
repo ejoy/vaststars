@@ -45,7 +45,7 @@ data:
   scene:
     s: {1, 1, 1}
     t: {10, -20,40}
-  visible_state: main_queue
+  visible: true
 mount: 3
 policy:
   ant.scene|scene_object

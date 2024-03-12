@@ -27,12 +27,12 @@ value:
 ---
 file: mesh.prefab
 op: replace
-path: /2/data/visible_state
+path: /2/data/visible_masks
 value: main_view|selectable
 ---
 file: mesh.prefab
 op: replace
-path: /3/data/visible_state
+path: /3/data/visible_masks
 value: main_view|selectable
 ---
 file: mesh.prefab
@@ -56,7 +56,7 @@ value:
     scene:
       s: {3, 3, 3}
       t: {0, 0, -2.5}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -73,7 +73,7 @@ value:
     hitch:
       group: 0
     scene: {}
-    visible_state: main_view|cast_shadow|selectable
+    visible: true
   policy:
     ant.render|hitch_object
   tag:

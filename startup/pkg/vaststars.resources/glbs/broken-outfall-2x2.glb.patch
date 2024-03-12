@@ -31,7 +31,7 @@ value:
     scene:
       s: {8, 8, 8}
       t: {7.099999904632568, -2.200000047683716, 0}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -58,7 +58,7 @@ value:
     hitch:
       group: 0
     scene: {}
-    visible_state: main_view|cast_shadow|selectable
+    visible: true
   policy:
     ant.render|hitch_object
   tag:

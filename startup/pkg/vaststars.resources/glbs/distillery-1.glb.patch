@@ -98,7 +98,7 @@ value:
     scene:
       s: {4, 5, 4}
       t: {0, 13.5, 0}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -117,7 +117,7 @@ value:
     scene:
       s: {1.5, 1.5, 1.5}
       t: {-4.099999904632568, 30.5, -8}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -136,7 +136,7 @@ value:
     scene:
       s: {1.5, 1.5, 1.5}
       t: {3.4137206077575684, 30.49993896484375, -7.484030246734619}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -156,7 +156,7 @@ value:
       r: {0, -0.1736481785774231, 0, 0.9848077297210693}
       s: {4, 5, 4}
       t: {0, 14.899999618530273, 0}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -183,7 +183,7 @@ value:
     hitch:
       group: 0
     scene: {}
-    visible_state: main_view|cast_shadow|selectable
+    visible: true
   policy:
     ant.render|hitch_object
   tag:

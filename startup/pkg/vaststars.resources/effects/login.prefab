@@ -13,7 +13,7 @@ data:
     path: /pkg/vaststars.resources/effects/sandstorm.efk
     speed: 1
   scene: {}
-  visible_state: main_queue
+  visible: true
 mount: 1
 policy:
   ant.scene|scene_object

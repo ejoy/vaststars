@@ -185,9 +185,8 @@ value:
       path: /pkg/vaststars.resources/effects/chemical-plant_smoke.efk
       speed: 1
     scene:
-      s: {10, 10, 10}
+      s: 10
       t: {0, 18, 0}
-    visible_state: ""
   mount: 1
   policy:
     ant.scene|scene_object
@@ -235,9 +234,9 @@ value:
       path: /pkg/vaststars.resources/effects/chemical-plant_water.efk
       speed: 1
     scene:
-      s: {2.5, 2.5, 2.5}
+      s: 2.5
       t: {0, 14, 0}
-    visible_state: main_queue
+    visible: true
   mount: 1
   policy:
     ant.scene|scene_object
@@ -278,7 +277,7 @@ value:
     hitch:
       group: 0
     scene: {}
-    visible_state: main_view|cast_shadow|selectable
+    visible: true
   policy:
     ant.render|hitch_object
   tag:
