@@ -3,11 +3,12 @@ local world = ecs.world
 local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
-local irl = ecs.require "ant.render|render_layer.render_layer"
-local igame_object = ecs.require "engine.game_object"
-local imotion = ecs.require "engine.motion"
-local itl = ecs.require "ant.timeline|timeline"
-local imessage = ecs.require "message_sub"
+local irl           = ecs.require "ant.render|render_layer.render_layer"
+local irender       = ecs.require "ant.render|render"
+local igame_object  = ecs.require "engine.game_object"
+local imotion       = ecs.require "engine.motion"
+local itl           = ecs.require "ant.timeline|timeline"
+local imessage      = ecs.require "message_sub"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
@@ -30,7 +31,7 @@ local function create(prefab, s, r, t)
         on_ready = function(self)
             for _, eid in ipairs(self.tag['*']) do
                 local e <close> = world:entity(eid, "visible?out render_object?in timeline?in loop_timeline?out")
-                e.visible = false
+                irender.set_visible(e, false)
                 if e.render_object then
                     irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
                 end
