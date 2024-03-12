@@ -158,9 +158,6 @@ policy:
 tag:
   mesh
 ---
-mount: 26
-prefab: /pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab
----
 data:
   scene:
     t: {-198.69483947753906, 0, 0}
@@ -171,7 +168,7 @@ tag:
   mesh
 ---
 mount: 28
-prefab: /pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab
 ---
 data:
   scene:
@@ -183,7 +180,7 @@ tag:
   mesh
 ---
 mount: 30
-prefab: /pkg/vaststars.resources/glbs/drone-depot2.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab
 ---
 data:
   scene:

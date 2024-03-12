@@ -1,8 +1,23 @@
 ---
-file: materials/Material.002.material
-op: replace
-path: /state/CULL
-value: NONE
+file: images/dron-depot_Metallic-dron-depot_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/dron-depot_color.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/dron-depot_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/dron-depot_light.texture
+op: add
+path: /maxsize
+value: 16
 ---
 file: mesh.prefab
 op: add
@@ -10,39 +25,22 @@ path: /-
 value:
   data:
     scene:
-      t: {-2.700000047683716, 5, 2.700000047683716}
+      t: {0, 5.6971516609191895, 0}
   mount: 1
   policy:
     ant.scene|scene_object
   tag:
-    item_slot
+    park
 ---
 file: mesh.prefab
+op: copyfile
+path: debris.prefab
+---
+file: debris.prefab
 op: add
 path: /-
 value:
-  data:
-    scene:
-      t: {0.25, 5, 2.700000047683716}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    item_slot_1
----
-file: mesh.prefab
-op: add
-path: /-
-value:
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      t: {-5.550000190734863, 5, 2.700000047683716}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    item_slot_2
+  prefab: /pkg/vaststars.resources/glbs/scaffold/1x1.glb|mesh.prefab
 ---
 file: mesh.prefab
 op: createfile
@@ -61,28 +59,9 @@ value:
   ---
   data:
     scene:
-      t: {-2.700000047683716, 5, 2.700000047683716}
+      t: {0, 5.6971516609191895, 0}
   mount: 1
   policy:
     ant.scene|scene_object
   tag:
-    item_slot
-  ---
-  data:
-    scene:
-      t: {0.25, 5, 2.700000047683716}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    item_slot_1
-  ---
-  data:
-    scene:
-      r: {0, 0, 0, 1}
-      t: {-5.550000190734863, 5, 2.700000047683716}
-  mount: 1
-  policy:
-    ant.scene|scene_object
-  tag:
-    item_slot_2
+    park

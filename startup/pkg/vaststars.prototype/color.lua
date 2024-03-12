@@ -20,4 +20,5 @@ return {
     BULK_SELECTEING_BUILDINGS = math3d.constant("v4", {0, 1, 0, 0.25}), -- 待选的建筑
     BULK_SELECTED_BUILDINGS = math3d.constant("v4", {0, 0, 1, 0.25}), -- 选中的建筑
     BULK_SELECTED_BUILDINGS_RANGE = {0, 0.77, 0, 0.10},   -- 选中建筑的范围
+    BULK_OTHER_BUILDINGS = math3d.constant("v4", {0.77, 0.77, 0.77, 0.25}), -- 其它建筑
 }

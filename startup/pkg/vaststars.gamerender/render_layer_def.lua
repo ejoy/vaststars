@@ -15,6 +15,7 @@ return {
     },
     {
         "translucent",
+        {"BULK_OPT_BUILDING"},
         {"SELECTED_BOXES", "FLUID_INDICATION_ARROW"},
         {"ROAD_ENTRANCE_ARROW"},
         {"ICON"},

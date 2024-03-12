@@ -13,5 +13,7 @@ function camera_sys:camera_usage()
 	if e then
 		local points = icamera_controller.get_interset_points(e)
 		igroup.enable(points[2], math3d.set_index(points[3], 1, math3d.index(points[4], 1)))
+
+		world:pub {"game_camera_changed"}
 	end
 end

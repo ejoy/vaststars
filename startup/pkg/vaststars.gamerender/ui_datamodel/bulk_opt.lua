@@ -17,6 +17,7 @@ local remove_mb = mailbox:sub {"remove"}
 local move_mb = mailbox:sub {"move"}
 local move_confirm_mb = mailbox:sub {"move_confirm"}
 local focus_mb = mailbox:sub {"focus"}
+local game_camera_changed_mb = world:sub {"game_camera_changed"}
 local global = require "global"
 local teardown = ecs.require "editor.teardown"
 local gameplay_core = require "gameplay.core"
@@ -36,6 +37,8 @@ local math3d = require "math3d"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local iobject = ecs.require "object"
+local bulk_opt_move_update = ecs.require "ui_datamodel.common.bulk_opt_move".update
+local bulk_opt_move_clear = ecs.require "ui_datamodel.common.bulk_opt_move".clear
 
 local moving_objs = {}
 local exclude_coords = {}
@@ -96,6 +99,7 @@ local function _close()
     remove_selected_range()
 
     _clear_moving_objs()
+    bulk_opt_move_clear()
 
     update_buildings_state({{global.selected_buildings, "opaque", "null", RENDER_LAYER.BUILDING}})
 
@@ -176,6 +180,7 @@ function M.update(datamodel)
                             prefab = typeobject.model,
                             group_id = 0,
                             srt = srt,
+                            render_layer = RENDER_LAYER.BULK_OPT_BUILDING,
                         },
                         srt = srt,
                         x = x,
@@ -198,6 +203,7 @@ function M.update(datamodel)
                             prefab = typeobject.model,
                             group_id = 0,
                             srt = srt,
+                            render_layer = RENDER_LAYER.BULK_OPT_BUILDING,
                         },
                         srt = srt,
                         x = x,
@@ -261,6 +267,12 @@ function M.update(datamodel)
 
     for _ in focus_mb:unpack() do
         _focus()
+    end
+
+    for _ in game_camera_changed_mb:unpack() do
+        if datamodel.move_confirm == true then
+            bulk_opt_move_update()
+        end
     end
 end
 
