@@ -322,8 +322,8 @@ local function get_property(e, typeobject)
         local typeobject = iprototype.queryById(e.building.prototype)
         t.values['drone_count'] = #typeobject.drone
     end
-    if e.chimney then
-        local typeobject = iprototype.queryById(e.chimney.recipe)
+    if e.chimney and e.chimney.recipe ~= 0 then
+        local typeobject = assert(iprototype.queryById(e.chimney.recipe))
         local s = typeobject.ingredients
         assert(#s // 4 == 2)
         for idx = 2, #s // 4 do
@@ -483,7 +483,7 @@ function M.create(object_id)
     local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,
-        desc = typeobject.item_description,
+        desc = iprototype.item(typeobject).item_description,
         prototype_name = iprototype.display_name(typeobject),
         model = "mem:" .. typeobject.model .. " config:d,1,4,1.2",
         areaid = 0
