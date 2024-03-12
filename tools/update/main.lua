@@ -2,6 +2,9 @@ package.path = "/engine/?.lua"
 require "bootstrap"
 
 dofile "/engine/ltask.lua" {
-    bootstrap = { "vaststars.update|boot" },
+    bootstrap = {
+        ["logger"] = {},
+        ["vaststars.update|boot"] = { unique = false }
+    },
     exclusive = { "timer" },
 }
