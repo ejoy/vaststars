@@ -17,20 +17,21 @@ local objects = require "objects"
 local update_buildings_state = ecs.require "ui_datamodel.common.bulk_opt".update_buildings_state
 local global = require "global"
 
-local marked_buldings = {} -- = {eid = true, ...}
+local other_buldings = {} -- = {eid = true, ...}
+local obstructed_buildings = {} -- = {eid = true, ...}
 
-local function _mark(t)
+local function _mark_other_buldings(t)
     local add, del = {}, {}
     for gameplay_eid in pairs(t) do
-        if not marked_buldings[gameplay_eid] and not global.selected_buildings[gameplay_eid] then
+        if not other_buldings[gameplay_eid] and not global.selected_buildings[gameplay_eid] and not obstructed_buildings[gameplay_eid] then
             add[gameplay_eid] = true
-            marked_buldings[gameplay_eid] = true
+            other_buldings[gameplay_eid] = true
         end
     end
-    for gameplay_eid in pairs(marked_buldings) do
-        if not t[gameplay_eid] and not global.selected_buildings[gameplay_eid] then
+    for gameplay_eid in pairs(other_buldings) do
+        if not t[gameplay_eid] and not global.selected_buildings[gameplay_eid] and not obstructed_buildings[gameplay_eid] then
             del[gameplay_eid] = true
-            marked_buldings[gameplay_eid] = nil
+            other_buldings[gameplay_eid] = nil
         end
     end
 
@@ -58,17 +59,44 @@ local function update()
             end
         end
     end
-    _mark(t)
+    _mark_other_buldings(t)
 end
 
 local function clear()
     update_buildings_state({
-        {marked_buldings, "opaque", "null", RENDER_LAYER.BUILDING},
+        {other_buldings, "opaque", "null", RENDER_LAYER.BUILDING},
+        {obstructed_buildings, "opaque", "null", RENDER_LAYER.BUILDING}
     })
-    marked_buldings = {}
+    other_buldings = {}
+    obstructed_buildings = {}
+end
+
+local function mark_obstructed(t)
+    local add = {}
+    for gameplay_eid in pairs(t) do
+        if not obstructed_buildings[gameplay_eid] then
+            add[gameplay_eid] = true
+            obstructed_buildings[gameplay_eid] = true
+            other_buldings[gameplay_eid] = nil
+        end
+    end
+    for gameplay_eid in pairs(obstructed_buildings) do
+        if not t[gameplay_eid] then
+            obstructed_buildings[gameplay_eid] = nil
+        end
+    end
+
+    if not next(add) then
+        return
+    end
+
+    update_buildings_state({
+        {add, "translucent", COLOR.BULK_OBSTRUCTED_BUILDINGS, RENDER_LAYER.TRANSLUCENT_BUILDING},
+    })
 end
 
 return {
     update = update,
     clear = clear,
+    mark_obstructed = mark_obstructed,
 }

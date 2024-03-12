@@ -37,8 +37,10 @@ local math3d = require "math3d"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local iobject = ecs.require "object"
-local bulk_opt_move_update = ecs.require "ui_datamodel.common.bulk_opt_move".update
-local bulk_opt_move_clear = ecs.require "ui_datamodel.common.bulk_opt_move".clear
+local bulk_opt_move_common = ecs.require "ui_datamodel.common.bulk_opt_move"
+local bulk_opt_move_update = bulk_opt_move_common.update
+local bulk_opt_move_clear = bulk_opt_move_common.clear
+local bulk_opt_move_mark_obstructed = bulk_opt_move_common.mark_obstructed
 
 local moving_objs = {}
 local exclude_coords = {}
@@ -322,16 +324,34 @@ function M.gesture_pan_ended(datamodel)
     local dx, dy = c[1] - v.x, c[2] - v.y
 
     local positions = {}
+    local obstructed_buildings = {}
     for gameplay_eid, v in pairs(moving_objs) do
         v.x = v.x + dx
         v.y = v.y + dy
         local area, dir = _get_info(gameplay_eid)
-        local position = icoord.position(v.x, v.y, iprototype.rotate_area(area, dir))
+        local w, h = iprototype.rotate_area(area, dir)
+        local position = icoord.position(v.x, v.y, w, h)
         if not position then
             return
         end
         positions[gameplay_eid] = position
+        for i = 0, w-1 do
+            for j = 0, h-1 do
+                local coord = icoord.pack(v.x+i, v.y+j)
+                if not exclude_coords[coord] then
+                    local object = objects:coord(v.x+i, v.y+j)
+                    if object then
+                        obstructed_buildings[object.gameplay_eid] = true
+                    end
+                    local r = ibuilding.get(v.x+i, v.y+j)
+                    if r then
+                        obstructed_buildings[r.eid] = true
+                    end
+                end
+            end
+        end
     end
+    bulk_opt_move_mark_obstructed(obstructed_buildings)
 
     for gameplay_eid, position in pairs(positions) do
         local v = assert(moving_objs[gameplay_eid])
