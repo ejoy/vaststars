@@ -7,7 +7,6 @@ return {
         {"TERRAIN"},
         {"MINERAL"},
         {"ROAD", "GRID"},
-        {"LORRY_SHADOW"},
     },
     {
         "background",

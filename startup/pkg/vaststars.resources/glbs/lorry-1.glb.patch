@@ -36,6 +36,12 @@ path: /3/data/visible_state
 value: main_view|selectable
 ---
 file: mesh.prefab
+op: replace
+path: /4/tag
+value:
+  no_set_render_layer
+---
+file: mesh.prefab
 op: copyfile
 path: work.prefab
 ---

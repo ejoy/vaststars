@@ -81,21 +81,31 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
             prefab = prefab,
             group = hitch_group_id,
             on_ready = function (instance)
-                local exclude = {}
+                local exclude_color = {}
                 for _, eid in ipairs(instance.tag["no_color_factors"] or {}) do
-                    exclude[eid] = true
+                    exclude_color[eid] = true
+                end
+
+                local exclude_render_layer = {}
+                for _, eid in ipairs(instance.tag["no_set_render_layer"] or {}) do
+                    exclude_render_layer[eid] = true
                 end
 
                 for _, eid in ipairs(instance.tag["*"]) do
-                    local e <close> = world:entity(eid, "render_object?update dynamic_mesh?out draw_indirect?in")
+                    local e <close> = world:entity(eid)
+                    w:extend(e, "dynamic_mesh?out draw_indirect?in")
                     if e.draw_indirect then
-                        e.draw_indirect.cid = ihitch.create_compute_entity() 
-                    end
-                    if render_layer and e.render_object then
-                        irl.set_layer(e, render_layer)
+                        e.draw_indirect.cid = ihitch.create_compute_entity()
                     end
 
-                    if not exclude[eid] then
+                    if render_layer then
+                        w:extend(e, "render_object?update")
+                        if e.render_object and not exclude_render_layer[eid] then
+                            irl.set_layer(e, render_layer)
+                        end
+                    end
+
+                    if not exclude_color[eid] then
                         w:extend(e, "material?in")
                         if e.material then
                             if color then
