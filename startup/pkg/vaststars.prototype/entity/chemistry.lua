@@ -221,9 +221,9 @@ prototype "化工厂III" {
 }
 
 prototype "蒸馏厂I" {
-    model = "/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -286,9 +286,9 @@ prototype "蒸馏厂I" {
 }
 
 prototype "蒸馏厂II" {
-    model = "/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -351,9 +351,9 @@ prototype "蒸馏厂II" {
 }
 
 prototype "蒸馏厂III" {
-    model = "/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},

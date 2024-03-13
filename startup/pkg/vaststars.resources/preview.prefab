@@ -135,7 +135,7 @@ tag:
   mesh
 ---
 mount: 22
-prefab: /pkg/vaststars.resources/glbs/distillery-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -147,7 +147,7 @@ tag:
   work
 ---
 mount: 24
-prefab: /pkg/vaststars.resources/glbs/distillery-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|work.prefab
 ---
 data:
   scene:
