@@ -84,6 +84,12 @@ value:
     shelf6
 ---
 file: mesh.prefab
+op: replace
+path: /4/tag
+value:
+  no_color_factors
+---
+file: mesh.prefab
 op: copyfile
 path: idle.prefab
 ---
@@ -108,30 +114,6 @@ op: add
 path: /-
 value:
   prefab: /pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab
----
-file: work_start.prefab
-op: add
-path: /-
-value:
-  data:
-    timeline:
-      duration: 3
-      key_event:
-        ---
-        event_list:
-          ---
-          action: work_start
-          event_type: Animation
-          forwards: true
-          name: Animation2
-          pause_frame: -1
-        tick: 0
-        time: 0
-      loop: false
-  policy:
-    ant.timeline|timeline
-  tag:
-    timeline
 ---
 file: work.prefab
 op: add
@@ -175,6 +157,49 @@ value:
   tag:
     timeline
 ---
+file: idle.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/chemical-plant_water.efk
+      speed: 1
+    scene:
+      s: {2.299999952316284, 2.299999952316284, 2.299999952316284}
+      t: {0, 14, 0}
+    visible: true
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    chemical-plant_water
+---
+file: idle.prefab
+op: add
+path: /-
+value:
+  data:
+    timeline:
+      duration: 3
+      key_event:
+        ---
+        event_list:
+          ---
+          action: idle_start
+          event_type: Animation
+          forwards: true
+          name: Animation5
+          pause_frame: 90
+        tick: 0
+        time: 0
+      loop: false
+  policy:
+    ant.timeline|timeline
+  tag:
+    timeline
+---
 file: idle_start.prefab
 op: add
 path: /-
@@ -193,6 +218,25 @@ value:
     ant.efk|efk
   tag:
     chemical-plant_smoke
+---
+file: idle_start.prefab
+op: add
+path: /-
+value:
+  data:
+    efk:
+      path: /pkg/vaststars.resources/effects/chemical-plant_water.efk
+      speed: 1
+    scene:
+      s: {2.299999952316284, 2.299999952316284, 2.299999952316284}
+      t: {0, 14, 0}
+    visible: true
+  mount: 1
+  policy:
+    ant.scene|scene_object
+    ant.efk|efk
+  tag:
+    chemical-plant_water
 ---
 file: idle_start.prefab
 op: add
@@ -225,7 +269,7 @@ value:
   tag:
     timeline
 ---
-file: idle.prefab
+file: work_start.prefab
 op: add
 path: /-
 value:
@@ -234,7 +278,7 @@ value:
       path: /pkg/vaststars.resources/effects/chemical-plant_water.efk
       speed: 1
     scene:
-      s: 2.5
+      s: {2.299999952316284, 2.299999952316284, 2.299999952316284}
       t: {0, 14, 0}
     visible: true
   mount: 1
@@ -244,7 +288,7 @@ value:
   tag:
     chemical-plant_water
 ---
-file: idle.prefab
+file: work_start.prefab
 op: add
 path: /-
 value:
@@ -255,11 +299,11 @@ value:
         ---
         event_list:
           ---
-          action: idle_start
+          action: work_start
           event_type: Animation
           forwards: true
-          name: Animation5
-          pause_frame: 90
+          name: Animation2
+          pause_frame: -1
         tick: 0
         time: 0
       loop: false
