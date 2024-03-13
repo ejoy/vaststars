@@ -1,0 +1,21 @@
+---
+file: images/pipeJoint_Metallic-pipeJoint_Roughness.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: images/pipeJoint_normal.texture
+op: add
+path: /maxsize
+value: 64
+---
+file: mesh.prefab
+op: replace
+path: /1/tag
+value:
+  Scene
+---
+file: mesh.prefab
+op: replace
+path: /2/data/scene/t
+value: {0, 3.97017240524292, -2.5}
