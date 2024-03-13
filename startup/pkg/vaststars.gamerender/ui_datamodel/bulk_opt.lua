@@ -2,9 +2,10 @@ local ecs, mailbox = ...
 local world = ecs.world
 
 local BUTTONS <const> = {
-    { command = "remove",       icon = "/pkg/vaststars.resources/ui/textures/bulk-opt/remove.texture", },
-    { command = "move",         icon = "/pkg/vaststars.resources/ui/textures/bulk-opt/move.texture", },
-    { command = "move_confirm", icon = "/pkg/vaststars.resources/ui/textures/bulk-opt/move-confirm.texture", },
+    { command = "remove",         icon = "/pkg/vaststars.resources/ui/textures/bulk-opt/remove.texture", },
+    { command = "remove_confirm", icon = "/pkg/vaststars.resources/ui/textures/bulk-opt/remove.texture", },
+    { command = "move",           icon = "/pkg/vaststars.resources/ui/textures/bulk-opt/move.texture", },
+    { command = "move_confirm",   icon = "/pkg/vaststars.resources/ui/textures/bulk-opt/move-confirm.texture", },
 }
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
@@ -14,6 +15,7 @@ local COLOR <const> = ecs.require "vaststars.prototype|color"
 
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 local remove_mb = mailbox:sub {"remove"}
+local remove_confirm_mb = mailbox:sub {"remove_confirm"}
 local move_mb = mailbox:sub {"move"}
 local move_confirm_mb = mailbox:sub {"move_confirm"}
 local focus_mb = mailbox:sub {"focus"}
@@ -134,6 +136,16 @@ end
 
 function M.update(datamodel)
     for _ in remove_mb:unpack() do
+        datamodel.move = false
+        datamodel.remove = false
+        datamodel.remove_confirm = true
+        datamodel.buttons = _handler(datamodel)
+
+        update_buildings_state({{global.selected_buildings, "translucent", COLOR.BULK_REMOVE, RENDER_LAYER.TRANSLUCENT_BUILDING}})
+        _focus()
+    end
+
+    for _ in remove_confirm_mb:unpack() do
         local full = false
         for gameplay_eid in pairs(global.selected_buildings) do
             teardown(gameplay_eid)
