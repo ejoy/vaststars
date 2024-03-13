@@ -29,7 +29,7 @@ local function ray_intersect_nearfar_planes(rays)
     for _, r in ipairs(rays) do
         local function intersect_plane(plane)
             local t = math3d.plane_ray(r.o, r.d, plane)
-            assert(0 <= t and t <= 1.0, "We assume scene between near and far plane")
+            local _ = (0 <= t and t <= 1.0) or error(("We assume scene between near and far plane, intersert t:%f, ray.o: %s, ray.d:%s"):format(t, math3d.tostring(r.o), math3d.tostring(r.d)))
             p[#p+1] =  mu.ray_point(r, t)
         end
         intersect_plane(CUSTOM_NEAR_PLANE)
