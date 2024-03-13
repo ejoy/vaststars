@@ -5,6 +5,5 @@ dofile "/engine/ltask.lua" {
     bootstrap = {
         ["logger"] = {},
         ["vaststars.update|boot"] = { unique = false }
-    },
-    exclusive = { "timer" },
+    }
 }
