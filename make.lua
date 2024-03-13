@@ -17,7 +17,7 @@ lm:conf {
         }
     },
     macos = {
-        sys = "macos13.0",
+        sys = "macos13.3",
     },
     ios = {
         arch = "arm64",
