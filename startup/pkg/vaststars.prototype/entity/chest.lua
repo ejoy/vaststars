@@ -30,8 +30,8 @@ prototype "大铁制箱子I" {
 }
 
 prototype "仓库I" {
-    model = "/pkg/vaststars.resources/glbs/depot.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/depot.glb|mesh.prefab config:s,1,3,1.3",
+    model = "/pkg/vaststars.resources/glbs/depot/depot.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/depot/depot.gltf|mesh.prefab config:s,1,3,1.3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "depot"},
@@ -42,8 +42,8 @@ prototype "仓库I" {
 }
 
 prototype "无人机平台I" {
-    model = "/pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "airport", "consumer"},
@@ -59,8 +59,8 @@ prototype "无人机平台I" {
 }
 
 prototype "无人机平台II" {
-    model = "/pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "airport", "consumer"},
@@ -77,8 +77,8 @@ prototype "无人机平台II" {
 }
 
 prototype "无人机平台III" {
-    model = "/pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "airport", "consumer"},

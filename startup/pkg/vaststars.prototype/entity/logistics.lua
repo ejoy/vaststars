@@ -17,9 +17,9 @@ prototype "指挥中心" {
 }
 
 prototype "物流中心" {
-    model = "/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/factory-1/factory-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/factory-1/factory-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {""},   -- factory builder special
     builder = "factory",
     check_pos = {0,2,"N"},  -- factory builder special

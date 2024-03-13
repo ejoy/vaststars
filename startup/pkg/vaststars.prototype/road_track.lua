@@ -141,7 +141,7 @@ return {
             },
         },
         ["factory"] = {
-            model = "/pkg/vaststars.resources/glbs/factory-1.glb|mesh.prefab",
+            model = "/pkg/vaststars.resources/glbs/factory-1/factory-1.gltf|mesh.prefab",
             tracks = {
                 N = {
                     [CROSS_TYPE.tr] = {

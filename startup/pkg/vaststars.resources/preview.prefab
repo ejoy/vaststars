@@ -99,7 +99,7 @@ tag:
   mesh
 ---
 mount: 16
-prefab: /pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -111,7 +111,7 @@ tag:
   work
 ---
 mount: 18
-prefab: /pkg/vaststars.resources/glbs/crusher-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|work.prefab
 ---
 data:
   scene:
@@ -123,7 +123,7 @@ tag:
   mesh
 ---
 mount: 20
-prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/depot/depot.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -168,7 +168,7 @@ tag:
   mesh
 ---
 mount: 28
-prefab: /pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -180,7 +180,7 @@ tag:
   mesh
 ---
 mount: 30
-prefab: /pkg/vaststars.resources/glbs/drone-depot.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -204,7 +204,7 @@ tag:
   mesh
 ---
 mount: 34
-prefab: /pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -216,7 +216,7 @@ tag:
   work
 ---
 mount: 36
-prefab: /pkg/vaststars.resources/glbs/electrolyzer-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|work.prefab
 ---
 data:
   scene:
@@ -228,7 +228,7 @@ tag:
   mesh
 ---
 mount: 38
-prefab: /pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -240,7 +240,7 @@ tag:
   work
 ---
 mount: 40
-prefab: /pkg/vaststars.resources/glbs/flotation-cell-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|work.prefab
 ---
 data:
   scene:

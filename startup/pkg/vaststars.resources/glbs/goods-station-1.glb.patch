@@ -101,7 +101,7 @@ op: add
 path: /-
 value:
   mount: 9
-  prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+  prefab: /pkg/vaststars.resources/glbs/depot/depot.gltf|mesh.prefab
 ---
 file: mesh.prefab
 op: add
@@ -121,7 +121,7 @@ op: add
 path: /-
 value:
   mount: 11
-  prefab: /pkg/vaststars.resources/glbs/depot.glb|mesh.prefab
+  prefab: /pkg/vaststars.resources/glbs/depot/depot.gltf|mesh.prefab
 ---
 file: mesh.prefab
 op: add

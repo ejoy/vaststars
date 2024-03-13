@@ -417,9 +417,9 @@ prototype "蒸馏厂III" {
 
 
 prototype "电解厂I" {
-    model = "/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -475,9 +475,9 @@ prototype "电解厂I" {
 }
 
 prototype "电解厂II" {
-    model = "/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -533,9 +533,9 @@ prototype "电解厂II" {
 }
 
 prototype "电解厂III" {
-    model = "/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},

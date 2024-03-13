@@ -119,9 +119,9 @@ prototype "熔炼炉III" {
 }
 
 prototype "粉碎机I" {
-    model = "/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3,1.3",
+    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|mesh.prefab config:s,1,3,1.3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling"},
@@ -137,9 +137,9 @@ prototype "粉碎机I" {
 }
 
 prototype "粉碎机II" {
-    model = "/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3,1.3",
+    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|mesh.prefab config:s,1,3,1.3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling"},
@@ -155,9 +155,9 @@ prototype "粉碎机II" {
 }
 
 prototype "粉碎机III" {
-    model = "/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1.glb|mesh.prefab config:s,1,3,1.3",
+    icon = "mem:/pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf|mesh.prefab config:s,1,3,1.3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling"},
@@ -172,9 +172,9 @@ prototype "粉碎机III" {
 }
 
 prototype "浮选器I" {
-    model = "/pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -229,9 +229,9 @@ prototype "浮选器I" {
 }
 
 prototype "浮选器II" {
-    model = "/pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
@@ -286,9 +286,9 @@ prototype "浮选器II" {
 }
 
 prototype "浮选器III" {
-    model = "/pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/flotation-cell-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "consumer", "assembling", "fluidboxes"},
