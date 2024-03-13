@@ -25,7 +25,7 @@ local function _rebuild(gameplay_world, e, game_object)
         assert(slot.item ~= 0)
 
         local item = slot.item
-        local show = slot.amount <= 0
+        local show = slot.amount > 0
 
         if item ~= 0 then
             local typeobject_item = iprototype.queryById(item)
@@ -68,7 +68,7 @@ function mt:update(gameplay_world, e)
         assert(slot.item ~= 0)
 
         local v = assert(self.items[idx])
-        local show = slot.amount <= 0
+        local show = slot.amount > 0
         if v.show ~= show then
             imessage:pub("show", v.item_object.hitch_instance, show)
             v.show = show

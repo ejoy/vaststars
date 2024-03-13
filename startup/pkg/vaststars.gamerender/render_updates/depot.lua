@@ -34,7 +34,7 @@ function mt:update(gameplay_world, e)
         end
 
         local v = assert(self.items[idx])
-        local show = slot.amount <= 0
+        local show = slot.amount > 0
         if v.show ~= show then
             imessage:pub("show", v.item_object.hitch_instance, show)
             v.show = show
@@ -52,7 +52,7 @@ local function create(gameplay_world, e, game_object)
         end
 
         local item = slot.item
-        local show = slot.amount <= 0
+        local show = slot.amount > 0
 
         if item ~= 0 then
             local typeobject_item = iprototype.queryById(item)
