@@ -173,6 +173,9 @@ local function toggle_view(v, cur_xzpoint)
         local pos = math3d.set_index(CAMERA_PICKUP_POSITION, 2, h)
         return adjust_camera_rt(ce.scene.r, ce.scene.t, CAMERA_PICKUP_ROTATION, pos, cur_xzpoint, ce.camera.viewmat, ce.camera.projmat)
     elseif v == "default" then
+        if not last_view then
+            return
+        end
         delta_dis = delta_dis and -delta_dis or 0
         local t
         if last_view == "construct" then
