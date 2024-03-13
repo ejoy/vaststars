@@ -21,7 +21,7 @@ lm:conf {
     },
     ios = {
         arch = "arm64",
-        sys = "ios16.0",
+        sys = "ios16.3",
         flags = {
             "-fembed-bitcode",
             "-fobjc-arc"
