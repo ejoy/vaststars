@@ -74,6 +74,10 @@ if lm.sanitize then
             ldflags = "-fsanitize=address"
         }
     }
+    lm:msvc_copydll "copy_asan_v2" {
+        type = "asan",
+        outputs = lm.bindir,
+    }
 end
 
 lm:import(lm.AntDir .. "/make.lua")
@@ -96,7 +100,7 @@ if lm.os == "windows" then
         "copy_dll",
         "vaststars_rt",
         "vaststars",
-        lm.sanitize and "copy_asan",
+        lm.sanitize and "copy_asan_v2",
     }
     return
 end
