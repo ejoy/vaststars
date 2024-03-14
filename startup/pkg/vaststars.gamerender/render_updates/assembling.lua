@@ -37,6 +37,8 @@ local ipower_check = ecs.require "power_check_system"
 local ichest = require "gameplay.interface.chest"
 local math3d = require "math3d"
 local vsobject_manager = ecs.require "vsobject_manager"
+local renew_assembling_fluid_port = ecs.require "render_updates.assembling_fluid_port".renew
+local remove_assembling_fluid_port = ecs.require "render_updates.assembling_fluid_port".remove
 
 local function _get_texture_size(materialpath)
     local res = assetmgr.resource(materialpath)
@@ -294,33 +296,48 @@ local function _get_game_object(object)
     return vsobject.game_object
 end
 
+local function _build_io_shelves(gameplay_world, e, object, typeobject)
+    if typeobject.io_shelf == false then
+        return
+    end
+
+    local building = global.buildings[object.id]
+
+    --
+    if e.assembling.recipe == 0 then
+        local io_shelves = building.io_shelves
+        if io_shelves then
+            io_shelves:remove()
+            building.io_shelves = nil
+        end
+    else
+        local io_shelves = building.io_shelves
+        if io_shelves then
+            building.io_shelves:update(gameplay_world, e, _get_game_object(object))
+        else
+            building.io_shelves = create_io_shelves(gameplay_world, e, _get_game_object(object))
+        end
+    end
+end
+
+function assembling_sys:gameworld_prebuild()
+    local gameplay_world = gameplay_core.get_world()
+    local ecs = gameplay_world.ecs
+    for e in ecs:select "REMOVED fluidboxes:in eid:in" do
+        remove_assembling_fluid_port(e.eid)
+    end
+end
+
 function assembling_sys:gameworld_build()
     local gameplay_world = gameplay_core.get_world()
-    for e in gameplay_world.ecs:select "assembling:in building:in chest:in" do
+    local gameplay_ecs = gameplay_world.ecs
+    for e in gameplay_ecs:select "assembling:in building:in chest:in" do
         local object = assert(objects:coord(e.building.x, e.building.y))
         local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.io_shelf == false then
-            goto continue
-        end
-
-        local building = global.buildings[object.id]
-
-        --
-        if e.assembling.recipe == 0 then
-            local io_shelves = building.io_shelves
-            if io_shelves then
-                io_shelves:remove()
-                building.io_shelves = nil
-            end
-        else
-            local io_shelves = building.io_shelves
-            if io_shelves then
-                building.io_shelves:update(gameplay_world, e, _get_game_object(object))
-            else
-                building.io_shelves = create_io_shelves(gameplay_world, e, _get_game_object(object))
-            end
-        end
-        ::continue::
+        _build_io_shelves(gameplay_world, e, object, typeobject)
+    end
+    for e in gameplay_ecs:select "assembling:in fluidboxes:in" do
+        renew_assembling_fluid_port(gameplay_world, e)
     end
 end
 
