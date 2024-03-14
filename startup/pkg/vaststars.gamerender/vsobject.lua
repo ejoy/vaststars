@@ -13,7 +13,9 @@ local function set_position(self, position)
 end
 
 local function set_dir(self, dir)
-    self.game_object:send("obj_motion", "set_rotation", math3d.live(ROTATORS[dir]))
+    local typeobject = assert(iprototype.queryByName(self.prototype_name))
+    local r = ROTATORS[typeobject.rotate_dir and typeobject.rotate_dir[dir] or dir]
+    self.game_object:send("obj_motion", "set_rotation", math3d.live(r))
 end
 
 local function remove(self)
@@ -70,7 +72,10 @@ return function (init)
         prefab = model,
         group_id = init.group_id,
         color = init.color,
-        srt = {r = ROTATORS[init.dir], t = init.position},
+        srt = {
+            r = ROTATORS[typeobject.rotate_dir and typeobject.rotate_dir[init.dir] or init.dir],
+            t = init.position
+        },
         parent = nil,
         slot = nil,
         state = init.state,

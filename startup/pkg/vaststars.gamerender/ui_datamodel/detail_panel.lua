@@ -83,7 +83,6 @@ local function get_property_list(entity)
     table.sort(prop_list, function(a, b) return a.pos < b.pos end)
     r.prop_list = prop_list
     r.chest_list_1 = entity.chest_list_1
-    r.chest_list_2 = entity.chest_list_2
     r.chest_style = entity.chest_style
     r.status = entity.status
     return r
@@ -221,21 +220,6 @@ local function getChestSlots(gameplay_world, chest, max_slot, res, show_zero_cou
     return res
 end
 
-local function _process_station_slots(max_slot, items)
-    table.sort(items, function(a, b)
-        local v1 = a.type == "supply" and 0 or 1
-        local v2 = b.type == "supply" and 0 or 1
-        return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
-    end)
-    for _, v in ipairs(items) do
-        v.package_count = 0
-    end
-    for i = 1, max_slot - #items do
-        items[#items + 1] = {slot_index = i, icon = "", name = "", count = 0, max_count = 0, package_count = 0, type = "none"}
-    end
-    return items
-end
-
 local function _get_station_chest_slots(gameplay_world, max_slot, chest)
     local res = {}
     for i = 1, max_slot do
@@ -250,7 +234,7 @@ local function _get_station_chest_slots(gameplay_world, max_slot, chest)
     return res
 end
 
-local function _process_station_slots_2(gameplay_world, max_slot, chest, items)
+local function _process_station_slots(gameplay_world, max_slot, chest, items)
     local t = _get_station_chest_slots(gameplay_world, max_slot, chest)
     table.sort(items, function(a, b)
         local v1 = a.type == "supply" and 0 or 1
@@ -280,13 +264,9 @@ local function get_property(e, typeobject)
         local max_slot = ichest.get_max_slot(typeobject)
 
         if e.station then
-            t.chest_list_2 = {}
-            t.chest_list_2 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_2, true)
-            t.chest_list_2 = _process_station_slots_2(gameplay_world, max_slot, e.station, t.chest_list_2)
-
             t.chest_list_1 = {}
-            t.chest_list_1 = getChestSlots(gameplay_world, e.station, max_slot, t.chest_list_1, true)
-            t.chest_list_1 = _process_station_slots(max_slot, t.chest_list_1)
+            t.chest_list_1 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_1, true)
+            t.chest_list_1 = _process_station_slots(gameplay_world, max_slot, e.station, t.chest_list_1)
         elseif e.depot then
             t.chest_list_1 = {}
             t.chest_list_1 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_1, true)
@@ -474,7 +454,6 @@ local update_interval = 3 --update per 25 frame
 local counter = 1
 local function update_property_list(datamodel, property_list)
     datamodel.chest_list_1 = property_list.chest_list_1 or {}
-    datamodel.chest_list_2 = property_list.chest_list_2 or {}
     datamodel.chest_style = property_list.chest_style
     datamodel.progress = property_list.progress or "0%"
     datamodel.recipe_inputs = property_list.recipe_inputs or {}

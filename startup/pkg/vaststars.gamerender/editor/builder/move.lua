@@ -457,10 +457,9 @@ local function confirm(self, datamodel)
 end
 
 local function rotate(self, datamodel, dir, delta_vec)
-    local rotate_dir = self.typeobject.rotate_dir or {}
     local pickup_object = assert(self.pickup_object)
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
-    pickup_object.dir = rotate_dir[iprototype.dir_tostring(dir)] or iprototype.dir_tostring(dir)
+    pickup_object.dir = iprototype.dir_tostring(dir)
     pickup_object.srt.r = ROTATORS[pickup_object.dir]
 
     local x, y
