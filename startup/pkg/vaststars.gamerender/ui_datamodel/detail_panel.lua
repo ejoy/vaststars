@@ -221,14 +221,49 @@ local function getChestSlots(gameplay_world, chest, max_slot, res, show_zero_cou
     return res
 end
 
-local function processStationSlots(max_slot, items)
+local function _process_station_slots(max_slot, items)
     table.sort(items, function(a, b)
         local v1 = a.type == "supply" and 0 or 1
         local v2 = b.type == "supply" and 0 or 1
         return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
     end)
+    for _, v in ipairs(items) do
+        v.package_count = 0
+    end
     for i = 1, max_slot - #items do
-        items[#items + 1] = {slot_index = i, icon = "", name = "", count = 0, max_count = 0, type = "none"}
+        items[#items + 1] = {slot_index = i, icon = "", name = "", count = 0, max_count = 0, package_count = 0, type = "none"}
+    end
+    return items
+end
+
+local function _get_station_chest_slots(gameplay_world, max_slot, chest)
+    local res = {}
+    for i = 1, max_slot do
+        local slot = ichest.get(gameplay_world, chest, i)
+        if not slot then
+            break
+        end
+
+        local typeobject_item = assert(iprototype.queryById(slot.item))
+        res[typeobject_item.name] = ichest.get_amount(slot)
+    end
+    return res
+end
+
+local function _process_station_slots_2(gameplay_world, max_slot, chest, items)
+    local t = _get_station_chest_slots(gameplay_world, max_slot, chest)
+    table.sort(items, function(a, b)
+        local v1 = a.type == "supply" and 0 or 1
+        local v2 = b.type == "supply" and 0 or 1
+        return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
+    end)
+    for _, v in ipairs(items) do
+        if t[v.name] then
+            v.package_count = t[v.name]
+        end
+    end
+    for i = 1, max_slot - #items do
+        items[#items + 1] = {slot_index = i, icon = "", name = "", count = 0, max_count = 0, package_count = 0, type = "none"}
     end
     return items
 end
@@ -245,13 +280,13 @@ local function get_property(e, typeobject)
         local max_slot = ichest.get_max_slot(typeobject)
 
         if e.station then
-            t.chest_list_1 = {}
-            t.chest_list_1 = getChestSlots(gameplay_world, e.station, max_slot, t.chest_list_1, true)
-            t.chest_list_1 = processStationSlots(max_slot, t.chest_list_1)
-
             t.chest_list_2 = {}
             t.chest_list_2 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_2, true)
-            t.chest_list_2 = processStationSlots(max_slot, t.chest_list_2)
+            t.chest_list_2 = _process_station_slots_2(gameplay_world, max_slot, e.station, t.chest_list_2)
+
+            t.chest_list_1 = {}
+            t.chest_list_1 = getChestSlots(gameplay_world, e.station, max_slot, t.chest_list_1, true)
+            t.chest_list_1 = _process_station_slots(max_slot, t.chest_list_1)
         elseif e.depot then
             t.chest_list_1 = {}
             t.chest_list_1 = getChestSlots(gameplay_world, e.chest, max_slot, t.chest_list_1, true)

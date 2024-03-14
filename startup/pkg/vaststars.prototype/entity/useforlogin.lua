@@ -179,6 +179,7 @@ prototype "特殊化工厂" {
     drain = "6kW",
     speed = "75%",
     rotate_on_build = true,
+    rotate_dir = {N = "N", S = "N", E = "E", W = "E"},
     -- sound = "building/hydro-plant",
     priority = "secondary",
     maxslot = 8,
