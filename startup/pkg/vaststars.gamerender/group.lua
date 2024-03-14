@@ -16,10 +16,9 @@ local icoord = require "coord"
 local COORD_BOUNDARY <const> = icoord.boundary()
 
 local math3d = require "math3d"
-local ig = ecs.require "ant.group|group"
-local irender = ecs.require "ant.render|render"
+local ig        = ecs.require "ant.group|group"
+local irender   = ecs.require "ant.render|render"
 
-local enabled_group_ids = {}
 local group_ids = setmetatable({}, {
     __index = function (tt, k)
         local o = "TERRAIN_GROUP_" .. k
@@ -54,54 +53,50 @@ function group.map_chunk_wh()
     return MAP_CHUNK_WIDTH_COUNT, MAP_CHUNK_HEIGHT_COUNT
 end
 
+local LEFTTOP_CORNER_OFFSET<const>      = math3d.constant("v4", {-MAX_BUILDING_WIDTH_SIZE, 0,  MAX_BUILDING_HEIGHT_SIZE, 0})
+local RIGHTBOTTOM_CORNER_OFFSET<const>  = math3d.constant("v4", { MAX_BUILDING_WIDTH_SIZE, 0, -MAX_BUILDING_HEIGHT_SIZE, 0})
+
+local group_selector = {
+    last_enabled = {},
+    find = function (self, lefttop, rightbottom)
+        -- because the group id of the buildings is calculated based on the coordinates of the top-left corner, so we need to expand the range
+        lefttop     = math3d.add(lefttop,       LEFTTOP_CORNER_OFFSET)
+        rightbottom = math3d.add(rightbottom,   RIGHTBOTTOM_CORNER_OFFSET)
+
+        local ltCoord = icoord.position2coord(lefttop)      or {0, 0}
+        local rbCoord = icoord.position2coord(rightbottom)  or {COORD_BOUNDARY[2][1], COORD_BOUNDARY[2][2]}
+
+        local X, Y = _get_gridxy(ltCoord[1], ltCoord[2])
+        local W, H = _get_gridxy(rbCoord[1], rbCoord[2])
+        return X, Y, W, H
+    end,
+    select = function (self, x, y, ww, hh)
+        local go = ig.obj "view_visible"
+        local new, old = {}, self.last_enabled
+        for ix=x, ww do
+            for iy=y, hh do
+                local gid = assert(group_ids[icoord.pack(ix, iy)])
+                new[gid] = true
+                old[gid] = nil
+                go:enable(gid, true)
+            end
+        end
+
+        for gid in pairs(old) do
+            go:enable(gid, false)
+        end
+        irender.group_flush(go)
+        self.last_enabled = new
+    end
+}
+
 function group.enable(lefttop, rightbottom)
     if lock == true then
         return
     end
-    local function diff(t1, t2)
-        local add, del = {}, {}
-        for group_id in pairs(t1) do
-            if t2[group_id] == nil then
-                del[#del+1] = group_id
-            end
-        end
-        for group_id in pairs(t2) do
-            if t1[group_id] == nil then
-                add[#add+1] = group_id
-            end
-        end
-        return add, del
-    end
 
-    -- because the group id of the buildings is calculated based on the coordinates of the top-left corner, so we need to expand the range
-    lefttop = math3d.add(lefttop, {-(MAX_BUILDING_WIDTH_SIZE), 0, MAX_BUILDING_HEIGHT_SIZE})
-    rightbottom = math3d.add(rightbottom, {MAX_BUILDING_WIDTH_SIZE, 0, -(MAX_BUILDING_HEIGHT_SIZE)})
-
-    local ltCoord = icoord.position2coord(lefttop) or {0, 0}
-    local rbCoord = icoord.position2coord(rightbottom) or {COORD_BOUNDARY[2][1], COORD_BOUNDARY[2][2]}
-
-    local ltGridCoord = {_get_gridxy(ltCoord[1], ltCoord[2])}
-    local rbGridCoord = {_get_gridxy(rbCoord[1], rbCoord[2])}
-
-    local new = {}
-    for x = ltGridCoord[1], rbGridCoord[1] do
-        for y = ltGridCoord[2], rbGridCoord[2] do
-            local group_id = assert(group_ids[icoord.pack(x, y)])
-            new[group_id] = true
-        end
-    end
-
-    local add, del = diff(enabled_group_ids, new)
-    enabled_group_ids = new
-    local go = ig.obj "view_visible"
-    for _, group_id in ipairs(add) do
-        go:enable(group_id, true)
-    end
-    for _, group_id in ipairs(del) do
-        go:enable(group_id, false)
-    end
-
-    irender.group_flush(go)
+    local X, Y, W, H = group_selector:find(lefttop, rightbottom)
+    group_selector:select(X, Y, W, H)
 end
 
 return group
