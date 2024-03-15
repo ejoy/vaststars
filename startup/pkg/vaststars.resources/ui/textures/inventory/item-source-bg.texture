@@ -1,21 +1,21 @@
 colorspace: sRGB
 compress:
-    android: ASTC6x6
-    ios: ASTC6x6
-    windows: BC3
+  android: ASTC6x6
+  ios: ASTC6x6
+  windows: BC3
 noresize: true
 normalmap: false
 path: ../../images/inventory/item-source-bg.png
 sampler:
-    MAG: LINEAR
-    MIN: LINEAR
-    U: WRAP
-    V: WRAP
+  MAG: LINEAR
+  MIN: LINEAR
+  U: WRAP
+  V: WRAP
 type: texture
 lattice:
-    x1: 5.24
-    y1: 11.21
-    x2: 28.29
-    y2: 5.26
-    u: 15.52
-    v: 67.12
+  u: 15.52
+  v: 67.12
+  x1: 5.24
+  x2: 28.29
+  y1: 11.21
+  y2: 5.26

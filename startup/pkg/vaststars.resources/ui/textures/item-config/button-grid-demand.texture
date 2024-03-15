@@ -1,21 +1,21 @@
 colorspace: sRGB
 compress:
-    android: ASTC6x6
-    ios: ASTC6x6
-    windows: BC3
+  android: ASTC6x6
+  ios: ASTC6x6
+  windows: BC3
 noresize: true
 normalmap: false
 path: ../../images/item-config/button-grid-demand.png
 sampler:
-    MAG: LINEAR
-    MIN: LINEAR
-    U: WRAP
-    V: WRAP
+  MAG: LINEAR
+  MIN: LINEAR
+  U: WRAP
+  V: WRAP
 type: texture
 lattice:
-    x1: 8.41
-    y1: 33.16
-    x2: 8.15
-    y2: 32.12
-    u: 50.00
-    v: 50.00
+  u: 50
+  v: 50
+  x1: 8.41
+  x2: 8.15
+  y1: 33.16
+  y2: 32.12
