@@ -37,6 +37,7 @@ local renew_selected_range = ecs.require "ui_datamodel.common.bulk_opt".renew_se
 local remove_selected_range = ecs.require "ui_datamodel.common.bulk_opt".remove_selected_range
 local get_selected_ltrb = ecs.require "ui_datamodel.common.bulk_opt".get_selected_ltrb
 local igame_object = ecs.require "engine.game_object"
+local show_message = ecs.require "show_message".show_message
 
 local selecting = {}
 
@@ -160,6 +161,11 @@ function M.update(datamodel)
     end
 
     for _ in unselect_mb:unpack() do
+        if next(global.selected_buildings) == nil then
+            show_message("no buildings were chosen")
+            return
+        end
+
         local del = {}
         for gameplay_eid in pairs(selecting) do
             if global.selected_buildings[gameplay_eid] then
@@ -174,6 +180,11 @@ function M.update(datamodel)
     end
 
     for _ in reset_mb:unpack() do
+        if next(global.selected_buildings) == nil then
+            show_message("no buildings were chosen")
+            return
+        end
+
         local t = {}
         for gameplay_eid in pairs(global.selected_buildings) do
             if not selecting[gameplay_eid] then
@@ -193,6 +204,7 @@ function M.update(datamodel)
 
     for _ in operate_mb:unpack() do
         if next(global.selected_buildings) == nil then
+            show_message("no buildings were chosen")
             return
         end
 
