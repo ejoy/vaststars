@@ -2,10 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ICONS <const> = ecs.require "vaststars.prototype|building_menu.icons"
-local DESC <const> = ecs.require "vaststars.prototype|building_menu.desc"
-local CUSTOM_COMMANDS <const> = ecs.require "vaststars.prototype|building_menu.custom_commands"
-local AUDIOS <const> = ecs.require "vaststars.prototype|building_menu.audios"
+local ICONS <const> = ecs.require "vaststars.prototype|menu.icons"
+local DESC <const> = ecs.require "vaststars.prototype|menu.desc"
+local CUSTOM_COMMANDS <const> = ecs.require "vaststars.prototype|menu.building_custom_menu"
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 
 local COMMAND_HANDLERS <const> = {
@@ -16,13 +15,13 @@ local COMMAND_HANDLERS <const> = {
 }
 
 local function create_button(command)
+    local k = "building_menu." .. command
     return {
         command = command,
-        background_image = ICONS[command],
+        background_image = ICONS[k],
         number = "", -- can have a value of either a digit or '+', '' 
         selected = false,
-        audio = AUDIOS[command],
-        desc = DESC[command] or "",
+        desc = DESC[k] or "",
     }
 end
 

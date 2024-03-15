@@ -40,3 +40,26 @@ sector-menu-main-button-icon {
 	width: 58.49%;
 	height: 58.49%;
 }
+
+sector-menu-desc-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+sector-menu-desc {
+	width: 30.67vmax;
+	height: 13.08vmin;
+	background-image: "/pkg/vaststars.resources/ui/textures/building-menu/square-grid.texture";
+	background-size: 100% 100%;
+	justify-content: center;
+	align-items: center;
+	font-size: 4.67vmin;
+	-webkit-text-stroke: 0.2vmin rgb(249, 111, 0);
+	color: rgb(255, 187, 41);
+	word-break: break-word;
+}

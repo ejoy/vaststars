@@ -3,6 +3,7 @@ local world = ecs.world
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR <const> = ecs.require "vaststars.prototype|color"
+local DESC <const> = ecs.require "vaststars.prototype|menu.desc"
 
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
@@ -65,6 +66,7 @@ function M.create()
         buttons[#buttons+1] = {
             command = v.command,
             background_image = v.icon,
+            desc = DESC["bulk_opt." .. v.command] or "",
         }
     end
     set_button_offset(buttons)
@@ -75,6 +77,7 @@ function M.create()
 
     return {
         buttons = buttons,
+        desc = "",
     }
 end
 
@@ -189,6 +192,10 @@ function M.update(datamodel)
     end
 
     for _ in operate_mb:unpack() do
+        if next(global.selected_buildings) == nil then
+            return
+        end
+
         update_buildings_state({{selecting, "opaque", "null", RENDER_LAYER.BUILDING}})
         selecting = {}
 

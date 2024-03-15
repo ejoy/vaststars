@@ -12,6 +12,7 @@ local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local ROTATORS <const> = CONSTANT.ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local COLOR <const> = ecs.require "vaststars.prototype|color"
+local DESC <const> = ecs.require "vaststars.prototype|menu.desc"
 
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 local remove_mb = mailbox:sub {"remove"}
@@ -54,6 +55,7 @@ local function _handler(datamodel)
             t[#t+1] = {
                 command = v.command,
                 background_image = v.icon,
+                desc = DESC["bulk_opt." .. v.command] or "",
             }
         end
     end
@@ -131,6 +133,7 @@ function M.create()
         move_confirm = false,
     }
     t.buttons = _handler(t)
+    t.desc = ""
     return t
 end
 

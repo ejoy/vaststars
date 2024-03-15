@@ -1,5 +1,10 @@
 <html>
     <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+        </style>
         <style path = "/pkg/vaststars.resources/ui/common/sector_menu.css" />
         <script type="text/x-lua" >
             local ui_sys = import_package "vaststars.ui".ui_system
@@ -8,6 +13,14 @@
             function start.clickButton(...)
                 ui_sys.pub(window, {...})
             end
+
+            function start.onLongPress(ev, desc)
+                if ev.state == "began" then
+                    start.desc = desc
+                elseif ev.state == "ended" then
+                    start.desc = ""
+                end
+            end
         </script>
     </head>
     <body style = "pointer-events: none;">
@@ -15,12 +28,16 @@
             <sector-menu-main-button-icon style = "background-image: '/pkg/vaststars.resources/ui/textures/bulk-select/focus.texture';" />
         </sector-menu-main-button>
 
-        <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons">
+        <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons" data-event-longpress="onLongPress(ev, it.desc)">
             <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
                 <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
                     <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
                 </sector-menu-button>
             </div>
         </sector-menu-button-container>
+
+        <sector-menu-desc-container>
+            <sector-menu-desc data-if = "desc ~= ''">{{desc}}</sector-menu-desc>
+        </sector-menu-desc-container>
     </body>
 </html>

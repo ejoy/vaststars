@@ -4,26 +4,6 @@
             body {
                 font: "阿里巴巴普惠体";
             }
-            desc-container {
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-            desc {
-                width: 30.67vmax;
-                height: 13.08vmin;
-                background-image: "/pkg/vaststars.resources/ui/textures/building-menu/square-grid.texture";
-                background-size: 100% 100%;/* 34x34 68x68 852x168 */
-                justify-content: center;
-                align-items: center;
-                font-size: 4.67vmin;
-                -webkit-text-stroke: 0.2vmin rgb(249, 111, 0);
-                color: rgb(255, 187, 41);
-                word-break: break-word;
-            }
         </style>
         <style path = "/pkg/vaststars.resources/ui/common/sector_menu.css" />
         <script type="text/x-lua" >
@@ -52,9 +32,6 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center; margin-top: -10vmin;">
-        <desc-container>
-            <desc data-if = "desc ~= ''">{{desc}}</desc>
-        </desc-container>
         <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons">
             <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
                 <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it)" data-event-longpress="onLongPress(ev, it.desc)">
@@ -64,5 +41,8 @@
                 </sector-menu-button>
             </div>
         </sector-menu-button-container>
+        <sector-menu-desc-container>
+            <sector-menu-desc data-if = "desc ~= ''">{{desc}}</sector-menu-desc>
+        </sector-menu-desc-container>
     </body>
 </html>
