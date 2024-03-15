@@ -10,5 +10,5 @@ return {
     ["needs to be placed above geothermal"] = {text = "地热井需要放置在地热上方"},
     ["needs to be placed above the road"] = {text = "物流中心需要放置在公路上方"},
     ["different fluids do not mix"] = {text = "不同流体不能混合"},
-    ["no buildings were chosen"] = {text = "至少选择一个建筑进行操作"},
+    ["no buildings were chosen"] = {text = "标记至少一个建筑目标才可进行操作"},
 }
