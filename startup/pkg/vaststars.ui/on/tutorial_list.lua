@@ -9,7 +9,7 @@ return function (window)
                 goto continue
             end
 
-            local f = dofile(path:string())
+            local f = assert(loadfile(path:string()))()
             if f.show == false then
                 goto continue
             end

@@ -8,7 +8,7 @@ return function (window, document)
             if path:filename():string():match("^tutorial.*$") then
                 goto continue
             end
-            local f = dofile(path:string())
+            local f = assert(loadfile(path:string()))()
             if f.show == false then
                 goto continue
             end
