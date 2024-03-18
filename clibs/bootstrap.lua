@@ -48,4 +48,16 @@ end
 local MainPath = fs.relative(ProjectDir / arg[0], antdir)
 arg[0] = MainPath:string()
 
-assert(loadfile(arg[0]))(table.unpack(arg))
+local function dofile(path, ...)
+    local fastio = require "fastio"
+    local data = fastio.readall_v(path, path)
+    if not data then
+        error(('%s:No such file or directory.'):format(path))
+    end
+    local func, err = fastio.loadlua(data, path)
+    if not func then
+        error(err)
+    end
+    func(...)
+end
+dofile(arg[0], table.unpack(arg))
