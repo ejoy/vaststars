@@ -47,7 +47,7 @@ local function ExtraSyntax(c, types)
 end
 
 local loadComponents = require "init.component_load"
-local components, types = loadComponents "/pkg/vaststars.gameplay/init/component.lua"
+local components, types = loadComponents "init/component.lua"
 local syntaxs = {}
 for _, component in ipairs(components) do
 	local syntax = ExtraSyntax(component, types)

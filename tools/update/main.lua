@@ -3,7 +3,7 @@ require "bootstrap"
 
 dofile "/engine/ltask.lua" {
     bootstrap = {
-        ["logger"] = {},
+        ["ant.ltask|logger"] = {},
         ["vaststars.update|boot"] = { unique = false }
     }
 }

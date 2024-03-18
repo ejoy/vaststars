@@ -1,4 +1,5 @@
 local fs = require "filesystem"
+local pm = require "packagemanager"
 
 return function (window, document)
     local templates = {}
@@ -8,7 +9,8 @@ return function (window, document)
             if path:filename():string():match("^tutorial.*$") then
                 goto continue
             end
-            local f = assert(loadfile(path:string()))()
+            local initfunc = assert(pm.loadenv("vaststars.prototype").loadfile("template/"..path:filename():string()))
+            local f = initfunc()
             if f.show == false then
                 goto continue
             end

@@ -32,15 +32,9 @@ local _load_datamodel ; do
         if datamodel_funcs[datamodel] then
             return datamodel_funcs[datamodel]
         end
-
-        local f = DATAMODEL_PATH / datamodel
-        if not fs.exists(f) then
-            return
-        end
-
-        local func, err = loadfile(f:string())
+        local func = loadfile("ui_datamodel/"..datamodel)
         if not func then
-            error(([[Failed to load datamodel %s: %s]]):format(datamodel, err))
+            return
         end
 
         datamodel_funcs[datamodel] = func(ecs, _create_ui_mailbox(rml))

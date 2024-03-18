@@ -171,7 +171,6 @@ component "global_state" {
 tag "wind_turbine"
 tag "base"
 
---
 tag "station_changed"
 tag "building_new"
 tag "building_changed"
