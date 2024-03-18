@@ -1,9 +1,4 @@
 ---
-file: materials/Material.001.material
-op: replace
-path: /properties/u_emissive_factor
-value: {5, 5, 5, 5}
----
 file: mesh.prefab
 op: add
 path: /-
@@ -25,7 +20,7 @@ value:
   data:
     scene:
       r: {0, 0, 0, 1}
-      t: {0, 4.5, 15}
+      t: {0, 9.5, 15}
   mount: 1
   policy:
     ant.scene|scene_object
@@ -67,7 +62,7 @@ value:
   data:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 4.5, -15}
+      t: {0, 9.5, -15}
   mount: 1
   policy:
     ant.scene|scene_object
@@ -113,6 +108,11 @@ path: work.prefab
 file: mesh.prefab
 op: copyfile
 path: debris.prefab
+---
+file: materials/Material.001.material
+op: replace
+path: /properties/u_emissive_factor
+value: {5, 5, 5, 5}
 ---
 file: images/furnace_light.texture
 op: add
@@ -284,7 +284,7 @@ value:
   data:
     scene:
       r: {0, 0, 0, 1}
-      t: {0, 4.5, 15}
+      t: {0, 9.5, 15}
   mount: 1
   policy:
     ant.scene|scene_object
@@ -314,7 +314,7 @@ value:
   data:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
-      t: {0, 4.5, -15}
+      t: {0, 9.5, -15}
   mount: 1
   policy:
     ant.scene|scene_object
