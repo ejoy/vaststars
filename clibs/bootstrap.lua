@@ -67,4 +67,3 @@ local MainPath = fs.relative(ProjectDir / arg[0], antdir)
 arg[0] = MainPath:string()
 
 dofile "/engine/console/bootstrap.lua"
-LoadFile(arg[0])(table.unpack(arg))

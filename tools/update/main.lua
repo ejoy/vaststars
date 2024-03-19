@@ -1,8 +1,4 @@
 package.path = "/engine/?.lua"
 require "bootstrap"
 
-dofile "/engine/ltask.lua" {
-    bootstrap = {
-        ["vaststars.update|boot"] = { unique = false }
-    }
-}
+import_package "vaststars.update"
