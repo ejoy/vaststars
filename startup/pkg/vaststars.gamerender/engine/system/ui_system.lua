@@ -21,7 +21,6 @@ local guide_progress = 0
 
 local _load_datamodel ; do
     local datamodel_funcs = {}
-    local DATAMODEL_PATH <const> = fs.path("/pkg/vaststars.gamerender/ui_datamodel/")
 
     local function _create_ui_mailbox(rml)
         local ui_mailbox = {}

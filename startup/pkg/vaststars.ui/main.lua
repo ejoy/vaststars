@@ -1,15 +1,15 @@
+local fs = require "filesystem"
+
+local on = {}
+for file in fs.pairs(fs.path "/pkg/vaststars.ui/on") do
+    local s = file:stem():string()
+    on[s] = assert(require("on." .. s))
+end
+
 return {
     ui_system = require "ui_system",
     scrolltoitem = require "scrolltoitem",
     list = require "list",
     page = require "page",
-    on = {
-        loading = require "on.loading",
-        template = require "on.template",
-        tutorial_list = require "on.tutorial_list",
-        tutorial_end = require "on.tutorial_end",
-        login = require "on.login",
-        archiving = require "on.archiving",
-        settings = require "on.settings",
-    }
+    on = on,
 }
