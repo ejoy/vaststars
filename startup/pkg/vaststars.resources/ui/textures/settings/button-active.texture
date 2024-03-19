@@ -1,0 +1,21 @@
+colorspace: sRGB
+compress:
+  android: ASTC6x6
+  ios: ASTC6x6
+  windows: BC3
+noresize: true
+normalmap: false
+path: ../../images/settings/button-active.png
+sampler:
+  MAG: LINEAR
+  MIN: LINEAR
+  U: WRAP
+  V: WRAP
+type: texture
+lattice:
+  u: 50
+  v: 50
+  x1: 28.07
+  x2: 27.19
+  y1: 50
+  y2: 48.44

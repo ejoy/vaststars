@@ -10,5 +10,6 @@ return {
         tutorial_end = require "on.tutorial_end",
         login = require "on.login",
         archiving = require "on.archiving",
+        settings = require "on.settings",
     }
 }

@@ -6,6 +6,9 @@ local irmlui = ecs.require "ant.rmlui|rmlui_system"
 local tracedoc = require "utility.tracedoc"
 local table_unpack = table.unpack
 local fs = require "filesystem"
+local saveload = ecs.require "saveload"
+local icanvas = ecs.require "engine.canvas"
+local window = import_package "ant.window"
 
 local windowBindings = {} -- = {[rml] = { w = xx, datamodel = xx, }, ...}
 local changedWindows = {}
@@ -255,6 +258,22 @@ irmlui.onMessage("reboot", function(...)
     global.startup_args = { ... }
     window.reboot {
         feature = { "vaststars.gamerender|gameplay" },
+    }
+end)
+
+irmlui.onMessage("settings|save", function(...)
+    if not saveload:backup() then
+        log.error("Failed to save game")
+    end
+end)
+
+irmlui.onMessage("settings|info", function(info)
+    icanvas.show("icon", info)
+end)
+
+irmlui.onMessage("settings|reboot", function(info)
+    window.reboot {
+        feature = {"vaststars.gamerender|login"},
     }
 end)
 

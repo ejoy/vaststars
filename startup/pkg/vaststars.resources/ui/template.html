@@ -11,7 +11,7 @@
                 width: 25%;
                 height: 100%;
             }
-            .recipe-name-block {
+            place-holder {
                 background-color: rgb(203, 118, 24);
                 width: 100%;
                 height:5%;
@@ -52,13 +52,11 @@
             ui.on.template(window, document)
         </script>
     </head>
+    <!-- 测试模式 -->
     <body style = "background-color: black;">
         <div class="item-container-region">
             <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
-                <!-- 标题栏 -->
-                <div class = "recipe-name-block">
-                    <div class = "recipe-name-text">模板</div>
-                </div>
+                <place-holder />
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <template-list class = "recipe-change-block" style = "justify-content: center; align-items: center; overflow: scroll;">
                         <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "templates" data-event-click = "open(it.filename)">

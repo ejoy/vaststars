@@ -1,0 +1,185 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: 100% "阿里巴巴普惠体";
+            }
+            header-container {
+                height: 13.05vmin;
+                width: 100%;
+                flex-direction: row;
+            }
+            caption-line-container {
+                width: 38.745vmax;
+                height: 100%;
+                align-items: center;
+            }
+            caption-line {
+                width: 15.34vmax;
+                height: 0.15vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture";
+                background-size: 100% 100%;
+            }
+            caption {
+                height: 100%;
+                width: 22.51vmax;
+            }
+            left-box {
+                width: 7.30vmax;
+                height: 100%;
+            }
+            tab {
+                background-size: 100% 100%;
+                width: 4.10vmax;
+                height: 20.00vmin;
+            }
+            .tab-normal {
+                background-image: "/pkg/vaststars.resources/ui/textures/settings/tab-bg.texture";
+            }
+            .tab-active {
+                background-image: "/pkg/vaststars.resources/ui/textures/settings/tab-bg-active.texture";
+            }
+            frame {
+                width: 89.80vmax;
+                height: 81.31vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture";
+                background-size: 100% 100%;
+                flex-direction: column;
+            }
+
+            button {
+                background-image: "/pkg/vaststars.resources/ui/textures/settings/button.texture"; /* 64x64 128x128 228x128 */
+                width: 17.76vmin;
+                height: 9.97vmin;
+                background-size: 100% 100%;
+                align-items: center;
+                justify-content: center;
+                font-size: 4.00vmin;
+                color: rgb(253, 179, 27);
+            }
+            button:active {
+                background-image: "/pkg/vaststars.resources/ui/textures/settings/button-active.texture";
+            }
+
+            list-item {
+                width: 100%;
+                height: 13.5vmin;
+                flex-direction: row;
+            }
+            line {
+                width: 92.5%;
+                height: 0.15vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture";
+                background-size: 100% 100%;
+            }
+            line-container {
+                align-items: center;
+            }
+
+            ping-pong {
+                width: 22.12vmin;
+                height: 7.32vmin;
+                background-size: 100% 100%;
+            }
+
+            option {
+                width: 7.09vmin;
+                height: 7.09vmin;
+                background-size: 100% 100%;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local ui = import_package "vaststars.ui"
+            ui.on.settings(window, document, ...)
+        </script>
+    </head>
+    <body style = "pointer-events: none; background-color: rgba(0, 0, 0, 250);">
+        <header-container>
+            <caption-line-container style = "flex-direction: row-reverse;"><caption-line /></caption-line-container>
+            <caption style = "font-size: 6.50vmin; justify-content: center; align-items: center;">游 戏 设 置</caption>
+            <caption-line-container style = "flex-direction: row;"><caption-line /></caption-line-container>
+        </header-container>
+        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+        <div style = "flex-direction: row; pointer-events: none;">
+            <left-box style = "pointer-events: none;">
+                <placeholder style = "height: 4.80vmin; width: 100%;" />
+                <div style = "align-items: flex-end; flex-direction: column; gap: 1vmin;">
+                    <tab style = "align-items: center; justify-content: center;" data-for = "tabs" data-attr-class = "it.name == name and 'tab-active' or 'tab-normal'" data-event-click = "clickTab(it.name)">
+                        <div style = "font-size: 4.00vmin; word-break: break-all;">{{it.name}}</div>
+                    </tab>
+                </div>
+            </left-box>
+            <frame style = "pointer-events: none;">
+                <div data-if = "name == '游戏设置'">
+                    <list-item>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">保存游戏</div>
+                        <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
+                            <button data-event-click = "clickButton('settings|save')">保   存</button>
+                        </div>
+                    </list-item>
+                    <line-container><line /></line-container>
+
+                    <list-item>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">读取游戏</div>
+                        <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
+                            <button data-event-click="clickArchiving()">读   取</button>
+                        </div>
+                    </list-item>
+                    <line-container><line /></line-container>
+
+                    <list-item>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">重新登录</div>
+                        <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
+                            <button data-event-click = "clickButton('settings|reboot')">登   出</button>
+                        </div>
+                    </list-item>
+                    <line-container><line /></line-container>
+
+                    <list-item>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">音乐音效</div>
+                        <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
+                            <ping-pong bind-var = "music"
+                                background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-1.texture"
+                                background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-2.texture"
+                                text-1 = "开启" text-2 = "关闭"
+                            />
+                        </div>
+                    </list-item>
+                    <line-container><line /></line-container>
+
+                    <list-item>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">提示信息</div>
+                        <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
+                            <ping-pong bind-var = "info"
+                                background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-1.texture"
+                                background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-2.texture"
+                                text-1 = "开启" text-2 = "关闭" data-event-click = "clickInfo()"
+                            />
+                        </div>
+                    </list-item>
+                    <line-container><line /></line-container>
+
+                    <list-item>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">画面性能</div>
+                        <div style = "width: 50%; height: 100%; align-items: center; justify-content: center; flex-direction: row; gap: 6vmin;">
+                            <option-container id = "option-1" style = "flex-direction: row; gap: 1vmin;" data-event-click = "clickOption(ev)">
+                                <option id = "option-1-point" checked = "1"
+                                    background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/option-active.texture"
+                                    background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/option.texture"
+                                />
+                                <div style = "font-size: 4.70vmin; justify-content: center; align-items: center;">画质优先</div>
+                            </option-container>
+                            <option-container id = "option-2" style = "flex-direction: row; gap: 1vmin;" data-event-click = "clickOption(ev)">
+                                <option id = "option-2-point" checked = "0"
+                                    background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/option-active.texture"
+                                    background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/option.texture"
+                                />
+                                <div style = "font-size: 4.70vmin; justify-content: center; align-items: center;">性能优先</div>
+                            </option-container>
+                        </div>
+                    </list-item>
+                </div>
+            </frame>
+        </div>
+    </body>
+</html>

@@ -47,7 +47,6 @@ local gesture_pan_mb = world:sub {"gesture", "pan"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
-local settings_mb = mailbox:sub {"settings"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
 local bulk_select_mb = mailbox:sub {"bulk_select"}
@@ -845,10 +844,6 @@ function M.update(datamodel)
         }
         icamera_controller.unlock_axis()
         log.info("unlock axis")
-    end
-
-    for _ in settings_mb:unpack() do
-        iui.open({rml = "/pkg/vaststars.resources/ui/main_menu.html"})
     end
 
     for _ in focus_transfer_source_mb:unpack() do
