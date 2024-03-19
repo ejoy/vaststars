@@ -3,7 +3,7 @@ return {
     {
         "opacity",
         {"BUILDING"},
-        {"LORRY", "LORRY_ITEM", "DRONE"},
+        {"LORRY", "LORRY_ITEM", "DRONE", "STATION_ITEM"},
         {"TERRAIN"},
         {"MINERAL"},
         {"ROAD", "GRID"},

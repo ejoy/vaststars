@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local STATION_SLOTS <const> = {"slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8"}
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local objects = require "objects"
 local ichest = require "gameplay.interface.chest"
@@ -33,11 +34,7 @@ local function _rebuild(gameplay_world, e, game_object)
             local item_object = igame_object.create {
                 prefab = prefab,
                 group_id = igroup.id(e.building.x, e.building.y),
-                on_ready = function (self)
-                    if not show then
-                        imessage:pub("show", self, false)
-                    end
-                end
+                render_layer = RENDER_LAYER.STATION_ITEM,
             }
 
             game_object:send("hitch_instance|attach", assert(STATION_SLOTS[idx]), item_object.hitch_instance)

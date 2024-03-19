@@ -4,11 +4,9 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local irl           = ecs.require "ant.render|render_layer.render_layer"
-local irender       = ecs.require "ant.render|render"
 local igame_object  = ecs.require "engine.game_object"
 local imotion       = ecs.require "engine.motion"
 local itl           = ecs.require "ant.timeline|timeline"
-local imessage      = ecs.require "message_sub"
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
@@ -18,6 +16,7 @@ local function create(prefab, s, r, t)
         item_classid = 0,
         item_amount = 0,
         motion = motion_entity,
+        -- arrow_instance
     }
     local lorry_obj = igame_object.create {
         prefab = prefab,
@@ -26,27 +25,6 @@ local function create(prefab, s, r, t)
         render_layer = RENDER_LAYER.LORRY,
         dynamic = true,
     }
-    local arrow_instance = world:create_instance {
-        prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
-        on_ready = function(self)
-            for _, eid in ipairs(self.tag['*']) do
-                local e <close> = world:entity(eid, "visible?out render_object?in timeline?in loop_timeline?out")
-                irender.set_visible(e, false)
-                if e.render_object then
-                    irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
-                end
-                if e.timeline then
-                    e.timeline.eid_map = self.tag
-                    itl:start(e)
-
-                    if e.timeline.loop == true then
-                        e.loop_timeline = true
-                    end
-                end
-            end
-        end,
-    }
-    lorry_obj:send("hitch_instance|attach", "arrow", arrow_instance)
 
     local idle_prefab <const> = prefab
     local work_prefab <const> = igame_object.replace_prefab(prefab, "work.prefab")
@@ -60,13 +38,40 @@ local function create(prefab, s, r, t)
     function outer:remove()
         world:remove_entity(motion_entity)
         lorry_obj:remove()
-        world:remove_instance(arrow_instance)
+        if self.arrow_instance then
+            world:remove_instance(self.arrow_instance)
+        end
         if self.item then
             self.item:remove()
         end
     end
     function outer:show_arrow(b)
-        imessage:pub("show", arrow_instance, b)
+        if b then
+            assert(self.arrow_instance == nil)
+            self.arrow_instance = world:create_instance {
+                prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
+                on_ready = function(self)
+                    for _, eid in ipairs(self.tag['*']) do
+                        local e <close> = world:entity(eid, "visible?out render_object?in timeline?in loop_timeline?out")
+                        if e.render_object then
+                            irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
+                        end
+                        if e.timeline then
+                            e.timeline.eid_map = self.tag
+                            itl:start(e)
+
+                            if e.timeline.loop == true then
+                                e.loop_timeline = true
+                            end
+                        end
+                    end
+                end,
+            }
+            lorry_obj:send("hitch_instance|attach", "arrow", self.arrow_instance)
+        else
+            world:remove_instance(self.arrow_instance)
+            self.arrow_instance = nil
+        end
     end
     function outer:set_item(item_classid, item_amount)
         if self.item_classid == item_classid and self.item_amount == item_amount then
