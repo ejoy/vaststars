@@ -52,7 +52,7 @@ prototype "物流中心" {
 
 prototype "科研中心I" {
     type = {"building", "consumer","laboratory"},
-    chest_style = "chest",
+    chest_style = "laboratory",
     model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
@@ -95,7 +95,7 @@ prototype "地质科研中心" {
 
 prototype "科研中心II" {
     type = {"building", "consumer","laboratory"},
-    chest_style = "chest",
+    chest_style = "laboratory",
     model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",
@@ -118,7 +118,7 @@ prototype "科研中心II" {
 
 prototype "科研中心III" {
     type = {"building", "consumer","laboratory"},
-    chest_style = "chest",
+    chest_style = "laboratory",
     model = "/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab",
     work_status = {work = true},
     icon = "mem:/pkg/vaststars.resources/glbs/lab-1.glb|mesh.prefab config:s,1,3",

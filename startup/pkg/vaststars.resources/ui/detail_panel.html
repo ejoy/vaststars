@@ -19,84 +19,11 @@
                 height: 5.70vmin;
                 font-size: 3.00vmin;
             }
-            .task-block {
-                flex-direction: column;
-                align-items:center;
-                justify-content: flex-start;
-                overflow: hidden; 
-                position: absolute; 
-                left: 0.13vmin; 
-                top: 0.1vmin; 
-                width: 35.00vmin; 
-                height: 9.8vmin; 
-                border: 0.15vmin rgb(255, 255, 255);
-                background-color: rgb(203, 118, 24);
-            }
-            .task-name {
-                padding-bottom: 0.5vmin;
-                width: 100%;
-                height: 50%;
-                font-size: 3.5vmin;
-                -webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
-                text-align: center;
-            }
-            .task-des-block {
-                width: 100%;
-                height: 50%;
-                flex-direction: row;
-                align-items: center;
-            }
-            .task-des {
-                width: 50%;
-                height: 100%;
-                font-size: 3.2vmin;
-                -webkit-text-stroke: 0.20vmin rgb(0, 0, 0); 
-                text-align: right;
-            }
-            .task-count {
-                width: 50%;
-                height: 100%;
-                flex-direction: row;
-                align-items: center;
-                justify-content: flex-start;
-                padding-bottom: 0.5vmin;
-            }
-            .task-count-start {
-                padding-left: 0.7vmin;
-                font-size: 3.2vmin;
-                color:rgb(0, 255, 0);
-                text-align: center;
-            }
-            .task-count-end {
-                font-size: 3.2vmin;
-                text-align: center;
-            }
             .panel1 {
                 width: 100%;
                 height: 100%;
                 pointer-events: none;
                 animation: 0.5s linear 0s pannelmovement;
-            }
-            .arrow {
-                width: 4.88vmin;
-                height: 3.76vmin;
-                position: absolute;
-                left:12.5vmin;
-                bottom:5.5vmin;
-                background-image: "/pkg/vaststars.resources/ui/textures/exchange/right_arrow.texture";
-                background-size: cover;
-                z-index: 100;
-            }
-            .recipe-name {
-                width:100%;
-                height: 6vmin;
-                position: absolute;
-                top:-5vmin;
-                padding-bottom: 0.5vmin;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                font-size: 2.5vmin;
             }
             .tips-bg {
                 flex-direction: column;
@@ -152,21 +79,21 @@
 
             function start.onLongPress(ev, areaid)
                 if ev.state == "began" then
-                    start.areaid = (start.areaid == areaid) and 0 or areaid
+                    start.areaid = (start.areaid == areaid) and "" or areaid
                 elseif ev.state == "changed" then
                     start.areaid = areaid
                 elseif ev.state == "ended" then
-                    start.areaid = 0
+                    start.areaid = ""
                 end
             end
 
             function start.onClick(ev, areaid)
-                start.areaid = (start.areaid == areaid) and 0 or areaid
+                start.areaid = (start.areaid == areaid) and "" or areaid
             end
 
-            function start.onLongPressTips(ev)
-                if ev.state == "changed" then
-                    start.areaid = 0
+            function start.onLongPressExpandedPanel(ev)
+                if ev.state == "ended" then
+                    start.areaid = ""
                 end
             end
 
@@ -192,14 +119,15 @@
             <div style = 'margin-left: 6.5%; margin-top: 5vmin; margin-bottom: 7vmin; width: 17.10vmax; height: 81vmin; background-image: "/pkg/vaststars.resources/ui/textures/detail/background.texture"; background-size: 100% 100%;'>
                 <!-- title -->
                 <div style = "flex-direction: row; justify-content: center; align-items: center;">
-                    <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-longpress="onLongPress(ev, 1)" data-event-click="onClick(ev, 1)" />
+                    <div data-style-background-image="icon" style = "width: 20vmin; height: 20vmin; background-size: cover;" data-event-longpress="onLongPress(ev, 'expanded-model')" data-event-click="onClick(ev, 'expanded-model')" />
                 </div>
                 <div style="top: -3.0vmin; height: 8vmin;">
                     <div style = "text-align: center; font-size: 4vmin; word-break: break-all;">{{prototype_name}}</div>
                     <div style = "text-align: center; font-size: 3.2vmin; color: #000; margin-left: 2%; margin-right: 2%; background-size: 100% 100%;" data-style-background-image="detail_panel_status_icon">{{detail_panel_status_desc}}</div>
                 </div>
+
                 <!-- property list -->
-                <div style="height: 22vmin;" data-event-longpress="onLongPress(ev, 2)" data-event-click="onClick(ev, 2)">
+                <div style="height: 22vmin;" data-event-longpress="onLongPress(ev, 'expanded-property-list')" data-event-click="onClick(ev, 'expanded-property-list')">
                     <div data-for = "property : property_list">
                         <div style = "width: 100%; height: 7vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
                             <!-- div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" /-->
@@ -213,10 +141,10 @@
                 </div>
                 <div style="width:94%; margin-left: 3%; margin-right: 3%; border-bottom: 0.1vmin #6d6d6d;" />
 
-                <!-- station -->
-                <div style="margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='station'" data-event-longpress="onLongPress(ev, 6)" data-event-click="onClick(ev, 6)">
+                <!-- station_chest -->
+                <div style="margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='station'" data-event-longpress="onLongPress(ev, 'expanded-station-info')" data-event-click="onClick(ev, 'expanded-station-info')">
                     <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 0.65vmin;" data-style-background-image="chest.icon ~= '' and chest.icon or 'none'" 
-                        data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or ((chest.type == 'demand' or chest.type == 'transit') and '0.3vmin rgb(78, 210, 223);' or '0.2vmin rgb(255, 255, 255);')">
+                        data-style-border = "chest.type == 'supply' and '0.3vmin rgb(78, 210, 223);' or ((chest.type == 'demand' or chest.type == 'transit') and '0.3vmin rgb(254, 98, 124);' or '0.2vmin rgb(255, 255, 255);')">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin; position:absolute; line-height: 0.7; top: 0vmin; right: 0vmin;" data-if="chest.icon ~= ''">{{chest.count}}</div>
                         <div style = "width: 2.36vmin; height: 2.36vmin; position: absolute; bottom: 0vmin; left: 0vmin; justify-content: center; align-items: center; background-image: '/pkg/vaststars.resources/ui/textures/detail/pile.texture'; background-size: 100% 100%;" data-if="chest.icon ~= ''">
                             <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:1.8vmin; text-align: center;" data-style-color ="(chest.package_count or 0) > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)'">{{chest.package_count}}</div>
@@ -224,21 +152,34 @@
                     </div>
                 </div>
 
-                <div style="margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='depot'" data-event-longpress="onLongPress(ev, 7)" data-event-click="onClick(ev, 7)">
+                <!-- depot_chest -->
+                <div style="margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='depot'" data-event-longpress="onLongPress(ev, 'expanded-depot-info')" data-event-click="onClick(ev, 'expanded-depot-info')">
                     <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 0.65vmin;" data-style-background-image="chest.icon ~= '' and chest.icon or 'none'" 
                         data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or ((chest.type == 'demand' or chest.type == 'transit') and '0.3vmin rgb(78, 210, 223);' or '0.2vmin rgb(255, 255, 255);')">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin; position:absolute; line-height: 0.7; top: 0vmin; right: 0vmin;" data-if="chest.icon ~= ''">{{chest.count}}</div>
                     </div>
                 </div>
 
+                <!-- laboratory -->
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='laboratory'" data-event-longpress="onLongPress(ev, 'expanded-laboratory-bottom')" data-event-click="onClick(ev, 'expanded-laboratory-bottom')">
+                    <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon">
+                        <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin; position:absolute; line-height: 0.7; top: 0vmin; right: 0vmin;">{{chest.count}}</div>
+                    </div>
+                    <div class="column" style="justify-content: flex-start; width: 27.5vmin; height: 4vmin;">
+                        <div class="progress_bar" data-style-width="progress"/>
+                        <div class="indicator" data-style-left="progress"/>
+                        <div style="text-align: center; font-size: 3vmin; top: -220%; -webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
+                    </div>
+                </div>
+
                 <!--箱子中当前物品-->
-                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='chest'" data-event-longpress="onLongPress(ev, 3)" data-event-click="onClick(ev, 3)">
+                <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='chest'" data-event-longpress="onLongPress(ev, 'expanded-chest-info')" data-event-click="onClick(ev, 'expanded-chest-info')">
                     <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin; position:absolute; line-height: 0.7; top: 0vmin; right: 0vmin;">{{chest.count}}</div>
                     </div>
                 </div>
                 <!--采矿机底部显示进度-->
-                <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "chest_style=='minner'" data-event-longpress="onLongPress(ev, 4)" data-event-click="onClick(ev, 4)">
+                <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "chest_style=='miner'" data-event-longpress="onLongPress(ev, 'expanded-miner-info')" data-event-click="onClick(ev, 'expanded-miner-info')">
                     <div class="column" style="justify-content: flex-start; width: 27.5vmin; height: 4vmin;">
                         <div class="progress_bar" data-style-width="progress"/>
                         <div class="indicator" data-style-left="progress"/>
@@ -253,7 +194,7 @@
                     </div>
                 </div>
                 <!--组装机类型底部显示进度-->
-                <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "chest_style=='assemble'" data-event-longpress="onLongPress(ev, 5)" data-event-click="onClick(ev, 5)">
+                <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "chest_style=='assembler'" data-event-longpress="onLongPress(ev, 'expanded-assembler-info')" data-event-click="onClick(ev, 'expanded-assembler-info')">
                     <div class="column" style="width:100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
                         <div class="row" style="width: 100%; justify-content: flex-start; flex-wrap: wrap; margin-left: 1vmin;">
@@ -283,12 +224,14 @@
                 </div>
             </div>
             <!-- detail panel end -->
-            <div class="tips-bg" style='flex-direction: column; justify-content:center; align-items: center; margin-left: -3vmin;' data-if="areaid==1.0" data-event-longpress="onLongPressTips(ev)">
+
+            <!-- expanded panel begin -->
+            <div class="tips-bg" style='flex-direction: column; justify-content:center; align-items: center; margin-left: -3vmin;' data-if="areaid=='expanded-model'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div style="width: 100%; height: 10%; justify-content: center; align-items: center; text-align: center; font-size: 6vmin;">{{prototype_name}}</div>
                 <div style='width: 60%; height: 60%; justify-content: center; align-items: center; background-size: 100% 100%;' data-style-background-image = "model" data-if = "model ~= ''"/>
                 <div style="width: 80%; height: 10%; justify-content: center; align-items: center; text-align: center; color:#adadad; font-size:3.8vmin; word-break: break-all;">{{desc}}</div>
             </div>
-            <div class="tips-bg" style='align-items: center; margin-left: -3vmin;' data-if="areaid==2.0 and #property_list>0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style='align-items: center; margin-left: -3vmin;' data-if="areaid=='expanded-property-list' and #property_list > 0" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div data-for = "property : property_list">
                     <div style = "height: 18vmin; flex-direction: row; align-items: center; justify-content: center;">
                         <!-- div style = "width: 100%; height: 8vmin; background-size:cover;" data-style-background-image="property.icon" /-->
@@ -300,7 +243,7 @@
                 </div>
             </div>
             <!--物流中心-->
-            <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==3.0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style="margin-left: -3vmin;" data-if = "areaid == 'expanded-chest-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <scroll-item-list style="width: 81.5%; height: 80%; flex-direction: row; align-items: center; flex-wrap: wrap;">
                     <div style='width: 25%; flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
                         <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
@@ -311,7 +254,7 @@
                 </scroll-item-list>
             </div>
             <!--采矿机-->
-            <div class="tips-bg" style="margin-left: -3vmin;" data-if="areaid==4.0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style="margin-left: -3vmin;" data-if = "areaid == 'expanded-miner-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div style="flex-direction: row; justify-content: center; align-items: center; height:79%; width: 90%;">
                     <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;"></div>
                     <div class="column" style="top: 5vmin; justify-content: center; width: 50%; height: 9vmin;">
@@ -333,7 +276,7 @@
                 </div>
             </div>
             <!--组装机-->
-            <div class="tips-bg" style='flex-direction: column; justify-content: center; align-items: center; margin-left: -3vmin;' data-if="areaid==5.0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style='flex-direction: column; justify-content: center; align-items: center; margin-left: -3vmin;' data-if = "areaid == 'expanded-assembler-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div style="height:8%;width: 90%; color: rgb(246, 142, 14); text-align: center; font-size: 4.8vmin;">{{recipe_name}}</div>
                 <div style="flex-direction: row; justify-content: center; align-items: center; height:79%; width: 90%;">
                     <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
@@ -354,7 +297,7 @@
                             <div style="text-align: center; font-size: 4vmin;height: 80%;width: 36vmin;-webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
                         </div>
                         
-                        <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin; border: 1px #f00;' data-style-left="progress"/>
+                        <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
                     </div>
                     <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
                         <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
@@ -372,10 +315,10 @@
                 </div>
             </div>
             <!-- station -->
-            <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if="areaid==6.0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if = "areaid == 'expanded-station-info'" data-event-longpress = "onLongPressExpandedPanel(ev)">
                 <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1">
-                        <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or (chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                        <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'demand' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'supply' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
                             <div style="font-size: 5.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0); position:absolute; top:-1vmin; right:0;" data-if="chest.icon ~= ''">x{{chest.count}}</div>
                             <div style = "width: 4.06vmin; height: 4.06vmin; position: absolute; bottom: 0vmin; left: 0vmin; justify-content: center; align-items: center; background-image: '/pkg/vaststars.resources/ui/textures/detail/pile.texture'; background-size: 100% 100%;" data-if="chest.icon ~= ''">
                                 <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin; text-align: center;" data-style-color ="(chest.package_count or 0) > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)'">{{chest.package_count}}</div>
@@ -386,7 +329,7 @@
                 </div>
             </div>
             <!--仓库-->
-            <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if="areaid==7.0" data-event-longpress="onLongPressTips(ev)">
+            <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if = "areaid == 'expanded-depot-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1">
                         <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
@@ -396,6 +339,25 @@
                     </div>
                 </div>
             </div>
+            <!-- laboratory -->
+            <div class="tips-bg" style="margin-left: -3vmin; gap: 1vmin;" data-if = "areaid == 'expanded-laboratory-bottom'" data-event-longpress="onLongPressExpandedPanel(ev)">
+                <scroll-item-list style="width: 81.5%; height: auto; flex-direction: row; align-items: center; flex-wrap: wrap;">
+                    <div style='width: 25%; flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
+                        <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
+                            <div style="font-size: 4vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0); position:absolute; top:-1vmin; right:0;" data-if="chest.icon ~= ''">{{chest.count}}</div>
+                        </div>
+                        <div style='font-size: 2.5vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{chest.name}}</div>
+                    </div>
+                </scroll-item-list>
+                <div class="column" style="width: 81.5%; height: 9vmin; justify-content: flex-start;">
+                    <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
+                        <div style="text-align: center; font-size: 4vmin;height: 80%;width: 36vmin;-webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
+                    </div>
+                    
+                    <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
+                </div>
+            </div>
+            <!-- expanded panel end -->
         </div>
     </body>
 </html>

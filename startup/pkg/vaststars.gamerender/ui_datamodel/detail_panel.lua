@@ -378,11 +378,6 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             else
                 prolist.progress = itypes.progress_str(progress, total_progress)
             end
-            if e.mining then
-                prolist.chest_style = "minner"
-            else
-                prolist.chest_style = "assemble"
-            end
         end
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
@@ -394,6 +389,15 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             items[#items+1] = {icon = value.icon, name = value.name, count = slot and slot.amount or 0, demand_count = slot and slot.limit or 0}
         end
         prolist.chest_list_1 = items
+
+        if e.laboratory.tech == 0 or e.laboratory.status == 0 then
+            prolist.progress = "0%"
+        else
+            local tech_typeobject = assert(iprototype.queryById(e.laboratory.tech))
+            local total_progress = tech_typeobject.time * 100
+            local progress = e.laboratory.progress
+            prolist.progress = itypes.progress_str(progress, total_progress)
+        end
     end
 
     --modify status
@@ -501,7 +505,7 @@ function M.create(object_id)
         desc = iprototype.item(typeobject).item_description,
         prototype_name = iprototype.display_name(typeobject),
         model = "mem:" .. typeobject.model .. " config:d,1,4,1.2",
-        areaid = 0
+        areaid = ""
     }
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
     preinput = {}

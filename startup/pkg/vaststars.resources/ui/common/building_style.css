@@ -14,13 +14,6 @@ button {
 button:active {
 	transform: scale(1.3);
 }
-.button-bg {
-		width: 6.67vmin;
-		height: 6.67vmin;
-		margin-bottom:5px;
-		align-self:center;
-		background-size:cover;
-}
 /*面板*/
 .panel {
 	background-color: rgb(44, 32, 18);
@@ -101,11 +94,6 @@ button:active {
 	height: 4.00vmin;
 	background-size:cover;
 }
-.property-text {
-	margin-left: 0.1vmin;
-	font-size: 4.0vmin;
-	color: rgb(0,176,240);
-}
 .row {
 	flex-direction: row;
 	justify-content: flex-start;
@@ -114,15 +102,6 @@ button:active {
 .column {
 	flex-direction: column;
 	align-items:center;
-}
-.build-picture {
-	margin: 0.1em;
-	width: 10.67vmin;
-	height: 10.67vmin;
-	background-color: rgb(191,144,0);
-	background-size: cover;
-	background-image: "/pkg/vaststars.resources/ui/textures/construct/assembler.texture";
-	border: 0.27vmin rgb(92, 184, 92);
 }
 .progress-bar-block {
 	margin:0 0 0.05em 0;
@@ -144,14 +123,6 @@ button:active {
 	color: rgb(255, 255, 255);
 	-webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
 }
-.info-block {
-	margin-top:1em;
-	width: 28%;
-	height:80%;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-evenly;
-}
 .small-item {
 	margin:0.1em;
 	flex-direction: column;
@@ -164,29 +135,6 @@ button:active {
 	height: 9.00vmin;
 	font-size: 2.00vmin;
 	background-image: "/pkg/vaststars.resources/ui/textures/construct/insert1.texture";
-}
-.confirm-button {
-	margin-bottom: 0.5em;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	width: 30.00vmin;
-	height: 14.00vmin;
-	background-color: rgb(250, 205, 9);
-	border: 0.27vmin rgb(89, 73, 39);
-	background-size: cover;
-}
-.button-area {
-	position: absolute; 
-	top: -10px; 
-	right: -20px;
-}
-.change-arrow-pic {
-	width: 2.67vmin;
-	height: 2.00vmin;
-	transform: rotate(90deg);
-	background-size: cover; 
-	background-image: "/pkg/vaststars.resources/ui/textures/exchange/right_arrow.texture";
 }
 @keyframes enlarge2 {
 	0% {
