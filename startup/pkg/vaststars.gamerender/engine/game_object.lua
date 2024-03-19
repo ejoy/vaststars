@@ -14,6 +14,7 @@ local imaterial = ecs.require "ant.render|material"
 local iefk      = ecs.require "ant.efk|efk"
 local iplayback = ecs.require "ant.animation|playback"
 local ihitch    = ecs.require "ant.render|hitch.hitch"
+local ivm       = ecs.require "ant.render|visible_mask"
 
 imessage:sub("game_object|stop_world", function(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
@@ -73,7 +74,7 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
     local cache = {}
     local next_hitch_group = 1
 
-    local function _create_prefab(prefab, color, emissive_color, render_layer, dynamic_mesh)
+    local function _create_prefab(prefab, color, emissive_color, render_layer, disable_shadow)
         local hitch_group_id = ig.register("HITCH_GROUP_" .. next_hitch_group)
         next_hitch_group = next_hitch_group + 1
 
@@ -98,10 +99,13 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
                         e.draw_indirect.cid = ihitch.create_compute_entity()
                     end
 
-                    if render_layer then
-                        w:extend(e, "render_object?update")
-                        if e.render_object and not exclude_render_layer[eid] then
+                    w:extend(e, "render_object?update")
+                    if e.render_object then
+                        if render_layer and not exclude_render_layer[eid] then
                             irl.set_layer(e, render_layer)
+                        end
+                        if disable_shadow then
+                            ivm.set_masks(e, "cast_shadow", false)
                         end
                     end
 
@@ -132,7 +136,7 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
         return hitch_group_id, inst
     end
 
-    function _get_hitch_group_id(prefab, color, emissive_color, render_layer, dynamic_mesh)
+    function _get_hitch_group_id(prefab, color, emissive_color, render_layer, dynamic_mesh, disable_shadow)
         if not dynamic_mesh then
             prefab = prefab:gsub("(%.[^%.]+)$", "_di%1")
         end
@@ -142,7 +146,7 @@ local _get_hitch_group_id, _stop_world, _restart_world ; do
             return assert(cache[hash].hitch_group_id)
         end
 
-        local hitch_group_id, inst = _create_prefab(prefab, color, emissive_color, render_layer, dynamic_mesh)
+        local hitch_group_id, inst = _create_prefab(prefab, color, emissive_color, render_layer, disable_shadow)
         cache[hash] = {instance = inst, hitch_group_id = hitch_group_id}
         return hitch_group_id
     end
@@ -211,7 +215,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local hitch_group_id = _get_hitch_group_id(init.prefab, init.color, init.emissive_color, init.render_layer, init.dynamic)
+    local hitch_group_id = _get_hitch_group_id(init.prefab, init.color, init.emissive_color, init.render_layer, init.dynamic, init.disable_shadow)
     local srt = init.srt or {}
 
     local hitch_instance = world:create_instance {

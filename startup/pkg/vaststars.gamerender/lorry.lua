@@ -92,14 +92,8 @@ local function create(prefab, s, r, t)
 
         self.item = igame_object.create {
             prefab = typeobject.item_model,
-            on_ready = function(self)
-                for _, eid in ipairs(self.tag['*']) do
-                    local e <close> = world:entity(eid, "render_object?in")
-                    if e.render_object then
-                        irl.set_layer(e, RENDER_LAYER.LORRY_ITEM)
-                    end
-                end
-            end,
+            render_layer = RENDER_LAYER.LORRY_ITEM,
+            disable_shadow = true,
         }
         lorry_obj:send("hitch_instance|attach", "item", self.item.hitch_instance)
     end

@@ -389,7 +389,8 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
         local items = {}
         for i, value in ipairs(current_inputs) do
             local slot = ichest.get(gameplay_core.get_world(), e.chest, i)
-            assert(slot and slot.item ~= 0)
+            -- when the recipe configuration is modified, the following assertions are triggered
+            assert(slot and slot.item == value.id)
             items[#items+1] = {icon = value.icon, name = value.name, count = slot and slot.amount or 0, demand_count = slot and slot.limit or 0}
         end
         prolist.chest_list_1 = items
