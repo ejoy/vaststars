@@ -2,12 +2,7 @@ package.path = "/engine/?.lua"
 require "bootstrap"
 
 local cmdline = import_package "vaststars.cmd"
-local options
-if __ANT_RUNTIME__ then
-	options = cmdline(arg)
-else
-	options = cmdline(...)
-end
+local options = cmdline(...)
 
 options.feature = {
 	"vaststars.gamerender|login",
