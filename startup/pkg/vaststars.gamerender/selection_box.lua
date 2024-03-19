@@ -87,14 +87,18 @@ local LINE_CHECK <const> = {
     function(w, h) return h - 1 > 0 end, -- right
 }
 
-function mt:remove()
-    self.removed = true
+local function _remove(self)
     for _, v in pairs(self.corners) do
         imessage:pub("remove", v)
     end
     for _, v in pairs(self.lines) do
         imessage:pub("remove", v)
     end
+end
+
+function mt:remove()
+    self.removed = true
+    _remove(self)
 end
 
 function mt:set_position(center)
@@ -119,7 +123,7 @@ function mt:set_wh(w, h)
     self.w = w
     self.h = h
 
-    self:remove()
+    _remove(self)
 
     local width = (w - 1) * 10
     local height = (h - 1) * 10
