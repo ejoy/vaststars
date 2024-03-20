@@ -49,16 +49,15 @@ local function _get_road_entrance_srt(typeobject, building_srt)
     return srt.new {s = s, r = r, t = t}
 end
 
-local function _align(w, h, position_type)
-    local pos = icamera_controller.get_screen_world_position(position_type)
-    local coord, position = icoord.align(pos, w, h)
+local function _align(position, area, dir)
+    local w, h = iprototype.rotate_area(area, dir)
+    local coord = icoord.align(position, w, h)
     if not coord then
         return
     end
     coord[1], coord[2] = icoord.road_coord(coord[1], coord[2])
-    position = math3d.vector(icoord.position(coord[1], coord[2], w, h))
-
-    return position, coord[1], coord[2]
+    local t = math3d.vector(icoord.position(coord[1], coord[2], w, h))
+    return t, coord[1], coord[2]
 end
 
 local function _get_nearby_buildings(x, y, w, h)
@@ -187,7 +186,9 @@ local function _show_nearby_buildings_selection_box(self, x, y, dir, typeobject)
     end
 end
 
-local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
+local function _new_entity(self, datamodel, typeobject, x, y, dir)
+    local status = assert(self.status)
+
     if not self.check_coord(x, y, dir, self.typeobject) then
         datamodel.show_confirm = false
         datamodel.show_rotate = true
@@ -195,22 +196,6 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
     end
-
-    self.status = {
-        x = x,
-        y = y,
-        dir = dir,
-        srt = srt.new {
-            t = position,
-            r = ROTATORS[dir],
-        },
-    }
-    local status = self.status
-
-    self.indicator = igame_object.create {
-        prefab = typeobject.model,
-        srt = status.srt,
-    }
 
     _show_nearby_buildings_selection_box(self, x, y, dir, typeobject)
 
@@ -240,14 +225,6 @@ local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
     end
 end
 
-local function _calc_grid_position(typeobject, x, y, dir)
-    local w, h = iprototype.rotate_area(typeobject.area, dir)
-    local _, originPosition = icoord.align(math3d.vector {10, 0, -10}, w, h) -- TODO: remove hardcode
-    local x, y = icoord.road_coord(x, y)
-    local buildingPosition = icoord.position(x, y, w, h)
-    return math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET)
-end
-
 local function rotate(self, datamodel, dir)
     local indicator = assert(self.indicator)
     local status = assert(self.status)
@@ -265,17 +242,36 @@ local function rotate(self, datamodel, dir)
         self.road_entrance:set_srt(srt.s, srt.r, srt.t)
     end
 
-    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
-    local position, x, y = _align(w, h, self.position_type)
+    local x, y
+    local position = icamera_controller.get_screen_world_position(self.position_type)
+    position, x, y = _align(position, typeobject.area, status.dir)
     if not position then
         return
+    end
+
+    if not self.check_coord(x, y, status.dir, typeobject) then
+        datamodel.show_confirm = false
+        if self.road_entrance then
+            self.road_entrance:set_state("invalid")
+            self.self_selection_box:set_color(COLOR_RED)
+        end
+    else
+        datamodel.show_confirm = true
+        if self.road_entrance then
+            self.road_entrance:set_state("valid")
+            self.self_selection_box:set_color(COLOR_GREEN)
+        end
     end
 
     status.x, status.y = x, y
     status.srt.t = position
 
+    local srt= assert(_get_road_entrance_srt(typeobject, status.srt))
+    self.road_entrance:set_srt(srt.s, srt.r, srt.t)
+
     indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     local self_selection_box_position = icoord.position(status.x, status.y, w, h)
     self.self_selection_box:set_position(self_selection_box_position)
     self.self_selection_box:set_wh(w, h)
@@ -307,27 +303,26 @@ local function touch_move(self, datamodel, delta_vec)
     status.srt.t = math3d.add(status.srt.t, delta_vec)
     indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
-    if self.grid_entity then
-        self.grid_entity:set_position(_calc_grid_position(typeobject, status.x, status.y, status.dir))
-    end
+    self.grid_entity:on_position_change(status.srt, status.dir)
 
     local srt = _get_road_entrance_srt(typeobject, status.srt)
     assert(srt)
     self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
+    local x, y
+    local position = icamera_controller.get_screen_world_position(self.position_type)
+    position, x, y = _align(position, typeobject.area, status.dir)
+
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
-    local position, x, y = _align(w, h, self.position_type)
-    if position then
-        local self_selection_box_position = icoord.position(x, y, w, h)
-        self.self_selection_box:set_position(self_selection_box_position)
-        self.self_selection_box:set_wh(w, h)
-    end
+    local self_selection_box_position = icoord.position(x, y, w, h)
+    self.self_selection_box:set_position(self_selection_box_position)
+    self.self_selection_box:set_wh(w, h)
 
     _show_nearby_buildings_selection_box(self, x, y, status.dir, typeobject)
 
     local dx, dy = icoord.road_coord(x, y)
-    if x == dx and y == dy and self.check_coord(x, y, status.dir, typeobject) then
-        local dir = _calc_dir(self._adjacent_coords, x, y, status.dir)
+    if x == dx and y == dy then
+        local dir = _calc_dir(self.adjacent_coords, x, y, status.dir)
         if dir and dir ~= status.dir then
             self:rotate(datamodel, dir)
         end
@@ -339,8 +334,9 @@ local function touch_end(self, datamodel)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
 
-    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
-    local position, x, y = _align(w, h, self.position_type)
+    local x, y
+    local position = icamera_controller.get_screen_world_position(self.position_type)
+    position, x, y = _align(position, typeobject.area, status.dir)
     if not position then
         return
     end
@@ -348,8 +344,6 @@ local function touch_end(self, datamodel)
     status.srt.t = position
 
     indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
-
-    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
 
     if not self.check_coord(x, y, status.dir, typeobject) then
         datamodel.show_confirm = false
@@ -367,10 +361,10 @@ local function touch_end(self, datamodel)
         end
     end
 
-    local srt= _get_road_entrance_srt(typeobject, status.srt)
-    assert(srt)
+    local srt= assert(_get_road_entrance_srt(typeobject, status.srt))
     self.road_entrance:set_srt(srt.s, srt.r, srt.t)
 
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     local self_selection_box_position = icoord.position(status.x, status.y, w, h)
     self.self_selection_box:set_position(self_selection_box_position)
     self.self_selection_box:set_wh(w, h)
@@ -403,11 +397,6 @@ local function confirm(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
 
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
-
     local object = iobject.new {
         prototype_name = typeobject.name,
         dir = status.dir,
@@ -419,14 +408,11 @@ local function confirm(self, datamodel)
     objects:set(object, "CONSTRUCTED")
     gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
-    _new_entity(self, datamodel, typeobject, status.x, status.y, status.srt.t, status.dir)
+    _new_entity(self, datamodel, typeobject, status.x, status.y, status.dir)
 end
 
 local function clean(self, datamodel)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
+    self.grid_entity:remove()
 
     for _, o in pairs(self.selection_box) do
         o:remove()
@@ -458,25 +444,25 @@ local function _get_adjacent_coords(typeobject)
         -- top
         for x = 0, w - 1, ROAD_WIDTH_COUNT do
             for y = -2, -2, -ROAD_HEIGHT_COUNT do
-                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'N'))})
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_adjacent_dir, 'N'))})
             end
         end
         -- right
         for x = w, w, ROAD_WIDTH_COUNT do
             for y = 0, h - 1, ROAD_HEIGHT_COUNT do
-                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'E'))})
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_adjacent_dir, 'E'))})
             end
         end
         -- bottom
         for x = 0, w - 1, ROAD_WIDTH_COUNT do
             for y = h, h, ROAD_HEIGHT_COUNT do
-                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'S'))})
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_adjacent_dir, 'S'))})
             end
         end
         -- left
         for x = -2, -2, -ROAD_WIDTH_COUNT do
             for y = 0, h - 1, ROAD_HEIGHT_COUNT do
-                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_dir, 'W'))})
+                table.insert(t, {x, y, iprototype.dir_tostring(iprototype.rotate_dir(typeobject.road_adjacent_dir, 'W'))})
             end
         end
 
@@ -485,29 +471,54 @@ local function _get_adjacent_coords(typeobject)
     return r
 end
 
+local function _create_grid_entity(status, position_type, dir)
+    local position = _align(status.srt.t, iprototype.packarea(8 * ROAD_WIDTH_COUNT, 8 * ROAD_HEIGHT_COUNT), dir)
+    position = math3d.add(position, GRID_POSITION_OFFSET)
+    local offset = math3d.sub(status.srt.t, position)
+    return igrid_entity.create(
+        MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT,
+        MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT,
+        ROAD_WIDTH_SIZE,
+        ROAD_HEIGHT_SIZE,
+        {t = position},
+        offset,
+        nil,
+        position_type
+    )
+end
+
 local function new(self, datamodel, typeobject, position_type)
     self.check_coord = get_check_coord(typeobject)
-    self._adjacent_coords = _get_adjacent_coords(typeobject)
-
     self.typeobject = typeobject
     self.position_type = position_type
+    self.adjacent_coords = _get_adjacent_coords(typeobject)
 
     local dir = DEFAULT_DIR
-    local w, h = iprototype.rotate_area(self.typeobject.area, dir)
-    local position, x, y = _align(w, h, position_type)
-    if not x or not y then
+    local x, y
+    local position = icamera_controller.get_screen_world_position(self.position_type)
+    position, x, y = _align(position, typeobject.area, dir)
+    if not position then
         return
     end
 
-    _new_entity(self, datamodel, typeobject, x, y, position, dir)
+    self.status = {
+        x = x,
+        y = y,
+        dir = dir,
+        srt = srt.new {
+            t = position,
+            r = ROTATORS[dir],
+        },
+    }
 
-    if not self.grid_entity then
-        local status = self.status
-        local srt = {
-            t = _calc_grid_position(typeobject, status.x, status.y, status.dir)
-        }
-        self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT, MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, srt)
-    end
+    local status = self.status
+    self.indicator = igame_object.create {
+        prefab = typeobject.model,
+        srt = status.srt,
+    }
+    self.grid_entity = _create_grid_entity(status, position_type, dir)
+
+    _new_entity(self, datamodel, typeobject, x, y, dir)
 end
 
 local function build(self, v)

@@ -280,9 +280,9 @@ prototype "砖石公路-X型" {
 prototype "物流站" {
     model = "/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab config:s,1,3",
-    check_coord = {"exclusive"},
+    check_coord = {"exclusive", "station"},
     builder = "station",
-    road_dir = "S",  -- station builder special
+    road_adjacent_dir = "S",  -- station builder special
     type = {"building", "station"},
     lorry_track = {
         {0, 0, "4x2", "station"},

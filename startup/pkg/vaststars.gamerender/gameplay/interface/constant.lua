@@ -91,7 +91,7 @@ M.FLUIDBOXES = {}
 table.move(M.IN_FLUIDBOXES, 1, #M.IN_FLUIDBOXES, 1, M.FLUIDBOXES)
 table.move(M.OUT_FLUIDBOXES, 1, #M.OUT_FLUIDBOXES, #M.FLUIDBOXES+1, M.FLUIDBOXES)
 
-M.GRID_POSITION_OFFSET = math3d.constant("v4", {0, 0.2, 0, 0.0})
+M.GRID_POSITION_OFFSET = math3d.constant("v4", {0, 0, 0, 0.0})
 
 M.BUILDING_EFK_SCALE = {
     ["1x1"] = {4, 4, 4},

@@ -11,19 +11,7 @@ local ROAD_HEIGHT_SIZE <const> = CONSTANT.ROAD_HEIGHT_SIZE
 local MAP_WIDTH_COUNT <const> = CONSTANT.MAP_WIDTH_COUNT
 local MAP_HEIGHT_COUNT <const> = CONSTANT.MAP_HEIGHT_COUNT
 local CHANGED_FLAG_ROADNET <const> = CONSTANT.CHANGED_FLAG_ROADNET
-local DIRECTION <const> = CONSTANT.DIRECTION
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
-
-local WORLD_MOVE_DELTA <const> = {
-    ['N'] = {x = 0,  y = 1},
-    ['E'] = {x = 1,  y = 0},
-    ['S'] = {x = 0,  y = -1},
-    ['W'] = {x = -1, y = 0},
-    [DIRECTION.N] = {x = 0,  y = 1},
-    [DIRECTION.E] = {x = 1,  y = 0},
-    [DIRECTION.S] = {x = 0,  y = -1},
-    [DIRECTION.W] = {x = -1, y = 0},
-}
 
 local math3d = require "math3d"
 local iprototype = require "gameplay.interface.prototype"
@@ -62,12 +50,13 @@ local function _update_components_position(self)
 end
 
 local function _align(position, area, dir)
-    local coord = icoord.align(position, iprototype.rotate_area(area, dir))
+    local w, h = iprototype.rotate_area(area, dir)
+    local coord = icoord.align(position, w, h)
     if not coord then
         return
     end
     coord[1], coord[2] = icoord.road_coord(coord[1], coord[2])
-    local t = math3d.vector(icoord.position(coord[1], coord[2], iprototype.rotate_area(area, dir)))
+    local t = math3d.vector(icoord.position(coord[1], coord[2], w, h))
     return t, coord[1], coord[2]
 end
 
@@ -128,34 +117,33 @@ local function _new_entity(self, datamodel, typeobject, x, y)
         self.indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
     end
 
-    if not self.pickup_components.grid_entity then
-        local position = _align(status.srt.t, iprototype.packarea(8 * ROAD_WIDTH_COUNT, 8 * ROAD_HEIGHT_COUNT), dir)
-        position = math3d.add(position, GRID_POSITION_OFFSET)
-        local offset = math3d.sub(status.srt.t, position)
-        self.pickup_components.grid_entity = igrid_entity.create(
-            MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT,
-            MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT,
-            ROAD_WIDTH_SIZE,
-            ROAD_HEIGHT_SIZE,
-            {t = status.srt.t},
-            offset,
-            nil,
-            self.position_type
-        )
-    end
-    if not self.pickup_components.selection_box then
-        self.pickup_components.selection_box = create_pickup_selection_box(status.srt.t, typeobject.area, dir, true)
-    end
-    if not self.pickup_components.next_box then
-        local dx, dy = iprototype.move_coord(x, y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
-        self.pickup_components.next_box = create_road_next_indicator(dx, dy, typeobject, dir, self.forward_dir)
-    end
-
     datamodel.show_rotate = true
     --
     _update_components_position(self)
     _update_components_status(self)
 end
+
+local function _create_grid_entity(status, position_type, dir)
+    local position = _align(status.srt.t, iprototype.packarea(8 * ROAD_WIDTH_COUNT, 8 * ROAD_HEIGHT_COUNT), dir)
+    position = math3d.add(position, GRID_POSITION_OFFSET)
+    local offset = math3d.sub(status.srt.t, position)
+    return igrid_entity.create(
+        MAP_WIDTH_COUNT // ROAD_WIDTH_COUNT,
+        MAP_HEIGHT_COUNT // ROAD_HEIGHT_COUNT,
+        ROAD_WIDTH_SIZE,
+        ROAD_HEIGHT_SIZE,
+        {t = status.srt.t},
+        offset,
+        nil,
+        position_type
+    )
+end
+
+local function _create_next_box(x, y, typeobject, dir, forward_dir)
+    local dx, dy = iprototype.move_coord(x, y, forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
+    return create_road_next_indicator(dx, dy, typeobject, dir, forward_dir)
+end
+
 --------------------------------------------------------------------------------------------------
 local function touch_move(self, datamodel, delta_vec)
     local indicator = assert(self.indicator)
@@ -296,10 +284,14 @@ local function new(self, datamodel, typeobject, position_type)
         prototype_name = prototype_name,
     }
 
+    local status = self.status
     self.indicator = igame_object.create {
         prefab = typeobject.model,
-        srt = self.status.srt,
+        srt = status.srt,
     }
+    self.pickup_components.grid_entity = _create_grid_entity(status, position_type, dir)
+    self.pickup_components.selection_box = create_pickup_selection_box(status.srt.t, typeobject.area, dir, true)
+    self.pickup_components.next_box = _create_next_box(x, y, typeobject, dir, self.forward_dir)
 
     _new_entity(self, datamodel, typeobject, x, y)
 end
