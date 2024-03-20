@@ -2,9 +2,9 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
-    model = "/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/headquater-1/headquater-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/headquater-1/headquater-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "base", "chest"},

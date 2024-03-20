@@ -334,8 +334,8 @@ prototype "锅炉I" {
 }
 
 prototype "地热井I" {
-    model = "/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/geothermal-plant/geothermal-plant.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant/geothermal-plant.gltf|mesh.prefab config:s,1,3",
     check_coord = {"geothermal_plant"},
     chest_style = "miner",
     builder = "normal",
@@ -367,8 +367,8 @@ prototype "地热井I" {
 }
 
 prototype "地热井II" {
-    model = "/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/geothermal-plant/geothermal-plant.gltf|mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant/geothermal-plant.gltf|mesh.prefab config:s,1,3",
     check_coord = {"geothermal_plant"},
     chest_style = "miner",
     builder = "normal",
@@ -400,7 +400,7 @@ prototype "地热井II" {
 }
 
 prototype "地热井III" {
-    model = "/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/geothermal-plant/geothermal-plant.gltf|mesh.prefab",
     icon = "mem:/pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab config:s,1,3",
     check_coord = {"geothermal_plant"},
     chest_style = "miner",

@@ -75,7 +75,7 @@ tag:
   mesh
 ---
 mount: 12
-prefab: /pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -87,7 +87,7 @@ tag:
   work
 ---
 mount: 14
-prefab: /pkg/vaststars.resources/glbs/chimney-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf|work.prefab
 ---
 data:
   scene:
@@ -252,7 +252,7 @@ tag:
   mesh
 ---
 mount: 42
-prefab: /pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -264,7 +264,7 @@ tag:
   work
 ---
 mount: 44
-prefab: /pkg/vaststars.resources/glbs/furnace-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|work.prefab
 ---
 data:
   scene:
@@ -276,7 +276,7 @@ tag:
   mesh
 ---
 mount: 46
-prefab: /pkg/vaststars.resources/glbs/geothermal-plant.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/geothermal-plant/geothermal-plant.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -300,7 +300,7 @@ tag:
   mesh
 ---
 mount: 50
-prefab: /pkg/vaststars.resources/glbs/headquater-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/headquater-1/headquater-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -312,7 +312,7 @@ tag:
   work
 ---
 mount: 52
-prefab: /pkg/vaststars.resources/glbs/headquater-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/headquater-1/headquater-1.gltf|work.prefab
 ---
 data:
   scene:
@@ -324,7 +324,7 @@ tag:
   mesh
 ---
 mount: 54
-prefab: /pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab
+prefab: /pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab
 ---
 data:
   scene:
@@ -336,7 +336,7 @@ tag:
   work
 ---
 mount: 56
-prefab: /pkg/vaststars.resources/glbs/hydro-plant-1.glb|work.prefab
+prefab: /pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|work.prefab
 ---
 data:
   scene:

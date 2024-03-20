@@ -240,9 +240,9 @@ prototype "特殊化工厂" {
 }
 
 prototype "特殊水电站" {
-    model = "/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -297,9 +297,9 @@ prototype "特殊水电站" {
 }
 
 prototype "特殊熔炼炉" {
-    model = "/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab",
     work_status = {work = true, work_start = true, idle_start = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",

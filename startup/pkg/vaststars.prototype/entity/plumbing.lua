@@ -210,9 +210,9 @@ prototype "压力泵I" {
 }
 
 prototype "烟囱I" {
-    model = "/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "chimney"},
     builder = "normal",
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},
@@ -231,9 +231,9 @@ prototype "烟囱I" {
 }
 
 prototype "烟囱II" {
-    model = "/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chimney-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive", "chimney"},
     builder = "normal",
     type = {"building", "fluidbox", "chimney", "auto_set_recipe"},

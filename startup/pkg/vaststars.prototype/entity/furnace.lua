@@ -2,9 +2,9 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "熔炼炉I" {
-    model = "/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab",
     work_status = {work = true, work_start = true, idle_start = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -42,9 +42,9 @@ prototype "熔炼炉I" {
 }
 
 prototype "熔炼炉II" {
-    model = "/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab",
     work_status = {work = true, work_start = true, idle_start = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -82,9 +82,9 @@ prototype "熔炼炉II" {
 }
 
 prototype "熔炼炉III" {
-    model = "/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab",
     work_status = {work = true, work_start = true, idle_start = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",

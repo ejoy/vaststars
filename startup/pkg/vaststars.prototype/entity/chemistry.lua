@@ -603,9 +603,9 @@ prototype "电解厂III" {
 }
 
 prototype "水电站I" {
-    model = "/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -659,9 +659,9 @@ prototype "水电站I" {
 }
 
 prototype "水电站II" {
-    model = "/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -715,9 +715,9 @@ prototype "水电站II" {
 }
 
 prototype "水电站III" {
-    model = "/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
