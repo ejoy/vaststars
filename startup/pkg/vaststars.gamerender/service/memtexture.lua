@@ -3,7 +3,7 @@ local ServiceWindow  = ltask.queryservice "ant.window|window"
 local S 			= {}
 
 local function init()
-	local textmgr = ltask.uniqueservice "ant.resource_manager|resource"
+	local textmgr = ltask.queryservice "ant.resource_manager|resource"
 	ltask.call(textmgr, "register", "mem", ltask.self())
 end
 
