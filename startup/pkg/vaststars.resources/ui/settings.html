@@ -45,6 +45,7 @@
                 background-image: "/pkg/vaststars.resources/ui/textures/common/square-grid.texture";
                 background-size: 100% 100%;
                 flex-direction: column;
+                overflow: scroll;
             }
 
             button {
@@ -91,9 +92,23 @@
         <script type="text/x-lua" >
             local ui = import_package "vaststars.ui"
             ui.on.settings(window, document, ...)
+
+            function init()
+                for _, e in ipairs(document.getElementsByTagName "frame") do
+                    e.scrollInsets(0, 0, 0, 200)
+
+                    local last_y
+                    e.addEventListener("pan", function(param)
+                        if last_y and param.state == "changed" then
+                            e.scrollTop = e.scrollTop - (param.y - last_y)
+                        end
+                        last_y = param.y
+                    end)
+                end
+            end
         </script>
     </head>
-    <body style = "pointer-events: none; background-color: rgba(0, 0, 0, 250);">
+    <body style = "pointer-events: none; background-color: rgba(0, 0, 0, 250);" onload="init()">
         <header-container>
             <caption-line-container style = "flex-direction: row-reverse;"><caption-line /></caption-line-container>
             <caption style = "font-size: 6.50vmin; justify-content: center; align-items: center;">游 戏 设 置</caption>
@@ -114,7 +129,7 @@
                     <list-item>
                         <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">保存游戏</div>
                         <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
-                            <button data-event-click = "clickButton('settings|save')">保   存</button>
+                            <button data-event-click = "clickButton('settings|save', true)">保   存</button>
                         </div>
                     </list-item>
                     <line-container><line /></line-container>
@@ -130,7 +145,7 @@
                     <list-item>
                         <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">重新登录</div>
                         <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
-                            <button data-event-click = "clickButton('settings|reboot')">登   出</button>
+                            <button data-event-click = "clickButton('settings|reboot', true)">登   出</button>
                         </div>
                     </list-item>
                     <line-container><line /></line-container>
@@ -159,7 +174,19 @@
                     </list-item>
                     <line-container><line /></line-container>
 
-                    <!-- list-item>
+                    <list-item>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">调试信息</div>
+                        <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
+                            <ping-pong bind-var = "info"
+                                background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-1.texture"
+                                background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-2.texture"
+                                text-1 = "开启" text-2 = "关闭" data-event-click = "clickButton('settings|debug', false)"
+                            />
+                        </div>
+                    </list-item>
+                    <line-container><line /></line-container>
+
+                    <!-- <list-item>
                         <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">画面性能</div>
                         <div style = "width: 50%; height: 100%; align-items: center; justify-content: center; flex-direction: row; gap: 6vmin;">
                             <option-container id = "option-1" style = "flex-direction: row; gap: 1vmin;" data-event-click = "clickOption(ev)">
@@ -177,7 +204,7 @@
                                 <div style = "font-size: 4.70vmin; justify-content: center; align-items: center;">性能优先</div>
                             </option-container>
                         </div>
-                    </list-item-->
+                    </list-item> -->
                 </div>
             </frame>
         </div>

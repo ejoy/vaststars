@@ -13,11 +13,7 @@ local ROTATORS <const> = {
     W = math.rad(-270),
 }
 
-local aio = import_package "ant.io"
-local datalist = require "datalist"
-local function read_datalist(path)
-    return datalist.parse(aio.readall(path))
-end
+local read_datalist = require "engine.datalist".read
 local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.ant"
 
 local iprototype = require "gameplay.interface.prototype"
