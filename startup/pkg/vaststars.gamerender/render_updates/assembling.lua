@@ -225,7 +225,7 @@ local function _create_icon(object_id, e, building_srt)
     local function remove(self)
         icanvas.remove_item("icon", object_id)
     end
-    local function update(self, e)
+    local function update(self, e, force_update)
         local s
         if not is_generator and not ipower_check.is_powered_on(gameplay_core.get_world(), e) then
             s = ICON_STATUS_NOPOWER
@@ -237,7 +237,7 @@ local function _create_icon(object_id, e, building_srt)
             end
         end
 
-        if s == status and recipe == e.assembling.recipe then
+        if not force_update and s == status and recipe == e.assembling.recipe then
             return
         end
 
@@ -338,6 +338,15 @@ function assembling_sys:gameworld_build()
     end
     for e in gameplay_ecs:select "assembling:in fluidboxes:in" do
         renew_assembling_fluid_port(gameplay_world, e)
+    end
+
+    for e in gameplay_world.ecs:select "building_changed assembling:in chest:in building:in capacitance?in eid:in" do
+        local object = assert(objects:coord(e.building.x, e.building.y))
+        local building = global.buildings[object.id]
+        if not building.assembling_icon then
+            building.assembling_icon = _create_icon(object.id, e, object.srt)
+        end
+        building.assembling_icon:update(e, true)
     end
 end
 
