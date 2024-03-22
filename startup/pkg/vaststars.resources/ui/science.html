@@ -189,7 +189,7 @@
                 else
                     unselect_recipe()
                 end
-                start.detaillist:on_dirty_all(start.current_tech and #start.current_tech.detail or 0)
+                start.detaillist:on_dirty_all(start.current_tech and (start.current_tech.detail and #start.current_tech.detail or 0) or 0)
             end
 
             local function clickTech(index)

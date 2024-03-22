@@ -179,6 +179,16 @@ local function _get_pollution(gameplay_world)
     return n, unit .. "μg", e.global_state.pollution
 end
 
+local function _get_new_tech_count(tech_list)
+    local count = 0
+    for _, tech in ipairs(tech_list) do
+        if global.science.tech_picked_flag[tech.detail.name] then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 ---------------
 local M = {}
 local function get_recipe_list()
@@ -219,6 +229,7 @@ function M.create()
         electricity = 0,
         electricity_unit = "W",
         electricity_negative = false,
+        new_tech_count = _get_new_tech_count(global.science.tech_list),
     }
 end
 
@@ -249,6 +260,7 @@ function M.update_tech(datamodel, tech)
         datamodel.current_tech_progress_detail = tech.progress.."/"..tech.detail.count
     else
         datamodel.show_tech_progress = false
+        datamodel.new_tech_count = _get_new_tech_count(global.science.tech_list)
     end
 end
 

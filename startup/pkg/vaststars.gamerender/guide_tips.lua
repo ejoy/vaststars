@@ -38,7 +38,7 @@ local function show(tech_node)
                         for _, eid in ipairs(self.tag['*']) do
                             local e <close> = world:entity(eid, "render_object?in animation?in")
                             if e.render_object then
-                                irl.set_layer(e, RENDER_LAYER.SELECTED_BOXES)
+                                irl.set_layer(e, RENDER_LAYER.ARROW_GUIDE)
                             end
                             if e.animation then
                                 iplayback.set_play(e, "Armature.001Action", true)
