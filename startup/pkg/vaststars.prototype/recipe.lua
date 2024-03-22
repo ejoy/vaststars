@@ -4487,6 +4487,22 @@ prototype "卤水沸腾" {
     description = "卤水转蒸汽",
 }
 
+prototype "地下水沸腾" {
+    type = { "recipe" },
+    recipe_craft_category = "流体换热处理",
+    recipe_category =  "化工",
+    recipe_order =  108,
+    recipe_icon =  "/pkg/vaststars.resources/textures/icons/recipe/brine2steam.texture",
+    ingredients = {
+        {"地下卤水", 90},
+    },
+    results = {
+        {"蒸汽", 60},
+    },
+    time = "1.5s",
+    description = "地下水转蒸汽",
+}
+
 prototype "特殊地质科技包" {
     type = { "recipe" },
     recipe_craft_category = "登录配方",

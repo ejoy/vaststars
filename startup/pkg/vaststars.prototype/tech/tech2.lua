@@ -500,7 +500,7 @@ local prototype = gameplay.register.prototype
     count = 1,
     order = 364,
     effects = {
-      unlock_recipe = {"卤水沸腾"},
+      unlock_recipe = {"地下水沸腾"},
     },
     prerequisites = {"发电机获取"},
     tips_pic = {
@@ -515,7 +515,7 @@ local prototype = gameplay.register.prototype
     desc = "锅炉设置生产配方",
     type = { "task" },
     task = {"unknown", 0, 3}, 
-    task_params = {recipe = "卤水沸腾"},
+    task_params = {recipe = "地下水沸腾"},
     count = 1,
     order = 365,
     prerequisites = {"锅炉放置"},
@@ -523,7 +523,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "锅炉设置“卤水沸腾”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "锅炉设置“地下水沸腾”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
