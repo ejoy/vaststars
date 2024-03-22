@@ -19,9 +19,11 @@ return function (window, document, ...)
         window.close()
     end
 
-    function start.clickButton(...)
-        window.sendMessage(...)
-        window.close()
+    function start.clickButton(cmd, close)
+        window.sendMessage(cmd)
+        if close then
+            window.close()
+        end
     end
 
     function start.clickInfo(...)

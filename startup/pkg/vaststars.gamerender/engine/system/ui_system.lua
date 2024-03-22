@@ -9,6 +9,8 @@ local fs = require "filesystem"
 local saveload = ecs.require "saveload"
 local icanvas = ecs.require "engine.canvas"
 local window = import_package "ant.window"
+local rhwi = import_package "ant.hwi"
+local setting = import_package "vaststars.settings"
 
 local windowBindings = {} -- = {[rml] = { w = xx, datamodel = xx, }, ...}
 local changedWindows = {}
@@ -268,6 +270,12 @@ end)
 
 irmlui.onMessage("settings|info", function(info)
     icanvas.show("icon", info)
+end)
+
+irmlui.onMessage("settings|debug", function(info)
+    local debug = not setting.get("debug", false)
+    setting.set("debug", debug)
+    rhwi.set_profie(debug)
 end)
 
 irmlui.onMessage("settings|reboot", function(info)
