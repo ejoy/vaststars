@@ -2,7 +2,7 @@ local guide2 = {
 	{
         name = "",
 		narrative = {
-            {"哔哩..欢迎进入{/g 电网教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+            {"哔哩..欢迎进入{/g 电力教学}", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
             {"哔哩..检查地面上的{/color:4bd0ff 废墟堆},拾取残余{/g 物资}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
         },
         narrative_end = {

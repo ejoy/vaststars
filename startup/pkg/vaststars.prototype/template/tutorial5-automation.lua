@@ -1321,7 +1321,7 @@ local entities = { {
 }, {
   dir = "N",
   prototype_name = "组装机I",
-  recipe = "机械科技包1",
+  recipe = "机械科技原型包",
   x = 186,
   y = 172
 }, {
@@ -2280,7 +2280,7 @@ local entities = { {
     output = { "蒸汽" }
   },
   prototype_name = "锅炉I",
-  recipe = "卤水沸腾",
+  recipe = "地下水沸腾",
   x = 37,
   y = 173
 }, {
@@ -2310,7 +2310,7 @@ local entities = { {
     output = { "蒸汽" }
   },
   prototype_name = "锅炉I",
-  recipe = "卤水沸腾",
+  recipe = "地下水沸腾",
   x = 30,
   y = 173
 }, {
@@ -2320,7 +2320,7 @@ local entities = { {
     output = { "蒸汽" }
   },
   prototype_name = "锅炉I",
-  recipe = "卤水沸腾",
+  recipe = "地下水沸腾",
   x = 23,
   y = 173
 }, {
@@ -2480,7 +2480,7 @@ local entities = { {
 }, {
   dir = "N",
   prototype_name = "组装机I",
-  recipe = "机械科技包1",
+  recipe = "机械科技原型包",
   x = 186,
   y = 157
 }, {
@@ -2727,7 +2727,7 @@ local entities = { {
   y = 150
 }, {
   dir = "N",
-  items = { { "碎石", 1 }, { "铁矿石", 1 }, { "铝矿石", 0 } },
+  items = { { "碎石", 10 }, { "铁矿石", 10 }, { "铝矿石", 0 } },
   prototype_name = "仓库I",
   x = 123,
   y = 148

@@ -72,7 +72,7 @@ local prototype = gameplay.register.prototype
     },
     prerequisites = {"拾取物资1"},
     effects = {
-      unlock_item = {"碎石","铁矿石","铝矿石"},
+      unlock_item = {"铝矿石"},
     },
     count = 1,
     order = 451,
@@ -118,7 +118,7 @@ local prototype = gameplay.register.prototype
     task_params = {items = {"supply|铝矿石"}},
     prerequisites = {"修复道路"},
     count = 1,
-    order = 452,
+    order = 452,    
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -154,7 +154,7 @@ local prototype = gameplay.register.prototype
     count = 1,
     order = 453,
     effects = {
-      unlock_item = {"地质科技包"},
+      unlock_item = {"地质科技包","碎石","铁矿石"},
       unlock_recipe = {"地质科技包1"},
     },
     tips_pic = {
@@ -370,6 +370,9 @@ local prototype = gameplay.register.prototype
     count = 1,
     order = 458,
     prerequisites = {"气候科技包量产"},
+    effects = {
+      unlock_recipe = {"地下水沸腾"},
+    },
     tips_pic = {
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -727,16 +730,16 @@ local prototype = gameplay.register.prototype
     guide_focus = {
       {
         prefab = "/pkg/vaststars.resources/glbs/selection-box-corner.glb|mesh.prefab",
-        x = 126.5,
-        y = 120.5,
-        w = 5.2,
-        h = 5.2,
+        x = 125.5,
+        y = 130.5,
+        w = 4.2,
+        h = 6.2,
         color = {0.3, 1, 0, 1},
         show_arrow = true,
       },
       {
-        camera_x = 124,
-        camera_y = 120,
+        camera_x = 125,
+        camera_y = 128,
         w = 5.2,
         h = 5.2,
       },
@@ -895,7 +898,7 @@ local prototype = gameplay.register.prototype
     desc = "对机械装置进行科学研究",
     type = { "tech" },
     effects = {
-      unlock_recipe = {"机械科技包1"},
+      unlock_recipe = {"机械科技原型包"},
       unlock_item = {"机械科技包"},
     },
     prerequisites = {"电动机量产","塑料量产"},
