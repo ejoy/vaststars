@@ -517,7 +517,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "放置地下水挖掘机连接电解厂", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "放置地下管连接电解厂和烟囱", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -572,7 +572,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "电解厂生产氢气并用液罐存储", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "铺设管道从电解厂氢气出口连接到液罐", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -814,7 +814,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_produce_geopack6.texture",
     },
     sign_desc = {
-      { desc = "化工厂生产300个单位甲烷", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "化工厂生产300个单位甲烷并用液罐存储", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
