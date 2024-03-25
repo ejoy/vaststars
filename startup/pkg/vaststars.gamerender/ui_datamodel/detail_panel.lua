@@ -24,7 +24,7 @@ local detail_panel_status = {
     {desc = "正常工作", icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture"},
     {desc = "等待供料", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
     {desc = "等待出货", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
-    {desc = "无出货物流", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
+    {desc = "缺少出货物流", icon = "/pkg/vaststars.resources/ui/textures/detail/stop.texture"},
     {desc = "供电不足", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
     {desc = "存货已满", icon = "/pkg/vaststars.resources/ui/textures/detail/idle.texture"},
     {desc = "正常充电", icon = "/pkg/vaststars.resources/ui/textures/detail/work.texture"},
