@@ -27,9 +27,7 @@ local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iroad = ecs.require "vaststars.gamerender|render_updates.road"
 local iinventory = require "gameplay.interface.inventory"
-local iom = ecs.require "ant.objcontroller|obj_motion"
 local srt = require "utility.srt"
-local iplayback = ecs.require "ant.animation|playback"
 local igame_object = ecs.require "engine.game_object"
 local show_message = ecs.require "show_message".show_message
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
@@ -146,6 +144,10 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function touch_move(self, datamodel, delta_vec)
+    if self.moving then
+        return
+    end
+
     local indicator = assert(self.indicator)
     local status = assert(self.status)
     local typeobject = iprototype.queryByName(status.prototype_name)
@@ -229,7 +231,7 @@ local function place(self, datamodel)
 
     self.moving = true
     local dx, dy = iprototype.move_coord(status.x, status.y, self.forward_dir, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)
-    icamera_controller.focus_on_position("RIGHT_CENTER", math3d.vector(icoord.position(dx, dy, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)), function ()
+    icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(dx, dy, ROAD_WIDTH_COUNT, ROAD_HEIGHT_COUNT)), function ()
         if self.destroy then
             return
         end
@@ -265,10 +267,11 @@ local function rotate(self)
     end
 end
 
-local function new(self, datamodel, typeobject, position_type)
-    self.check_coord = get_check_coord(typeobject)
+local function new(self, datamodel, typeobject, position_type, continuity)
     self.typeobject = typeobject
     self.position_type = position_type
+    self.continuity = continuity
+    self.check_coord = get_check_coord(typeobject)
 
     local coord = assert(icoord.position2coord(icamera_controller.get_screen_world_position(position_type)))
     local x, y = icoord.road_coord(coord[1], coord[2])
@@ -300,6 +303,10 @@ local function build(self, v)
     error("not implement")
 end
 
+local function set_continuity(self, continuity)
+    self.continuity = continuity
+end
+
 local function create()
     local m = {}
     m.new = new
@@ -309,6 +316,7 @@ local function create()
     m.confirm = place
     m.clean = clean
     m.build = build
+    m.set_continuity = set_continuity
     m.destroy = false
     m.moving = false
     m.pickup_components = {}

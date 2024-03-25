@@ -172,9 +172,10 @@ local function clean(self, datamodel)
     end
 end
 
-local function new(self, datamodel, typeobject, position_type)
+local function new(self, datamodel, typeobject, position_type, continuity)
     self.typeobject = typeobject
     self.position_type = position_type
+    self.continuity = continuity
     self.check_coord = get_check_coord(typeobject)
 
     local x, y, pos = _align(self.position_type, self.typeobject.area, DEFAULT_DIR)
@@ -208,6 +209,10 @@ local function build(self, v)
     igameplay.create_entity(v)
 end
 
+local function set_continuity(self, continuity)
+    self.continuity = continuity
+end
+
 local function create()
     local m = {}
     m.new = new
@@ -216,6 +221,7 @@ local function create()
     m.confirm = place
     m.clean = clean
     m.build = build
+    m.set_continuity = set_continuity
     return m
 end
 return create

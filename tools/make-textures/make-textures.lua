@@ -16,7 +16,7 @@ local function parseArguments(args)
     return result
 end
 
-local params = parseArguments({...})
+local params = parseArguments(...)
 assert(params.images_dir, "need images_dir")
 assert(params.textures_dir, "need textures_dir")
 

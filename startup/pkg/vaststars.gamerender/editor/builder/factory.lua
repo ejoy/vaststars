@@ -283,9 +283,10 @@ local function clean(self, datamodel)
     self.self_selection_box:remove()
 end
 
-local function new(self, datamodel, typeobject, position_type)
+local function new(self, datamodel, typeobject, position_type, continuity)
     self.position_type = position_type
     self.typeobject = typeobject
+    self.continuity = continuity
     self.status = {}
 
     local dir = DEFAULT_DIR
@@ -299,7 +300,11 @@ local function new(self, datamodel, typeobject, position_type)
     self.grid_entity = igrid_entity.create(MAP_WIDTH_COUNT // w, MAP_HEIGHT_COUNT // h, ROAD_WIDTH_SIZE, ROAD_HEIGHT_SIZE, {t = _calc_grid_position(x, y, w, h)})
 end
 
-local build_t = {}
+local function set_continuity(self, continuity)
+    self.continuity = continuity
+end
+
+local build_t = {continuity = true}
 build_t.new = new
 build_t.touch_move = touch_move
 build_t.touch_end = touch_end
@@ -307,9 +312,10 @@ build_t.confirm = confirm
 build_t.rotate = rotate
 build_t.clean = clean
 build_t.build = build
+build_t.set_continuity = set_continuity
 local build_mt = {__index = build_t}
 
-local move_t = {CONFIRM_EXIT = true}
+local move_t = {continuity = false}
 move_t.touch_move = touch_move
 move_t.touch_end = touch_end
 move_t.confirm = confirm

@@ -952,11 +952,11 @@ local function confirm(self, datamodel)
     end
 end
 
-local function new(self, datamodel, typeobject, position_type)
-    self.check_coord = get_check_coord(typeobject)
-
+local function new(self, datamodel, typeobject, position_type, continuity)
     self.typeobject = typeobject
     self.position_type = position_type
+    self.continuity = continuity
+    self.check_coord = get_check_coord(typeobject)
 
     local dir = DEFAULT_DIR
     local pos, x, y = __align(self.position_type, self.typeobject.name, dir)
@@ -971,6 +971,10 @@ local function build(self, v)
     igameplay.create_entity(v)
 end
 
+local function set_continuity(self, continuity)
+    self.continuity = continuity
+end
+
 local function create()
     local m = {}
     m.new = new
@@ -979,6 +983,7 @@ local function create()
     m.confirm = confirm
     m.clean = clean
     m.build = build
+    m.set_continuity = set_continuity
     m.removed = {}
     m.pickup_components = {}
     m.prototype_name = ""

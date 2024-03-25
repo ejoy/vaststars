@@ -48,6 +48,7 @@ local gesture_pinch = world:sub {"gesture", "pinch"}
 local lock_axis_mb = mailbox:sub {"lock_axis"}
 local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
+local set_continuity_mb = mailbox:sub {"set_continuity"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
 local bulk_select_mb = mailbox:sub {"bulk_select"}
 local bulk_opt_exit_mb = mailbox:sub {"bulk_opt_exit"}
@@ -87,7 +88,10 @@ local function _clean(datamodel, unlock)
     if builder then
         builder:clean(builder_datamodel)
         builder, builder_datamodel = nil, nil
-        iui.close(builder_ui)
+        if builder_ui then
+            iui.close(builder_ui)
+            builder_ui = nil
+        end
     end
     idetail.unselected()
     datamodel.focus_building_icon = ""
@@ -264,15 +268,14 @@ function M.update_tech(datamodel, tech)
     end
 end
 
-local function _construct_entity(typeobject, position_type)
+local function _construct_entity(typeobject, position_type, continuity)
     idetail.unselected()
     gameplay_core.world_update = false
-    builder_ui = "/pkg/vaststars.resources/ui/construct_building.html"
-    builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/construct.html")
+    builder_datamodel = iui.get_datamodel("/pkg/vaststars.resources/ui/build.html")
 
     local create_builder = ecs.require("editor.builder." .. typeobject.builder)
     builder = create_builder("build")
-    builder:new(builder_datamodel, typeobject, position_type)
+    builder:new(builder_datamodel, typeobject, position_type, continuity)
 end
 
 local function move_focus(e)
@@ -525,13 +528,20 @@ function M.update(datamodel)
     for _ in build_mb:unpack() do
         if builder and builder.confirm then
             builder:confirm(builder_datamodel)
-            if builder.CONFIRM_EXIT then
+            if not builder.continuity then
                 _clean(datamodel)
                 toggle_view("default", icamera_controller.get_screen_world_position("CENTER"), function()
                     gameplay_core.world_update = true
                     _clean(datamodel)
                 end)
             end
+        end
+    end
+
+    for _, _, _, c in set_continuity_mb:unpack() do
+        if builder then
+            assert(builder.set_continuity)
+            builder:set_continuity(c)
         end
     end
 
@@ -714,7 +724,7 @@ function M.update(datamodel)
         end)
     end
 
-    for _, _, _, name in construct_entity_mb:unpack() do
+    for _, _, _, name, continuity in construct_entity_mb:unpack() do
         assert(datamodel.status == "BUILD")
         local typeobject = iprototype.queryByName(name)
         if iinventory.query(gameplay_core.get_world(), typeobject.id) >= 1 then
@@ -727,7 +737,7 @@ function M.update(datamodel)
                 builder, builder_datamodel = nil, nil
                 iui.close(builder_ui)
             end
-            _construct_entity(typeobject, "RIGHT_CENTER")
+            _construct_entity(typeobject, "CENTER", continuity)
         else
             --TODO: show error message
         end
@@ -754,7 +764,8 @@ function M.update(datamodel)
             gameplay_core.world_update = false
 
             assert(builder == nil)
-            _construct_entity(typeobject, "RIGHT_CENTER")
+            local continuity = typeobject.continuity == nil and true or typeobject.continuity
+            _construct_entity(typeobject, "RIGHT_CENTER", continuity)
         end)
         ::continue::
     end
@@ -765,7 +776,7 @@ function M.update(datamodel)
         datamodel.status = "BUILD"
         assert(selected_obj)
         local pos = math3d.vector(icoord.position(selected_obj.x, selected_obj.y, selected_obj.w, selected_obj.h))
-        icamera_controller.focus_on_position("RIGHT_CENTER", pos)
+        icamera_controller.focus_on_position("CENTER", pos)
         toggle_view("construct", pos, function()
             iui.leave()
             iui.open({rml = "/pkg/vaststars.resources/ui/build.html"})

@@ -52,6 +52,14 @@
                     end)
                 end
             end
+
+            function start.onLongPress(ev, desc)
+                if ev.state == "began" then
+                    start.desc = desc
+                elseif ev.state == "ended" then
+                    start.desc = ""
+                end
+            end
         </script>
     </head>
     <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax;" onload="init()">
@@ -60,7 +68,19 @@
             <sector-menu-main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" />
         </sector-menu-main-button>
 
-        <construct-box>
+        <sector-menu-desc-container>
+            <sector-menu-desc data-if = "desc ~= ''">{{desc}}</sector-menu-desc>
+        </sector-menu-desc-container>
+
+        <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons" data-event-longpress="onLongPress(ev, it.desc)">
+            <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
+                <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
+                    <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
+                </sector-menu-button>
+            </div>
+        </sector-menu-button-container>
+
+        <construct-box data-if = "show_list">
             <construct-list>
                 <div style = "width: 100%; align-items: flex-start;" data-for = "c, c_index : construct_list">
                     <div style = "position: absolute; left: 0vmin; top: 0vmin; background-image: '/pkg/vaststars.resources/ui/textures/item-config/category-bg.texture'; width: 23.50vmax; height: 23.13vmin; background-size: 100% 100%;" />

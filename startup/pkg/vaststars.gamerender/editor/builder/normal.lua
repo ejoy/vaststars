@@ -450,11 +450,11 @@ local function clean(self, datamodel)
     self.indicator:remove()
 end
 
-local function new(self, datamodel, typeobject, position_type)
-    self.check_coord = get_check_coord(typeobject)
-
+local function new(self, datamodel, typeobject, position_type, continuity)
     self.typeobject = typeobject
     self.position_type = position_type
+    self.continuity = continuity
+    self.check_coord = get_check_coord(typeobject)
 
     local x, y, pos = _align(self.position_type, self.typeobject.area, DEFAULT_DIR)
     _new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR)
@@ -462,6 +462,10 @@ end
 
 local function build(self, v)
     igameplay.create_entity(v)
+end
+
+local function set_continuity(self, continuity)
+    self.continuity = continuity
 end
 
 local function create()
@@ -473,6 +477,7 @@ local function create()
     m.rotate = rotate
     m.clean = clean
     m.build = build
+    m.set_continuity = set_continuity
     m.translucent_planes = {}
     m.self_selection_box = nil
     m.selection_box = {}
