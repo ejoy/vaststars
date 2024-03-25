@@ -22,7 +22,8 @@ imessage:sub("material", function(instance, method, ...)
 end)
 
 imessage:sub("obj_motion", function(instance, method, ...)
-    for _, eid in ipairs(instance.noparent) do
+    local eid = instance.tag['*'][1]
+    if eid then
         local e <close> = world:entity(eid)
         iom[method](e, ...)
     end
