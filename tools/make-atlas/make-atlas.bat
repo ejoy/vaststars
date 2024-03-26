@@ -12,7 +12,7 @@ if not exist "%exe%" (
 	set titlemsg=release
 )
 
-%current_dir%%exe% %param% --clear=true --name=item --width=1280 --height=1024 --image_dir=%current_dir%..\..\startup\pkg\vaststars.resources\images\icons\item --texture_dir=%current_dir%..\..\startup\pkg\vaststars.resources\textures\icons\item --parent_dir=%current_dir%..\..\startup
+%current_dir%%exe% %param%  --clear=true --name=item --width=1280 --height=1024 --image_dir=%current_dir%..\..\startup\pkg\vaststars.resources\images\icons\item --texture_dir=%current_dir%..\..\startup\pkg\vaststars.resources\textures\icons\item --parent_dir=%current_dir%..\..\startup
 
 popd
 pause

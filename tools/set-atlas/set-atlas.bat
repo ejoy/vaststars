@@ -12,7 +12,7 @@ if not exist "%exe%" (
 	set titlemsg=release
 )
 
-%current_dir%%exe% %param% --atlas_dir=%current_dir%..\..\startup\pkg\vaststars.resources\ --parent_dir=%current_dir%..\..\startup --setting_path=%current_dir%..\..\3rd\ant\pkg\ant.atlas_setting\default\atlas.ant
+%current_dir%%exe% %param% --atlas_dir=%current_dir%..\..\startup\pkg\vaststars.resources\ --parent_dir=%current_dir%..\..\startup --setting_path=%current_dir%..\..\startup\pkg\vaststars.settings\atlas_setting.ant
 
 popd
 pause
