@@ -2,8 +2,8 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "铁制电线杆" {
-    model = "/pkg/vaststars.resources/glbs/electric-pole-1.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/electric-pole-1.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/electric-pole-1.glb/mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/electric-pole-1.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building"},
@@ -11,8 +11,8 @@ prototype "铁制电线杆" {
 }
 
 prototype "远程电线杆" {
-    model = "/pkg/vaststars.resources/glbs/electric-pole-1.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/electric-pole-1.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/electric-pole-1.glb/mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/electric-pole-1.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building"},
@@ -20,8 +20,8 @@ prototype "远程电线杆" {
 }
 
 prototype "广域电线杆" {
-    model = "/pkg/vaststars.resources/glbs/electric-pole-1.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/electric-pole-1.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/electric-pole-1.glb/mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/electric-pole-1.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building"},

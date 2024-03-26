@@ -178,7 +178,7 @@ local function create_drone(x, y, slot)
     local motion_y = imotion.create_motion_object(nil, nil, math3d.vector(0, math3d.index(homepos, 2), 0), motion_xz)
     task.motion_y = motion_y
     task.prefab = world:create_instance {
-        prefab = "/pkg/vaststars.resources/glbs/drone.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/drone.glb/mesh.prefab",
         parent = motion_y,
         group = igroup.id(x, y),
         on_ready = function(self)

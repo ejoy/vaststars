@@ -6,7 +6,7 @@ local CROSS_TYPE <const> = {
 }
 
 return {
-    ROAD_MODEL = "/pkg/vaststars.resources/glbs/road/X.glb|mesh.prefab",
+    ROAD_MODEL = "/pkg/vaststars.resources/glbs/road/X.glb/mesh.prefab",
 
     START = {
         [CROSS_TYPE.ll] = "path_start_l",
@@ -96,7 +96,7 @@ return {
 
     SPEC = {
         ["station"] = {
-            model = "/pkg/vaststars.resources/glbs/goods-station-1.glb|mesh.prefab",
+            model = "/pkg/vaststars.resources/glbs/goods-station-1.glb/mesh.prefab",
             tracks = {
                 N = {
                     [CROSS_TYPE.bl] = {
@@ -141,7 +141,7 @@ return {
             },
         },
         ["factory"] = {
-            model = "/pkg/vaststars.resources/glbs/factory-1/factory-1.gltf|mesh.prefab",
+            model = "/pkg/vaststars.resources/glbs/factory-1/factory-1.gltf/mesh.prefab",
             tracks = {
                 N = {
                     [CROSS_TYPE.tr] = {

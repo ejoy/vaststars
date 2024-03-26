@@ -13,10 +13,10 @@ local MOUNTAIN_MASKS
 local MOUNTAIN_MATERIAL <const> = "/pkg/vaststars.resources/materials/mountain/mountain.material"
 local CS_MATERIAL <const> = "/pkg/vaststars.resources/materials/mountain/mountain_compute.material"
 local MOUNTAIN_MESHBINS = {
-    "/pkg/vaststars.resources/glbs/mountain/mountain1.glb|meshes/Cylinder.002_P1.meshbin",
-    "/pkg/vaststars.resources/glbs/mountain/mountain2.glb|meshes/Cylinder.004_P1.meshbin",
-    "/pkg/vaststars.resources/glbs/mountain/mountain3.glb|meshes/Cylinder_P1.meshbin",
-    "/pkg/vaststars.resources/glbs/mountain/mountain4.glb|meshes/Cylinder.021_P1.meshbin",
+    "/pkg/vaststars.resources/glbs/mountain/mountain1.glb/meshes/Cylinder.002_P1.meshbin",
+    "/pkg/vaststars.resources/glbs/mountain/mountain2.glb/meshes/Cylinder.004_P1.meshbin",
+    "/pkg/vaststars.resources/glbs/mountain/mountain3.glb/meshes/Cylinder_P1.meshbin",
+    "/pkg/vaststars.resources/glbs/mountain/mountain4.glb/meshes/Cylinder.021_P1.meshbin",
 } 
 local function set_masks(masks, r, v)
     -- x, y base 0

@@ -49,7 +49,7 @@ local function create(prefab, s, r, t)
         if b then
             assert(self.arrow_instance == nil)
             self.arrow_instance = world:create_instance {
-                prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb|mesh.prefab",
+                prefab = "/pkg/vaststars.resources/glbs/road/arrow.glb/mesh.prefab",
                 on_ready = function(self)
                     for _, eid in ipairs(self.tag['*']) do
                         local e <close> = world:entity(eid, "visible?out render_object?in timeline?in loop_timeline?out")

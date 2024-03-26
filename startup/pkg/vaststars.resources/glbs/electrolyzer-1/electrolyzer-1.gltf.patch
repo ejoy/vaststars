@@ -45,4 +45,4 @@ file: debris.prefab
 op: add
 path: /-
 value:
-  prefab: /pkg/vaststars.resources/glbs/scaffold/4x4.glb|mesh.prefab
+  prefab: /pkg/vaststars.resources/glbs/scaffold/4x4.glb/mesh.prefab
