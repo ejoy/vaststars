@@ -562,9 +562,10 @@ local function _get_check_coord(typeobject)
     end
 end
 
-local function new(self, move_object_id, datamodel, typeobject)
+local function new(self, move_object_id, datamodel, typeobject, continuity)
     self.move_object_id = move_object_id
     self.typeobject = typeobject
+    self.continuity = false
     self.check_coord = _get_check_coord(typeobject)
 
     _new_entity(self, datamodel, typeobject)
@@ -593,8 +594,7 @@ local function create()
     m.build = build
     m.pickup_components = {}
     m.selection_box = {}
-    m.continue_construct = false
-    m.CONFIRM_EXIT = true
+    m.continuity = false
     return m
 end
 return create

@@ -13,7 +13,7 @@ if not defined mode (
 pushd %CURRENT_DIR%
 	title build %mode% - %current_dir%
 	luamake.exe -mode %mode%
-	luamake.exe tools -mode %mode%
+	luamake.exe tools -mode release
 popd
 
 if "%exit_or_pause%"=="" pause

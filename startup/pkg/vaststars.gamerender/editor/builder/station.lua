@@ -487,10 +487,11 @@ local function _create_grid_entity(status, position_type, dir)
     )
 end
 
-local function new(self, datamodel, typeobject, position_type)
-    self.check_coord = get_check_coord(typeobject)
+local function new(self, datamodel, typeobject, position_type, continuity)
     self.typeobject = typeobject
     self.position_type = position_type
+    self.continuity = continuity
+    self.check_coord = get_check_coord(typeobject)
     self.adjacent_coords = _get_adjacent_coords(typeobject)
 
     local dir = DEFAULT_DIR
@@ -525,6 +526,10 @@ local function build(self, v)
     igameplay.create_entity(v)
 end
 
+local function set_continuity(self, continuity)
+    self.continuity = continuity
+end
+
 local function create()
     local m = {}
     m.new = new
@@ -534,6 +539,7 @@ local function create()
     m.rotate = rotate
     m.clean = clean
     m.build = build
+    m.set_continuity = set_continuity
     m.selection_box = {}
     m.status = {}
     return m
