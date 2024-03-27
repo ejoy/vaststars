@@ -50,7 +50,6 @@ local function init_game(template)
 
     icanvas.create("icon", template.canvas_icon ~= false and settings_manager.get("info", true) or false, 10)
     icanvas.create("pickup_icon", false, 10)
-    icanvas.create("road_entrance_marker", false, 0.02)
 
     if template.research_queue then
         gameplay_world:research_queue(template.research_queue)

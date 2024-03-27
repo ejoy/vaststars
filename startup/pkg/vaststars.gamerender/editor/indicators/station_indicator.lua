@@ -44,7 +44,7 @@ local function createPrefabInst(prefab, position)
             for _, eid in ipairs(self.tag['*']) do
                 local e <close> = world:entity(eid, "render_object?in")
                 if e.render_object then
-                    irl.set_layer(e, RENDER_LAYER.ROAD_ENTRANCE_ARROW)
+                    irl.set_layer(e, RENDER_LAYER.STATION_ENTRANCE_ARROW)
                 end
             end
         end,

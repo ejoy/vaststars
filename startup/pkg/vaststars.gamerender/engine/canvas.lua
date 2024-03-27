@@ -56,15 +56,6 @@ local CANVAS_BUILD <const> = {
             }
         }
     },
-
-    ["road_entrance_marker"] = {
-        {
-            render_layer = RENDER_LAYER.ROAD_ENTRANCE_ARROW,
-            materials = {
-                "/pkg/vaststars.resources/materials/canvas/road-entrance-marker.material",
-            }
-        },
-    },
 }
 
 local mt = {}

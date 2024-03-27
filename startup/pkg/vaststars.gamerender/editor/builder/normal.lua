@@ -517,8 +517,8 @@ function move_t:new(move_object_id, datamodel, typeobject, position_type)
     local object = assert(objects:get(move_object_id))
     local exclude_coords = _get_exclude_coords(object.x, object.y, iprototype.unpackarea(typeobject.area))
 
-    local x, y, pos = _align(self.position_type, self.typeobject.area, DEFAULT_DIR)
-    _new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR, exclude_coords)
+    local x, y, pos = _align(self.position_type, self.typeobject.area, object.dir)
+    _new_entity(self, datamodel, typeobject, x, y, pos, object.dir, exclude_coords)
 
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
     vsobject:update {state = "translucent", color = COLOR.MOVE_SELF, emissive_color = COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
