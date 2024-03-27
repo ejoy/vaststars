@@ -24,7 +24,7 @@ local iterrain  = ecs.require "terrain"
 local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
-local setting = import_package "vaststars.settings_manager"
+local settings_manager = import_package "vaststars.settings_manager"
 local itransfer = require "gameplay.interface.transfer"
 
 local m = ecs.system "game_init_system"
@@ -47,12 +47,12 @@ local function init_game(template)
     imineral.init(template.mineral)
     imountain:init(template.mountain)
 
-    rhwi.set_profie(setting.get("debug", false))
+    rhwi.set_profie(settings_manager.get("debug", false))
 
     iinventory.set_infinite_item(game_settings.infinite_item)
     iinventory.set_lorry_list(get_lorrys())
 
-    icanvas.create("icon", template.canvas_icon ~= false and setting.get("info", true) or false, 10)
+    icanvas.create("icon", template.canvas_icon ~= false and settings_manager.get("info", true) or false, 10)
     icanvas.create("pickup_icon", false, 10)
     icanvas.create("road_entrance_marker", false, 0.02)
 

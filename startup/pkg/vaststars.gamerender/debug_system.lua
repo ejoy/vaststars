@@ -21,7 +21,7 @@ local gesture_tap_mb = world:sub {"gesture", "tap"}
 local gesture_mb = world:sub {"gesture"}
 local debug_sys = ecs.system "debug_system"
 local rhwi = import_package "ant.hwi"
-local setting = import_package "vaststars.settings_manager"
+local settings_manager = import_package "vaststars.settings_manager"
 
 local function _get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)
@@ -180,8 +180,8 @@ function debug_sys:data_changed()
         if cmd == "mipmap" then
             idm.reset_texture_mipmap((params.debug == "true"), tonumber(params.level))
         elseif cmd == "debug" then
-            local debug = not setting.get("debug", false)
-            setting.set("debug", debug)
+            local debug = not settings_manager.get("debug", false)
+            settings_manager.set("debug", debug)
             rhwi.set_profie(debug)
         else
             log.info("unknown game_debug message: ", cmd)

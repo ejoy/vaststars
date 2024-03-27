@@ -1,4 +1,4 @@
-local setting = import_package "vaststars.settings_manager"
+local settings_manager = import_package "vaststars.settings_manager"
 
 return function (window, document, ...)
     local start = window.createModel({
@@ -7,8 +7,8 @@ return function (window, document, ...)
             {name = "图像设置"},
         },
         name = "游戏设置",
-        info = setting.get("info", true),
-        debug = setting.get("debug", false),
+        info = settings_manager.get("info", true),
+        debug = settings_manager.get("debug", false),
         music = false,
     })
 
@@ -28,8 +28,8 @@ return function (window, document, ...)
     end
 
     function start.clickInfo(...)
-        start.info = not setting.get("info", true)
-        setting.set("info", start.info)
+        start.info = not settings_manager.get("info", true)
+        settings_manager.set("info", start.info)
         window.callMessage("settings|info", start.info)
     end
 

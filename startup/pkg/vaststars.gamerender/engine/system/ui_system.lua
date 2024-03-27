@@ -9,7 +9,7 @@ local saveload = ecs.require "saveload"
 local icanvas = ecs.require "engine.canvas"
 local window = import_package "ant.window"
 local rhwi = import_package "ant.hwi"
-local setting = import_package "vaststars.settings_manager"
+local settings_manager = import_package "vaststars.settings_manager"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local iprototype = require "gameplay.interface.prototype"
 local itypes = require "gameplay.interface.types"
@@ -275,8 +275,8 @@ irmlui.onMessage("settings|info", function(info)
 end)
 
 irmlui.onMessage("settings|debug", function(info)
-    local debug = not setting.get("debug", false)
-    setting.set("debug", debug)
+    local debug = not settings_manager.get("debug", false)
+    settings_manager.set("debug", debug)
     rhwi.set_profie(debug)
 end)
 
