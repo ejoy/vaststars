@@ -173,7 +173,7 @@ end
 imessage:sub("hitch_instance|update_group", _update_group)
 
 imessage:sub("hitch_instance|modifier", function(self, ...)
-    imodifier.start(imodifier.create_bone_modifier(self.tag["hitch"][1], 0, "/pkg/vaststars.resources/glbs/animation/Interact_build.glb|mesh.prefab", "Bone"), ...)
+    imodifier.start(imodifier.create_bone_modifier(self.tag["hitch"][1], 0, "/pkg/vaststars.resources/glbs/animation/Interact_build.glb/mesh.prefab", "Bone"), ...)
 end)
 
 imessage:sub("hitch_instance|attach", function(self, slot_name, instance)
@@ -194,8 +194,8 @@ local function _set_srt(e, srt)
 end
 
 local function _replace_prefab(p, prefab)
-    p = p:gsub("^(.*%.glb|)(.*%.prefab)$", ("%%1%s"):format(prefab))
-    p = p:gsub("^(.*%.gltf|)(.*%.prefab)$", ("%%1%s"):format(prefab))
+    p = p:gsub("^(.*%.glb/)(.*%.prefab)$", ("%%1%s"):format(prefab))
+    p = p:gsub("^(.*%.gltf/)(.*%.prefab)$", ("%%1%s"):format(prefab))
     return p
 end
 

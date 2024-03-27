@@ -37,7 +37,7 @@ end)
 
 local function create(dx, dy, typeobject, dir, forward_dir)
     local instance = world:create_instance {
-        prefab = "/pkg/vaststars.resources/glbs/road/road_indicator.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/road/road_indicator.glb/mesh.prefab",
         on_ready = function (instance)
             local root <close> = world:entity(instance.tag['*'][1])
             iom.set_position(root, math3d.vector(icoord.position(dx, dy, iprototype.rotate_area(typeobject.area, dir))))

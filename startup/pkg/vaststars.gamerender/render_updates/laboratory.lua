@@ -29,7 +29,7 @@ end
 
 local function _create_shelf(e, game_object, idx, item, amount)
     local shelf; shelf = igame_object.create {
-        prefab = "/pkg/vaststars.resources/glbs/lab-shelf.glb|mesh.prefab",
+        prefab = "/pkg/vaststars.resources/glbs/lab-shelf.glb/mesh.prefab",
         group_id = igroup.id(e.building.x, e.building.y),
         on_ready = function(self)
             if amount > 0 then

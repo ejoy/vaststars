@@ -6,7 +6,7 @@ local CONSTANT = require "gameplay.interface.constant"
 local IN_FLUIDBOXES <const> = CONSTANT.IN_FLUIDBOXES
 local OUT_FLUIDBOXES <const> = CONSTANT.OUT_FLUIDBOXES
 local ROTATORS <const> = CONSTANT.ROTATORS
-local FLUID_PORT_PREFAB <const> = "/pkg/vaststars.resources/glbs/pipe/pipejoint/pipejoint.gltf|mesh.prefab"
+local FLUID_PORT_PREFAB <const> = "/pkg/vaststars.resources/glbs/pipe/pipejoint/pipejoint.gltf/mesh.prefab"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local iprototype = require "gameplay.interface.prototype"

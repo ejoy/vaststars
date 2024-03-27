@@ -2,8 +2,8 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "机身残骸" {
-    model = "/pkg/vaststars.resources/glbs/broken-assembling-3x3.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/broken-assembling-3x3.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/broken-assembling-3x3.glb/mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/broken-assembling-3x3.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest"},
@@ -15,8 +15,8 @@ prototype "机身残骸" {
 }
 
 prototype "机翼残骸" {
-    model = "/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb/mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest"},
@@ -28,8 +28,8 @@ prototype "机翼残骸" {
 }
 
 prototype "机头残骸" {
-    model = "/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb/mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/broken-outfall-2x2.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest"},
@@ -41,8 +41,8 @@ prototype "机头残骸" {
 }
 
 prototype "机尾残骸" {
-    model = "/pkg/vaststars.resources/glbs/broken-pump-2x2.glb|mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/broken-pump-2x2.glb|mesh.prefab config:s,1,3",
+    model = "/pkg/vaststars.resources/glbs/broken-pump-2x2.glb/mesh.prefab",
+    icon = "mem:/pkg/vaststars.resources/glbs/broken-pump-2x2.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest"},
@@ -56,7 +56,7 @@ prototype "机尾残骸" {
 prototype "建筑物残骸 1x1" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/1x1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/1x1.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -69,7 +69,7 @@ prototype "建筑物残骸 1x1" {
 prototype "建筑物残骸 1x2" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/1x2.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/1x2.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -82,7 +82,7 @@ prototype "建筑物残骸 1x2" {
 prototype "建筑物残骸 2x1" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/2x1.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/2x1.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -95,7 +95,7 @@ prototype "建筑物残骸 2x1" {
 prototype "建筑物残骸 2x2" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/2x2.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/2x2.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -108,7 +108,7 @@ prototype "建筑物残骸 2x2" {
 prototype "建筑物残骸 3x3" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/3x3.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/3x3.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -121,7 +121,7 @@ prototype "建筑物残骸 3x3" {
 prototype "建筑物残骸 3x5" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/3x5.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/3x5.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -134,7 +134,7 @@ prototype "建筑物残骸 3x5" {
 prototype "建筑物残骸 4x2" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/4x2.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/4x2.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -147,7 +147,7 @@ prototype "建筑物残骸 4x2" {
 prototype "建筑物残骸 4x4" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/4x4.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/4x4.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -160,7 +160,7 @@ prototype "建筑物残骸 4x4" {
 prototype "建筑物残骸 4x6" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/4x6.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/4x6.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -173,7 +173,7 @@ prototype "建筑物残骸 4x6" {
 prototype "建筑物残骸 5x3" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/5x3.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/5x3.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -186,7 +186,7 @@ prototype "建筑物残骸 5x3" {
 prototype "建筑物残骸 5x5" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/5x5.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/5x5.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -199,7 +199,7 @@ prototype "建筑物残骸 5x5" {
 prototype "建筑物残骸 6x4" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/6x4.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/6x4.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},
@@ -212,7 +212,7 @@ prototype "建筑物残骸 6x4" {
 prototype "建筑物残骸 6x6" {
     display_name = "建筑物残骸",
     model = "",
-    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/6x6.glb|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/scaffold/6x6.glb/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     builder = "normal",
     type = {"building", "chest", "debris"},

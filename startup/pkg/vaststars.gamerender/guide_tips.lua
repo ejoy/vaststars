@@ -33,7 +33,7 @@ local function show(tech_node)
             local center = icoord.position(nd.x, nd.y, 1, 1)
             if nd.show_arrow then
                 prefab = assert(world:create_instance({
-                    prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb|mesh.prefab",
+                    prefab = "/pkg/vaststars.resources/glbs/arrow-guide.glb/mesh.prefab",
                     on_ready = function(self)
                         for _, eid in ipairs(self.tag['*']) do
                             local e <close> = world:entity(eid, "render_object?in animation?in")

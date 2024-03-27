@@ -60,7 +60,7 @@ return function(position, state)
     end
 
     local M = {}
-    M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb|translucent.prefab", position)
+    M.arrow = createPrefabInst("/pkg/vaststars.resources/glbs/road/station_indicator.glb/translucent.prefab", position)
     imessage:pub("material", M.arrow, "set_property", "u_basecolor_factor", arrow_color)
 
     return setmetatable(M, mt)

@@ -11,7 +11,7 @@ file: debris.prefab
 op: add
 path: /-
 value:
-  prefab: /pkg/vaststars.resources/glbs/scaffold/3x5.glb|mesh.prefab
+  prefab: /pkg/vaststars.resources/glbs/scaffold/3x5.glb/mesh.prefab
 ---
 file: animations/animation.ozz
 op: copyfile

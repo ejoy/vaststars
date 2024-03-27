@@ -2,9 +2,9 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "化工厂I" {
-    model = "/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf/mesh.prefab",
     work_status = {work_start = true, idle_start = true, work = true, idle = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf|mesh.prefab config:s,1,3,1.6",
+    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf/mesh.prefab config:s,1,3,1.6",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -77,9 +77,9 @@ prototype "化工厂I" {
 }
 
 prototype "化工厂II" {
-    model = "/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf/mesh.prefab",
     work_status = {work_start = true, idle_start = true, work = true, idle = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf|mesh.prefab config:s,1,3,1.6",
+    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf/mesh.prefab config:s,1,3,1.6",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -152,9 +152,9 @@ prototype "化工厂II" {
 }
 
 prototype "化工厂III" {
-    model = "/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf/mesh.prefab",
     work_status = {work_start = true, idle_start = true, work = true, idle = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf|mesh.prefab config:s,1,3,1.6",
+    icon = "mem:/pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf/mesh.prefab config:s,1,3,1.6",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -227,9 +227,9 @@ prototype "化工厂III" {
 }
 
 prototype "蒸馏厂I" {
-    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -293,9 +293,9 @@ prototype "蒸馏厂I" {
 }
 
 prototype "蒸馏厂II" {
-    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -359,9 +359,9 @@ prototype "蒸馏厂II" {
 }
 
 prototype "蒸馏厂III" {
-    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -426,9 +426,9 @@ prototype "蒸馏厂III" {
 
 
 prototype "电解厂I" {
-    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -485,9 +485,9 @@ prototype "电解厂I" {
 }
 
 prototype "电解厂II" {
-    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -544,9 +544,9 @@ prototype "电解厂II" {
 }
 
 prototype "电解厂III" {
-    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -603,9 +603,9 @@ prototype "电解厂III" {
 }
 
 prototype "水电站I" {
-    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -659,9 +659,9 @@ prototype "水电站I" {
 }
 
 prototype "水电站II" {
-    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
@@ -715,9 +715,9 @@ prototype "水电站II" {
 }
 
 prototype "水电站III" {
-    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab",
+    model = "/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/mesh.prefab",
     work_status = {work = true},
-    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf|mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/mesh.prefab config:s,1,3",
     check_coord = {"exclusive"},
     chest_style = "assembler",
     builder = "normal",
