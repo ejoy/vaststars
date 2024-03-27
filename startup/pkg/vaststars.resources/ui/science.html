@@ -33,33 +33,8 @@
                 height: 9vmin;
                 background-size: cover;
             }
-            .item-title-new {
-                text-align: right;
-                border-radius: 0.67vmin;
-                color:rgb(255, 255, 255);
-                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
-                width: 85%;
-                word-break: break-all;
-                font-size: 3vmin;
-            }
-            .item-recipe-info {
-                margin: auto;
-                background-image:"/pkg/vaststars.resources/ui/textures/science/right_item_bg0.texture"; 
-                width: 13.07vmin;  
-                height: 13.07vmin;  
-                background-size:cover;
-            }
-            .research-req-container {
-                border: 0.13vmin rgb(89, 73, 39); 
-                width: 100%; 
-                height: 50%; 
-                justify-content: flex-start;
-                flex-direction: column;
-                align-items: center;
-            }
             .recipe-des-text {
                 width: 90%;
-                /* height: 10%; */
                 font-size: 4vmin;
                 text-align: left;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
@@ -87,27 +62,17 @@
             }
             .small-item-new {
                 margin: 1.5vmin 3vmin 1.5vmin 3vmin;
-                /* flex-direction: column; */
-                /* align-items:flex-start; */
-                /* justify-content:flex-start; */
-                /* background-color: rgb(250, 205, 9); */
-                /* border: 1px red; */
                 background-size: cover;
                 width: 6vmin;
                 height: 6vmin;
-                /* font-size: 2.00vmin; */
             }
             .small-arrow {
                 width: 5vmin;
                 height: 2.5vmin;
-                /* margin:0 0.5vmin; */
                 background-image: "/pkg/vaststars.resources/ui/textures/science/dir.texture";
                 background-size: cover;
             }
             .recipe-time {
-                /* position:absolute; 
-                left: 3.5vmin; 
-                top: 1.7vmin;  */
                 text-align: center; 
                 font-size: 3.5vmin; 
             }
@@ -246,7 +211,6 @@
                 local font_color = item_data.running and 'rgb(0,255,0)' or 'rgb(255, 255, 255)'
                 local percent = item_data.count ~= 0 and ((item_data.progress * 100) // item_data.count) or 0
                 local highlight = (selected_index == index) and [[<div style='position : absolute; top: -1vmin; left: -1vmin; width: 71.5vmin; height: 13vmin; background-image:"/pkg/vaststars.resources/ui/textures/science/item_bg_highlight.texture"; background-size: 100% 100%;'/>]] or ""
-                -- local show_indicator = (item_data.progress == item_data.count) and 'false' or 'true'
                 item.outerHTML = ([[
                     <div style="flex-direction: row; align-items:center;">
                         %s
@@ -384,7 +348,7 @@
                 htmlstr = htmlstr .. '</div>'
                 item.outerHTML = htmlstr
                 item.removeEventListener('click')
-                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
+                item.addEventListener('click', function(event) window.open('/pkg/vaststars.resources/ui/science_detail.html', detail.id) end)
             end
 
             window.customElements.define("detaillist", function(e)
@@ -467,7 +431,6 @@
         </script>
     </head>
     <body onload = "init()">
-        <!--div style='position: absolute; width: 100%; height: 100%; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn()"/-->
         <div style='width: 100%; height: 100%; flex-direction: column; align-items: center; background-image: "/pkg/vaststars.resources/ui/textures/science/bg.texture"; background-size: cover;' data-event-click="clickReturn(ev)">
             <div style="width: 60%; flex-direction: row; justify-content: center; align-items: center;">
                 <div style='margin: 1vmin; width: 20vmin; height: 0.2vmin; background-image: "/pkg/vaststars.resources/ui/textures/common/caption-line.texture"; background-size: cover;'/>

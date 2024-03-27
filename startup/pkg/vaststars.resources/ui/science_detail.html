@@ -1,0 +1,176 @@
+<html>
+    <head>
+        <style>
+            body {
+                font: "阿里巴巴普惠体";
+            }
+            frame {
+                width: 128.97vmin;
+                height: 62.54vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/science-detail/square-grid.texture";
+                background-size: 100% 100%;
+                align-items: center;
+            }
+            header-section {
+                margin-top: 1.90%;
+                width: 98.00%;
+                height: 17.98%;
+                flex-direction: row;
+            }
+            main-section {
+                width: 98.00%;
+                height: 73.42%;
+                flex-direction: column;
+                padding: 1.86vmin 2.80vmin 1.86vmin 2.80vmin;
+                gap: 1.86vmin;
+            }
+            recipe-name-container {
+                width: 40.80%;
+                height: 100%;
+                justify-content: center;
+            }
+            recipe-name {
+                margin-left: 16%;
+                font-size: 5vmin;
+                color:rgb(238, 130, 0);
+                -webkit-text-stroke: 0.26vmin rgb(143, 7, 7);
+            }
+            recipe-desc-container {
+                width: 59.20%;
+                height: 100%;
+                justify-content: center;
+            }
+            recipe-desc {
+                margin-left: 16%;
+                font-size: 3.00vmin;
+                color:rgb(243, 222, 182);
+                word-break: break-word;
+            }
+            label {
+                width: 20.17vmin;
+                height: 04.50vmin;
+                border-bottom: 04.50vmin rgb(38, 38, 38);
+                border-left: 10px transparent;
+                border-right: 10px transparent;
+                justify-content: center;
+                align-items: center;
+            }
+            recipe-info, buildings {
+                flex-direction: row;
+                width: 100%;
+                height: 15.50vmin;
+                background-color: rgb(38, 38, 38);
+            }
+            ingredients, results {
+                flex-direction: row;
+                padding: 1.515vmin;
+                justify-content: center;
+            }
+            ingredient-container, result-container, building-container {
+                width: 13.00vmin;
+                height: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            ingredient-icon, result-icon, building-icon {
+                background-size: 100% 100%;
+                width: 9.97vmin;
+                height: 9.97vmin;
+                background-color: rgb(61, 61, 61);
+            }
+            ingredient-count, result-count {
+                font-size: 2.50vmin;
+                width: 3.50vmin;
+                -webkit-text-stroke: 0.3vmin rgb(0, 0, 0);
+                position: absolute;
+                top: -1.70vmin;
+                right: 0.30vmin;
+                justify-content: center;
+                align-items: center;
+            }
+            ingredient-name, result-name, building-name {
+                font-size: 2.50vmin;
+                -webkit-text-stroke: 0.3vmin rgb(0, 0, 0);
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+            }
+            @keyframes arrow-move {
+                0% {
+                    background-position-x: 0vmin;
+                }
+                100% {
+                    background-position-x: 2.65vmin;
+                }
+            }
+            arrow {
+                background: "/pkg/vaststars.resources/ui/textures/science-detail/arrow.texture";
+                background-size: 2.65vmin 2.65vmin;
+                height: 3.50vmin;
+                animation: arrow-move 2s infinite linear;
+                width: 50%;
+                background-repeat: repeat-x;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local ui = import_package "vaststars.ui"
+            ui.on.science_detail(window, ...)
+        </script>
+    </head>
+    <body style = "background-color: rgba(0, 0, 0, 250); justify-content: center; align-items: center;" data-event-click = "close()">
+        <frame>
+            <header-section>
+                <recipe-name-container>
+                    <recipe-name>配方：{{name}}</recipe-name>
+                </recipe-name-container>
+                <recipe-desc-container>
+                    <recipe-desc>{{desc}}</recipe-desc>
+                </recipe-desc-container>
+            </header-section>
+            <main-section>
+                <div>
+                    <label>
+                        <div style = "font-size: 3.50vmin; position: absolute; color: rgb(142, 142, 142);">配方明细</div>
+                    </label>
+                    <recipe-info>
+                        <ingredients style = "width: 45%; height: 100%;">
+                            <ingredient-container data-for = "ingredients">
+                                <ingredient-icon data-style-background-image = "it.icon" />
+                                <ingredient-count>{{it.count}}</ingredient-count>
+                                <ingredient-name>{{it.name}}</ingredient-name>
+                            </ingredient-container>
+                        </ingredients>
+
+                        <div style = "width: 10%; height: 100%; justify-content: center; align-items: center;">
+                            <div style = "width: 100%; height: 50%; justify-content: center; align-items: center;">
+                                <div style = "height: 50%; font-size: 3.00vmin;">{{time}}</div>
+                                <arrow />
+                            </div>
+                        </div>
+
+                        <results style = "width: 45%; height: 100%;">
+                            <result-container data-for = "results">
+                                <result-icon data-style-background-image = "it.icon" />
+                                <result-count>{{it.count}}</result-count>
+                                <result-name>{{it.name}}</result-name>
+                            </result-container>
+                        </results>
+                    </recipe-info>
+                </div>
+
+                <div>
+                    <label>
+                        <div style = "font-size: 3.50vmin; position: absolute; color: rgb(142, 142, 142);">生产建筑</div>
+                    </label>
+                    <buildings>
+                        <building-container data-for = "buildings" style = "flex-grow: 1;">
+                            <building-icon data-style-background-image = "it.icon" />
+                            <building-name>{{it.name}}</building-name>
+                        </building-container>
+                    </buildings>
+                </div>
+            </main-section>
+        </frame>
+    </body>
+</html>

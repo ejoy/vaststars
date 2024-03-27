@@ -16,4 +16,8 @@ return {
     ["bulk_opt.remove_confirm"] = "确认删除所有标记的建筑",
     ["bulk_opt.move"] = "移动所有标记的建筑",
     ["bulk_opt.move_confirm"] = "确定移动所有标记的建筑",
+
+    ["build.rotate"] = "旋转建筑",
+    ["build.continuous_build"] = "连续放置建筑",
+    ["build.single_build"] = "放置建筑",
 }

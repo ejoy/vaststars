@@ -16,6 +16,7 @@ local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local GRID_POSITION_OFFSET <const> = CONSTANT.GRID_POSITION_OFFSET
 local BUILDING_EFK_SCALE <const> = CONSTANT.BUILDING_EFK_SCALE
 local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local math3d = require "math3d"
 local COLOR_GREEN <const> = math3d.constant("v4", {0.3, 1, 0, 1})
@@ -39,6 +40,7 @@ local show_message = ecs.require "show_message".show_message
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 local igame_object = ecs.require "engine.game_object"
 local iefk = ecs.require "engine.system.efk"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 local function _get_road_entrance_srt(typeobject, building_srt)
     local slots = prefab_slots(typeobject.model)
@@ -295,6 +297,31 @@ local function _calc_dir(adjacent_coords, x, y, dir)
     return nil
 end
 
+local function _touch_end(self, datamodel)
+    local indicator = assert(self.indicator)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local x, y
+    local position = icamera_controller.get_screen_world_position(self.position_type)
+    position, x, y = _align(position, typeobject.area, status.dir)
+    if not position then
+        return
+    end
+    status.x, status.y = x, y
+    status.srt.t = position
+
+    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
+
+    local srt= assert(_get_road_entrance_srt(typeobject, status.srt))
+    self.road_entrance:set_srt(srt.s, srt.r, srt.t)
+
+    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
+    local self_selection_box_position = icoord.position(status.x, status.y, w, h)
+    self.self_selection_box:set_position(self_selection_box_position)
+    self.self_selection_box:set_wh(w, h)
+end
+
 local function touch_move(self, datamodel, delta_vec)
     local indicator = assert(self.indicator)
     local status = assert(self.status)
@@ -330,22 +357,11 @@ local function touch_move(self, datamodel, delta_vec)
 end
 
 local function touch_end(self, datamodel)
-    local indicator = assert(self.indicator)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
 
-    local x, y
-    local position = icamera_controller.get_screen_world_position(self.position_type)
-    position, x, y = _align(position, typeobject.area, status.dir)
-    if not position then
-        return
-    end
-    status.x, status.y = x, y
-    status.srt.t = position
-
-    indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
-
-    if not self.check_coord(x, y, status.dir, typeobject) then
+    _touch_end(self, datamodel)
+    if not self.check_coord(status.x, status.y, status.dir, typeobject) then
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -360,14 +376,6 @@ local function touch_end(self, datamodel)
             self.self_selection_box:set_color(COLOR_GREEN)
         end
     end
-
-    local srt= assert(_get_road_entrance_srt(typeobject, status.srt))
-    self.road_entrance:set_srt(srt.s, srt.r, srt.t)
-
-    local w, h = iprototype.rotate_area(typeobject.area, status.dir)
-    local self_selection_box_position = icoord.position(status.x, status.y, w, h)
-    self.self_selection_box:set_position(self_selection_box_position)
-    self.self_selection_box:set_wh(w, h)
 end
 
 local function confirm(self, datamodel)
@@ -530,18 +538,100 @@ local function set_continuity(self, continuity)
     self.continuity = continuity
 end
 
-local function create()
-    local m = {}
-    m.new = new
-    m.touch_move = touch_move
-    m.touch_end = touch_end
-    m.confirm = confirm
-    m.rotate = rotate
-    m.clean = clean
-    m.build = build
-    m.set_continuity = set_continuity
-    m.selection_box = {}
-    m.status = {}
-    return m
+local build_t = {}
+build_t.new = new
+build_t.touch_move = touch_move
+build_t.touch_end = touch_end
+build_t.confirm = confirm
+build_t.rotate = rotate
+build_t.clean = clean
+build_t.build = build
+build_t.set_continuity = set_continuity
+local build_mt = {__index = build_t}
+
+local move_t = {}
+move_t.touch_move = touch_move
+move_t.touch_end = touch_end
+move_t.confirm = confirm
+move_t.rotate = rotate
+move_t.clean = clean
+
+local function _get_exclude_coords(x, y, w, h)
+    local r = {}
+    for i = 0, w - 1 do
+        for j = 0, h - 1 do
+            r[icoord.pack(x + i, y + j)] = true
+        end
+    end
+    return r
+end
+
+function move_t:new(move_object_id, datamodel, typeobject)
+    new(self, datamodel, typeobject, "CENTER", false)
+
+    self.move_object_id = move_object_id
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "translucent", color = COLOR.MOVE_SELF, emissive_color = COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
+end
+function move_t:confirm(datamodel)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local succ, errmsg = self.check_coord(status.x, status.y, status.dir, typeobject, _get_exclude_coords(status.x, status.y, iprototype.unpackarea(typeobject.area)))
+    if not succ then
+        show_message(errmsg)
+        return
+    end
+
+    local object = assert(objects:get(self.move_object_id))
+    local e = gameplay_core.get_entity(object.gameplay_eid)
+    e.building_changed = true
+    igameplay.move(object.gameplay_eid, self.status.x, self.status.y)
+    igameplay.rotate(object.gameplay_eid, self.status.dir)
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+    iobject.coord(object, self.status.x, self.status.y)
+    object.dir = self.status.dir
+    object.srt.r = ROTATORS[object.dir]
+    objects:set(object, "CONSTRUCTED")
+    objects:coord_update(object)
+end
+function move_t:touch_end(datamodel)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    _touch_end(self, datamodel)
+    if not self.check_coord(status.x, status.y, status.dir, typeobject, _get_exclude_coords(status.x, status.y, iprototype.unpackarea(typeobject.area))) then
+        datamodel.show_confirm = false
+
+        if self.road_entrance then
+            self.road_entrance:set_state("invalid")
+            self.self_selection_box:set_color(COLOR_RED)
+        end
+    else
+        datamodel.show_confirm = true
+
+        if self.road_entrance then
+            self.road_entrance:set_state("valid")
+            self.self_selection_box:set_color(COLOR_GREEN)
+        end
+    end
+end
+function move_t:clean(datamodel)
+    clean(self, datamodel)
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
+end
+local move_mt = {__index = move_t}
+
+local function create(t)
+    local v = {continuity = true, selection_box = {}, status = {}}
+    if t == "build" then
+        return setmetatable(v, build_mt)
+    elseif t == "move" then
+        return setmetatable(v, move_mt)
+    else
+        assert(false)
+    end
 end
 return create

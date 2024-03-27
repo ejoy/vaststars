@@ -5,10 +5,17 @@ compress:
   windows: BC3
 noresize: true
 normalmap: false
-path: ../../images/common/help.png
+path: ../../images/science-detail/square-grid.png
 sampler:
   MAG: LINEAR
   MIN: LINEAR
   U: WRAP
   V: WRAP
 type: texture
+lattice:
+  u: 69.04000000000001
+  v: 73.23999999999999
+  x1: 49.28
+  x2: 21.98
+  y1: 25.9
+  y2: 9.220000000000001

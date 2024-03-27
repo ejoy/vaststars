@@ -213,7 +213,8 @@ local function set_continuity(self, continuity)
     self.continuity = continuity
 end
 
-local function create()
+local function create(t)
+    assert(t == "build")
     local m = {}
     m.new = new
     m.touch_move = touch_move

@@ -85,7 +85,7 @@ local function _handler(datamodel)
             t[#t+1] = {
                 command = v.command,
                 background_image = v.icon,
-                desc = DESC["bulk_opt." .. v.command] or "",
+                desc = DESC["build." .. v.command] or "",
             }
         end
     end
@@ -93,11 +93,20 @@ local function _handler(datamodel)
     return t
 end
 
-function M.create(prototype)
+function M.create(prototype, move_building)
     local main_button_icon = ""
+    local show_list = prototype == nil
+    local rotate, single_build, continuous_build = false, false, false
     if prototype then
         local typeobject = assert(iprototype.queryById(prototype))
         main_button_icon = typeobject.item_icon
+
+        if not move_building then
+            local continuity = typeobject.continuity == nil and true or typeobject.continuity
+            single_build = continuity
+            continuous_build = not continuity
+        end
+        rotate = (typeobject.rotate_on_build == true)
     end
 
     local category_idx, item_idx = 0, 0
@@ -108,18 +117,17 @@ function M.create(prototype)
     end
 
     local t = {
-        rotate = false,
-        build = false,
-        continuous_build = false,
+        rotate = rotate,
+        single_build = single_build,
+        continuous_build = continuous_build,
         desc = "",
         lock_axis = false,
         main_button_icon = main_button_icon,
         category_idx = category_idx,
         item_idx = item_idx,
         construct_list = construct_list,
-        show_list = true,
+        show_list = show_list,
     }
-
     t.buttons = _handler(t)
     return t
 end

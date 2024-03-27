@@ -36,6 +36,7 @@ local show_message = ecs.require "show_message".show_message
 local igroup = ecs.require "group"
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 local igame_object = ecs.require "engine.game_object"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 local function _create_self_translucent_plane(typeobject, x, y, dir, translucent_plane_color)
     local translucent_plane
@@ -198,13 +199,13 @@ local function _show_nearby_buildings_translucent_plane(self, nearby_buldings, t
     end
 end
 
-local function _new_entity(self, datamodel, typeobject, x, y, position, dir)
+local function _new_entity(self, datamodel, typeobject, x, y, position, dir, exclude_coords)
     local nearby_buldings = _get_nearby_buildings(x, y, iprototype.rotate_area(typeobject.area, dir))
     _show_nearby_buildings_translucent_plane(self, nearby_buldings, typeobject)
     _show_nearby_buildings_selection_box(self, nearby_buldings, typeobject, x, y, dir)
 
     local translucent_plane_color
-    if not self.check_coord(x, y, dir, self.typeobject) then
+    if not self.check_coord(x, y, dir, self.typeobject, exclude_coords) then
         if typeobject.supply_area then
             translucent_plane_color = COLOR.CONSTRUCT_DRONE_DEPOT_SUPPLY_AREA_SELF_INVALID
         end
@@ -259,7 +260,7 @@ local function _align(position_type, area, dir)
     return coord[1], coord[2], math3d.vector(pos)
 end
 
-local function _update(self, datamodel)
+local function _update(self, datamodel, exclude_coords)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
 
@@ -270,7 +271,7 @@ local function _update(self, datamodel)
     self.grid_entity:set_position(_calc_grid_position(self, typeobject, status.dir))
 
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
-    if not self.check_coord(status.x, status.y, status.dir, typeobject) then
+    if not self.check_coord(status.x, status.y, status.dir, typeobject, exclude_coords) then
         datamodel.show_confirm = false
 
         if typeobject.supply_area then
@@ -299,7 +300,7 @@ local function _update(self, datamodel)
     flush_translucent_plane()
 end
 
-local function touch_move(self, datamodel, delta_vec)
+local function touch_move(self, datamodel, delta_vec, exclude_coords)
     local indicator = assert(self.indicator)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
@@ -314,10 +315,10 @@ local function touch_move(self, datamodel, delta_vec)
     status.srt.t = math3d.add(status.srt.t, delta_vec)
     indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
-    _update(self, datamodel)
+    _update(self, datamodel, exclude_coords)
 end
 
-local function touch_end(self, datamodel)
+local function touch_end(self, datamodel, exclude_coords)
     local indicator = assert(self.indicator)
     local status = assert(self.status)
     local typeobject = assert(self.typeobject)
@@ -330,7 +331,7 @@ local function touch_end(self, datamodel)
     status.x, status.y, status.srt.t = x, y, pos
     indicator:send("obj_motion", "set_position", math3d.live(status.srt.t))
 
-    _update(self, datamodel)
+    _update(self, datamodel, exclude_coords)
 end
 
 local function confirm(self, datamodel)
@@ -468,21 +469,105 @@ local function set_continuity(self, continuity)
     self.continuity = continuity
 end
 
-local function create()
-    local m = {}
-    m.new = new
-    m.touch_move = touch_move
-    m.touch_end = touch_end
-    m.confirm = confirm
-    m.rotate = rotate
-    m.clean = clean
-    m.build = build
-    m.set_continuity = set_continuity
-    m.translucent_planes = {}
-    m.self_selection_box = nil
-    m.selection_box = {}
-    m.pickup_components = {}
-    m.status = {}
-    return m
+local build_t = {}
+build_t.new = new
+build_t.touch_move = touch_move
+build_t.touch_end = touch_end
+build_t.confirm = confirm
+build_t.rotate = rotate
+build_t.clean = clean
+build_t.build = build
+build_t.set_continuity = set_continuity
+local build_mt = {__index = build_t}
+
+local function _get_exclude_coords(x, y, w, h)
+    local r = {}
+    for i = 0, w - 1 do
+        for j = 0, h - 1 do
+            r[icoord.pack(x + i, y + j)] = true
+        end
+    end
+    return r
+end
+
+local move_t = {}
+move_t.confirm = confirm
+move_t.rotate = rotate
+move_t.clean = clean
+
+function move_t:touch_move(datamodel, delta_vec)
+    local typeobject = assert(self.typeobject)
+    local object = assert(objects:get(self.move_object_id))
+    local exclude_coords = _get_exclude_coords(object.x, object.y, iprototype.unpackarea(typeobject.area))
+    touch_move(self, datamodel, delta_vec, exclude_coords)
+end
+function move_t:touch_end(datamodel)
+    local typeobject = assert(self.typeobject)
+    local object = assert(objects:get(self.move_object_id))
+    local exclude_coords = _get_exclude_coords(object.x, object.y, iprototype.unpackarea(typeobject.area))
+    touch_end(self, datamodel, exclude_coords)
+end
+function move_t:new(move_object_id, datamodel, typeobject, position_type)
+    self.typeobject = typeobject
+    self.position_type = position_type
+    self.continuity = false
+    self.check_coord = get_check_coord(typeobject)
+    self.move_object_id = move_object_id
+
+    local object = assert(objects:get(move_object_id))
+    local exclude_coords = _get_exclude_coords(object.x, object.y, iprototype.unpackarea(typeobject.area))
+
+    local x, y, pos = _align(self.position_type, self.typeobject.area, DEFAULT_DIR)
+    _new_entity(self, datamodel, typeobject, x, y, pos, DEFAULT_DIR, exclude_coords)
+
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "translucent", color = COLOR.MOVE_SELF, emissive_color = COLOR.MOVE_SELF, render_layer = RENDER_LAYER.TRANSLUCENT_BUILDING}
+end
+function move_t:confirm(datamodel)
+    local status = assert(self.status)
+    local typeobject = assert(self.typeobject)
+
+    local object = assert(objects:get(self.move_object_id))
+    local succ, errmsg = self.check_coord(status.x, status.y, status.dir, typeobject, _get_exclude_coords(object.x, object.y, iprototype.unpackarea(typeobject.area)))
+    if not succ then
+        show_message(errmsg)
+        return
+    end
+
+    local e = gameplay_core.get_entity(object.gameplay_eid)
+    e.building_changed = true
+    igameplay.move(object.gameplay_eid, self.status.x, self.status.y)
+    igameplay.rotate(object.gameplay_eid, self.status.dir)
+    gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
+
+    iobject.coord(object, self.status.x, self.status.y)
+    object.dir = self.status.dir
+    object.srt.r = ROTATORS[object.dir]
+    objects:set(object, "CONSTRUCTED")
+    objects:coord_update(object)
+end
+function move_t:clean(datamodel)
+    clean(self, datamodel)
+    local vsobject = assert(vsobject_manager:get(self.move_object_id))
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
+end
+local move_mt = {__index = move_t}
+
+local function create(t)
+    local v = {
+        translucent_planes = {},
+        self_selection_box = nil,
+        selection_box = {},
+        pickup_components = {},
+        status = {},
+    }
+
+    if t == "build" then
+        return setmetatable(v, build_mt)
+    elseif t == "move" then
+        return setmetatable(v, move_mt)
+    else
+        assert(false)
+    end
 end
 return create

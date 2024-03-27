@@ -5,12 +5,14 @@ local w = world.w
 local irmlui = ecs.require "ant.rmlui|rmlui_system"
 local tracedoc = require "utility.tracedoc"
 local table_unpack = table.unpack
-local fs = require "filesystem"
 local saveload = ecs.require "saveload"
 local icanvas = ecs.require "engine.canvas"
 local window = import_package "ant.window"
 local rhwi = import_package "ant.hwi"
-local setting = import_package "vaststars.settings"
+local setting = import_package "vaststars.settings_manager"
+local iprototype_cache = require "gameplay.prototype_cache.init"
+local iprototype = require "gameplay.interface.prototype"
+local itypes = require "gameplay.interface.types"
 
 local windowBindings = {} -- = {[rml] = { w = xx, datamodel = xx, }, ...}
 local changedWindows = {}
@@ -281,6 +283,50 @@ end)
 irmlui.onMessage("settings|reboot", function(info)
     window.reboot {
         feature = {"vaststars.gamerender|login"},
+    }
+end)
+
+irmlui.onMessage("science_detail|query", function(recipe)
+    local typeobject = iprototype.queryById(recipe)
+
+    local buildings = {}
+    for _, building in ipairs(iprototype_cache.get("recipe_config").assembling_recipes_3[typeobject.name]) do
+        local typeobject_building = iprototype.queryByName(building)
+        buildings[#buildings+1] = {
+            icon = typeobject_building.item_icon,
+            name = typeobject_building.name,
+        }
+    end
+
+    local ingredients = {}
+    for i = 2, #typeobject.ingredients // 4 do
+        local id = string.unpack("<I2I2", typeobject.ingredients, 4 * i - 3)
+        local typeobject_ingredient = iprototype.queryById(id)
+        ingredients[#ingredients+1] = {
+            icon = typeobject_ingredient.item_icon,
+            count = string.unpack("<I2", typeobject.ingredients, 4 * i - 1),
+            name = typeobject_ingredient.name,
+        }
+    end
+
+    local results = {}
+    for i = 2, #typeobject.results // 4 do
+        local id = string.unpack("<I2I2", typeobject.results, 4 * i - 3)
+        local typeobject_ingredient = iprototype.queryById(id)
+        results[#results+1] = {
+            icon = typeobject_ingredient.item_icon,
+            count = string.unpack("<I2", typeobject.results, 4 * i - 1),
+            name = typeobject_ingredient.name,
+        }
+    end
+
+    return {
+        name = typeobject.name,
+        desc = typeobject.description,
+        ingredients = ingredients,
+        results = results,
+        buildings = buildings,
+        time = itypes.time(typeobject.time),
     }
 end)
 

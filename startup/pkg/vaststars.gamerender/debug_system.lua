@@ -21,7 +21,7 @@ local gesture_tap_mb = world:sub {"gesture", "tap"}
 local gesture_mb = world:sub {"gesture"}
 local debug_sys = ecs.system "debug_system"
 local rhwi = import_package "ant.hwi"
-local setting = import_package "vaststars.settings"
+local setting = import_package "vaststars.settings_manager"
 
 local function _get_capacitance(eid)
     local e = gameplay_core.get_entity(eid)

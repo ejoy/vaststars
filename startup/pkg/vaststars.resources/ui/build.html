@@ -68,10 +68,6 @@
             <sector-menu-main-button-icon data-style-background-image = "main_button_icon" data-if = "main_button_icon ~= ''" />
         </sector-menu-main-button>
 
-        <sector-menu-desc-container>
-            <sector-menu-desc data-if = "desc ~= ''">{{desc}}</sector-menu-desc>
-        </sector-menu-desc-container>
-
         <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons" data-event-longpress="onLongPress(ev, it.desc)">
             <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
                 <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
@@ -79,6 +75,10 @@
                 </sector-menu-button>
             </div>
         </sector-menu-button-container>
+
+        <sector-menu-desc-container>
+            <sector-menu-desc data-if = "desc ~= ''">{{desc}}</sector-menu-desc>
+        </sector-menu-desc-container>
 
         <construct-box data-if = "show_list">
             <construct-list>

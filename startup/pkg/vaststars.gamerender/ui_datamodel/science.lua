@@ -66,6 +66,7 @@ local function get_techlist(tech_list)
                             output[#output + 1] = {new = new, name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
                         end
                         detail[#detail + 1] = {
+                            id = recipe_detail.id,
                             name = recipe,
                             icon = assert(recipe_detail.recipe_icon),
                             desc = recipe_detail.description,

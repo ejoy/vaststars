@@ -35,6 +35,7 @@ prototype "物流中心" {
     type = {"building", "factory"},
     amount = "0",
     speed = "50%",
+    rotate_on_build = true,
     maxslot = 20,
     area = "4x6",
     -- sound = "building/logistics-center",

@@ -9,6 +9,7 @@ end
 return function ()
     local assembling_recipes = {}
     local assembling_recipes_2 = {}
+    local assembling_recipes_3 = {}
     local chimney_recipes = {}
 
     do
@@ -55,6 +56,9 @@ return function ()
                             assembling_recipes_2[v.name][typeobject.name] = recipe.name
                         end
                     end
+
+                    assembling_recipes_3[recipe.name] = assembling_recipes_3[recipe.name] or {}
+                    table.insert(assembling_recipes_3[recipe.name], v.name)
                 end
             end
 
@@ -80,5 +84,6 @@ return function ()
         assembling_recipes = assembling_recipes, -- [building] = recipe_list
         assembling_recipes_2 = assembling_recipes_2, -- [building][ingredient] = recipe
         chimney_recipes = chimney_recipes, -- [building][ingredient] = recipe
+        assembling_recipes_3 = assembling_recipes_3, -- [recipe] = {building_list}
     }
 end

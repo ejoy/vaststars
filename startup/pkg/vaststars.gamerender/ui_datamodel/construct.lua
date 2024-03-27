@@ -18,7 +18,6 @@ local gameplay_core = require "gameplay.core"
 local iui = ecs.require "engine.system.ui_system"
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
-local create_movebuilder = ecs.require "editor.builder.move"
 local objects = require "objects"
 local global = require "global"
 local iobject = ecs.require "object"
@@ -60,7 +59,7 @@ local show_message = ecs.require "show_message".show_message
 local teardown = ecs.require "editor.teardown"
 
 local tech_recipe_unpicked_dirty_mb = world:sub {"tech_recipe_unpicked_dirty"}
-local builder, builder_datamodel, builder_ui
+local builder, builder_datamodel
 local selected_obj
 
 local LockAxis = false
@@ -88,18 +87,15 @@ local function _clean(datamodel, unlock)
     if builder then
         builder:clean(builder_datamodel)
         builder, builder_datamodel = nil, nil
-        if builder_ui then
-            iui.close(builder_ui)
-            builder_ui = nil
-        end
     end
+    iui.close("/pkg/vaststars.resources/ui/build.html")
+
     idetail.unselected()
     datamodel.focus_building_icon = ""
     datamodel.status = "NORMAL"
     itransfer.set_dest_eid(nil)
     selected_obj = nil
 
-    iui.close("/pkg/vaststars.resources/ui/build.html")
     iui.leave()
 
     LockAxisStatus = {
@@ -710,37 +706,26 @@ function M.update(datamodel)
             gameplay_core.world_update = false
 
             idetail.unselected()
-            builder_ui = "/pkg/vaststars.resources/ui/move_building.html"
-            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/move_building.html"}, object.prototype_name)
-
-            if typeobject.builder == "factory" then
-                local create_builder = ecs.require("editor.builder." .. typeobject.builder)
-                builder = create_builder("move")
-                builder:new(object_id, builder_datamodel, typeobject)
-            else
-                builder = create_movebuilder("build")
-                builder:new(object_id, builder_datamodel, typeobject)
-            end
+            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, typeobject.id, true)
+            assert(typeobject.builder == "normal" or typeobject.builder == "factory" or typeobject.builder == "station", "invalid builder type")
+            local create_builder = ecs.require("editor.builder." .. typeobject.builder)
+            builder = create_builder("move")
+            builder:new(object_id, builder_datamodel, typeobject, "CENTER")
         end)
     end
 
     for _, _, _, name, continuity in construct_entity_mb:unpack() do
         assert(datamodel.status == "BUILD")
         local typeobject = iprototype.queryByName(name)
-        if iinventory.query(gameplay_core.get_world(), typeobject.id) >= 1 then
-            idetail.unselected()
-            gameplay_core.world_update = false
+        idetail.unselected()
+        gameplay_core.world_update = false
 
-            -- we may click the button repeatedly, so we need to clear the old model first
-            if builder then
-                builder:clean(builder_datamodel)
-                builder, builder_datamodel = nil, nil
-                iui.close(builder_ui)
-            end
-            _construct_entity(typeobject, "CENTER", continuity)
-        else
-            --TODO: show error message
+        -- we may click the button repeatedly, so we need to clear the old model first
+        if builder then
+            builder:clean(builder_datamodel)
+            builder, builder_datamodel = nil, nil
         end
+        _construct_entity(typeobject, "CENTER", continuity)
     end
 
     for _, _, _, name, position in copy_mb:unpack() do
@@ -757,7 +742,7 @@ function M.update(datamodel)
         datamodel.status = "BUILD"
         idetail.unselected()
 
-        icamera_controller.focus_on_position("RIGHT_CENTER", position)
+        icamera_controller.focus_on_position("CENTER", position)
         toggle_view("construct", position, function()
             iui.leave()
             iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, typeobject.id)
@@ -765,7 +750,7 @@ function M.update(datamodel)
 
             assert(builder == nil)
             local continuity = typeobject.continuity == nil and true or typeobject.continuity
-            _construct_entity(typeobject, "RIGHT_CENTER", continuity)
+            _construct_entity(typeobject, "CENTER", continuity)
         end)
         ::continue::
     end

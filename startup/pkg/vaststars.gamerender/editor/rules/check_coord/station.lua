@@ -13,7 +13,7 @@ local function _check_road_adjacent(x, y, from1, to1, step1, from2, to2, step2)
     for i = from1, to1, step1 do
         for j = from2, to2, step2 do
             if not ibuilding.get(x + i, y + j) then
-                return false
+                return false, "the station must be built next to a road"
             end
         end
     end

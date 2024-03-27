@@ -24,7 +24,7 @@ local iterrain  = ecs.require "terrain"
 local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
-local setting = import_package "vaststars.settings"
+local setting = import_package "vaststars.settings_manager"
 local itransfer = require "gameplay.interface.transfer"
 
 local m = ecs.system "game_init_system"

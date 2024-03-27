@@ -22,7 +22,7 @@ local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
 local iRmlUi = ecs.require "ant.rmlui|rmlui_system"
-local setting = import_package "vaststars.settings"
+local setting = import_package "vaststars.settings_manager"
 
 local m = ecs.system "login_scene_system"
 

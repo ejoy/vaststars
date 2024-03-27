@@ -1,4 +1,4 @@
-local setting = import_package "vaststars.settings"
+local setting = import_package "vaststars.settings_manager"
 
 return function (window, document, ...)
     local start = window.createModel({
@@ -8,6 +8,7 @@ return function (window, document, ...)
         },
         name = "游戏设置",
         info = setting.get("info", true),
+        debug = setting.get("debug", false),
         music = false,
     })
 
@@ -30,7 +31,6 @@ return function (window, document, ...)
         start.info = not setting.get("info", true)
         setting.set("info", start.info)
         window.callMessage("settings|info", start.info)
-        window.close()
     end
 
     function start.clickArchiving()

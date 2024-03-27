@@ -11,4 +11,5 @@ return {
     ["needs to be placed above the road"] = {text = "物流中心需要放置在公路上方"},
     ["different fluids do not mix"] = {text = "不同流体不能混合"},
     ["no buildings were chosen"] = {text = "标记至少一个建筑目标才可进行操作"},
+    ["the station must be built next to a road"] = {text = "车站必须建在道路旁边"},
 }
