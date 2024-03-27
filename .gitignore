@@ -20,3 +20,5 @@ res/
 /startup/imgui.layout
 /startup/mod
 /startup/pkg/vaststars.resources/glb/test_*.glb
+/tools/make-atlas/make-atlas.bat
+/tools/set-atlas/set-atlas.bat
