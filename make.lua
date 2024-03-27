@@ -48,12 +48,12 @@ local plat = (function ()
             return "mingw"
         end
         if lm.cc == "clang-cl" then
-            return "clang_cl"
+            return "clang-cl"
         end
         return "msvc"
     end
     if lm.os == "android" then
-        return lm.os.."-"..lm.arch
+        return "android-"..lm.arch
     end
     return lm.os
 end)()
