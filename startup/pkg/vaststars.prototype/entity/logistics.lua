@@ -162,6 +162,7 @@ prototype "砖石公路-I型" {
     road = {
         "0,0,║",
     },
+    continuity = true,
 }
 
 prototype "砖石公路-L型" {
@@ -185,6 +186,7 @@ prototype "砖石公路-L型" {
     road = {
         "0,0,╚",
     },
+    continuity = true,
 }
 
 prototype "砖石公路-T型" {
@@ -209,6 +211,7 @@ prototype "砖石公路-T型" {
     road = {
         "0,0,╦",
     },
+    continuity = true,
 }
 
 prototype "砖石公路-O型" {
@@ -229,6 +232,7 @@ prototype "砖石公路-O型" {
     },
     road = {
     },
+    continuity = true,
 }
 
 prototype "砖石公路-U型" {
@@ -251,6 +255,7 @@ prototype "砖石公路-U型" {
     road = {
         "0,0,v",
     },
+    continuity = true,
 }
 
 prototype "砖石公路-X型" {
@@ -276,6 +281,7 @@ prototype "砖石公路-X型" {
     road = {
         "0,0,╬",
     },
+    continuity = true,
 }
 
 prototype "物流站" {

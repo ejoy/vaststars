@@ -410,6 +410,7 @@ prototype "管道1-I型" {
             {type="input-output", position={0,0,"S"}},
         },
     },
+    continuity = true,
 }
 
 prototype "管道1-L型" {
@@ -432,6 +433,7 @@ prototype "管道1-L型" {
             {type="input-output", position={0,0,"E"}},
         },
     },
+    continuity = true,
 }
 
 prototype "管道1-T型" {
@@ -455,6 +457,7 @@ prototype "管道1-T型" {
             {type="input-output", position={0,0,"W"}},
         },
     },
+    continuity = true,
 }
 
 prototype "管道1-X型" {
@@ -479,6 +482,7 @@ prototype "管道1-X型" {
             {type="input-output", position={0,0,"W"}},
         },
     },
+    continuity = true,
 }
 
 prototype "管道1-O型" {
@@ -499,6 +503,7 @@ prototype "管道1-O型" {
         connections = {
         },
     },
+    continuity = true,
 }
 
 prototype "管道1-U型" {
@@ -520,6 +525,7 @@ prototype "管道1-U型" {
             {type="input-output", position={0,0,"N"}},
         },
     },
+    continuity = true,
 }
 
 prototype "地下管1-JU型" {
@@ -541,6 +547,7 @@ prototype "地下管1-JU型" {
             {type="input-output", position={0,0,"N"}, ground = 10},
         },
     },
+    continuity = true,
 }
 
 prototype "地下管1-JI型" {
@@ -563,6 +570,7 @@ prototype "地下管1-JI型" {
             {type="input-output", position={0,0,"N"}, ground = 10},
         },
     },
+    continuity = true,
 }
 
 prototype "地下管2-JU型" {
@@ -584,6 +592,7 @@ prototype "地下管2-JU型" {
             {type="input-output", position={0,0,"N"}, ground = 14},
         },
     },
+    continuity = true,
 }
 
 prototype "地下管2-JI型" {
@@ -606,4 +615,5 @@ prototype "地下管2-JI型" {
             {type="input-output", position={0,0,"N"}, ground = 14},
         },
     },
+    continuity = true,
 }

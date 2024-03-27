@@ -140,6 +140,7 @@ prototype "太阳能板I" {
     power = "300kW",
     work_status = {work = true},
     priority = "primary",
+    continuity = true,
 }
 
 prototype "太阳能板II" {
@@ -152,6 +153,7 @@ prototype "太阳能板II" {
     power = "450kW",
     work_status = {work = true},
     priority = "primary",
+    continuity = true,
 }
 
 prototype "太阳能板III" {
@@ -164,6 +166,7 @@ prototype "太阳能板III" {
     power = "600kW",
     work_status = {work = true},
     priority = "primary",
+    continuity = true,
 }
 
 prototype "轻型太阳能板" {
@@ -176,6 +179,7 @@ prototype "轻型太阳能板" {
     power = "60kW",
     work_status = {work = true},
     priority = "primary",
+    continuity = true,
 }
 
 prototype "蓄电池I" {
@@ -190,6 +194,7 @@ prototype "蓄电池I" {
     area = "2x2",
     work_status = {work = true},
     -- sound = "building/electricity",
+    continuity = true,
 }
 
 prototype "蓄电池II" {
@@ -204,6 +209,7 @@ prototype "蓄电池II" {
     area = "2x2",
     work_status = {work = true},
     -- sound = "building/electricity",
+    continuity = true,
 }
 
 prototype "蓄电池III" {
@@ -218,6 +224,7 @@ prototype "蓄电池III" {
     area = "2x2",
     work_status = {work = true},
     -- sound = "building/electricity",
+    continuity = true,
 }
 
 prototype "核反应堆" {
