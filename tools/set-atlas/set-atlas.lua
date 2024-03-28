@@ -1,6 +1,3 @@
-package.path = "/engine/?.lua"
-require "bootstrap"
-
 local fs = require "bee.filesystem"
 local datalist = require "datalist"
 local serialize = import_package "ant.serialize"

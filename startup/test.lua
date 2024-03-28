@@ -1,6 +1,3 @@
-package.path = "/engine/?.lua"
-require "bootstrap"
-
 import_package "vaststars.prototype"
 
 local gameplay = import_package "vaststars.gameplay"

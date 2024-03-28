@@ -1,6 +1,3 @@
-package.path = "/engine/?.lua"
-require "bootstrap"
-
 local fs = require "bee.filesystem"
 local iatlas = import_package "ant.atlas"
 
