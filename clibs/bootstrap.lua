@@ -3,7 +3,6 @@ local options = {}
 do
     local extra <const> = {
         ["-e"] = true,
-        ["-f"] = true,
     }
     local i = 1
     while true do
