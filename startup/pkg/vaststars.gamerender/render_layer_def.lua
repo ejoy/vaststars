@@ -6,6 +6,7 @@ return {
         {"LORRY", "LORRY_ITEM", "DRONE", "STATION_ITEM"},
         {"TERRAIN"},
         {"MINERAL"},
+        {"CRACK_BUILDING"},
         {"ROAD", "GRID"},
     },
     {
