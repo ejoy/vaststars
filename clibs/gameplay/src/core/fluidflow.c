@@ -55,12 +55,12 @@ fluidflow_new() {
 	net->pump_n = 0;
 	net->pipe_n = 0;
 	net->cap = PIPE_DEFAULT;
+	net->blocking = NULL;
 	net->p = (struct pipe *)malloc(net->cap * sizeof(struct pipe));
 	if (net->p == NULL) {
 		fluidflow_delete(net);
 		return NULL;
 	}
-	net->blocking = NULL;
 	net->blocking_n = 0;
 	net->blocking_cap = 0;
 	return net;
@@ -938,6 +938,42 @@ fluidflow_dump(struct fluidflow_network *net) {
 	}
 	printf("\n");
 
+}
+
+static int
+mark_connection(struct fluidflow_network *net, int idx, unsigned char mark[]) {
+	if (idx == PIPE_INVALID_CONNECTION || mark[idx])
+		return 0;
+	mark[idx] = 1;
+	struct pipe *p = &net->p[idx];
+	int r = 1;
+	int i;
+	for (i=0;i<PIPE_CONNECTION;i++) {
+		r += mark_connection(net, p->uplink[i], mark);
+		r += mark_connection(net, p->downlink[i], mark);
+	}
+	return r;
+}
+
+int
+fluidflow_query_net(struct fluidflow_network *net, int id, int *output, int cap) {
+	unsigned char mark[PIPE_MAX];
+	int n = net->pump_n + net->pipe_n;
+	memset(mark, 0, n);
+	int idx = find_id(net, id);
+	int r = mark_connection(net, idx, mark);
+	if (cap > r)
+		cap = r;
+	int i;
+	int output_i = 0;
+	for (i=0;i<n;i++) {
+		if (mark[i]) {
+			output[output_i++] = net->p[i].id;
+			if (output_i >= cap)
+				break;
+		}
+	}
+	return r;
 }
 
 #ifdef TEST_MAIN

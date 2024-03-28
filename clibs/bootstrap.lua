@@ -1,7 +1,8 @@
-local arguments = {} ; do
+local arguments = {}
+local options = {}
+do
     local extra <const> = {
         ["-e"] = true,
-        ["-f"] = true,
     }
     local i = 1
     while true do
@@ -9,10 +10,10 @@ local arguments = {} ; do
             break
         elseif arg[i]:sub(1, 1) == "-" then
             if extra[arg[i]] then
-                arguments[arg[i]] = arg[i+1]
+                options[arg[i]] = arg[i+1]
                 i = i + 1
             else
-                arguments[arg[i]] = true
+                options[arg[i]] = true
             end
         else
             arguments[#arguments+1] = arg[i]
@@ -23,13 +24,13 @@ end
 
 arg = {}
 
-if arguments["-s"] then
+if options["-s"] then
     arg[0] = "3rd/ant/tools/fileserver/main.lua"
     arg[1] = "../../startup"
-elseif arguments["-p"] then
+elseif options["-p"] then
     arg[0] = "3rd/ant/tools/filepack/main.lua"
     arg[1] = "../../startup"
-elseif arguments["-d"] then
+elseif options["-d"] then
     arg[0] = "3rd/ant/tools/editor/main.lua"
     arg[1] = "../../startup"
 elseif arguments[1] == nil then
@@ -39,14 +40,11 @@ else
 end
 
 table.move(arguments, 1, #arguments, #arg+1, arg)
-for i = 1, #arguments do
-    arguments[i] = nil
-end
 
-arguments["-s"] = nil
-arguments["-p"] = nil
-arguments["-d"] = nil
-for k, v in pairs(arguments) do
+options["-s"] = nil
+options["-p"] = nil
+options["-d"] = nil
+for k, v in pairs(options) do
     arg[#arg+1] = k
     if v ~= true then
         arg[#arg+1] = v

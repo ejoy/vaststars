@@ -24,6 +24,7 @@ int fluidflow_teardown(struct fluidflow_network *net, int id);
 void fluidflow_resetconnect(struct fluidflow_network *net);
 int fluidflow_connect(struct fluidflow_network *net, int from, int to, int oneway);
 void fluidflow_dump(struct fluidflow_network *net);
+int fluidflow_query_net(struct fluidflow_network *net, int id, int *output, int n);
  
 int fluidflow_size(struct fluidflow_network *net);
 struct fluid_state * fluidflow_index(struct fluidflow_network *net, int idx, struct fluid_state *output);
@@ -31,3 +32,4 @@ struct fluid_state * fluidflow_query(struct fluidflow_network *net, int id, stru
 int fluidflow_set(struct fluidflow_network *net, int id, int fluid, int multiple);
 void fluidflow_block(struct fluidflow_network *net, int id);
 void fluidflow_update(struct fluidflow_network *net);
+
