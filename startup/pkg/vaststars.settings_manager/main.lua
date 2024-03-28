@@ -1,5 +1,5 @@
-local directory = require "directory"
-local ARCHIVAL_BASE_DIR <const> = (directory.app_path() / "archiving/"):string()
+local engine = import_package "ant.engine"
+local ARCHIVAL_BASE_DIR <const> = (engine.app_path() / "archiving/"):string()
 local GLOBAL_SETTINGS_FILE <const> = ARCHIVAL_BASE_DIR .. "settings.json"
 
 local json = import_package "ant.json"

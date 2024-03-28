@@ -1,9 +1,9 @@
 local fs = require "bee.filesystem"
 local json = import_package "ant.json"
-local directory = require "directory"
+local engine = import_package "ant.engine"
 local fastio = require "fastio"
 
-local ARCHIVAL_BASE_DIR <const> = (directory.app_path() / "archiving/"):string()
+local ARCHIVAL_BASE_DIR <const> = (engine.app_path() / "archiving/"):string()
 local PROTOTYPE_VERSION <const> = dofile "/pkg/vaststars.prototype/version.lua"
 
 local function readall(file)
