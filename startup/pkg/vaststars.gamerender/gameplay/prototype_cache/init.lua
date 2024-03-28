@@ -5,7 +5,7 @@ local cache = {}
 local function reload()
     cache = {}
 
-    for file in fs.pairs(fs.path "/pkg/vaststars.gamerender/gameplay/prototype_cache") do
+    for file in fs.pairs "/pkg/vaststars.gamerender/gameplay/prototype_cache" do
         local s = file:stem():string()
         if s ~= "init" then
             cache[s] = assert(require("gameplay.prototype_cache." .. s))()

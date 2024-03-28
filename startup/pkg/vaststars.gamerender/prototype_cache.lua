@@ -79,7 +79,7 @@ end
 function prototype_cache_sys:prototype_restore()
     cache = {}
 
-    for file in fs.pairs(fs.path "/pkg/vaststars.gamerender/prototype_cache") do
+    for file in fs.pairs "/pkg/vaststars.gamerender/prototype_cache" do
         local s = file:stem():string()
         cache[s] = assert(ecs.require("prototype_cache." .. s))()
     end

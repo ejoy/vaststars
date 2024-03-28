@@ -37,7 +37,7 @@ function handler.file(f)
     vfs.read(f)
 end
 function handler.dir(f)
-    for file, file_status in fs.pairs(fs.path(f)) do
+    for file, file_status in fs.pairs(f) do
         if file_status:is_directory() then
             status_addtask {
                 type = "dir",

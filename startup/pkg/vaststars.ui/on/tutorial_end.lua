@@ -1,5 +1,3 @@
-local fs = require "filesystem"
-
 return function (window, ...)
     local start = window.createModel(...)
     function start.onClickContinue()

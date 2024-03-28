@@ -3,7 +3,7 @@ local pm = require "packagemanager"
 
 return function (window)
     local tutorials = {}
-    for path in fs.pairs(fs.path("/pkg/vaststars.prototype/template/")) do
+    for path in fs.pairs "/pkg/vaststars.prototype/template/" do
         if not fs.is_directory(path) then
             assert(tostring(path:extension()) == ".lua")
             if not path:filename():string():match("^tutorial.*$") then

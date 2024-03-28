@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local fs = require "filesystem"
-local use_config = fs.exists(fs.path("/pkg/vaststars.prototype/debugger.lua"))
+local use_config = fs.exists "/pkg/vaststars.prototype/debugger.lua"
 local game_settings = use_config and ecs.require("vaststars.prototype|debugger") or {}
 
 local enable = {

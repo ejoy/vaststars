@@ -1,7 +1,7 @@
 local fs = require "filesystem"
 
 local on = {}
-for file in fs.pairs(fs.path "/pkg/vaststars.ui/on") do
+for file in fs.pairs "/pkg/vaststars.ui/on" do
     local s = file:stem():string()
     on[s] = assert(require("on." .. s))
 end
