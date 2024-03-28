@@ -10,7 +10,7 @@ local DEST_TYPES <const> = {
 
 local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 
 local source_eid, dest_eid
 
@@ -95,9 +95,9 @@ local function get_transfer_info(gameplay_world)
     local r = {}
     if de.base then
         for item, tt in pairs(t) do
-            if iinventory.is_valid_item(item) then
+            if ibackpack.is_valid_item(item) then
                 for _, s in pairs(tt) do
-                    local c = math.min(iinventory.get_capacity(gameplay_world, item), s.amount)
+                    local c = math.min(ibackpack.get_capacity(gameplay_world, item), s.amount)
                     r[item] = math.max(r[item] or 0, c)
                 end
             end
@@ -139,10 +139,10 @@ local function transfer(gameplay_world, func)
 
     if de.base then
         for idx, slot in _get_slots(gameplay_world, se, SOURCE_TYPES, _source_fileter) do
-            local c = math.min(iinventory.get_capacity(gameplay_world, slot.item), slot.amount)
+            local c = math.min(ibackpack.get_capacity(gameplay_world, slot.item), slot.amount)
             if c > 0 then
                 ichest.pickup_at(gameplay_world, se, idx, c)
-                iinventory.place(gameplay_world, slot.item, c)
+                ibackpack.place(gameplay_world, slot.item, c)
                 func(idx, slot.item, c)
             end
         end

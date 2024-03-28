@@ -31,7 +31,7 @@ local iobject = ecs.require "object"
 local srt = require "utility.srt"
 local create_selection_box = ecs.require "selection_box"
 local gameplay_core = require "gameplay.core"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local inner_building = require "editor.inner_building"
 local vsobject_manager = ecs.require "vsobject_manager"
@@ -254,11 +254,11 @@ local function confirm(self, datamodel)
     end
 
     local gameplay_world = gameplay_core.get_world()
-    if iinventory.query(gameplay_world, typeobject.id) < 1 then
+    if ibackpack.query(gameplay_world, typeobject.id) < 1 then
         show_message("item not enough")
         return
     end
-    assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
+    assert(ibackpack.pickup(gameplay_world, typeobject.id, 1))
     datamodel.show_confirm = false
     datamodel.show_rotate = false
 

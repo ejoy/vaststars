@@ -8,13 +8,13 @@ local UPS <const> = CONSTANT.UPS
 
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local click_item_mb = mailbox:sub {"click_item"}
 local iprototype_cache = ecs.require "prototype_cache"
 
 local function get_items()
     local t = {}
-    for _, slot in pairs(iinventory.all(gameplay_core.get_world())) do
+    for _, slot in pairs(ibackpack.all(gameplay_core.get_world())) do
         local typeobject_item = assert(iprototype.queryById(slot.item))
 
         local v = {}

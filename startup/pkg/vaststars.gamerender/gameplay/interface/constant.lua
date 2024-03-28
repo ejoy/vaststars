@@ -109,4 +109,6 @@ M.BUILDING_EFK_SCALE = {
     ["6x6"] = {12, 12, 12},
 }
 
+M.DEFAULT_BUILDING_CONTINUITY = false
+
 return M

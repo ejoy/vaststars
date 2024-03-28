@@ -26,7 +26,7 @@ local create_road_next_indicator = ecs.require "editor.indicators.road_next_indi
 local ibuilding = ecs.require "render_updates.building"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local iroad = ecs.require "vaststars.gamerender|render_updates.road"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local srt = require "utility.srt"
 local igame_object = ecs.require "engine.game_object"
 local show_message = ecs.require "show_message".show_message
@@ -218,11 +218,11 @@ local function place(self, datamodel)
     local mask = _get_road(status.x, status.y)
     if not mask then
         local gameplay_world = gameplay_core.get_world()
-        if iinventory.query(gameplay_world, typeobject.id) < 1 then
+        if ibackpack.query(gameplay_world, typeobject.id) < 1 then
             show_message("item not enough")
             return
         end
-        assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
+        assert(ibackpack.pickup(gameplay_world, typeobject.id, 1))
         _set_road(status.x, status.y, 0)
     end
 

@@ -80,6 +80,12 @@ return function ()
         end
     end
 
+    for _, v in pairs(assembling_recipes_3) do
+        table.sort(v, function(a, b)
+            return a < b
+        end)
+    end
+
     return {
         assembling_recipes = assembling_recipes, -- [building] = recipe_list
         assembling_recipes_2 = assembling_recipes_2, -- [building][ingredient] = recipe

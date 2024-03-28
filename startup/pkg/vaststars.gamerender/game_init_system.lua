@@ -15,7 +15,7 @@ local icanvas = ecs.require "engine.canvas"
 local imountain = ecs.require "engine.mountain"
 local iprototype = require "gameplay.interface.prototype"
 local iguide = require "gameplay.interface.guide"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local iscience = require "gameplay.interface.science"
 local gameplay_core = require "gameplay.core"
 local saveload = ecs.require "saveload"
@@ -49,8 +49,8 @@ local function init_game(template)
 
     rhwi.set_profie(settings_manager.get("debug", false))
 
-    iinventory.set_infinite_item(game_settings.infinite_item)
-    iinventory.set_lorry_list(get_lorrys())
+    ibackpack.set_infinite_item(game_settings.infinite_item)
+    ibackpack.set_lorry_list(get_lorrys())
 
     icanvas.create("icon", template.canvas_icon ~= false and settings_manager.get("info", true) or false, 10)
     icanvas.create("pickup_icon", false, 10)

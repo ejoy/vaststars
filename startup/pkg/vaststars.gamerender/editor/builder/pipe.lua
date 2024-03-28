@@ -30,7 +30,7 @@ local create_pickup_selection_box = ecs.require "editor.indicators.pickup_select
 local iprototype_cache = ecs.require "prototype_cache"
 local icamera_controller = ecs.require "engine.system.camera_controller"
 local srt = require "utility.srt"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local show_message = ecs.require "show_message".show_message
 local get_check_coord = ecs.require "editor.builder.common".get_check_coord
 local ifluidbox = ecs.require "render_updates.fluidbox"
@@ -143,11 +143,11 @@ local function place(self, datamodel)
 
     local gameplay_world = gameplay_core.get_world()
 
-    if iinventory.query(gameplay_world, typeobject.id) < 1 then
+    if ibackpack.query(gameplay_world, typeobject.id) < 1 then
         show_message("item not enough")
         return
     end
-    assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
+    assert(ibackpack.pickup(gameplay_world, typeobject.id, 1))
 
     local prototype, dir = iprototype_cache.get("pipe").MaskToPrototypeDir(typeobject.building_category, 0)
     local object = iobject.new {

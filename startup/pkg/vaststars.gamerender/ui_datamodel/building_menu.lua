@@ -38,7 +38,7 @@ local ui_click_mb = mailbox:sub {"ui_click"}
 
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local itransfer = require "gameplay.interface.transfer"
 local iobject = ecs.require "object"
@@ -282,7 +282,7 @@ function M.update(datamodel, gameplay_eid)
             print("item already full")
             goto continue
         end
-        if not iinventory.pickup(gameplay_core.get_world(), slot.item, 1) then
+        if not ibackpack.pickup(gameplay_core.get_world(), slot.item, 1) then
             print("failed to pickup") --TODO: show error message
             goto continue
         end

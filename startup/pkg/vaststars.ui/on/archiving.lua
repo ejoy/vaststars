@@ -16,4 +16,7 @@ return function (window)
         window.callMessage("reboot", "restore", filename)
         window.close()
     end
+    function model.clickClose()
+        window.close()
+    end
 end

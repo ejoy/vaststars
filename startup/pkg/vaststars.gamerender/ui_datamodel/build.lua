@@ -1,11 +1,12 @@
 local ecs, mailbox = ...
 local world = ecs.world
 
+local DEFAULT_BUILDING_CONTINUITY <const> = require "gameplay.interface.constant".DEFAULT_BUILDING_CONTINUITY
 local CONSTRUCT_LIST <const> = ecs.require "vaststars.prototype|construct_list"
 local BUTTONS <const> = {
     { command = "rotate",           icon = "/pkg/vaststars.resources/ui/textures/build/rotate.texture", },
-    { command = "continuous_build", icon = "/pkg/vaststars.resources/ui/textures/build/continuous_build.texture", },
-    { command = "single_build",     icon = "/pkg/vaststars.resources/ui/textures/build/single_build.texture", },
+    { command = "continuous_build", icon = "/pkg/vaststars.resources/ui/textures/build/single_build.texture", },
+    { command = "single_build",     icon = "/pkg/vaststars.resources/ui/textures/build/continuous_build.texture", },
 }
 local DESC <const> = ecs.require "vaststars.prototype|menu.desc"
 
@@ -16,7 +17,7 @@ local rotate_mb = mailbox:sub {"rotate"}
 local single_build_mb = mailbox:sub {"single_build"}
 local continuous_build_mb = mailbox:sub {"continuous_build"}
 local gameplay_core = require "gameplay.core"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local iprototype = require "gameplay.interface.prototype"
 local click_item_mb = mailbox:sub {"click_item"}
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
@@ -35,7 +36,7 @@ local function get_list()
 
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = iinventory.query(gameplay_world, typeobject.id)
+            local count = ibackpack.query(gameplay_world, typeobject.id)
             if not (item_unlocked(typeobject.name) or count > 0) then
                 goto continue
             end
@@ -102,7 +103,7 @@ function M.create(prototype, move_building)
         main_button_icon = typeobject.item_icon
 
         if not move_building then
-            local continuity = typeobject.continuity == nil and true or typeobject.continuity
+            local continuity = typeobject.continuity == nil and DEFAULT_BUILDING_CONTINUITY or typeobject.continuity
             single_build = continuity
             continuous_build = not continuity
         end
@@ -177,7 +178,7 @@ function M.update(datamodel)
         datamodel.main_button_icon = typeobject.item_icon
 
         datamodel.rotate = true
-        local continuity = typeobject.continuity == nil and true or typeobject.continuity
+        local continuity = typeobject.continuity == nil and DEFAULT_BUILDING_CONTINUITY or typeobject.continuity
         datamodel.single_build = continuity
         datamodel.continuous_build = not continuity
         datamodel.buttons = _handler(datamodel)

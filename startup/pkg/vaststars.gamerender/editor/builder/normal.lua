@@ -27,7 +27,7 @@ local create_selection_box = ecs.require "selection_box"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
 local create_fluid_indicators = ecs.require "fluid_indicators".create
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local ichest = require "gameplay.interface.chest"
 local srt = require "utility.srt"
 local imineral = ecs.require "mineral"
@@ -345,11 +345,11 @@ local function confirm(self, datamodel)
     end
 
     local gameplay_world = gameplay_core.get_world()
-    if iinventory.query(gameplay_world, typeobject.id) < 1 then
+    if ibackpack.query(gameplay_world, typeobject.id) < 1 then
         show_message("item not enough")
         return
     end
-    assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
+    assert(ibackpack.pickup(gameplay_world, typeobject.id, 1))
 
     local w, h = iprototype.rotate_area(typeobject.area, status.dir)
     local object = iobject.new {

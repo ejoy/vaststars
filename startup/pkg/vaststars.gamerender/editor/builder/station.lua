@@ -31,7 +31,7 @@ local create_station_indicator = ecs.require "editor.indicators.station_indicato
 local create_selection_box = ecs.require "selection_box"
 local icoord = require "coord"
 local gameplay_core = require "gameplay.core"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local srt = require "utility.srt"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local ibuilding = ecs.require "render_updates.building"
@@ -390,11 +390,11 @@ local function confirm(self, datamodel)
     end
 
     local gameplay_world = gameplay_core.get_world()
-    if iinventory.query(gameplay_world, typeobject.id) < 1 then
+    if ibackpack.query(gameplay_world, typeobject.id) < 1 then
         show_message("item not enough")
         return
     end
-    assert(iinventory.pickup(gameplay_world, typeobject.id, 1))
+    assert(ibackpack.pickup(gameplay_world, typeobject.id, 1))
 
     indicator:modifier({name = "confirm"}, true)
 

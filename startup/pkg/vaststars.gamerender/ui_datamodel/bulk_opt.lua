@@ -24,7 +24,7 @@ local game_camera_changed_mb = world:sub {"game_camera_changed"}
 local global = require "global"
 local teardown = ecs.require "editor.teardown"
 local gameplay_core = require "gameplay.core"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local show_message = ecs.require "show_message".show_message
 local iui = ecs.require "engine.system.ui_system"
 local update_buildings_state = ecs.require "ui_datamodel.common.bulk_opt".update_buildings_state
@@ -153,7 +153,7 @@ function M.update(datamodel)
         for gameplay_eid in pairs(global.selected_buildings) do
             teardown(gameplay_eid)
             local e = assert(gameplay_core.get_entity(gameplay_eid))
-            if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
+            if not ibackpack.place(gameplay_core.get_world(), e.building.prototype, 1) then
                 full = true
             end
         end

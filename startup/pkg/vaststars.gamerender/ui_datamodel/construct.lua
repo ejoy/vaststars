@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
+local DEFAULT_BUILDING_CONTINUITY <const> = CONSTANT.DEFAULT_BUILDING_CONTINUITY
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local COLOR <const> = ecs.require "vaststars.prototype|color"
 local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
@@ -23,7 +24,7 @@ local global = require "global"
 local iobject = ecs.require "object"
 local idetail = ecs.require "detail_system"
 local icoord = require "coord"
-local iinventory = require "gameplay.interface.inventory"
+local ibackpack = require "gameplay.interface.backpack"
 local gesture_longpress_mb = world:sub{"gesture", "longpress"}
 local ilorry = ecs.require "render_updates.lorry"
 local igame_object = ecs.require "engine.game_object"
@@ -689,7 +690,7 @@ function M.update(datamodel)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         -- the building directly go into the backpack
-        if not iinventory.place(gameplay_core.get_world(), e.building.prototype, 1) then
+        if not ibackpack.place(gameplay_core.get_world(), e.building.prototype, 1) then
             show_message("backpack is full")
         end
     end
@@ -733,7 +734,7 @@ function M.update(datamodel)
 
         local typeobject = iprototype.queryByName(name)
         local gameplay_world = gameplay_core.get_world()
-        local count = iinventory.query(gameplay_world, typeobject.id)
+        local count = ibackpack.query(gameplay_world, typeobject.id)
         if count <= 0 then
             show_message("item not enough")
             goto continue
@@ -749,7 +750,7 @@ function M.update(datamodel)
             gameplay_core.world_update = false
 
             assert(builder == nil)
-            local continuity = typeobject.continuity == nil and true or typeobject.continuity
+            local continuity = typeobject.continuity == nil and DEFAULT_BUILDING_CONTINUITY or typeobject.continuity
             _construct_entity(typeobject, "CENTER", continuity)
         end)
         ::continue::
