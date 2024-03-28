@@ -55,11 +55,24 @@
                 justify-content: center;
                 align-items: center;
             }
-            recipe-info, buildings {
+            recipe-info {
                 flex-direction: row;
                 width: 100%;
                 height: 15.50vmin;
                 background-color: rgb(38, 38, 38);
+            }
+            buildings-background {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 15.50vmin;
+                background-color: rgb(38, 38, 38);
+            }
+            buildings {
+                flex-direction: row;
+                width: 30%;
+                height: 100%;
             }
             ingredients, results {
                 flex-direction: row;
@@ -80,14 +93,20 @@
                 background-color: rgb(61, 61, 61);
             }
             ingredient-count, result-count {
-                font-size: 2.50vmin;
-                width: 3.50vmin;
+                font-size: 3.50vmin;
                 -webkit-text-stroke: 0.3vmin rgb(0, 0, 0);
                 position: absolute;
-                top: -1.70vmin;
-                right: 0.30vmin;
-                justify-content: center;
-                align-items: center;
+                top: -0.5vmin;
+                right: 0vmin;
+                text-align: center;
+            }
+            new {
+                position: absolute;
+                left: 0;
+                top: 0;
+                font-size: 2.5vmin;
+                color: rgb(0, 255, 21);
+                -webkit-text-stroke: 1px #000;
             }
             ingredient-name, result-name, building-name {
                 font-size: 2.50vmin;
@@ -109,7 +128,7 @@
                 background-size: 2.65vmin 2.65vmin;
                 height: 3.50vmin;
                 animation: arrow-move 2s infinite linear;
-                width: 50%;
+                width: 60%;
                 background-repeat: repeat-x;
             }
         </style>
@@ -136,8 +155,9 @@
                     <recipe-info>
                         <ingredients style = "width: 45%; height: 100%;">
                             <ingredient-container data-for = "ingredients">
-                                <ingredient-icon data-style-background-image = "it.icon" />
-                                <ingredient-count>{{it.count}}</ingredient-count>
+                                <ingredient-icon data-style-background-image = "it.icon">
+                                    <ingredient-count>x{{it.count}}</ingredient-count>
+                                </ingredient-icon>
                                 <ingredient-name>{{it.name}}</ingredient-name>
                             </ingredient-container>
                         </ingredients>
@@ -151,8 +171,10 @@
 
                         <results style = "width: 45%; height: 100%;">
                             <result-container data-for = "results">
-                                <result-icon data-style-background-image = "it.icon" />
-                                <result-count>{{it.count}}</result-count>
+                                <result-icon data-style-background-image = "it.icon">
+                                    <result-count>x{{it.count}}</result-count>
+                                    <new>新</new>
+                                </result-icon>
                                 <result-name>{{it.name}}</result-name>
                             </result-container>
                         </results>
@@ -163,12 +185,14 @@
                     <label>
                         <div style = "font-size: 3.50vmin; position: absolute; color: rgb(142, 142, 142);">生产建筑</div>
                     </label>
-                    <buildings>
-                        <building-container data-for = "buildings" style = "flex-grow: 1;">
-                            <building-icon data-style-background-image = "it.icon" />
-                            <building-name>{{it.name}}</building-name>
-                        </building-container>
-                    </buildings>
+                    <buildings-background>
+                        <buildings>
+                            <building-container data-for = "buildings" style = "flex-grow: 1;">
+                                <building-icon data-style-background-image = "it.icon" />
+                                <building-name>{{it.name}}</building-name>
+                            </building-container>
+                        </buildings>
+                    </buildings-background>
                 </div>
             </main-section>
         </frame>
