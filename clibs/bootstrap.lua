@@ -33,7 +33,7 @@ elseif options["-p"] then
 elseif options["-d"] then
     arg[0] = "3rd/ant/tools/editor/main.lua"
     arg[1] = "../../startup"
-elseif arguments[1] == nil then
+elseif arguments[1] == nil or arguments[1] == "" then
     arg[0] = "startup/main.lua"
 else
     arg[0] = table.remove(arguments, 1)
