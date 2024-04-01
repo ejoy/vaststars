@@ -36,7 +36,14 @@
                 font-size: 2.5vmin;
                 color: rgb(145, 141, 141);
                 left: 5vmax;
+                bottom:0.8vmax;
+                position: absolute;
                 /* animation:0.65s exponential 0s infinite alternate walk; */
+            }
+            tips {
+                font-size: 3vmin;
+                text-align: center;
+                bottom:3.5vmax;
             }
         </style>
         <script type="text/x-lua" >
@@ -66,6 +73,7 @@
         <div>
             <logo />
             <info>{{version}}</info>
+            <tips>这是一段tips文字:建筑放置可将其液口旋转至合适的方向</tips>
         </div>
         <background />
     </body>
