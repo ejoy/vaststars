@@ -40,23 +40,30 @@
                 position: absolute;
                 /* animation:0.65s exponential 0s infinite alternate walk; */
             }
-            tips {
+            .tips {
                 font-size: 3vmin;
                 text-align: center;
-                bottom:3.5vmax;
+                bottom: 3.5vmax;
             }
         </style>
         <script type="text/x-lua" >
             local iversion = import_package "vaststars.version"
+            local tips = import_package "vaststars.prototype"("tips")
             local vfs = require "vfs"
             local version = "IN DEVELOPMENT " .. table.concat({
                 string.sub(iversion.game, 1, 6),
                 string.sub(iversion.engine, 1, 6),
                 string.sub(vfs.version(), 1, 6),
             }, "-")
-            window.createModel {
-                version = version
+            local model = window.createModel {
+                version = version,
+                tips = tips[math.random(1, #tips)]
             }
+
+            window.setInterval(function()
+                model.tips = tips[math.random(1, #tips)]
+            end, 3000)
+
             local function step()
                 if window.getPendingTexture() == 0 then
                     local e = document.getElementsByTagName("background")[1]
@@ -73,7 +80,7 @@
         <div>
             <logo />
             <info>{{version}}</info>
-            <tips>这是一段tips文字:建筑放置可将其液口旋转至合适的方向</tips>
+            <richtext class = "tips">{{tips}}</richtext>
         </div>
         <background />
     </body>
