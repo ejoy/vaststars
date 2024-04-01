@@ -638,7 +638,7 @@ function M.update(datamodel)
             gameplay_core.world_update = false
 
             idetail.unselected()
-            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, nil, typeobject.id, true)
+            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, object.gameplay_eid, typeobject.id, true)
             assert(typeobject.builder == "normal" or typeobject.builder == "factory" or typeobject.builder == "station", "invalid builder type")
             local create_builder = ecs.require("editor.builder." .. typeobject.builder)
             builder = create_builder("move")
