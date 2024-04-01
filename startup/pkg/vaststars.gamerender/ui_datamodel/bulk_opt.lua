@@ -150,10 +150,12 @@ function M.update(datamodel)
 
     for _ in remove_confirm_mb:unpack() do
         local full = false
+        local base = ibackpack.get_base_entity(gameplay_core.get_world())
+
         for gameplay_eid in pairs(global.selected_buildings) do
             teardown(gameplay_eid)
             local e = assert(gameplay_core.get_entity(gameplay_eid))
-            if not ibackpack.place(gameplay_core.get_world(), e.building.prototype, 1) then
+            if not ibackpack.place(gameplay_core.get_world(), base, e.building.prototype, 1) then
                 full = true
             end
         end

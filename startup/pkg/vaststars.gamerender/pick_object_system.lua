@@ -72,7 +72,19 @@ local function push_objects(lorries, pick_x, pick_y, x, y, mark, blur)
     if o then
         local building = mark.building[o.id]
         if not building then
-            mark.building[o.id] = {class = CLASS.Object, id = o.id, dist = distance(pick_x, pick_y, x, y), x = o.x, y = o.y, object = o, name = o.prototype_name}
+            local typeobject = assert(iprototype.queryByName(o.prototype_name))
+            local w, h = iprototype.rotate_area(typeobject.area, o.dir)
+            mark.building[o.id] = {
+                class = CLASS.Object,
+                id = o.id,
+                dist = distance(pick_x, pick_y, x, y),
+                x = o.x,
+                y = o.y,
+                w = w,
+                h = h,
+                object = o,
+                name = o.prototype_name
+            }
         else
             local v = distance(pick_x, pick_y, x, y)
             if v < building.dist then

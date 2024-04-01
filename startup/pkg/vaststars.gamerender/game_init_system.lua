@@ -32,7 +32,7 @@ local m = ecs.system "game_init_system"
 bgfx.maxfps(FPS)
 font.import "/pkg/vaststars.resources/ui/font/Alibaba-PuHuiTi-Regular.ttf"
 
-local function get_lorrys()
+local function get_lorry_ids()
     local l = {}
     for _, typeobject in pairs(iprototype.each_type("factory")) do
         local item = iprototype.queryByName(typeobject.lorry)
@@ -50,7 +50,7 @@ local function init_game(template)
     rhwi.set_profie(settings_manager.get("debug", false))
 
     ibackpack.set_infinite_item(game_settings.infinite_item)
-    ibackpack.set_lorry_list(get_lorrys())
+    ibackpack.set_lorry_ids(get_lorry_ids())
 
     icanvas.create("icon", template.canvas_icon ~= false and settings_manager.get("info", true) or false, 10)
     icanvas.create("pickup_icon", false, 10)

@@ -1,4 +1,5 @@
 local CONSTANT <const> = require "gameplay.interface.constant"
+local DEFAULT_BUILDING_CONTINUITY <const> = CONSTANT.DEFAULT_BUILDING_CONTINUITY
 local DIR_MOVE_DELTA <const> = CONSTANT.DIR_MOVE_DELTA
 local DIRECTION <const> = CONSTANT.DIRECTION
 
@@ -185,6 +186,10 @@ function M.rotate_connection(position, direction, area)
         return y, w - x, assert(DIRECTION_REV[dir])
     end
     assert(false)
+end
+
+function M.continuity(typeobject)
+    return typeobject.continuity == nil and DEFAULT_BUILDING_CONTINUITY or typeobject.continuity
 end
 
 function M.display_name(typeobject)

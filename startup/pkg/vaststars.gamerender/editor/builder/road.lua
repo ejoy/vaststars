@@ -218,11 +218,12 @@ local function place(self, datamodel)
     local mask = _get_road(status.x, status.y)
     if not mask then
         local gameplay_world = gameplay_core.get_world()
-        if ibackpack.query(gameplay_world, typeobject.id) < 1 then
+        local base = ibackpack.get_base_entity(gameplay_world)
+        if ibackpack.query(gameplay_world, base, typeobject.id) < 1 then
             show_message("item not enough")
             return
         end
-        assert(ibackpack.pickup(gameplay_world, typeobject.id, 1))
+        assert(ibackpack.pickup(gameplay_world, base, typeobject.id, 1))
         _set_road(status.x, status.y, 0)
     end
 

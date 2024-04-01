@@ -35,6 +35,15 @@
                 background-image: "/pkg/vaststars.resources/ui/textures/detail/tips_bg.texture";
                 background-size: 100% 100%;
             }
+            assembler-info {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 68vmin;
+                height: 75vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/detail/tips_bg.texture";
+                background-size: 100% 100%;
+            }
             .progress_bar {
                 align-self: flex-start;
                 background-image: "/pkg/vaststars.resources/ui/textures/detail/progress_bar.texture";
@@ -98,16 +107,19 @@
             end
 
             function init()
-                for _, e in ipairs(document.getElementsByTagName "scroll-item-list") do
-                    e.scrollInsets(0, 0, 0, 200)
+                local tag_names = {"scroll-item-list"}
+                for _, name in ipairs(tag_names) do
+                    for _, e in ipairs(document.getElementsByTagName "scroll-item-list") do
+                        e.scrollInsets(0, 0, 0, 200)
 
-                    local last_y
-                    e.addEventListener("pan", function(param)
-                        if last_y and param.state == "changed" then
-                            e.scrollTop = e.scrollTop - (param.y - last_y)
-                        end
-                        last_y = param.y
-                    end)
+                        local last_y
+                        e.addEventListener("pan", function(param)
+                            if last_y and param.state == "changed" then
+                                e.scrollTop = e.scrollTop - (param.y - last_y)
+                            end
+                            last_y = param.y
+                        end)
+                    end
                 end
             end
 
@@ -172,13 +184,14 @@
                     </div>
                 </div>
 
-                <!--箱子中当前物品-->
+                <!-- chest -->
                 <div style="width:90%; margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap;" data-if = "chest_style=='chest'" data-event-longpress="onLongPress(ev, 'expanded-chest-info')" data-event-click="onClick(ev, 'expanded-chest-info')">
-                    <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon">
+                    <div data-for = "chest : chest_list_1" class="small-item1" style="margin: 0.5vmin;" data-style-background-image="chest.icon" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')">
                         <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0); font-size:2.8vmin; position:absolute; line-height: 0.7; top: 0vmin; right: 0vmin;">{{chest.count}}</div>
                     </div>
                 </div>
-                <!--采矿机底部显示进度-->
+
+                <!-- miner -->
                 <div style="top: 1vmin; height: 8vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "chest_style=='miner'" data-event-longpress="onLongPress(ev, 'expanded-miner-info')" data-event-click="onClick(ev, 'expanded-miner-info')">
                     <div class="column" style="justify-content: flex-start; width: 27.5vmin; height: 4vmin;">
                         <div class="progress_bar" data-style-width="progress"/>
@@ -193,7 +206,8 @@
                         </div>
                     </div>
                 </div>
-                <!--组装机类型底部显示进度-->
+
+                <!-- assembler -->
                 <div style="top: 1vmin; margin-left: 3%; margin-right: 3%; flex-direction: column; justify-content: center; align-items: center;" data-if = "chest_style=='assembler'" data-event-longpress="onLongPress(ev, 'expanded-assembler-info')" data-event-click="onClick(ev, 'expanded-assembler-info')">
                     <div class="column" style="width:100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
@@ -242,17 +256,17 @@
                     </div>
                 </div>
             </div>
-            <!--物流中心-->
+
+            <!-- chest -->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if = "areaid == 'expanded-chest-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
-                <scroll-item-list style="width: 81.5%; height: 80%; flex-direction: row; align-items: center; flex-wrap: wrap;">
-                    <div style='width: 25%; flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
-                        <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                            <div style="font-size: 4vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0); position:absolute; top:-1vmin; right:0;" data-if="chest.icon ~= ''">{{chest.count}}</div>
-                        </div>
-                        <div style='font-size: 2.5vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{chest.name}}</div>
+                <scroll-item-list style="width: 70.00%; height: 80%; flex-direction: row; align-items: center; flex-wrap: wrap;">
+                    <div style="flex-direction: row; align-items: center; width: 100%; gap: 2vmin;" data-for="chest : chest_list_1">
+                        <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon" />
+                        <div style="flex-grow: 1; font-size: 4.8vmin; align-items: center;">{{chest.name}} x {{chest.count}}</div>
                     </div>
                 </scroll-item-list>
             </div>
+
             <!--采矿机-->
             <div class="tips-bg" style="margin-left: -3vmin;" data-if = "areaid == 'expanded-miner-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div style="flex-direction: row; justify-content: center; align-items: center; height:79%; width: 90%;">
@@ -275,45 +289,23 @@
                     </div>
                 </div>
             </div>
-            <!--组装机-->
-            <div class="tips-bg" style='flex-direction: column; justify-content: center; align-items: center; margin-left: -3vmin;' data-if = "areaid == 'expanded-assembler-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
-                <div style="height:8%;width: 90%; color: rgb(246, 142, 14); text-align: center; font-size: 4.8vmin;">{{recipe_name}}</div>
-                <div style="flex-direction: row; justify-content: center; align-items: center; height:79%; width: 90%;">
-                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
-                        <div style='flex-direction: column; align-items: center;' data-for="recipe_inputs">
-                            <div class="small-item1" style="width: 11vmin; height: 11vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon">
-                                <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.demand_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
-                                </div>
-                            </div>
-                            <div style='flex-direction: row;'>
-                                <div style="margin-bottom: 0.25vmin; font-size: 2.3vmin;">{{it.name}}</div>
-                                <div style="font-size: 2.3vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.demand_count > 1">x{{it.demand_count}}</div>
-                            </div>
-                        </div>
+
+            <!-- assembler -->
+            <assembler-info data-if = "areaid == 'expanded-assembler-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
+                <scroll-item-list style = "width: 70.00%; height: 80%; gap: 2vmin; align-items: center;">
+                    <div style = "height: 6vmin; color: rgb(246, 142, 14); text-align: center; font-size: 4.8vmin;">{{recipe_name}}</div>
+                    <div style = "height: 6vmin; width: 100%; color: rgb(246, 142, 14); text-align: left; font-size: 4.8vmin;">原料: </div>
+                    <div style="flex-direction: row; align-items: center; width: 100%; gap: 2vmin;" data-for="recipe_inputs">
+                        <div class="small-item1" style="flex-grow: 0; width: 11vmin; height: 11vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" />
+                        <div style="flex-grow: 1; font-size: 4.8vmin; align-items: center;">{{it.name}} x {{it.demand_count}}</div>
                     </div>
-                    <div class="column" style="justify-content: flex-start; width: 50%; height: 9vmin;">
-                        <div class="progress_bar" style="height: 7.2vmin; justify-content: center;" data-style-width="progress">
-                            <div style="text-align: center; font-size: 4vmin;height: 80%;width: 36vmin;-webkit-text-stroke: 0.2vmin #000;">{{progress}}</div>
-                        </div>
-                        
-                        <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
+                    <div style = "height: 6vmin; width: 100%; color: rgb(246, 142, 14); text-align: left; font-size: 4.8vmin;">成品: </div>
+                    <div style="flex-direction: row; align-items: center; width: 100%; gap: 2vmin;" data-for="recipe_ouputs">
+                        <div class="small-item1" style="flex-grow: 0; width: 11vmin; height: 11vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" />
+                        <div style="flex-grow: 1; font-size: 4.8vmin; align-items: center;">{{it.name}} x {{it.output_count}}</div>
                     </div>
-                    <div class="column" style="width: 25%; justify-content: space-evenly; align-items: center;">
-                        <div style='flex-direction: column; align-items: center;' data-for="recipe_ouputs">
-                            <div class="small-item1" style="width: 11vmin; height: 11vmin; border: 0.3vmin rgb(251, 177, 61);" data-style-background-image="it.icon">
-                                <div class ="item-count-combination">
-                                    <div class="item-count-new" data-style-font-size="it.count > 99 and '3.5vmin' or '4.2vmin'" data-style-color="it.count < it.output_count and 'rgb(255,255,255)' or 'rgb(0,255,0)'">x{{it.count}}</div>
-                                </div>
-                            </div>
-                            <div style='flex-direction: row;'>
-                                <div style="margin-bottom: 0.25vmin; font-size: 2.3vmin;">{{it.name}}</div>
-                                <div style="font-size: 2.3vmin; color:#adadad; margin:0.15vmin 0.75vmin 0 0; align-self: baseline;" data-if="it.output_count > 1">x{{it.output_count}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </scroll-item-list>
+            </assembler-info>
             <!-- station -->
             <div class="tips-bg" style="flex-direction: row;  margin-left: -3vmin;" data-if = "areaid == 'expanded-station-info'" data-event-longpress = "onLongPressExpandedPanel(ev)">
                 <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">

@@ -1,7 +1,6 @@
 local ecs, mailbox = ...
 local world = ecs.world
 
-local DEFAULT_BUILDING_CONTINUITY <const> = require "gameplay.interface.constant".DEFAULT_BUILDING_CONTINUITY
 local CONSTRUCT_LIST <const> = ecs.require "vaststars.prototype|construct_list"
 local BUTTONS <const> = {
     { command = "rotate",           icon = "/pkg/vaststars.resources/ui/textures/build/rotate.texture", },
@@ -12,21 +11,31 @@ local DESC <const> = ecs.require "vaststars.prototype|menu.desc"
 
 local iui = ecs.require "engine.system.ui_system"
 local click_main_button_mb = mailbox:sub {"click_main_button"}
-local lock_axis_mb = mailbox:sub {"lock_axis"}
 local rotate_mb = mailbox:sub {"rotate"}
 local single_build_mb = mailbox:sub {"single_build"}
 local continuous_build_mb = mailbox:sub {"continuous_build"}
 local gameplay_core = require "gameplay.core"
-local ibackpack = require "gameplay.interface.backpack"
 local iprototype = require "gameplay.interface.prototype"
 local click_item_mb = mailbox:sub {"click_item"}
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
+local ichest = require "gameplay.interface.chest"
 
 local M = {}
 
-local function get_list()
+local function get_list(gameplay_eid)
     local gameplay_world = gameplay_core.get_world()
+    local e = gameplay_world:fetch_entity(gameplay_eid)
+    local items = {}
+    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+        local slot = ichest.get(gameplay_world, e.chest, i)
+        if not slot then
+            break
+        end
+        if slot.item ~= 0 and slot.amount > 0 then
+            items[slot.item] = (items[slot.item] or 0) + slot.amount
+        end
+    end
 
     local res = {}
     for category_idx, menu in ipairs(CONSTRUCT_LIST) do
@@ -36,7 +45,7 @@ local function get_list()
 
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = ibackpack.query(gameplay_world, typeobject.id)
+            local count = items[typeobject.id] or 0
             if not (item_unlocked(typeobject.name) or count > 0) then
                 goto continue
             end
@@ -94,7 +103,7 @@ local function _handler(datamodel)
     return t
 end
 
-function M.create(prototype, move_building)
+function M.create(gameplay_eid, prototype, move_building)
     local main_button_icon = ""
     local show_list = prototype == nil
     local rotate, single_build, continuous_build = false, false, false
@@ -103,7 +112,7 @@ function M.create(prototype, move_building)
         main_button_icon = typeobject.item_icon
 
         if not move_building then
-            local continuity = typeobject.continuity == nil and DEFAULT_BUILDING_CONTINUITY or typeobject.continuity
+            local continuity = iprototype.continuity(typeobject)
             single_build = continuity
             continuous_build = not continuity
         end
@@ -111,7 +120,7 @@ function M.create(prototype, move_building)
     end
 
     local category_idx, item_idx = 0, 0
-    local construct_list = get_list()
+    local construct_list = get_list(gameplay_eid)
     if prototype then
         category_idx, item_idx = get_index(construct_list, prototype)
         update_list_item(construct_list, category_idx, item_idx, "selected", true)
@@ -122,7 +131,6 @@ function M.create(prototype, move_building)
         single_build = single_build,
         continuous_build = continuous_build,
         desc = "",
-        lock_axis = false,
         main_button_icon = main_button_icon,
         category_idx = category_idx,
         item_idx = item_idx,
@@ -136,15 +144,6 @@ end
 function M.update(datamodel)
     for _ in click_main_button_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.html", "build")
-    end
-
-    for _ in lock_axis_mb:unpack() do
-        datamodel.lock_axis = not datamodel.lock_axis
-        if datamodel.lock_axis then
-            iui.redirect("/pkg/vaststars.resources/ui/construct.html", "lock_axis")
-        else
-            iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unlock_axis")
-        end
     end
 
     for _ in rotate_mb:unpack() do
@@ -178,7 +177,7 @@ function M.update(datamodel)
         datamodel.main_button_icon = typeobject.item_icon
 
         datamodel.rotate = true
-        local continuity = typeobject.continuity == nil and DEFAULT_BUILDING_CONTINUITY or typeobject.continuity
+        local continuity = iprototype.continuity(typeobject)
         datamodel.single_build = continuity
         datamodel.continuous_build = not continuity
         datamodel.buttons = _handler(datamodel)

@@ -14,7 +14,9 @@ local iprototype_cache = ecs.require "prototype_cache"
 
 local function get_items()
     local t = {}
-    for _, slot in pairs(ibackpack.all(gameplay_core.get_world())) do
+    local gameplay_world = gameplay_core.get_world()
+    local base = ibackpack.get_base_entity(gameplay_world)
+    for _, slot in pairs(ibackpack.all(gameplay_world, base)) do
         local typeobject_item = assert(iprototype.queryById(slot.item))
 
         local v = {}

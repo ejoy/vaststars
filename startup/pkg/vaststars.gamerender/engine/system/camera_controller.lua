@@ -52,8 +52,6 @@ local gesture_pan = world:sub {"gesture", "pan"}
 
 local cam_cmd_queue = create_queue()
 local cam_motion_matrix_queue = create_mathqueue()
-local LockAxis
-
 
 local function zoom(factor, x, y)
     local ce <close> = world:entity(irq.main_camera())
@@ -281,18 +279,6 @@ local handle_drop_camera; do
                 return
             end
 
-            if LockAxis then
-                if LockAxis == "x-axis" then
-                    pos = math3d.set_index(pos, 1, math3d.index(scene.t, 1))
-                elseif LockAxis == "z-axis" then
-                    pos = math3d.set_index(pos, 3, math3d.index(scene.t, 3))
-                elseif LockAxis == "xz-axis" then
-                    return
-                else
-                    assert(false)
-                end
-            end
-
             pos = mu.clamp_vec(pos, CAMERA_POSITION_MIN, CAMERA_POSITION_MAX)
 
             if end_time then
@@ -407,14 +393,6 @@ function icamera_controller.toggle_view(v, xzpos, callback)
     if callback then
         cam_cmd_queue:push {{"callback", callback}}
     end
-end
-
-function icamera_controller.lock_axis(v)
-    LockAxis = v
-end
-
-function icamera_controller.unlock_axis()
-    LockAxis = nil
 end
 
 function icamera_controller.move_delta(delta)

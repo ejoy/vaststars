@@ -9,8 +9,7 @@ local CHEST_TYPE_CONVERT <const> = {
     [3] = "transit",
 }
 local mathpkg = import_package "ant.math"
-local mu, mc = mathpkg.util, mathpkg.constant
-local iviewport = ecs.require "ant.render|viewport.state"
+local mu = mathpkg.util
 local CONSTANT <const> = require "gameplay.interface.constant"
 local CHANGED_FLAG_STATION <const> = CONSTANT.CHANGED_FLAG_STATION
 local CHANGED_FLAG_DEPOT <const> = CONSTANT.CHANGED_FLAG_DEPOT
@@ -22,7 +21,10 @@ local icamera_controller = ecs.require "engine.system.camera_controller"
 local interval_call = ecs.require "engine.interval_call"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_station = gameplay.interface "station"
+local iviewport = ecs.require "ant.render|viewport.state"
 
+local ui_click_mb = mailbox:sub {"ui_click"}
+-- menu events
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local transfer_source_mb = mailbox:sub {"transfer_source"}
@@ -34,7 +36,7 @@ local move_mb = mailbox:sub {"move"}
 local copy_md = mailbox:sub {"copy"}
 local inventory_mb = mailbox:sub {"inventory"}
 local teardown_mb = mailbox:sub {"teardown"}
-local ui_click_mb = mailbox:sub {"ui_click"}
+local build_mb = mailbox:sub {"build"}
 
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
@@ -94,10 +96,12 @@ function M.create(gameplay_eid, longpress)
     local copy = false
     local inventory = false
     local teardown = false
+    local build = false
 
     if longpress then
         teardown = true
     else
+        build = e.chest ~= nil
         set_recipe = (e.assembling ~= nil)
         lorry_factory_inc_lorry = (e.factory == true)
         transfer_source = itransfer.get_source_eid() == e.eid
@@ -113,6 +117,7 @@ function M.create(gameplay_eid, longpress)
     end
 
     local status = {
+        build = build,
         set_recipe = set_recipe,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
         transfer_source = transfer_source,
@@ -271,22 +276,19 @@ function M.update(datamodel, gameplay_eid)
     end
 
     for _ in lorry_factory_inc_lorry_mb:unpack() do
-        local component = "chest"
-        local slot = ichest.get(gameplay_core.get_world(), e[component], 1)
-        if not slot then
-            print("item not set yet")
+        local gameplay_world = gameplay_core.get_world()
+        local slot = assert(ichest.get(gameplay_world, e.chest, 1))
+        if slot.limit <= ichest.get_amount(slot) then
+            show_message("the lorries are full at the factory")
             goto continue
         end
-        local c = ichest.get_amount(slot)
-        if slot.limit <= c then
-            print("item already full")
+
+        local base = ibackpack.get_base_entity(gameplay_world)
+        if not ibackpack.pickup(gameplay_world, base, slot.item, 1) then
+            show_message("the number of lorries is insufficient")
             goto continue
         end
-        if not ibackpack.pickup(gameplay_core.get_world(), slot.item, 1) then
-            print("failed to pickup") --TODO: show error message
-            goto continue
-        end
-        ichest.place_at(gameplay_core.get_world(), e, 1, 1)
+        ichest.place_at(gameplay_world, e, 1, 1)
         ::continue::
     end
 
@@ -393,6 +395,10 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in teardown_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.html", "teardown", gameplay_eid)
+    end
+
+    for _ in build_mb:unpack() do
+        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "build_mode", gameplay_eid)
     end
 end
 

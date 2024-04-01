@@ -1,5 +1,7 @@
 return {
     ["unknown"] = {text = "未知错误"},
+    ["the number of lorries is insufficient"] = {text = "小车数量不足"},
+    ["the lorries are full at the factory"] = {text = "物流中心小车已满"},
     ["item not enough"] = {text = "仓库没有该建筑可以修建"},
     ["backpack is full"] = {text = "仓库无空余空间存放，该建筑被删除"},
     ["transfer nothing"] = {text = "没有任何匹配的资源可以放置"},

@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local CONSTANT <const> = require "gameplay.interface.constant"
-local DEFAULT_BUILDING_CONTINUITY <const> = CONSTANT.DEFAULT_BUILDING_CONTINUITY
 local CHANGED_FLAG_BUILDING <const> = CONSTANT.CHANGED_FLAG_BUILDING
 local COLOR <const> = ecs.require "vaststars.prototype|color"
 local SELECTION_BOX_MODEL <const> = ecs.require "vaststars.prototype|selection_box_model"
@@ -45,8 +44,6 @@ local unselected_mb = mailbox:sub {"unselected"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
-local lock_axis_mb = mailbox:sub {"lock_axis"}
-local unlock_axis_mb = mailbox:sub {"unlock_axis"}
 local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local set_continuity_mb = mailbox:sub {"set_continuity"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
@@ -63,13 +60,6 @@ local tech_recipe_unpicked_dirty_mb = world:sub {"tech_recipe_unpicked_dirty"}
 local builder, builder_datamodel
 local selected_obj
 
-local LockAxis = false
-local LockAxisStatus = {
-    status = false,
-    BeginX = 0,
-    BeginY = 0,
-}
-
 local function toggle_view(s, pos, cb)
     pos = math3d.set_index(pos, 2, 0)
 
@@ -84,7 +74,7 @@ local function toggle_view(s, pos, cb)
     end
 end
 
-local function _clean(datamodel, unlock)
+local function _clean(datamodel)
     if builder then
         builder:clean(builder_datamodel)
         builder, builder_datamodel = nil, nil
@@ -98,18 +88,6 @@ local function _clean(datamodel, unlock)
     selected_obj = nil
 
     iui.leave()
-
-    LockAxisStatus = {
-        status = false,
-        BeginX = 0,
-        BeginY = 0,
-    }
-
-    if unlock == false then
-        return
-    end
-    icamera_controller.unlock_axis()
-    log.info("unlock axis")
 end
 
 local function _get_daynight_image(gameplay_world)
@@ -273,32 +251,6 @@ local function _construct_entity(typeobject, position_type, continuity)
     local create_builder = ecs.require("editor.builder." .. typeobject.builder)
     builder = create_builder("build")
     builder:new(builder_datamodel, typeobject, position_type, continuity)
-end
-
-local function move_focus(e)
-	local dx = math.abs(e.x - LockAxisStatus.BeginX)
-	local dy = math.abs(e.y - LockAxisStatus.BeginY)
-	if dx > 10 or dy > 10 then
-		LockAxisStatus.BeginX = e.x
-		LockAxisStatus.BeginY = e.y
-		LockAxisStatus.count = 0
-		return
-	end
-	local count = LockAxisStatus.count + 1
-	if count > 3 then
-		if dx > dy * 2 then
-			return "z-axis"
-		elseif dy > dx * 2 then
-			return "x-axis"
-		else
-			LockAxisStatus.BeginX = e.x
-			LockAxisStatus.BeginY = e.y
-			LockAxisStatus.count = 0
-			return
-		end
-	else
-		LockAxisStatus.count = count
-	end
 end
 
 local function show_selectbox(x, y, w, h)
@@ -594,26 +546,7 @@ function M.update(datamodel)
         end
 
         if builder then
-            if e.state == "began" then
-                if LockAxis and LockAxisStatus.status == false then
-                    log.info("lock axis begin", e.x, e.y)
-                    LockAxisStatus.BeginX, LockAxisStatus.BeginY = e.x, e.y
-                    LockAxisStatus.count = 0
-                end
-            elseif e.state == "changed" then
-                if LockAxis and LockAxisStatus.status == false then
-                    local p = move_focus(e)
-                    if p then
-                        log.info("lock axis ", p)
-                        icamera_controller.lock_axis(p)
-                        LockAxisStatus.status = true
-                    end
-                end
-            elseif e.state == "ended" then
-                log.info("unlock axis")
-                icamera_controller.unlock_axis()
-                LockAxisStatus.status = false
-
+            if e.state == "ended" then
                 builder:touch_end(builder_datamodel)
             end
         end
@@ -651,7 +584,6 @@ function M.update(datamodel)
         if e.state == "began" then
             local pos = icamera_controller.screen_to_world(e.x, e.y, XZ_PLANE)
             pickupObject(datamodel, pos)
-            icamera_controller.lock_axis("xz-axis")
             icamera_controller.toggle_view("pickup", math3d.set_index(pos, 2, 0))
 
         elseif e.state == "changed" then
@@ -663,16 +595,14 @@ function M.update(datamodel)
 
             local pos = icamera_controller.get_screen_world_position("CENTER")
             pos = math3d.set_index(pos, 2, 0)
-            icamera_controller.toggle_view("default", math3d.set_index(pos, 2, 0), function()
-                icamera_controller.unlock_axis()
-            end)
+            icamera_controller.toggle_view("default", math3d.set_index(pos, 2, 0))
         end
         ::continue::
     end
 
     if longpress_startpoint and longpress_startpoint.x and longpress_startpoint.y then
         log.info("longpress_startpoint", longpress_startpoint.x, longpress_startpoint.y)
-        _clean(datamodel, false)
+        _clean(datamodel)
         local pos = icamera_controller.screen_to_world(longpress_startpoint.x, longpress_startpoint.y, XZ_PLANE)
         pickupObject(datamodel, pos)
     end
@@ -690,7 +620,8 @@ function M.update(datamodel)
         gameplay_core.set_changed(CHANGED_FLAG_BUILDING)
 
         -- the building directly go into the backpack
-        if not ibackpack.place(gameplay_core.get_world(), e.building.prototype, 1) then
+        local base = ibackpack.get_base_entity(gameplay_core.get_world())
+        if not ibackpack.place(gameplay_core.get_world(), base, e.building.prototype, 1) then
             show_message("backpack is full")
         end
     end
@@ -707,7 +638,7 @@ function M.update(datamodel)
             gameplay_core.world_update = false
 
             idetail.unselected()
-            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, typeobject.id, true)
+            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, nil, typeobject.id, true)
             assert(typeobject.builder == "normal" or typeobject.builder == "factory" or typeobject.builder == "station", "invalid builder type")
             local create_builder = ecs.require("editor.builder." .. typeobject.builder)
             builder = create_builder("move")
@@ -734,7 +665,7 @@ function M.update(datamodel)
 
         local typeobject = iprototype.queryByName(name)
         local gameplay_world = gameplay_core.get_world()
-        local count = ibackpack.query(gameplay_world, typeobject.id)
+        local count = ibackpack.query(gameplay_world, ibackpack.get_base_entity(gameplay_world), typeobject.id)
         if count <= 0 then
             show_message("item not enough")
             goto continue
@@ -746,28 +677,40 @@ function M.update(datamodel)
         icamera_controller.focus_on_position("CENTER", position)
         toggle_view("construct", position, function()
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, typeobject.id)
+            iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, ibackpack.get_base_entity(gameplay_world).eid, typeobject.id)
             gameplay_core.world_update = false
 
             assert(builder == nil)
-            local continuity = typeobject.continuity == nil and DEFAULT_BUILDING_CONTINUITY or typeobject.continuity
-            _construct_entity(typeobject, "CENTER", continuity)
+            _construct_entity(typeobject, "CENTER", iprototype.continuity(typeobject))
         end)
         ::continue::
     end
 
-    for _ in build_mode_mb:unpack() do
-        idetail.unselected()
+    for _, _, _, gameplay_eid in build_mode_mb:unpack() do
+        print(gameplay_eid)
+        local gameplay_world = gameplay_core.get_world()
+        local base = ibackpack.get_base_entity(gameplay_world)
+        gameplay_world.ecs:extend(base, "eid:in")
+        gameplay_eid = gameplay_eid or base.eid
+        assert(gameplay_eid)
 
+        idetail.unselected()
         datamodel.status = "BUILD"
         assert(selected_obj)
-        local pos = math3d.vector(icoord.position(selected_obj.x, selected_obj.y, selected_obj.w, selected_obj.h))
-        icamera_controller.focus_on_position("CENTER", pos)
-        toggle_view("construct", pos, function()
+
+        local function f()
             iui.leave()
-            iui.open({rml = "/pkg/vaststars.resources/ui/build.html"})
+            iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, gameplay_eid)
             gameplay_core.world_update = false
-        end)
+        end
+
+        if gameplay_eid then
+            toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), f)
+        else
+            local pos = math3d.vector(icoord.position(selected_obj.x, selected_obj.y, selected_obj.w, selected_obj.h))
+            icamera_controller.focus_on_position("CENTER", pos)
+            toggle_view("construct", pos, f)
+        end
     end
 
     for _ in main_button_tap_mb:unpack() do
@@ -838,21 +781,6 @@ function M.update(datamodel)
             iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, selected_obj.id, true)
         end
         ::continue::
-    end
-
-    for _ in lock_axis_mb:unpack() do
-        LockAxis = true
-    end
-
-    for _ in unlock_axis_mb:unpack() do
-        LockAxis = false
-        LockAxisStatus = {
-            status = false,
-            BeginX = 0,
-            BeginY = 0,
-        }
-        icamera_controller.unlock_axis()
-        log.info("unlock axis")
     end
 
     for _ in focus_transfer_source_mb:unpack() do
