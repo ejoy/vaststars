@@ -214,7 +214,7 @@ local function getChestSlots(gameplay_world, chest, max_slot, res, show_zero_cou
 
         if show then
             local typeobject_item = assert(iprototype.queryById(slot.item))
-            res[#res + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = typeobject_item.name, count = ichest.get_amount(slot), max_count = slot.limit, type = slot.type}
+            res[#res + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = iprototype.display_name(typeobject_item), count = ichest.get_amount(slot), max_count = slot.limit, type = slot.type}
         end
     end
     return res
