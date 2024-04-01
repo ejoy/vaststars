@@ -9,8 +9,7 @@ return function (window, document)
             if path:filename():string():match("^tutorial.*$") then
                 goto continue
             end
-            local initfunc = assert(pm.loadenv("vaststars.prototype").loadfile("template/"..path:filename():string()))
-            local f = initfunc()
+            local f = pm.loadenv("vaststars.prototype").dofile("template/"..path:filename():string())
             if f.show == false then
                 goto continue
             end
