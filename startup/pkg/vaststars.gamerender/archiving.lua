@@ -4,7 +4,7 @@ local engine = import_package "ant.engine"
 local fastio = require "fastio"
 
 local ARCHIVAL_BASE_DIR <const> = (engine.app_path() / "archiving/"):string()
-local PROTOTYPE_VERSION <const> = dofile "/pkg/vaststars.prototype/version.lua"
+local PROTOTYPE_VERSION <const> = import_package "vaststars.prototype"("version")
 
 local function readall(file)
     return fastio.readall_s(file)
