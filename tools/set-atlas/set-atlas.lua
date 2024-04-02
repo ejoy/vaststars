@@ -24,7 +24,7 @@ local function findAllFilesRecursively(directory, extension, files)
         if fs.is_directory(p) then
             findAllFilesRecursively(p, extension, files)
         else
-            if p:equal_extension(extension) then
+            if p:extension() == extension then
                 files[#files + 1] = p
             end
         end

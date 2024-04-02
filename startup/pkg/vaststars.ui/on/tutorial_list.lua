@@ -5,7 +5,7 @@ return function (window)
     local tutorials = {}
     for path in fs.pairs "/pkg/vaststars.prototype/template/" do
         if not fs.is_directory(path) then
-            assert(tostring(path:extension()) == ".lua")
+            assert(path:extension() == ".lua")
             if not path:filename():string():match("^tutorial.*$") then
                 goto continue
             end
