@@ -112,6 +112,7 @@
         </style>
         <script type="text/x-lua" >
             local ui = import_package "vaststars.ui"
+            local init_scroll_list = ui.scroll_list.init
             local ui_sys = ui.ui_system
             local scrollToItem = ui.scrolltoitem
             local start = ui_sys.createDataMode(window, ...)
@@ -143,20 +144,13 @@
 
             function init()
                 inited = true
+                init_scroll_list(document, {"recipe-list"})
 
                 local e = assert(document.getElementById "recipe-list")
                 e.scrollInsets(0, 0, 0, 200)
 
                 window.flush()
                 scrollToItem(document, "recipe-list", ("%s:%s"):format(start.category_idx, start.recipe_idx))
-
-                local last_y
-                e.addEventListener("pan", function(param)
-                    if last_y and param.state == "changed" then
-                        e.scrollTop = e.scrollTop - (param.y - last_y)
-                    end
-                    last_y = param.y
-                end)
             end
 
             ui_sys.mapping(start, {

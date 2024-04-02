@@ -91,20 +91,11 @@
         </style>
         <script type="text/x-lua" >
             local ui = import_package "vaststars.ui"
+            local init_scroll_list = ui.scroll_list.init
             ui.on.settings(window, document, ...)
 
             function init()
-                for _, e in ipairs(document.getElementsByTagName "frame") do
-                    e.scrollInsets(0, 0, 0, 200)
-
-                    local last_y
-                    e.addEventListener("pan", function(param)
-                        if last_y and param.state == "changed" then
-                            e.scrollTop = e.scrollTop - (param.y - last_y)
-                        end
-                        last_y = param.y
-                    end)
-                end
+                init_scroll_list(document, {"frame"})
             end
         </script>
     </head>

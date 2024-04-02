@@ -50,22 +50,13 @@
         <style path = "/pkg/vaststars.resources/ui/common/building_style.css"/>
         <script type="text/x-lua" >
             local ui = import_package "vaststars.ui"
+            local init_scroll_list = ui.scroll_list.init
             local scrollToItem = ui.scrolltoitem
 
             ui.on.archiving(window, document)
 
             function init()
-                for _, e in ipairs(document.getElementsByTagName "template-list") do
-                    e.scrollInsets(0, 0, 0, 200)
-
-                    local last_y
-                    e.addEventListener("pan", function(param)
-                        if last_y and param.state == "changed" then
-                            e.scrollTop = e.scrollTop - (param.y - last_y)
-                        end
-                        last_y = param.y
-                    end)
-                end
+                init_scroll_list(document, {"template-list"})
             end
         </script>
     </head>

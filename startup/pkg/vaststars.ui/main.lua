@@ -11,5 +11,6 @@ return {
     scrolltoitem = require "scrolltoitem",
     list = require "list",
     page = require "page",
+    scroll_list = require "scroll_list",
     on = on,
 }

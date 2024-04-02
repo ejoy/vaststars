@@ -1,5 +1,6 @@
 local fs = require "filesystem"
 local pm = require "packagemanager"
+local init_scroll_list = require "scroll_list".init
 
 return function (window, document)
     local templates = {}
@@ -34,15 +35,6 @@ return function (window, document)
     end
 
     function window.onload()
-        for _, e in ipairs(document.getElementsByTagName "template-list") do
-            e.scrollInsets(0, 0, 0, 200)
-            local last_y
-            e.addEventListener("pan", function(param)
-                if last_y and param.state == "changed" then
-                    e.scrollTop = e.scrollTop - (param.y - last_y)
-                end
-                last_y = param.y
-            end)
-        end
+        init_scroll_list(document, {"template-list"})
     end
 end

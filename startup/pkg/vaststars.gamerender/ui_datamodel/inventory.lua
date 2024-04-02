@@ -2,7 +2,6 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local ITEM_CATEGORY <const> = ecs.require "vaststars.prototype|item_category"
 local CONSTANT <const> = require "gameplay.interface.constant"
 local UPS <const> = CONSTANT.UPS
 
@@ -25,10 +24,7 @@ local function get_items()
         v.icon = typeobject_item.item_icon
         v.count = slot.amount
         v.order = typeobject_item.item_order or 0
-
-        local category = typeobject_item.item_category or error(("`%s` item_category is nil"):format(typeobject_item.name))
-        t[category] = t[category] or {}
-        t[category][#t[category]+1] = v
+        t[#t+1] = v
     end
 
     for _, items in pairs(t) do
@@ -37,22 +33,14 @@ local function get_items()
         end)
     end
 
-    local inventory = {}
-    for _, category in ipairs(ITEM_CATEGORY) do
-        if t[category] then
-            inventory[#inventory+1] = {category = category, items = t[category]}
-        end
-    end
-    return inventory
+    return t
 end
 
-local function set_item_value(datamodel, category_idx, item_idx, key, value)
-    if category_idx == 0 and item_idx == 0 then
+local function set_item_value(datamodel, item_idx, key, value)
+    if item_idx == 0 then
         return
     end
-    assert(datamodel.inventory[category_idx])
-    assert(datamodel.inventory[category_idx].items[item_idx])
-    datamodel.inventory[category_idx].items[item_idx][key] = value
+    datamodel.inventory[item_idx][key] = value
 end
 
 local function _power_conversion(n)
@@ -87,7 +75,6 @@ local M = {}
 
 function M.create()
     return {
-        category_idx = 0,
         item_idx = 0,
         item_name = "",
         item_desc = "",
@@ -100,10 +87,9 @@ function M.create()
 end
 
 function M.update(datamodel)
-    for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
-        if datamodel.category_idx == category_idx and datamodel.item_idx == item_idx then
-            set_item_value(datamodel, category_idx, item_idx, "selected", false)
-            datamodel.category_idx = 0
+    for _, _, _, item_idx in click_item_mb:unpack() do
+        if datamodel.item_idx == item_idx then
+            set_item_value(datamodel, item_idx, "selected", false)
             datamodel.item_idx = 0 
             datamodel.item_name = ""
             datamodel.item_desc = ""
@@ -113,12 +99,11 @@ function M.update(datamodel)
             datamodel.power = ""
             datamodel.speed = ""
         else
-            set_item_value(datamodel, datamodel.category_idx, datamodel.item_idx, "selected", false)
-            set_item_value(datamodel, category_idx, item_idx, "selected", true)
-            datamodel.category_idx = category_idx
+            set_item_value(datamodel, datamodel.item_idx, "selected", false)
+            set_item_value(datamodel, item_idx, "selected", true)
             datamodel.item_idx = item_idx
 
-            local item_name = datamodel.inventory[category_idx].items[item_idx].name
+            local item_name = datamodel.inventory[item_idx].name
             local typeobject = iprototype.queryByName(item_name)
             datamodel.item_name = iprototype.display_name(typeobject)
             datamodel.item_desc = typeobject.item_description or ""
