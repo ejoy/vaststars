@@ -107,6 +107,9 @@ function M.create(gameplay_eid, prototype, move_building)
     local main_button_icon = ""
     local show_list = prototype == nil
     local rotate, single_build, continuous_build = false, false, false
+    local category_idx, item_idx = 0, 0
+    local construct_list = move_building and {} or get_list(gameplay_eid)
+
     if prototype then
         local typeobject = assert(iprototype.queryById(prototype))
         main_button_icon = typeobject.item_icon
@@ -115,15 +118,11 @@ function M.create(gameplay_eid, prototype, move_building)
             local continuity = iprototype.continuity(typeobject)
             single_build = continuity
             continuous_build = not continuity
+
+            category_idx, item_idx = get_index(construct_list, prototype)
+            update_list_item(construct_list, category_idx, item_idx, "selected", true)
         end
         rotate = (typeobject.rotate_on_build == true)
-    end
-
-    local category_idx, item_idx = 0, 0
-    local construct_list = get_list(gameplay_eid)
-    if prototype then
-        category_idx, item_idx = get_index(construct_list, prototype)
-        update_list_item(construct_list, category_idx, item_idx, "selected", true)
     end
 
     local t = {
