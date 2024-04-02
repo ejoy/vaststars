@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <style path = "/pkg/vaststars.resources/ui/common.css"/>
+        <style>
+            construct-box {
+                width: 71.60vmin;
+                height: 71.60vmin;
+                background-image: "/pkg/vaststars.resources/ui/textures/construct/square-grid.texture";
+                background-size: 100% 100%;
+            }
+            scroll-item-list {
+                overflow: scroll;
+            }
+            item-icon {
+                background-color: rgb(61, 61, 61);
+                border: 0.2vmin rgb(251, 177, 61);
+                background-size: 100% 100%;
+                width: 12.5vmin;
+                height: 12.5vmin;
+            }
+        </style>
+        <script type="text/x-lua">
+            local ui = import_package "vaststars.ui"
+            local init_scroll_list = ui.scroll_list.init
+            local ui_sys = ui.ui_system
+            local scrollToItem = ui.scrolltoitem
+            local start = ui_sys.createDataMode(window, ...)
+
+            function start.clickButton(...)
+                ui_sys.pub(window, {...})
+            end
+
+            function start.clickClose()
+                ui_sys.close(window)
+            end
+
+            function init()
+                init_scroll_list(document, {"scroll-item-list"})
+            end
+        </script>
+    </head>
+    <body style = "pointer-events: none; margin: 1.32vmin 3.995vmax 0 4.97vmax; justify-content: center; align-items: center;" onload = "init()">
+        <div style = "position: absolute; top: 0; left: 0; width: 100vmax; height: 100vmin;" data-event-click = "clickClose()" />
+        <construct-box>
+            <scroll-item-list style = "margin: 5vmin 0 5vmin 0; width: 100.00%; height: 90%; gap: 1vmin; align-items: center;">
+                <div style = "width: 100%; gap: 1vmin; align-items: center;" data-for="i, i_index : inventory">
+                    <div style="flex-direction: row; width: 75%; height: 12.5vmin; gap: 1vmin;" data-event-click = "clickButton('click_item', i.id)">
+                        <item-icon data-style-background-image = "i.icon" />
+                        <div style = "width: 50%; font-size: 4.8vmin; justify-content: flex-end; word-break: break-all;">{{i.name}}</div>
+                        <div style = "flex-grow: 1; font-size: 4.8vmin; justify-content: flex-end;">x {{i.count}}</div>
+                    </div>
+                    <div style="width: 82%; height: 0.10vmin; background-color: rgb(114, 108, 104);" />
+                </div>
+            </scroll-item-list>
+        </construct-box>
+    </body>
+</html>

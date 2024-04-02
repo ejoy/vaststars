@@ -49,6 +49,8 @@ local set_continuity_mb = mailbox:sub {"set_continuity"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
 local bulk_select_mb = mailbox:sub {"bulk_select"}
 local bulk_opt_exit_mb = mailbox:sub {"bulk_opt_exit"}
+local inventory_mb = mailbox:sub {"inventory"}
+local construct_entity_from_backpack_mb = mailbox:sub {"construct_entity_from_backpack"}
 local iguide_tips = ecs.require "guide_tips"
 local create_selection_box = ecs.require "selection_box"
 local interval_call = ecs.require "engine.interval_call"
@@ -426,7 +428,7 @@ local function pickupObject(datamodel, position, blur)
     itransfer.set_dest_eid(building_eid)
 end
 
-local update = interval_call(300, function(datamodel)
+local update = interval_call(1000, function(datamodel)
     datamodel.transfer_id = itransfer.get_source_eid() or 0
 
     local gameplay_world = gameplay_core.get_world()
@@ -434,34 +436,23 @@ local update = interval_call(300, function(datamodel)
     datamodel.daynight = _get_daynight_image(gameplay_world)
     datamodel.electricity, datamodel.electricity_unit, datamodel.electricity_negative = _get_electricity(gameplay_world)
 
-    if not itransfer.get_source_eid() then
-        if #datamodel.item_bar > 0 then
-            datamodel.item_bar = {}
-        end
-        return
-    end
+    local gameplay_world = gameplay_core.get_world()
+    local base = ibackpack.get_base_entity(gameplay_world)
+    for idx, slot in pairs(ibackpack.all(gameplay_world, base)) do
+        local typeobject_item = assert(iprototype.queryById(slot.item))
 
-    local item_bar = {}
-    local info = itransfer.get_transfer_info(gameplay_world)
-    for idx, slot in itransfer.get_source_slots(gameplay_world) do
-        local typeobject = iprototype.queryById(slot.item)
-        local is_transfer = info[slot.item] ~= nil
-        local item_icon = typeobject.item_icon or error("no item icon for " .. typeobject.name)
-        item_bar[#item_bar + 1] = {icon = item_icon, name = typeobject.name, count = slot.amount, is_transfer = is_transfer, value = is_transfer and 1 or 0, idx = idx}
-    end
-    table.sort(item_bar, function(a, b)
-        if a.value > b.value then
-            return true
-        elseif a.value < b.value then
-            return false
-        else
-            return a.idx < b.idx
-        end
-    end)
+        local v = {}
+        v.idx = idx
+        v.name = typeobject_item.name
+        v.icon = typeobject_item.item_icon
+        v.count = slot.amount
+        v.is_transfer = false
+        v.value = 0
 
-    datamodel.item_bar = {}
-    for i = 1, 4 do
-        datamodel.item_bar[i] = item_bar[i]
+        datamodel.item_bar[idx] = v
+        if idx >= 4 then
+            break
+        end
     end
 end)
 
@@ -643,6 +634,32 @@ function M.update(datamodel)
             local create_builder = ecs.require("editor.builder." .. typeobject.builder)
             builder = create_builder("move")
             builder:new(object_id, builder_datamodel, typeobject, "CENTER")
+        end)
+    end
+
+    for _, _, _, item, continuity in construct_entity_from_backpack_mb:unpack() do
+        datamodel.status = "BUILD"
+        toggle_view("construct", icamera_controller.get_screen_world_position("CENTER"), function()
+            local typeobject = iprototype.queryById(item)
+            idetail.unselected()
+            gameplay_core.world_update = false
+
+            -- we may click the button repeatedly, so we need to clear the old model first
+            if builder then
+                builder:clean(builder_datamodel)
+                builder, builder_datamodel = nil, nil
+            end
+
+            local gameplay_world = gameplay_core.get_world()
+            local base = ibackpack.get_base_entity(gameplay_world)
+            gameplay_world.ecs:extend(base, "eid:in")
+
+            idetail.unselected()
+            builder_datamodel = iui.open({rml = "/pkg/vaststars.resources/ui/build.html"}, base.eid, typeobject.id)
+
+            local create_builder = ecs.require("editor.builder." .. typeobject.builder)
+            builder = create_builder("build")
+            builder:new(builder_datamodel, typeobject, "CENTER", continuity)
         end)
     end
 
@@ -829,6 +846,10 @@ function M.update(datamodel)
         iui.close("/pkg/vaststars.resources/ui/bulk_opt.html")
         datamodel.status = "NORMAL"
         toggle_view("default", icamera_controller.get_screen_world_position("CENTER"))
+    end
+
+    for _ in inventory_mb:unpack() do
+        iui.open({rml = "/pkg/vaststars.resources/ui/backpack.html"})
     end
 
     iobject.flush()
