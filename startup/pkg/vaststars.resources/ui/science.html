@@ -119,8 +119,8 @@
             local selected_index = 0
             local selected_recipe_index = 0
 
-            if start.tech_index then
-                local r = assert(start.current_tech.detail[start.tech_index])
+            if start.recipe_index then
+                local r = assert(start.current_tech.detail[start.recipe_index])
                 window.open('/pkg/vaststars.resources/ui/science_detail.html', r.id)
             end
 
