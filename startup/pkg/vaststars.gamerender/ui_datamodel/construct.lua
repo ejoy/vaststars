@@ -428,7 +428,7 @@ local function pickupObject(datamodel, position, blur)
     itransfer.set_dest_eid(building_eid)
 end
 
-local update = interval_call(1000, function(datamodel)
+local update = interval_call(500, function(datamodel)
     datamodel.transfer_id = itransfer.get_source_eid() or 0
 
     local gameplay_world = gameplay_core.get_world()

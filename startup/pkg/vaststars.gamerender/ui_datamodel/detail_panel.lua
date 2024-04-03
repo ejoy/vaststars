@@ -47,6 +47,8 @@ local assembling_common = require "ui_datamodel.common.assembling"
 local iui = ecs.require "engine.system.ui_system"
 local itimer = ecs.require "utility.timer"
 local update_areaid_id_mb = mailbox:sub {"update_areaid_id"}
+local click_item_mb = mailbox:sub {"click_item"}
+local ibackpack = require "gameplay.interface.backpack"
 
 local timer
 
@@ -215,7 +217,7 @@ local function getChestSlots(gameplay_world, chest, max_slot, res, show_zero_cou
 
         if show then
             local typeobject_item = assert(iprototype.queryById(slot.item))
-            res[#res + 1] = {slot_index = i, icon = typeobject_item.item_icon, name = iprototype.display_name(typeobject_item), count = ichest.get_amount(slot), max_count = slot.limit, type = slot.type}
+            res[#res + 1] = {id = typeobject_item.id, slot_index = i, icon = typeobject_item.item_icon, name = iprototype.display_name(typeobject_item), count = ichest.get_amount(slot), max_count = slot.limit, type = slot.type}
         end
     end
     return res
@@ -607,6 +609,23 @@ function M.update(datamodel, object_id)
 
     for _, _, _, areaid in update_areaid_id_mb:unpack() do
         datamodel.areaid = areaid
+    end
+
+    for _, _, _, index in click_item_mb:unpack() do
+        local item = datamodel.chest_list_1[index]
+        if item then
+            local gameplay_world = gameplay_core.get_world()
+            print("click item", item.name)
+
+            local base = ibackpack.get_base_entity(gameplay_core.get_world())
+            if ibackpack.place(gameplay_core.get_world(), base, item.id, item.count) then
+                ibackpack.pickup(gameplay_world, e, item.id, item.count)
+            else
+                print("click item", "can not place item", index)
+            end
+        else
+            print("click item", "can not found item", index)
+        end
     end
 
     local current_inputs, current_ouputs

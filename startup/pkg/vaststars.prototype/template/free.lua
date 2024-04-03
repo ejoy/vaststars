@@ -140,7 +140,7 @@ return {
     skip_guide = true,
     recipe_unlocked = true,
     item_unlocked = true,
-    infinite_item = true,
+    infinite_item = false,
   },
   camera = "/pkg/vaststars.resources/camera_default.prefab",
 }
