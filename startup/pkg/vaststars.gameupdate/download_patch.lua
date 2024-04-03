@@ -27,8 +27,14 @@ return function (dir, version, reskey, min_index)
     for _, setting in ipairs(reskey) do
         fetch_dir_tasks[#fetch_dir_tasks+1] = { fetch_dir, setting }
     end
-    for _ in ltask.parallel(fetch_dir_tasks) do
+    for _, resp in ltask.parallel(fetch_dir_tasks) do
+        if resp.error then
+            resp:rethrow()
+        end
     end
-    for _ in ltask.parallel(fetch_file_tasks) do
+    for _, resp in ltask.parallel(fetch_file_tasks) do
+        if resp.error then
+            resp:rethrow()
+        end
     end
 end

@@ -49,7 +49,10 @@ return function (repopath, reskey)
                 tasks[#tasks+1] = { compile_resource, cfg, names[i], paths[i] }
             end
         end
-        for _ in ltask.parallel(tasks) do
+        for _, resp in ltask.parallel(tasks) do
+            if resp.error then
+                error(resp.error)
+            end
         end
         if has_error then
             return

@@ -25,10 +25,13 @@ local reskey <const> = platform.os == "windows" and  {
     "ios-metal",
 }
 
-for _ in ltask.parallel {
+for _, resp in ltask.parallel {
     { compile_vfs, repopath, reskey },
     { download_patch, fs.path(rootpath) / ".download", shortver, reskey },
 } do
+    if resp.error then
+        resp:rethrow()
+    end
 end
 
 local function writeall(path, content)
