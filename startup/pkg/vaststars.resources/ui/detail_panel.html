@@ -88,23 +88,27 @@
             local ui_sys = ui.ui_system
             local start = ui_sys.createDataMode(window, ...)
 
+            local function update_area_id(...)
+                ui_sys.pub(window, {"update_areaid_id", ...})
+            end
+
             function start.onLongPress(ev, areaid)
                 if ev.state == "began" then
-                    start.areaid = (start.areaid == areaid) and "" or areaid
+                    update_area_id((start.areaid == areaid) and "" or areaid)
                 elseif ev.state == "changed" then
-                    start.areaid = areaid
+                    update_area_id(areaid)
                 elseif ev.state == "ended" then
-                    start.areaid = ""
+                    update_area_id("")
                 end
             end
 
             function start.onClick(ev, areaid)
-                start.areaid = (start.areaid == areaid) and "" or areaid
+                update_area_id((start.areaid == areaid) and "" or areaid)
             end
 
             function start.onLongPressExpandedPanel(ev)
                 if ev.state == "ended" then
-                    start.areaid = ""
+                    update_area_id("")
                 end
             end
 

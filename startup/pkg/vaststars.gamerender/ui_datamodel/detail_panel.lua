@@ -46,6 +46,7 @@ local building_detail = ecs.require "vaststars.prototype|building_detail_config"
 local assembling_common = require "ui_datamodel.common.assembling"
 local iui = ecs.require "engine.system.ui_system"
 local itimer = ecs.require "utility.timer"
+local update_areaid_id_mb = mailbox:sub {"update_areaid_id"}
 
 local timer
 
@@ -604,6 +605,10 @@ function M.update(datamodel, object_id)
         update_power(e.capacitance.delta)
     end
 
+    for _, _, _, areaid in update_areaid_id_mb:unpack() do
+        datamodel.areaid = areaid
+    end
+
     local current_inputs, current_ouputs
     if e.assembling and e.assembling.recipe ~= 0 then
         current_inputs, current_ouputs = assembling_common.get(gameplay_core.get_world(), e)
@@ -632,6 +637,10 @@ function M.update(datamodel, object_id)
     end
     counter = 1
     update_property_list(datamodel, get_entity_property_list(object_id, (#preinput > 0) and preinput or current_inputs, current_ouputs))
+end
+
+function M.update_area_id(datamodel)
+    datamodel.areaid = "expanded-chest-info"
 end
 
 return M

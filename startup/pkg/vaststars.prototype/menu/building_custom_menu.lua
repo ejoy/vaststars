@@ -34,23 +34,19 @@ return {
     },
     -- 废墟建筑仅保留获取
     ["机身残骸"] = {
-        "set_transfer_source",
-        "transfer_source",
+        "building_to_backpack",
         "teardown",
     },
     ["机翼残骸"] = {
-        "set_transfer_source",
-        "transfer_source",
+        "building_to_backpack",
         "teardown",
     },
     ["机头残骸"] = {
-        "set_transfer_source",
-        "transfer_source",
+        "building_to_backpack",
         "teardown",
     },
     ["机尾残骸"] = {
-        "set_transfer_source",
-        "transfer_source",
+        "building_to_backpack",
         "teardown",
     },
     ["建筑物残骸 1x1"] = {

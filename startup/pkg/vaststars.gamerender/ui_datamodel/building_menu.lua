@@ -37,6 +37,7 @@ local copy_md = mailbox:sub {"copy"}
 local inventory_mb = mailbox:sub {"inventory"}
 local teardown_mb = mailbox:sub {"teardown"}
 local build_mb = mailbox:sub {"build"}
+local building_to_backpack_mb = mailbox:sub {"building_to_backpack"}
 
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
@@ -97,6 +98,7 @@ function M.create(gameplay_eid, longpress)
     local inventory = false
     local teardown = false
     local build = false
+    local building_to_backpack = false
 
     if longpress then
         teardown = true
@@ -114,6 +116,7 @@ function M.create(gameplay_eid, longpress)
         move = true
         copy = true
         inventory = iprototype.has_type(typeobject.type, "base")
+        building_to_backpack = e.chest ~= nil
     end
 
     local status = {
@@ -129,6 +132,7 @@ function M.create(gameplay_eid, longpress)
         copy = copy,
         inventory = inventory,
         teardown = teardown,
+        building_to_backpack = building_to_backpack,
 
         transfer_count = transfer and _get_transfer_count() or 0,
     }
@@ -294,6 +298,10 @@ function M.update(datamodel, gameplay_eid)
 
     for _, _, _, message in ui_click_mb:unpack() do
         itask.update_progress("click_ui", message, typeobject.name)
+    end
+
+    for _ in building_to_backpack_mb:unpack() do
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "update_area_id")
     end
 
     for _ in set_transfer_source_mb:unpack() do
