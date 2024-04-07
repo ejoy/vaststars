@@ -2,8 +2,6 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local INV_Z <const> = true
-
 local math3d    = require "math3d"
 local CUSTOM_NEAR_PLANE <const> = math3d.constant("v4", {0, 1, 0, 5})
 local CUSTOM_FAR_PLANE <const>  = math3d.constant("v4", {0, 1, 0, 0})
