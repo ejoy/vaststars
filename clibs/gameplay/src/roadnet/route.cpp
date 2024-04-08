@@ -17,7 +17,7 @@ namespace roadnet {
             straightid prev;
             direction  dir;
         };
-        using dijkstraResult = flatmap<straightid, dijkstraNode>;
+        using dijkstraResult = ant::flatmap<straightid, dijkstraNode>;
         dijkstraQueue  openlist;
         dijkstraResult results;
 

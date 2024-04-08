@@ -38,7 +38,7 @@ struct world {
     statistics stat;
     roadnet::network rw;
     std::map<uint16_t, airport> airports;
-    flatmap<uint16_t, building> buildings;
+    ant::flatmap<uint16_t, building> buildings;
     market market;
     uint64_t time = 0;
     uint64_t dirty = 0;

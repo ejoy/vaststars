@@ -96,8 +96,8 @@ static int lbuild(lua_State *L) {
         }
     }
     if (w.dirty & (kDirtyEndpoint | kDirtyStation)) {
-        flatmap<roadnet::straightid, uint16_t>         stations;
-        flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
+        ant::flatmap<roadnet::straightid, uint16_t>         stations;
+        ant::flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
         for (auto& v : ecs::select<component::station, component::endpoint>(w.ecs)) {
             auto& station = v.get<component::station>();
             auto& endpoint = v.get<component::endpoint>();

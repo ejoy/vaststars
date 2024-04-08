@@ -30,8 +30,8 @@ public:
     void             queue_set(const queue_t& q);
     const queue_t&   queue_get() const;
 
-    flatmap<uint16_t, uint16_t> progress;
-    flatset<uint16_t> researched;
+    ant::flatmap<uint16_t, uint16_t> progress;
+    ant::flatset<uint16_t> researched;
     queue_t queue;
     std::map<uint16_t, std::map<uint16_t, ingredients_opt>> cache;
 };

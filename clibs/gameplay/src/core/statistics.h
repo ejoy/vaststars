@@ -6,7 +6,7 @@
 struct world;
 
 template <typename Key, typename Mapped>
-void stat_add(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
+void stat_add(ant::flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
     auto [found, slot] = m.find_or_insert(key);
     if (found) {
         *slot += mapped;
@@ -17,14 +17,14 @@ void stat_add(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
 }
 
 template <typename Key, typename Mapped>
-void stat_add(flatmap<Key, Mapped>& a, flatmap<Key, Mapped> const& b) {
+void stat_add(ant::flatmap<Key, Mapped>& a, ant::flatmap<Key, Mapped> const& b) {
     for (auto const& [k, v] : b) {
         stat_add(a, k, v);
     }
 }
 
 template <typename Key, typename Mapped>
-void stat_add(flatmap<Key, Mapped>& m, recipe_items const& r) {
+void stat_add(ant::flatmap<Key, Mapped>& m, recipe_items const& r) {
     for (size_t i = 0; i < r.n; ++i) {
         stat_add<Key, Mapped>(m, r.items[i].item, r.items[i].amount);
     }
@@ -32,10 +32,10 @@ void stat_add(flatmap<Key, Mapped>& m, recipe_items const& r) {
 
 struct statistics {
     struct frame {
-        flatmap<uint16_t, uint32_t> production;
-        flatmap<uint16_t, uint32_t> consumption;
-        flatmap<uint16_t, uint64_t> generate_power;
-        flatmap<uint16_t, uint64_t> consume_power;
+        ant::flatmap<uint16_t, uint32_t> production;
+        ant::flatmap<uint16_t, uint32_t> consumption;
+        ant::flatmap<uint16_t, uint64_t> generate_power;
+        ant::flatmap<uint16_t, uint64_t> consume_power;
         uint64_t                    power = 0;
         void reset();
         void add(frame const& f);

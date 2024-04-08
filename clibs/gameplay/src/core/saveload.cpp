@@ -82,7 +82,7 @@ namespace lua_world {
     }
 
     template <typename T>
-        requires (is_instantiation_of<T, flatmap> || is_instantiation_of<T, flatset>)
+        requires (is_instantiation_of<T, ant::flatmap> || is_instantiation_of<T, ant::flatset>)
     void file_write(FILE* f, const T& t) {
         auto const& data = t.toraw();
         file_write(f, data.h);
@@ -91,7 +91,7 @@ namespace lua_world {
         }
     }
     template <typename T>
-        requires (is_instantiation_of<T, flatmap> || is_instantiation_of<T, flatset>)
+        requires (is_instantiation_of<T, ant::flatmap> || is_instantiation_of<T, ant::flatset>)
     void file_read(FILE* f, T& t) {
         auto& data = t.toraw();
         if (data.h.mask != 0) {

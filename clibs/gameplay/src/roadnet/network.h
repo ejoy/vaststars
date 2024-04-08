@@ -48,6 +48,6 @@ namespace roadnet {
         dynarray<lorryid>               straightLorry;
         dynarray<map_coord>             straightCoord;
         component::lorry*                     lorryAry;
-        flatmap<route_key, route_value> routeCached;
+        ant::flatmap<route_key, route_value> routeCached;
     };
 }

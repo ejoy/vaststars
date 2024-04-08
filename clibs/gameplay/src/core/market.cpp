@@ -22,8 +22,8 @@ struct market_path {
 
 struct market_item {
     uint16_t item;
-    flatmap<uint16_t, uint8_t> supply;
-    flatmap<uint16_t, uint8_t> demand;
+    ant::flatmap<uint16_t, uint8_t> supply;
+    ant::flatmap<uint16_t, uint8_t> demand;
 };
 
 struct market_endpoint {
@@ -44,13 +44,13 @@ struct market_station {
 
 struct market_impl {
     std::vector<market_item> items;
-    flatset<uint16_t> parks;
-    flatmap<roadnet::straightid, uint16_t> nearest_parks;
+    ant::flatset<uint16_t> parks;
+    ant::flatmap<roadnet::straightid, uint16_t> nearest_parks;
     std::vector<market_match> matchs;
 };
 
 template <typename Key, typename Mapped>
-void flatmap_add(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
+void flatmap_add(ant::flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
     auto [found, slot] = m.find_or_insert(key);
     if (found) {
         *slot += mapped;
