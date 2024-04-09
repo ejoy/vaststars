@@ -1,5 +1,4 @@
 local fs = require "bee.filesystem"
-local datalist = require "datalist"
 local serialize = import_package "ant.serialize"
 
 local function parseArguments(args)
@@ -56,8 +55,7 @@ local function generateTextures(images, imgDir, texDir)
         end
 
         if fs.exists(texturePath) then
-            local f <close> = assert(io.open(texturePath:string(), 'r'))
-            local d = datalist.parse(f:read "a")
+            local d = serialize.load_lfs(texturePath:string(),)
 
             -- special case for lattice
             if d.lattice then

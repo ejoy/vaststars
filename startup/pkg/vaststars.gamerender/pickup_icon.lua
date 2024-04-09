@@ -13,8 +13,8 @@ local ROTATORS <const> = {
     W = math.rad(-270),
 }
 
-local read_datalist = require "engine.datalist".read
-local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.ant"
+local serialize = import_package "ant.serialize"
+local FLUIDS_CFG <const> = serialize.load "/pkg/vaststars.resources/config/canvas/fluids.ant"
 
 local iprototype = require "gameplay.interface.prototype"
 local assetmgr = import_package "ant.asset"

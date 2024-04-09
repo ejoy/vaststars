@@ -1,13 +1,12 @@
 local serialize = import_package "ant.serialize"
 local mathpkg = import_package "ant.math"
-local aio = import_package "ant.io"
 local mc = mathpkg.constant
 
 local parse ; do
     local caches = {}
     function parse(fullpath)
         if not caches[fullpath] then
-            caches[fullpath] = serialize.parse(fullpath, aio.readall(fullpath))
+            caches[fullpath] = serialize.load(fullpath)
         end
         return caches[fullpath]
     end

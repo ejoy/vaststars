@@ -9,8 +9,8 @@ local assetmgr = import_package "ant.asset"
 local icanvas = ecs.require "engine.canvas"
 local iprototype = require "gameplay.interface.prototype"
 
-local read_datalist = require "engine.datalist".read
-local FLUIDS_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/fluids.ant"
+local serialize = import_package "ant.serialize"
+local FLUIDS_CFG <const> = serialize.load "/pkg/vaststars.resources/config/canvas/fluids.ant"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local BG_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluid-bg.material"
 local ICON_MATERIAL_PATH = "/pkg/vaststars.resources/materials/canvas/fluids.material"

@@ -1,5 +1,5 @@
-local read_datalist = require "engine.datalist".read
-local canvas_cfg = read_datalist "/pkg/vaststars.resources/textures/canvas.ant"
+local serialize = import_package "ant.serialize"
+local canvas_cfg = serialize.load "/pkg/vaststars.resources/textures/canvas.ant"
 
 local function get_canvas_rect(name)
     local cfg = assert(canvas_cfg[name])

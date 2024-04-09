@@ -15,8 +15,8 @@ local ROTATORS <const> = {
     W = math.rad(-270),
 }
 
-local read_datalist = require "engine.datalist".read
-local RECIPES_CFG <const> = read_datalist "/pkg/vaststars.resources/config/canvas/recipes.ant"
+local serialize = import_package "ant.serialize"
+local RECIPES_CFG <const> = serialize.load "/pkg/vaststars.resources/config/canvas/recipes.ant"
 
 local assembling_sys = ecs.system "assembling_system"
 local objects = require "objects"

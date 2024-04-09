@@ -1,5 +1,4 @@
 local fs = require "bee.filesystem"
-local datalist = require "datalist"
 local serialize = import_package "ant.serialize"
 
 local function parseArguments(allargs)

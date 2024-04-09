@@ -12,10 +12,10 @@ local DELTA_TIME <const> = require("gameplay.interface.constant").DELTA_TIME
 local math3d = require "math3d"
 local XZ_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
-local read_datalist = require "engine.datalist".read
-local CAMERA_DEFAULT <const> = read_datalist "/pkg/vaststars.resources/camera_default.prefab" [1].data.scene
-local CAMERA_CONSTRUCT <const> = read_datalist "/pkg/vaststars.resources/camera_construct.prefab" [1].data.scene
-local CAMERA_PICKUP <const> = read_datalist "/pkg/vaststars.resources/camera_pickup.prefab" [1].data.scene
+local serialize = import_package "ant.serialize"
+local CAMERA_DEFAULT <const> = serialize.load "/pkg/vaststars.resources/camera_default.prefab" [1].data.scene
+local CAMERA_CONSTRUCT <const> = serialize.load "/pkg/vaststars.resources/camera_construct.prefab" [1].data.scene
+local CAMERA_PICKUP <const> = serialize.load "/pkg/vaststars.resources/camera_pickup.prefab" [1].data.scene
 
 local mathpkg = import_package "ant.math"
 local mu, mc = mathpkg.util, mathpkg.constant
