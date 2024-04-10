@@ -324,6 +324,7 @@ local function get_property(e, typeobject)
                         local pt = iprototype.queryById(fluid)
                         -- only show out1 detail
                         add_property(t, "fluid_name", pt.name)
+                        add_property(t, "fluid_icon", pt.item_icon)
                         add_property(t, "fluid_volume", f.volume / f.multiple)
                         add_property(t, "fluid_capacity", math.floor(f.capacity / f.multiple))
                     end
