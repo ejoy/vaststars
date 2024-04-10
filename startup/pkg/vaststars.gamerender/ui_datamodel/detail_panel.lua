@@ -139,7 +139,7 @@ local function get_display_info(e, typeobject, t)
                             if st.power_count ~= 0 then
                                 current = current / st.power_count
                             end
-                            if typeobject.name == "蓄电池I" then
+                            if typeobject.name == ("蓄电池I" or "蓄电池II" or "蓄电池III") then
                                 if (cn == "charge_power" and e.capacitance.delta > 0) or (cn == "power" and e.capacitance.delta < 0) then
                                     current = 0
                                 end
