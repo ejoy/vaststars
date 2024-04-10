@@ -55,7 +55,7 @@ local function generateTextures(images, imgDir, texDir)
         end
 
         if fs.exists(texturePath) then
-            local d = serialize.load_lfs(texturePath:string(),)
+            local d = serialize.load_lfs(texturePath:string())
 
             -- special case for lattice
             if d.lattice then
