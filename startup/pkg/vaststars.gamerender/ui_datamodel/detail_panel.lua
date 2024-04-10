@@ -74,7 +74,7 @@ local function get_property_list(entity)
         end
 
         local t = {}
-        t.icon = cfg.icon
+        t.icon = cfg.icon and format_vars(cfg.icon, entity.values) or ""
         t.desc = cfg.desc
         t.value = cfg.value and format_vars(cfg.value, entity.values) or ""
         t.color = color
@@ -280,12 +280,14 @@ local function get_property(e, typeobject)
     end
     if e.fluidbox then
         local name = "无"
+        local icon = ""
         local volume = 0
         local capacity = 0
         local flow = 0
         if e.fluidbox.fluid ~= 0 then
             local pt = iprototype.queryById(e.fluidbox.fluid)
             name = pt.name
+            icon = pt.item_icon
 
             if e.fluidbox.id ~= 0 then
                 local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
@@ -300,6 +302,7 @@ local function get_property(e, typeobject)
         t.values.fluid_volume = volume
         t.values.fluid_capacity = capacity
         t.values.fluid_flow = flow
+        t.values.fluid_icon = icon
     end
 
     if e.fluidboxes then

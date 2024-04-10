@@ -6,7 +6,7 @@ local property_list = {
 		pos = 1,
 	},
 	["fluid_name"] = {
-		-- icon = "/pkg/vaststars.resources/ui/textures/property/fluid-type.texture",
+		icon = "$fluid_icon$",
 		desc = "流体类型",
 		value = "$fluid_name$",
 		pos = 2,

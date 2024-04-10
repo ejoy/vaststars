@@ -139,11 +139,13 @@
                 <div style="height: 22vmin;" data-event-longpress="onLongPress(ev, 'expanded-property-list')" data-event-click="onClick(ev, 'expanded-property-list')">
                     <div data-for = "property : property_list">
                         <div style = "width: 100%; height: 7vmin; flex-direction: row; align-items: center; justify-content: flex-start;">
-                            <!-- div style = "width: 8.00vmin; height: 8.00vmin; background-size:cover;" data-style-background-image="property.icon" /-->
                             <!-- proprety & value -->
                             <div style = "flex-direction: column; justify-content: center; align-items: center; width: 100%;">
                                 <div style = "color:#adadad; font-size: 3.2vmin; text-align: center;">{{property.desc}}</div>
-                                <div style = "text-align: center; font-size: 2.8vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
+                                <div style = "flex-direction: row; justify-content: center; align-items: center;" >
+                                    <div style = "width: 3.2vmin; height: 3.2vmin; background-size: 100% 100%;" data-style-background-image="property.icon" data-if = "property.icon ~= ''" />
+                                    <div style = "text-align: center; font-size: 2.8vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
