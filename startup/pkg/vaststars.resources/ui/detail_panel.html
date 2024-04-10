@@ -253,7 +253,10 @@
                         <!-- div style = "width: 100%; height: 8vmin; background-size:cover;" data-style-background-image="property.icon" /-->
                         <div style = "flex-direction: column; justify-content: center; align-items: center;">
                             <div style = "color:#adadad; padding-bottom: 0.2vmin; font-size: 6.2vmin; text-align: center;">{{property.desc}}</div>
-                            <div style = "text-align: center; font-size: 4.4vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
+                            <div style = "flex-direction: row; justify-content: center; align-items: center;" >
+                                <div style = "width: 4.4vmin; height: 4.4vmin; background-size: 100% 100%;" data-style-background-image="property.icon" data-if = "property.icon ~= ''" />
+                                <div style = "text-align: center; font-size: 4.4vmin;" data-style-color = "property.color or 'rgb(255,255,255)'">{{property.value}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
