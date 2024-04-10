@@ -9,6 +9,7 @@ prototype "指挥中心" {
     builder = "normal",
     type = {"building", "base", "chest"},
     chest_type = "supply",
+    chest_style = "none",
     maxslot = 16,
     speed = "50%",
     area = "6x6",
