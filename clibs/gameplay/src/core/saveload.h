@@ -1,9 +1,11 @@
 #pragma once
+
 #include <lua.hpp>
-#if defined(_MSC_VER)
-    #include <windows.h>
-#endif
 #include <functional>
+#if defined(_WIN32)
+#   include <windows.h>
+#   include <bee/platform/win/wtf8.h>
+#endif
 
 namespace lua_world {
     template <typename T>
@@ -49,26 +51,11 @@ namespace lua_world {
         write,
     };
 
-#if defined(_MSC_VER)
-    static std::wstring u2w(const std::string_view& str) {
-        if (str.empty())  {
-            return L"";
-        }
-        int wlen = ::MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), NULL, 0);
-        if (wlen <= 0)  {
-            return L"";
-        }
-        std::vector<wchar_t> result(wlen);
-        ::MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), result.data(), wlen);
-        return std::wstring(result.data(), result.size());
-    }
-#endif
-
     static FILE* createfile(lua_State* L, int idx, filemode mode) {
         const char* filename = luaL_checkstring(L, idx);
-#if defined(_MSC_VER)
+#if defined(_WIN32)
         FILE* f = NULL;
-        errno_t err = _wfopen_s(&f, u2w(filename).c_str(), mode == filemode::read? L"rb": L"wb");
+        errno_t err = _wfopen_s(&f, bee::wtf8::u2w(filename).c_str(), mode == filemode::read? L"rb": L"wb");
         if (err != 0 || !f) {
             if (!f) {
                 fclose(f);
