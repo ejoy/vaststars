@@ -10,7 +10,7 @@ prototype "指挥中心" {
     type = {"building", "base", "chest"},
     chest_type = "supply",
     chest_style = "none",
-    maxslot = 16,
+    maxslot = 255,
     speed = "50%",
     area = "6x6",
     -- sound = "building/headquarter",

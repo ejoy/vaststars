@@ -10,6 +10,7 @@ local CHANGED_FLAG_ALL <const> = CONSTANT.CHANGED_FLAG_ALL
 
 local archiving = require "archiving"
 local CAMERA_CONFIG = archiving.PATH() .. "camera.json"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
@@ -52,6 +53,7 @@ local function restore_world(gameplay_world)
                 r = ROTATORS[dir],
             },
             debris = debris,
+            render_layer = typeobject.render_layer and assert(RENDER_LAYER[typeobject.render_layer]) or RENDER_LAYER.BUILDING,
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)

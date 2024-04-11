@@ -47,7 +47,7 @@ local function pickup(world, ...)
 end
 
 local function place(world, ...)
-    igameplay_chest.place(world, ...)
+    return igameplay_chest.place(world, ...)
 end
 
 local function has_item(world, e)

@@ -2,7 +2,7 @@ local guide = require "guide.guide3"
 local mountain = require "mountain"
 
 local items = {}
-for _ = 1, 16 do
+for _ = 1, 255 do
   items[#items+1] = {"", 0}
 end
 

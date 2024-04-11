@@ -43,12 +43,67 @@ local itypes = require "gameplay.interface.types"
 local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = ecs.require "vaststars.prototype|building_detail_config"
-local assembling_common = require "ui_datamodel.common.assembling"
 local iui = ecs.require "engine.system.ui_system"
 local itimer = ecs.require "utility.timer"
 local update_areaid_id_mb = mailbox:sub {"update_areaid_id"}
 local click_item_mb = mailbox:sub {"click_item"}
 local ibackpack = require "gameplay.interface.backpack"
+
+local function _get_assembler_items(gameplay_world, e)
+    if e.assembling.recipe == 0 then
+        return {}, {}, 0, 0
+    end
+
+    local recipe_typeobject = assert(iprototype.queryById(e.assembling.recipe))
+    local progress, total_progress = 0, 0
+    if e.assembling.recipe ~= 0 then
+        local recipe_typeobject = assert(iprototype.queryById(e.assembling.recipe))
+        total_progress = recipe_typeobject.time * 100
+        progress = e.assembling.progress
+    end
+
+    local ingredients = {}
+    local results = {}
+    local index = 0
+
+    for idx = 2, #recipe_typeobject.ingredients // 4 do
+        local id, n = string.unpack("<I2I2", recipe_typeobject.ingredients, 4 * idx - 3)
+        index = index + 1
+
+        local typeobject = iprototype.queryById(id) or error(("can not found id `%s`"):format(id))
+        local slot = assert(ichest.get(gameplay_world, e.chest, index))
+        ingredients[#ingredients + 1] = {
+            icon = typeobject.item_icon,
+            name = iprototype.display_name(typeobject),
+            id = slot.item,
+            count = ichest.get_amount(slot),
+            limit = slot.limit,
+            demand_count = n,
+            state = "enough",
+            index = index,
+        }
+    end
+
+    for idx = 2, #recipe_typeobject.results // 4 do
+        local id, n = string.unpack("<I2I2", recipe_typeobject.results, 4 * idx - 3)
+        index = index + 1
+
+        local typeobject = iprototype.queryById(id) or error(("can not found id `%s`"):format(id))
+        local slot = assert(ichest.get(gameplay_world, e.chest, index))
+        results[#results + 1] = {
+            icon = typeobject.item_icon,
+            name = iprototype.display_name(typeobject),
+            id = slot.item,
+            limit = slot.limit,
+            count = ichest.get_amount(slot),
+            output_count = n,
+            state = "enough",
+            index = index,
+        }
+    end
+
+    return ingredients, results, progress, total_progress
+end
 
 local timer
 
@@ -231,8 +286,7 @@ local function _get_station_chest_slots(gameplay_world, max_slot, chest)
             break
         end
 
-        local typeobject_item = assert(iprototype.queryById(slot.item))
-        res[typeobject_item.name] = ichest.get_amount(slot)
+        res[slot.item] = ichest.get_amount(slot)
     end
     return res
 end
@@ -245,8 +299,8 @@ local function _process_station_slots(gameplay_world, max_slot, chest, items)
         return v1 == v2 and a.slot_index < b.slot_index or v1 < v2
     end)
     for _, v in ipairs(items) do
-        if t[v.name] then
-            v.package_count = t[v.name]
+        if t[v.id] then
+            v.package_count = t[v.id]
         end
     end
     for i = 1, max_slot - #items do
@@ -378,7 +432,7 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
             if recipe_inputs and recipe_ouputs then
                 prolist.recipe_inputs, prolist.recipe_ouputs = recipe_inputs, recipe_ouputs
             else
-                prolist.recipe_inputs, prolist.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
+                prolist.recipe_inputs, prolist.recipe_ouputs = _get_assembler_items(gameplay_core.get_world(), e)
             end
             if e.assembling.status == 0 then -- c status : idle
                 prolist.progress = "0%"
@@ -615,26 +669,51 @@ function M.update(datamodel, object_id)
         datamodel.areaid = areaid
     end
 
-    for _, _, _, index in click_item_mb:unpack() do
-        local item = datamodel.chest_list_1[index]
-        if item then
-            local gameplay_world = gameplay_core.get_world()
-            print("click item", item.name)
+    for _, _, _, ctype, p1, p2 in click_item_mb:unpack() do
+        if ctype == "chest" then
+            local index = p1
+            local item = datamodel.chest_list_1[index]
+            if item then
+                local gameplay_world = gameplay_core.get_world()
 
-            local base = ibackpack.get_base_entity(gameplay_core.get_world())
-            if ibackpack.place(gameplay_core.get_world(), base, item.id, item.count) then
-                ibackpack.pickup(gameplay_world, e, item.id, item.count)
+                local base = ibackpack.get_base_entity(gameplay_core.get_world())
+                if ibackpack.place(gameplay_core.get_world(), base, item.id, item.count) then
+                    ibackpack.pickup(gameplay_world, e, item.id, item.count)
+                else
+                    print("click item", "can not place item", index)
+                end
             else
-                print("click item", "can not place item", index)
+                print("click item", "can not found item", index)
+            end
+        elseif ctype == "assembler" then
+            local itype, index = p1, p2
+            local gameplay_world = gameplay_core.get_world()
+            local base = ibackpack.get_base_entity(gameplay_world)
+
+            if itype == "inputs" then
+                local slot = assert(ichest.get(gameplay_world, e.chest, index))
+                local limit = slot.limit // 2 -- this assumes that the assembler's slot of limit is twice the quantity required by the recipe
+                local c = math.min(ibackpack.query(gameplay_world, base, slot.item), limit - slot.amount)
+                if c > 0 then
+                    assert(ibackpack.pickup(gameplay_world, base, slot.item, c))
+                    ichest.place_at(gameplay_world, e, index, c)
+                end
+            elseif itype == "outputs" then
+                local slot = assert(ichest.get(gameplay_world, e.chest, index))
+                local c = math.min(ibackpack.get_capacity(gameplay_world, base, slot.item), slot.amount)
+                if c > 0 then
+                    ichest.pickup_at(gameplay_world, e, index, c)
+                    assert(ibackpack.place(gameplay_world, base, slot.item, c))
+                end
             end
         else
-            print("click item", "can not found item", index)
+            error(("click item unknown type %s"):format(ctype))
         end
     end
 
     local current_inputs, current_ouputs
     if e.assembling and e.assembling.recipe ~= 0 then
-        current_inputs, current_ouputs = assembling_common.get(gameplay_core.get_world(), e)
+        current_inputs, current_ouputs = _get_assembler_items(gameplay_core.get_world(), e)
         local input_auto, input_dirty, input_delta = get_delta(last_inputs, current_inputs, true)
         local out_auto, output_dirty, _ = get_delta(last_ouputs, current_ouputs)
         -- if input_auto then

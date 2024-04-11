@@ -360,7 +360,7 @@ local function confirm(self, datamodel)
         y = status.y,
         srt = srt.new(self.status.srt),
         group_id = igroup.id(status.x, status.y),
-        render_layer = RENDER_LAYER.BUILDING,
+        render_layer = typeobject.render_layer and assert(RENDER_LAYER[typeobject.render_layer]) or RENDER_LAYER.BUILDING,
     }
     object.gameplay_eid = igameplay.create_entity {
         prototype_name = typeobject.name,
@@ -549,8 +549,11 @@ function move_t:confirm(datamodel)
 end
 function move_t:clean(datamodel)
     clean(self, datamodel)
+
+    local typeobject = assert(self.typeobject)
     local vsobject = assert(vsobject_manager:get(self.move_object_id))
-    vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = RENDER_LAYER.BUILDING}
+    local render_layer = typeobject.render_layer and assert(RENDER_LAYER[typeobject.render_layer]) or RENDER_LAYER.BUILDING
+    vsobject:update {state = "opaque", color = "null", emissive_color = "null", render_layer = render_layer}
 end
 local move_mt = {__index = move_t}
 

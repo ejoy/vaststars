@@ -78,12 +78,9 @@ local function pickup(world, e, item, amount)
 end
 
 local function get_capacity(world, e, item)
-    if not is_valid_item(item) then
-        return 0
-    end
     local slot = _query(world, e, item)
     if not slot then
-        return 0
+        return _get_limit(item)
     end
     if slot.item == 0 or slot.amount == 0 then
         return _get_limit(item)
@@ -95,7 +92,6 @@ local function place(world, e, item, amount)
     if get_capacity(world, e, item) < amount then
         return false
     end
-    assert(is_valid_item(item))
     ichest.place(world, e, item, amount)
     return true
 end
