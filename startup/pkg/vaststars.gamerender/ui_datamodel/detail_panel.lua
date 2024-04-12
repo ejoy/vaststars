@@ -584,6 +584,18 @@ click_item_handers["assembler"] = function(datamodel, e, itype, index)
     end
 end
 
+click_item_handers["depot"] = function(datamodel, e, index)
+    local gameplay_world = gameplay_core.get_world()
+    local base = ibackpack.get_base_entity(gameplay_world)
+    local slot = assert(ichest.get(gameplay_world, e.chest, index))
+    local c = math.min(ibackpack.query(gameplay_world, base, slot.item), slot.limit - slot.amount)
+    if c > 0 then
+        assert(ibackpack.pickup(gameplay_world, base, slot.item, c))
+        ichest.place_at(gameplay_world, e, index, c)
+        itask.update_progress("backpack_to_building", iprototype.queryById(e.building.prototype).name, iprototype.queryById(slot.item).name, c)
+    end
+end
+
 ---------------
 local M = {}
 local update_interval = 3 --update per 25 frame

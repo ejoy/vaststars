@@ -338,14 +338,16 @@
 
             <!-- expanded panel - depot -->
             <div class="tips-bg" style="flex-direction: row;" data-if = "areaid == 'expanded-depot-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
-                <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
-                    <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1">
-                        <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
-                            <div style="font-size: 5.00vmin; -webkit-text-stroke:0.25vmin rgb(0, 0, 0); position:absolute; top:-1vmin; right:0;" data-if="chest.icon ~= ''">x{{chest.count}}</div>
+                <scroll-item-list style="width: 100.00%; height: 80%; gap: 1vmin;">
+                    <div style = "width: 100%; gap: 1vmin; align-items: center;" data-for="chest, index : chest_list_1" data-event-click = "clickItem('depot', index)">
+                        <div style="flex-direction: row; width: 75%; height: 12.5vmin;">
+                            <div class = "small-item1" style="width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or ((chest.type == 'demand' or chest.type == 'transit') and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon" />
+                            <div style = "width: 60%; font-size: 4vmin; justify-content: flex-end; word-break: break-all;">{{chest.name}}</div>
+                            <div style = "width: 20%; font-size: 3.5vmin; justify-content: flex-end;">x {{chest.count}}</div>
                         </div>
-                        <div style='font-size: 2.5vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{chest.name}}</div>
+                        <div style="width: 82%; height: 0.10vmin; background-color: rgb(114, 108, 104);" />
                     </div>
-                </div>
+                </scroll-item-list>
             </div>
 
             <!-- expanded panel - laboratory -->
