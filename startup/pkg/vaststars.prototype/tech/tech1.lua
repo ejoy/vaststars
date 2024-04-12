@@ -25,7 +25,7 @@ local prototype = gameplay.register.prototype
   -- task_params = {ui = "transfer",  building = "xxx"},  放置物品
 
   -- task = {"unknown", 0, 7},
-  -- task_params = {}  废墟获取所有物品
+  -- task_params = {}  从废墟获取所有物品到背包
 
   -- task = {"unknown", 0, 8},
   -- task_params = {items = {"demand|xx", "supply|xx", ...}}     车站设置多个收货/发货物品
@@ -74,8 +74,8 @@ local prototype = gameplay.register.prototype
     desc = "从废墟中搜索物资",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"unknown", 0, 6},
-    task_params = {ui = "set_transfer_source", building = "机身残骸"},
+    task = {"unknown", 0, 7},
+    task_params = {},
     prerequisites = {"采矿教学"},
     count = 1,
     order = 311,
@@ -104,46 +104,46 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "放置指挥中心" {
-    desc = "将物资放置至指挥中心",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"unknown", 0, 7},
-    task_params = {},
-    prerequisites = {"拾取物资"},
-    count = 1,
-    order = 312,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "/pkg/vaststars.resources/glbs/selection-box-corner.glb/mesh.prefab",
-        x = 132.5,
-        y = 114.5,
-        w = 5.2,
-        h = 5.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = true,
-      },
-      {
-        camera_x = 130,
-        camera_y = 112,
-        w = 4.0,
-        h = 4.0,
-      },
-    },
-    sign_desc = {
-      { desc = "将废墟获取的采矿机放置至指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "放置指挥中心" {
+  --   desc = "将物资放置至指挥中心",
+  --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+  --   type = {"task" },
+  --   task = {"unknown", 0, 7},
+  --   task_params = {},
+  --   prerequisites = {"拾取物资"},
+  --   count = 1,
+  --   order = 312,
+  --   tips_pic = {
+  --     "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+  --   },
+  --   guide_focus = {
+  --     {
+  --       prefab = "/pkg/vaststars.resources/glbs/selection-box-corner.glb/mesh.prefab",
+  --       x = 132.5,
+  --       y = 114.5,
+  --       w = 5.2,
+  --       h = 5.2,
+  --       color = {0.3, 1, 0, 1},
+  --       show_arrow = true,
+  --     },
+  --     {
+  --       camera_x = 130,
+  --       camera_y = 112,
+  --       w = 4.0,
+  --       h = 4.0,
+  --     },
+  --   },
+  --   sign_desc = {
+  --     { desc = "将废墟获取的采矿机放置至指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "采矿机放置" {
     desc = "放置3台采矿机",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"select_entity", 0, "采矿机I"},
-    prerequisites = {"放置指挥中心"},
+    prerequisites = {"拾取物资"},
     count = 3,
     order = 313,
     tips_pic = {
@@ -250,8 +250,8 @@ local prototype = gameplay.register.prototype
     desc = "从采矿机获取碎石",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },                     
-    task = {"unknown", 0, 6},
-    task_params = {ui = "set_transfer_source", building = "采矿机I"},
+    task = {"unknown", 0, 12},
+    task_params = {building = "采矿机I", item = "碎石", },
     prerequisites = {"收货设置1"},
     count = 1,
     order = 316,
