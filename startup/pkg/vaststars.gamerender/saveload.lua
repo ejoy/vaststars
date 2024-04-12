@@ -222,9 +222,15 @@ function M:restart(game_template_file)
     end
     iroadnet:flush()
 
-    local prepare = game_template.prepare
-    if prepare then
-        prepare(gameplay_world)
+    local researched_techs = game_template.researched_techs or {}
+    if next(researched_techs) then
+        for _, tech in ipairs(researched_techs) do
+            local typeobject = iprototype.queryByName(tech)
+            gameplay_world:research_queue({tech})
+            gameplay_world:research_progress(tech, typeobject.count)
+            assert(gameplay_world:is_researched(tech))
+            print("researched", tech)
+        end
     end
 
     restore_world(gameplay_world)

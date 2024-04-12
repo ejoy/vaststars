@@ -48,6 +48,11 @@ local itimer = ecs.require "utility.timer"
 local update_areaid_id_mb = mailbox:sub {"update_areaid_id"}
 local click_item_mb = mailbox:sub {"click_item"}
 local ibackpack = require "gameplay.interface.backpack"
+local iobject = ecs.require "object"
+local global = require "global"
+local igameplay = ecs.require "gameplay.gameplay_system"
+local idetail = ecs.require "detail_system"
+local itask = ecs.require "task"
 
 local function _get_assembler_items(gameplay_world, e)
     if e.assembling.recipe == 0 then
@@ -514,6 +519,70 @@ local function get_entity_property_list(object_id, recipe_inputs, recipe_ouputs)
     return prolist
 end
 
+local click_item_handers = {}
+click_item_handers["chest"] = function(datamodel, e, index)
+    local item = datamodel.chest_list_1[index]
+    if item then
+        local gameplay_world = gameplay_core.get_world()
+
+        local base = ibackpack.get_base_entity(gameplay_core.get_world())
+        if ibackpack.place(gameplay_core.get_world(), base, item.id, item.count) then
+            ibackpack.pickup(gameplay_world, e, item.id, item.count)
+        else
+            print("click item", "can not place item", index)
+        end
+
+        if e.chest then
+            local typeobject = iprototype.queryById(e.building.prototype)
+            if not ichest.has_item(gameplay_world, e.chest) and typeobject.chest_destroy then
+                local object = assert(objects:coord(e.building.x, e.building.y))
+
+                iobject.remove(object)
+                objects:remove(object.id)
+                local building = global.buildings[object.id]
+                if building then
+                    for _, v in pairs(building) do
+                        v:remove()
+                    end
+                end
+
+                igameplay.destroy_entity(e.eid)
+                idetail.unselected()
+
+                iui.leave()
+                iui.close("/pkg/vaststars.resources/ui/detail_panel.html")
+
+                itask.update_progress("collect_all_items")
+            end
+        end
+    else
+        print("click item", "can not found item", index)
+    end
+end
+
+click_item_handers["assembler"] = function(datamodel, e, itype, index)
+    local gameplay_world = gameplay_core.get_world()
+    local base = ibackpack.get_base_entity(gameplay_world)
+
+    if itype == "inputs" then
+        local slot = assert(ichest.get(gameplay_world, e.chest, index))
+        local limit = slot.limit // 2 -- this assumes that the assembler's slot of limit is twice the quantity required by the recipe
+        local c = math.min(ibackpack.query(gameplay_world, base, slot.item), limit - slot.amount)
+        if c > 0 then
+            assert(ibackpack.pickup(gameplay_world, base, slot.item, c))
+            ichest.place_at(gameplay_world, e, index, c)
+        end
+    elseif itype == "outputs" then
+        local slot = assert(ichest.get(gameplay_world, e.chest, index))
+        local c = math.min(ibackpack.get_capacity(gameplay_world, base, slot.item), slot.amount)
+        if c > 0 then
+            ichest.pickup_at(gameplay_world, e, index, c)
+            assert(ibackpack.place(gameplay_world, base, slot.item, c))
+            itask.update_progress("assembler_to_backpack")
+        end
+    end
+end
+
 ---------------
 local M = {}
 local update_interval = 3 --update per 25 frame
@@ -669,48 +738,6 @@ function M.update(datamodel, object_id)
         datamodel.areaid = areaid
     end
 
-    for _, _, _, ctype, p1, p2 in click_item_mb:unpack() do
-        if ctype == "chest" then
-            local index = p1
-            local item = datamodel.chest_list_1[index]
-            if item then
-                local gameplay_world = gameplay_core.get_world()
-
-                local base = ibackpack.get_base_entity(gameplay_core.get_world())
-                if ibackpack.place(gameplay_core.get_world(), base, item.id, item.count) then
-                    ibackpack.pickup(gameplay_world, e, item.id, item.count)
-                else
-                    print("click item", "can not place item", index)
-                end
-            else
-                print("click item", "can not found item", index)
-            end
-        elseif ctype == "assembler" then
-            local itype, index = p1, p2
-            local gameplay_world = gameplay_core.get_world()
-            local base = ibackpack.get_base_entity(gameplay_world)
-
-            if itype == "inputs" then
-                local slot = assert(ichest.get(gameplay_world, e.chest, index))
-                local limit = slot.limit // 2 -- this assumes that the assembler's slot of limit is twice the quantity required by the recipe
-                local c = math.min(ibackpack.query(gameplay_world, base, slot.item), limit - slot.amount)
-                if c > 0 then
-                    assert(ibackpack.pickup(gameplay_world, base, slot.item, c))
-                    ichest.place_at(gameplay_world, e, index, c)
-                end
-            elseif itype == "outputs" then
-                local slot = assert(ichest.get(gameplay_world, e.chest, index))
-                local c = math.min(ibackpack.get_capacity(gameplay_world, base, slot.item), slot.amount)
-                if c > 0 then
-                    ichest.pickup_at(gameplay_world, e, index, c)
-                    assert(ibackpack.place(gameplay_world, base, slot.item, c))
-                end
-            end
-        else
-            error(("click item unknown type %s"):format(ctype))
-        end
-    end
-
     local current_inputs, current_ouputs
     if e.assembling and e.assembling.recipe ~= 0 then
         current_inputs, current_ouputs = _get_assembler_items(gameplay_core.get_world(), e)
@@ -739,6 +766,12 @@ function M.update(datamodel, object_id)
     end
     counter = 1
     update_property_list(datamodel, get_entity_property_list(object_id, (#preinput > 0) and preinput or current_inputs, current_ouputs))
+
+    -- The 'click item' event handling must be placed at the end since accessing items after retrieving all of them will result in errors due to entity deletion
+    for _, _, _, ctype, p1, p2 in click_item_mb:unpack() do
+        local h = click_item_handers[ctype] or error(("click item unknown type %s"):format(ctype))
+        h(datamodel, e, p1, p2)
+    end
 end
 
 function M.update_area_id(datamodel)

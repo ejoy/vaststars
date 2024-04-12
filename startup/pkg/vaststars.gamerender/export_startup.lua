@@ -166,20 +166,19 @@ return function()
         }
     end
 
+    local researched_techs = {}
+    for _, typeobject in pairs(iprototype.each_type "tech") do
+        if gameplay_world:is_researched(typeobject.name) then
+            researched_techs[#researched_techs+1] = typeobject.name
+        end
+    end
+
     local file = assert(gameplay_core.get_storage().game_template)
     local template = ecs.require(("vaststars.prototype|%s"):format(file))
 
     writefile(([[
-local guide = require "guide.guide5"
+local guide = require "guide"
 local mountain = require "mountain"
-
-local mountain = {
-    density = 0.1,
-    mountain_coords = {},
-    excluded_rects = {
-    {0, 0, 255, 255},
-    },
-}
 
 local entities = %s
 local road = %s
@@ -200,6 +199,7 @@ return {
     init_instances = %s,
     game_settings = %s,
     camera = "%s",
+    researched_techs = %s,
 }
     ]]):format(
         inspect(entities),
@@ -212,7 +212,8 @@ return {
         inspect(template.init_ui),
         inspect(template.init_instances),
         inspect(template.game_settings, {indent="\t\t\t"}),
-        template.camera
+        template.camera,
+        inspect(researched_techs)
     ))
 
     log.info("export entity success")

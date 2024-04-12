@@ -38,8 +38,6 @@ custom_type :
     task_params = {ui = "item_transfer_unsubscribe", , building = ""},
 7. transfer
     task = {"unknown", 0, 7},
-    task_params = {building = "xx", item = "xx", },
-    count = xx
 8. set_items, 
     task = {"unknown", 0, 8},
     task_params = {items = {"demand|xx", "supply|xx", "transit|xx", ...}}
@@ -52,6 +50,8 @@ custom_type :
     task = {"unknown", 0, 11},
     task_params = {building = "xx", fluids = {"xx", "xx"}}
     count = 1
+12.assembler_to_backpack
+    task = {"unknown", 0, 12},
 --]]
 
 local function check_path_connected(sx, sy, dx, dy, road)
@@ -132,10 +132,8 @@ local custom_type_mapping = {
             return 0
         end
     end, },
-    [7] = {s = "transfer", check = function(task_params, progress, building, item, count)
-        if task_params.building == building and task_params.item == item then
-            return (progress or 0) + count
-        end
+    [7] = {s = "collect_all_items", check = function(task_params, progress)
+        return 1
     end, },
     [8] = {s = "set_items", check = function(task_params, progress, items)
         local t = {}
@@ -240,7 +238,11 @@ local custom_type_mapping = {
             assert(false)
         end
         return count
+    end,
+    [12] = {s = "assembler_to_backpack", check = function(task_params, progress)
+        return 1
     end, },
+    },
 }
 
 return function ()

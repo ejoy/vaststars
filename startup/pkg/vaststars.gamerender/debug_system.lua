@@ -115,6 +115,15 @@ function debug_sys:data_changed()
             local e = assert(gameplay_world.ecs:first("global_state:in"))
             print(("pollution: %f"):format(e.global_state.pollution))
         end
+
+        -- if state.CTRL and key == "E" and press == 1 then
+        --     local gameplay_world = gameplay_core.get_world()
+        --     for _, tech in ipairs(gameplay_world:research_queue()) do
+        --         local typeobject = iprototype.queryByName(tech)
+        --         gameplay_world:research_progress(tech, typeobject.count)
+        --         assert(gameplay_world:is_researched(tech))
+        --     end
+        -- end
     end
 
     for _, _, v in gesture_tap_mb:unpack() do
