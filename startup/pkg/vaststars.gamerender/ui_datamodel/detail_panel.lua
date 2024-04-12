@@ -51,7 +51,6 @@ local ibackpack = require "gameplay.interface.backpack"
 local iobject = ecs.require "object"
 local global = require "global"
 local igameplay = ecs.require "gameplay.gameplay_system"
-local idetail = ecs.require "detail_system"
 local itask = ecs.require "task"
 
 local function _get_assembler_items(gameplay_world, e)
@@ -548,7 +547,7 @@ click_item_handers["chest"] = function(datamodel, e, index)
                 end
 
                 igameplay.destroy_entity(e.eid)
-                idetail.unselected()
+                iui.redirect("/pkg/vaststars.resources/ui/construct.html", "unselected", e.eid)
 
                 iui.leave()
                 iui.close("/pkg/vaststars.resources/ui/detail_panel.html")
