@@ -1,5 +1,4 @@
 local guide = require "guide.guide5"
-local mountain = require "mountain"
 
 local mountain = {
   density = 0.1,
@@ -9,11 +8,6 @@ local mountain = {
   },
 }
 
-local items = {}
-for _ = 1, 255 do
-  items[#items+1] = {"", 0}
-end
-
 local entities = {{
   amount = 30,
   dir = "N",
@@ -22,7 +16,7 @@ local entities = {{
   y = 124
 }, {
   dir = "N",
-  items = items,
+  items = {},
   prototype_name = "指挥中心",
   x = 135,
   y = 92

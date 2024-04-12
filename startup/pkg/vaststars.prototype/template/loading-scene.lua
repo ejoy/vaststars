@@ -6,11 +6,6 @@ local mountain = {
   },
 }
 
-local items = {}
-for _ = 1, 255 do
-  items[#items+1] = {"", 0}
-end
-
 local entities = {{
   amount = 30,
   dir = "N",

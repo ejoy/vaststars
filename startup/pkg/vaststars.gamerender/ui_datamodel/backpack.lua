@@ -44,10 +44,12 @@ end
 
 function M.update(datamodel)
     for _, _, _, item in click_item_mb:unpack() do
-        iui.close("/pkg/vaststars.resources/ui/backpack.html")
         local typeobject = iprototype.queryById(item)
-        local continuity = iprototype.continuity(typeobject)
-        iui.redirect("/pkg/vaststars.resources/ui/construct.html", "construct_entity_from_backpack", item, continuity)
+        if iprototype.has_type(typeobject.type, "building") then
+            iui.close("/pkg/vaststars.resources/ui/backpack.html")
+            local continuity = iprototype.continuity(typeobject)
+            iui.redirect("/pkg/vaststars.resources/ui/construct.html", "construct_entity_from_backpack", item, continuity)
+        end
     end
 end
 

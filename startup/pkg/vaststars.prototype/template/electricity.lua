@@ -1,14 +1,9 @@
 local guide = require "guide"
 local mountain = require "mountain"
 
-local items = {}
-for _ = 1, 255 do
-  items[#items+1] = {"", 0}
-end
-
 local entities = { {
     dir = "N",
-    items = items,
+    items = {},
     prototype_name = "指挥中心",
     x = 124,
     y = 120

@@ -64,8 +64,13 @@ end
 
 init_func["base"] = function (pt, template)
     local items = {}
-    for _ = 1, pt.maxslot do
-        items[#items+1] = {"", 0}
+    for i = 1, pt.maxslot do
+        local v = template.items[i]
+        if v then
+            items[i] = v
+        else
+            items[i] = { "", 0 }
+        end
     end
     template.items = items
     return template
