@@ -52,10 +52,12 @@ custom_type :
     count = 1
 12.building_to_backpack
     task = {"unknown", 0, 12},
-    task_params = {building = "xx"}
+    task_params = {building = "xx", item = "xx", }
+    count = xx
 13.backpack_to_building
     task = {"unknown", 0, 13},
-    task_params = {building = "xx"}
+    task_params = {building = "xx", item = "xx", }
+    count = xx
 --]]
 
 local function check_path_connected(sx, sy, dx, dy, road)
@@ -243,11 +245,15 @@ local custom_type_mapping = {
         end
         return count
     end},
-    [12] = {s = "building_to_backpack", check = function(task_params, progress, building)
-        return task_params.building == building
+    [12] = {s = "building_to_backpack", check = function(task_params, progress, building, item, count)
+        if task_params.building == building and task_params.item == item then
+            return (progress or 0) + count
+        end
     end},
-    [13] = {s = "backpack_to_building", check = function(task_params, progress, building)
-        return task_params.building == building
+    [13] = {s = "backpack_to_building", check = function(task_params, progress, building, item, count)
+        if task_params.building == building and task_params.item == item then
+            return (progress or 0) + count
+        end
     end},
 }
 

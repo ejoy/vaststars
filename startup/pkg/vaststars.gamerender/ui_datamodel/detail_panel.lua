@@ -528,7 +528,7 @@ click_item_handers["chest"] = function(datamodel, e, index)
         local base = ibackpack.get_base_entity(gameplay_core.get_world())
         if ibackpack.place(gameplay_core.get_world(), base, item.id, item.count) then
             ibackpack.pickup(gameplay_world, e, item.id, item.count)
-            itask.update_progress("building_to_backpack", iprototype.queryById(e.eid).name)
+            itask.update_progress("building_to_backpack", iprototype.queryById(e.eid).name, iprototype.queryById(item.id).name, item.count)
         else
             print("click item", "can not place item", index)
         end
@@ -572,7 +572,7 @@ click_item_handers["assembler"] = function(datamodel, e, itype, index)
         if c > 0 then
             assert(ibackpack.pickup(gameplay_world, base, slot.item, c))
             ichest.place_at(gameplay_world, e, index, c)
-            itask.update_progress("backpack_to_building", iprototype.queryById(e.eid).name)
+            itask.update_progress("backpack_to_building", iprototype.queryById(e.eid).name, iprototype.queryById(slot.item).name, c)
         end
     elseif itype == "outputs" then
         local slot = assert(ichest.get(gameplay_world, e.chest, index))
@@ -580,7 +580,7 @@ click_item_handers["assembler"] = function(datamodel, e, itype, index)
         if c > 0 then
             ichest.pickup_at(gameplay_world, e, index, c)
             assert(ibackpack.place(gameplay_world, base, slot.item, c))
-            itask.update_progress("building_to_backpack", iprototype.queryById(e.eid).name)
+            itask.update_progress("building_to_backpack", iprototype.queryById(e.eid).name, iprototype.queryById(slot.item).name, c)
         end
     end
 end
