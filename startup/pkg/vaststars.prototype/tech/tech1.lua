@@ -25,7 +25,7 @@ local prototype = gameplay.register.prototype
   -- task_params = {ui = "transfer",  building = "xxx"},  放置物品
 
   -- task = {"unknown", 0, 7},
-  -- task_params = {building = "xx", item = "xx", count = xx,}  放置物品到指定建筑
+  -- task_params = {}  废墟获取所有物品
 
   -- task = {"unknown", 0, 8},
   -- task_params = {items = {"demand|xx", "supply|xx", ...}}     车站设置多个收货/发货物品
@@ -44,6 +44,14 @@ local prototype = gameplay.register.prototype
   -- task = {"unknown", 0, 11},               X建筑的指定水口连接液体
   -- task_params = {building = xx, fluids = {xx, xx}}
   -- count = 1
+
+  -- task = {"unknown", 0, 12},         building_to_backpack
+  -- task_params = {building = "xx", item = "xx", }
+  -- count = xx
+
+  -- task = {"unknown", 0, 13},       backpack_to_building
+  -- task_params = {building = "xx", item = "xx", }
+  -- count = xx
 
   -- prototype "采矿教学" {
   --   desc = "学习如何在游戏中采矿",
@@ -101,7 +109,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "采矿机I", count = 3,},
+    task_params = {},
     prerequisites = {"拾取物资"},
     count = 1,
     order = 312,
@@ -276,8 +284,8 @@ local prototype = gameplay.register.prototype
     desc = "仓库存储碎石",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },                     
-    task = {"unknown", 0, 7},
-    task_params = {building = "仓库I", item = "碎石"},
+    task = {"unknown", 0, 13},
+    task_params = {building = "仓库I", item = "碎石", },
     prerequisites = {"获取碎石"},
     count = 6,
     order = 317,
