@@ -36,7 +36,7 @@ custom_type :
 
     task = {"unknown", 0, 6},
     task_params = {ui = "item_transfer_unsubscribe", , building = ""},
-7. transfer
+7. collect_all_items
     task = {"unknown", 0, 7},
 8. set_items, 
     task = {"unknown", 0, 8},
@@ -50,8 +50,12 @@ custom_type :
     task = {"unknown", 0, 11},
     task_params = {building = "xx", fluids = {"xx", "xx"}}
     count = 1
-12.assembler_to_backpack
+12.building_to_backpack
     task = {"unknown", 0, 12},
+    task_params = {building = "xx"}
+13.backpack_to_building
+    task = {"unknown", 0, 13},
+    task_params = {building = "xx"}
 --]]
 
 local function check_path_connected(sx, sy, dx, dy, road)
@@ -238,11 +242,13 @@ local custom_type_mapping = {
             assert(false)
         end
         return count
-    end,
-    [12] = {s = "assembler_to_backpack", check = function(task_params, progress)
-        return 1
-    end, },
-    },
+    end},
+    [12] = {s = "building_to_backpack", check = function(task_params, progress, building)
+        return task_params.building == building
+    end},
+    [13] = {s = "backpack_to_building", check = function(task_params, progress, building)
+        return task_params.building == building
+    end},
 }
 
 return function ()
