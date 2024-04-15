@@ -22,7 +22,7 @@ local prototype = gameplay.register.prototype
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
     task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "运输车辆I", count = 30,},
+    task_params = {},
     prerequisites = {"自动化教学"},
     count = 1,
     order = 450,
