@@ -1,5 +1,3 @@
--- "set_transfer_source",      设置拾取
--- "transfer_source",          设置拾取按下（光圈）
 -- "remove_lorry",             删除汽车
 -- "move",                     移动建筑
 -- "lorry_factory_inc_lorry",  派发汽车
@@ -7,112 +5,65 @@
 -- "set_recipe",               设置配方
 -- "copy",                     拷贝建筑
 -- "inventory",                进入背包
--- "transfer",                 开始放置
 -- "teardown",                 删除建筑
-
+-- "building_to_backpack",
+-- "backpack_to_building",
 return {
     -- 采矿建筑仅保留获取
     ["采矿机I"] = {
-        "set_transfer_source",
-        "transfer_source",
         "teardown",
     },
     ["采矿机II"] = {
-        "set_transfer_source",
-        "transfer_source",
         "teardown",
     },
     ["采矿机III"] = {
-        "set_transfer_source",
-        "transfer_source",
         "teardown",
     },
     ["轻型采矿机"] = {
-        "set_transfer_source",
-        "transfer_source",
         "teardown",
     },
     -- 废墟建筑仅保留获取
     ["机身残骸"] = {
-        "building_to_backpack",
+        "show_item_list",
         "teardown",
     },
     ["机翼残骸"] = {
-        "building_to_backpack",
+        "show_item_list",
         "teardown",
     },
     ["机头残骸"] = {
-        "building_to_backpack",
+        "show_item_list",
         "teardown",
     },
     ["机尾残骸"] = {
-        "building_to_backpack",
+        "show_item_list",
         "teardown",
     },
     ["建筑物残骸 1x1"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 1x2"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 2x1"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 2x2"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 3x3"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 3x5"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 4x2"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 4x4"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 4x6"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 5x3"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 5x5"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 6x4"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     ["建筑物残骸 6x6"] = {
-        "set_transfer_source",
-        "transfer_source",
-        "transfer",
     },
     -- 液体输入/输出建筑仅保留移动和复制
     ["空气过滤器I"] = {
@@ -308,10 +259,7 @@ return {
 
     -- 仅保留获取放置背包
     ["指挥中心"] = {
-        "set_transfer_source",
-        "transfer_source",
         "inventory",
-        "transfer",
     },
 
     -- 只有拆除
@@ -363,115 +311,84 @@ return {
     ["科研中心I"] = {
         "move",
         "copy",
-        "transfer",
         "teardown",
     },
     ["科研中心II"] = {
         "move",
         "copy",
-        "transfer",
         "teardown",
     },
     ["科研中心III"] = {
         "move",
         "copy",
-        "transfer",
         "teardown",
     },
     ["地质科研中心"] = {
         "move",
         "copy",
-        "transfer",
         "teardown",
     },
 -----------固体组装机类型---------
     ["组装机I"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["组装机II"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["组装机III"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["熔炼炉I"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["熔炼炉II"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["熔炼炉III"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["粉碎机I"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["粉碎机II"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
     ["粉碎机III"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_recipe",
         "copy",
-        "transfer",
         "teardown",
     },
 
@@ -590,33 +507,30 @@ return {
     },
     ----------仓库类型-------------
     ["仓库I"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_item",
         "copy",
-        "transfer",
         "teardown",
+        "building_to_backpack",
+        "backpack_to_building",
     },
 
     ["仓库II"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_item",
         "copy",
-        "transfer",
         "teardown",
+        "building_to_backpack",
+        "backpack_to_building",
     },
 
     ["仓库III"] = {
-        "set_transfer_source",
-        "transfer_source",
         "move",
         "set_item",
         "copy",
-        "transfer",
         "teardown",
+        "building_to_backpack",
+        "backpack_to_building",
     },
     ----------物流站类型-------------
     ["物流站"] = {

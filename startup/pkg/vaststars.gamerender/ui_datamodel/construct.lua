@@ -438,7 +438,9 @@ local update = interval_call(500, function(datamodel)
 
     local gameplay_world = gameplay_core.get_world()
     local base = ibackpack.get_base_entity(gameplay_world)
-    for idx, slot in pairs(ibackpack.all(gameplay_world, base)) do
+
+    local c = 0
+    for idx, slot in ipairs(ibackpack.all(gameplay_world, base)) do
         local typeobject_item = assert(iprototype.queryById(slot.item))
 
         local v = {}
@@ -449,10 +451,14 @@ local update = interval_call(500, function(datamodel)
         v.is_transfer = false
         v.value = 0
 
-        datamodel.item_bar[idx] = v
-        if idx >= 4 then
+        c = c + 1
+        datamodel.item_bar[c] = v
+        if c >= 4 then
             break
         end
+    end
+    for idx = c + 1, #datamodel.item_bar do
+        datamodel.item_bar[idx] = nil
     end
 end)
 

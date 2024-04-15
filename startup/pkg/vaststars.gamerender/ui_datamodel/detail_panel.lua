@@ -53,6 +53,8 @@ local global = require "global"
 local igameplay = ecs.require "gameplay.gameplay_system"
 local itask = ecs.require "task"
 
+local building_to_backpack = true
+
 local function _get_assembler_items(gameplay_world, e)
     if e.assembling.recipe == 0 then
         return {}, {}, 0, 0
@@ -587,12 +589,23 @@ end
 click_item_handers["depot"] = function(datamodel, e, index)
     local gameplay_world = gameplay_core.get_world()
     local base = ibackpack.get_base_entity(gameplay_world)
-    local slot = assert(ichest.get(gameplay_world, e.chest, index))
-    local c = math.min(ibackpack.query(gameplay_world, base, slot.item), slot.limit - slot.amount)
-    if c > 0 then
-        assert(ibackpack.pickup(gameplay_world, base, slot.item, c))
-        ichest.place_at(gameplay_world, e, index, c)
-        itask.update_progress("backpack_to_building", iprototype.queryById(e.building.prototype).name, iprototype.queryById(slot.item).name, c)
+
+    if building_to_backpack then
+        local slot = assert(ichest.get(gameplay_world, e.chest, index))
+        local c = math.min(ibackpack.get_capacity(gameplay_world, base, slot.item), slot.amount)
+        if c > 0 then
+            ichest.pickup_at(gameplay_world, e, index, c)
+            assert(ibackpack.place(gameplay_world, base, slot.item, c))
+            itask.update_progress("building_to_backpack", iprototype.queryById(e.building.prototype).name, iprototype.queryById(slot.item).name, c)
+        end
+    else
+        local slot = assert(ichest.get(gameplay_world, e.chest, index))
+        local c = math.min(ibackpack.query(gameplay_world, base, slot.item), slot.limit - slot.amount)
+        if c > 0 then
+            assert(ibackpack.pickup(gameplay_world, base, slot.item, c))
+            ichest.place_at(gameplay_world, e, index, c)
+            itask.update_progress("backpack_to_building", iprototype.queryById(e.building.prototype).name, iprototype.queryById(slot.item).name, c)
+        end
     end
 end
 
@@ -633,6 +646,8 @@ local last_inputs, last_ouputs
 local preinput
 
 function M.create(object_id)
+    building_to_backpack = true
+
     iui.register_leave("/pkg/vaststars.resources/ui/detail_panel.html")
 
     counter = update_interval
@@ -787,8 +802,14 @@ function M.update(datamodel, object_id)
     end
 end
 
-function M.update_area_id(datamodel)
-    datamodel.areaid = "expanded-chest-info"
+function M.update_area_id(datamodel, areaid)
+    local r = datamodel.areaid == areaid
+    datamodel.areaid = areaid
+    return r
+end
+
+function M.building_to_backpack(datamodel, value)
+    building_to_backpack = value
 end
 
 return M

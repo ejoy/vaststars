@@ -37,7 +37,9 @@ local copy_md = mailbox:sub {"copy"}
 local inventory_mb = mailbox:sub {"inventory"}
 local teardown_mb = mailbox:sub {"teardown"}
 local build_mb = mailbox:sub {"build"}
+local show_item_list_mb = mailbox:sub {"show_item_list"}
 local building_to_backpack_mb = mailbox:sub {"building_to_backpack"}
+local backpack_to_building_mb = mailbox:sub {"backpack_to_building"}
 
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
@@ -98,7 +100,9 @@ function M.create(gameplay_eid, longpress)
     local inventory = false
     local teardown = false
     local build = false
+    local show_item_list = false
     local building_to_backpack = false
+    local backpack_to_building = false
 
     if longpress then
         teardown = true
@@ -116,7 +120,9 @@ function M.create(gameplay_eid, longpress)
         move = true
         copy = true
         inventory = iprototype.has_type(typeobject.type, "base")
+        show_item_list = e.chest ~= nil
         building_to_backpack = e.chest ~= nil
+        backpack_to_building = not building_to_backpack
     end
 
     local status = {
@@ -132,7 +138,9 @@ function M.create(gameplay_eid, longpress)
         copy = copy,
         inventory = inventory,
         teardown = teardown,
+        show_item_list = show_item_list,
         building_to_backpack = building_to_backpack,
+        backpack_to_building = backpack_to_building,
 
         transfer_count = transfer and _get_transfer_count() or 0,
     }
@@ -300,8 +308,8 @@ function M.update(datamodel, gameplay_eid)
         itask.update_progress("click_ui", message, typeobject.name)
     end
 
-    for _ in building_to_backpack_mb:unpack() do
-        iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "update_area_id")
+    for _ in show_item_list_mb:unpack() do
+        iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "update_area_id", "expanded-chest-info")
     end
 
     for _ in set_transfer_source_mb:unpack() do
@@ -405,6 +413,24 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in build_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.html", "build_mode", gameplay_eid)
+    end
+
+    for _ in building_to_backpack_mb:unpack() do
+        if iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "update_area_id", "expanded-depot-info") then
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "building_to_backpack", false)
+            datamodel.status.building_to_backpack = false
+            datamodel.status.backpack_to_building = true
+            datamodel.buttons = handler(typeobject.name, datamodel.status)
+        end
+    end
+
+    for _ in backpack_to_building_mb:unpack() do
+        if iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "update_area_id", "expanded-depot-info") then
+            iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "building_to_backpack", true)
+            datamodel.status.building_to_backpack = true
+            datamodel.status.backpack_to_building = false
+            datamodel.buttons = handler(typeobject.name, datamodel.status)
+        end
     end
 end
 

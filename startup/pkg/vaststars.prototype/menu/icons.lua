@@ -10,5 +10,7 @@ return {
     ["building_menu.inventory"] = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture",
     ["building_menu.transfer"] = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture",
     ["building_menu.teardown"] = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture",
+    ["building_menu.show_item_list"] = "/pkg/vaststars.resources/ui/textures/building-menu/show-item-list.texture",
     ["building_menu.building_to_backpack"] = "/pkg/vaststars.resources/ui/textures/building-menu/building-to-backpack.texture",
+    ["building_menu.backpack_to_building"] = "/pkg/vaststars.resources/ui/textures/building-menu/backpack-to-building.texture",
 }
