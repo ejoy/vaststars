@@ -436,7 +436,6 @@ local update = interval_call(500, function(datamodel)
     datamodel.daynight = _get_daynight_image(gameplay_world)
     datamodel.electricity, datamodel.electricity_unit, datamodel.electricity_negative = _get_electricity(gameplay_world)
 
-    local gameplay_world = gameplay_core.get_world()
     local base = ibackpack.get_base_entity(gameplay_world)
 
     local c = 0
