@@ -19,10 +19,10 @@ local prototype = gameplay.register.prototype
   -- task_params = {item = "采矿机框架"},
 
   -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "set_transfer_source", building = "xxx"},    收取物品
+  -- task_params = {ui = "xxx", building = "xxx"},    收取物品
 
   -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "transfer",  building = "xxx"},  放置物品
+  -- task_params = {ui = "xxx",  building = "xxx"},  放置物品
 
   -- task = {"unknown", 0, 7},
   -- task_params = {}  从废墟获取所有物品到背包

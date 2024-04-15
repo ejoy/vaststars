@@ -1,6 +1,4 @@
 return {
-    ["building_menu.set_transfer_source"] = "/pkg/vaststars.resources/ui/textures/building-menu/set-transfer-source.texture",
-    ["building_menu.transfer_source"] = "/pkg/vaststars.resources/ui/textures/building-menu/transfer-source.texture",
     ["building_menu.remove_lorry"] = "/pkg/vaststars.resources/ui/textures/building-menu/remove-lorry.texture",
     ["building_menu.move"] = "/pkg/vaststars.resources/ui/textures/building-menu/move.texture",
     ["building_menu.lorry_factory_inc_lorry"] = "/pkg/vaststars.resources/ui/textures/building-menu/lorry-factory-inc-lorry.texture",
@@ -8,7 +6,6 @@ return {
     ["building_menu.set_recipe"] = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture",
     ["building_menu.copy"] = "/pkg/vaststars.resources/ui/textures/building-menu/clone.texture",
     ["building_menu.inventory"] = "/pkg/vaststars.resources/ui/textures/building-menu/set-recipe.texture",
-    ["building_menu.transfer"] = "/pkg/vaststars.resources/ui/textures/building-menu/transfer.texture",
     ["building_menu.teardown"] = "/pkg/vaststars.resources/ui/textures/building-menu/teardown.texture",
     ["building_menu.show_item_list"] = "/pkg/vaststars.resources/ui/textures/building-menu/show-item-list.texture",
     ["building_menu.building_to_backpack"] = "/pkg/vaststars.resources/ui/textures/building-menu/building-to-backpack.texture",

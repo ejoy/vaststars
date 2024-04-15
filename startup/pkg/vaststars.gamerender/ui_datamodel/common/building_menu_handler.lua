@@ -7,13 +7,6 @@ local DESC <const> = ecs.require "vaststars.prototype|menu.desc"
 local BUILDING_CUSTOM_MENU <const> = ecs.require "vaststars.prototype|menu.building_custom_menu"
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 
-local COMMAND_HANDLERS <const> = {
-    ["transfer"] = function(status, button)
-        button.number = status.transfer_count
-        return button
-    end,
-}
-
 local function create_button(command)
     local k = "building_menu." .. command
     return {
@@ -35,10 +28,6 @@ return function(prototype_name, status)
     for _, command in ipairs(BUILDING_CUSTOM_MENU[prototype_name] or {}) do
         if status[command] then
             local button = create_button(command)
-            local h = COMMAND_HANDLERS[command]
-            if h then
-                button = h(status, button)
-            end
             buttons[#buttons + 1] = button
         end
     end

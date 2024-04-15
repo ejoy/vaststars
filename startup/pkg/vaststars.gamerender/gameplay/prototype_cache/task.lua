@@ -32,10 +32,10 @@ custom_type :
     task_params = {item = "xx"}
 6. click_ui, ui = x,
     task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_subscribe", building = ""},
+    task_params = {ui = "xxx", building = ""},
 
     task = {"unknown", 0, 6},
-    task_params = {ui = "item_transfer_unsubscribe", , building = ""},
+    task_params = {ui = "xxx", , building = ""},
 7. collect_all_items
     task = {"unknown", 0, 7},
 8. set_items, 

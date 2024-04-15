@@ -25,7 +25,6 @@ local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
 local settings_manager = import_package "vaststars.settings_manager"
-local itransfer = require "gameplay.interface.transfer"
 
 local m = ecs.system "game_init_system"
 
@@ -175,11 +174,6 @@ function m:init_world()
     local func = assert(funcs[args[1]])
     func(table.unpack(args, 2))
     global.startup_args = {}
-end
-
-function m:exit()
-    itransfer.set_source_eid(nil)
-    itransfer.set_dest_eid(nil)
 end
 
 function m:gameworld_prebuild()

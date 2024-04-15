@@ -44,7 +44,6 @@ local unselected_mb = mailbox:sub {"unselected"}
 local gesture_tap_mb = world:sub{"gesture", "tap"}
 local gesture_pan_mb = world:sub {"gesture", "pan"}
 local gesture_pinch = world:sub {"gesture", "pinch"}
-local focus_transfer_source_mb = mailbox:sub {"focus_transfer_source"}
 local set_continuity_mb = mailbox:sub {"set_continuity"}
 local click_recipe_mb = mailbox:sub {"click_recipe"}
 local bulk_select_mb = mailbox:sub {"bulk_select"}
@@ -54,7 +53,6 @@ local construct_entity_from_backpack_mb = mailbox:sub {"construct_entity_from_ba
 local iguide_tips = ecs.require "guide_tips"
 local create_selection_box = ecs.require "selection_box"
 local interval_call = ecs.require "engine.interval_call"
-local itransfer = require "gameplay.interface.transfer"
 local show_message = ecs.require "show_message".show_message
 local teardown = ecs.require "editor.teardown"
 
@@ -86,7 +84,6 @@ local function _clean(datamodel)
     idetail.unselected()
     datamodel.focus_building_icon = ""
     datamodel.status = "NORMAL"
-    itransfer.set_dest_eid(nil)
     selected_obj = nil
 
     iui.leave()
@@ -197,7 +194,6 @@ function M.create()
         category_idx = 0,
         item_idx = 0,
         item_bar = {},
-        transfer_id = 0,
         show_construct_button = false,
         is_task = false,                --是否是任务
         guide_progress = 0,             --引导进度
@@ -424,13 +420,9 @@ local function pickupObject(datamodel, position, blur)
             datamodel.show_construct_button = false
         end})
     end
-
-    itransfer.set_dest_eid(building_eid)
 end
 
 local update = interval_call(500, function(datamodel)
-    datamodel.transfer_id = itransfer.get_source_eid() or 0
-
     local gameplay_world = gameplay_core.get_world()
     datamodel.pollution, datamodel.pollution_unit, datamodel.pollution_raw = _get_pollution(gameplay_world)
     datamodel.daynight = _get_daynight_image(gameplay_world)
@@ -447,7 +439,6 @@ local update = interval_call(500, function(datamodel)
         v.name = typeobject_item.name
         v.icon = typeobject_item.item_icon
         v.count = slot.amount
-        v.is_transfer = false
         v.value = 0
 
         c = c + 1
@@ -533,7 +524,6 @@ function M.update(datamodel)
             if datamodel.status ~= "BUILD" and datamodel.status ~= "BULK_OPT" then
                 datamodel.focus_building_icon = ""
                 datamodel.status = "NORMAL"
-                itransfer.set_dest_eid(nil)
                 selected_obj = nil
             end
         elseif e.state == "ended" then
@@ -608,7 +598,6 @@ function M.update(datamodel)
         idetail.unselected()
         datamodel.focus_building_icon = ""
         datamodel.status = "NORMAL"
-        itransfer.set_dest_eid(nil)
         selected_obj = nil
 
         local e = assert(gameplay_core.get_entity(gameplay_eid))
@@ -741,7 +730,6 @@ function M.update(datamodel)
             idetail.unselected()
             datamodel.focus_building_icon = ""
             datamodel.status = "NORMAL"
-            itransfer.set_dest_eid(nil)
             selected_obj = nil
 
         else
@@ -778,7 +766,6 @@ function M.update(datamodel)
         idetail.unselected()
         datamodel.focus_building_icon = ""
         datamodel.status = "NORMAL"
-        itransfer.set_dest_eid(nil)
         selected_obj = nil
         ::continue::
     end
@@ -803,15 +790,6 @@ function M.update(datamodel)
             iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, selected_obj.id, true)
         end
         ::continue::
-    end
-
-    for _ in focus_transfer_source_mb:unpack() do
-        local source_eid = itransfer.get_source_eid()
-        if source_eid then
-            local e = assert(gameplay_core.get_entity(source_eid))
-            icamera_controller.focus_on_position("CENTER", math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)))
-            pickupObject(datamodel, math3d.vector(icoord.position(e.building.x, e.building.y, 1, 1)), true)
-        end
     end
 
     local function tech_recipe_unpicked_by_name(name)

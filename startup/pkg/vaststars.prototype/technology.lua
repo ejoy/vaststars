@@ -35,10 +35,7 @@ local prototype = gameplay.register.prototype
   -- task_params = {item = "采矿机框架"},
 
   -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "set_transfer_source", building = "xxx"},    收取物品
-
-  -- task = {"unknown", 0, 6},
-  -- task_params = {ui = "transfer",  building = "xxx"},  放置物品
+  -- task_params = {ui = "xxx", building = "xxx"},    点击UI
 
   -- task = {"unknown", 0, 7},
   -- task_params = {building = "xx", item = "xx", count = xx,}  放置物品到指定建筑
@@ -78,7 +75,7 @@ local prototype = gameplay.register.prototype
   --   icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
   --   type = {"task" },
   --   task = {"unknown", 0, 6},
-  --   task_params = {ui = "set_transfer_source", building = "机身残骸"},
+  --   task_params = {ui = "xxx", building = "机身残骸"},
   --   prerequisites = {"登录科技开启"},
   --   count = 1,
   --   effects = {

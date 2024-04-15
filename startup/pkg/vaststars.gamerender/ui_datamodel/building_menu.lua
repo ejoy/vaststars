@@ -27,9 +27,6 @@ local ui_click_mb = mailbox:sub {"ui_click"}
 -- menu events
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
-local transfer_source_mb = mailbox:sub {"transfer_source"}
-local set_transfer_source_mb = mailbox:sub {"set_transfer_source"}
-local transfer_mb = mailbox:sub {"transfer"}
 local set_item_mb = mailbox:sub {"set_item"}
 local remove_lorry_mb = mailbox:sub {"remove_lorry"}
 local move_mb = mailbox:sub {"move"}
@@ -45,35 +42,14 @@ local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local ibackpack = require "gameplay.interface.backpack"
 local igameplay = ecs.require "gameplay.gameplay_system"
-local itransfer = require "gameplay.interface.transfer"
 local iobject = ecs.require "object"
 local global = require "global"
 local icoord = require "coord"
 local itask = ecs.require "task"
 local objects = require "objects"
 local handler = ecs.require "ui_datamodel.common.building_menu_handler"
-local transfer_source_box = ecs.require "transfer_source_box"
 local show_message = ecs.require "show_message".show_message
 local show_items_mesage = ecs.require "show_message".show_items_mesage
-
-local function _get_transfer_count()
-    local count = 0
-    local info = itransfer.get_transfer_info(gameplay_core.get_world())
-    local length = 0
-    for _, _ in pairs(info) do
-        length = length + 1
-    end
-
-    if length > 1 then
-        count = "+"
-    elseif length == 1 then
-        local _, amount = next(info)
-        count = amount
-    else
-        count = 0
-    end
-    return count
-end
 
 ---------------
 local M = {}
@@ -90,9 +66,6 @@ function M.create(gameplay_eid, longpress)
 
     local set_recipe = false
     local lorry_factory_inc_lorry = false
-    local transfer_source = false
-    local set_transfer_source = false
-    local transfer = false
     local set_item = false
     local remove_lorry = false
     local move = false
@@ -110,11 +83,6 @@ function M.create(gameplay_eid, longpress)
         build = e.chest ~= nil
         set_recipe = (e.assembling ~= nil)
         lorry_factory_inc_lorry = (e.factory == true)
-        transfer_source = itransfer.get_source_eid() == e.eid
-        set_transfer_source = not transfer_source and e.chest ~= nil
-        if itransfer.get_source_eid() then
-            transfer = e.chest ~= nil
-        end
         set_item = e.station or (e.chest and CHEST_TYPE_CONVERT[typeobject.chest_type] == "transit" or false)
         remove_lorry = (e.lorry ~= nil)
         move = true
@@ -129,9 +97,6 @@ function M.create(gameplay_eid, longpress)
         build = build,
         set_recipe = set_recipe,
         lorry_factory_inc_lorry = lorry_factory_inc_lorry,
-        transfer_source = transfer_source,
-        set_transfer_source = set_transfer_source,
-        transfer = transfer,
         set_item = set_item,
         remove_lorry = remove_lorry,
         move = move,
@@ -141,8 +106,6 @@ function M.create(gameplay_eid, longpress)
         show_item_list = show_item_list,
         building_to_backpack = building_to_backpack,
         backpack_to_building = backpack_to_building,
-
-        transfer_count = transfer and _get_transfer_count() or 0,
     }
 
     local buttons = handler(typeobject.name, status)
@@ -236,14 +199,6 @@ local function chest_remove_item(gameplay_world, e, slot_index)
     gameplay_core.set_changed(CHANGED_FLAG_DEPOT)
 end
 
-local update = interval_call(300, function(datamodel, typeobject)
-    local count = datamodel.status.transfer and _get_transfer_count() or 0
-    if datamodel.status.transfer_count ~= count then
-        datamodel.status.transfer_count = count
-        datamodel.buttons = handler(typeobject.name, datamodel.status)
-    end
-end)
-
 function M.update(datamodel, gameplay_eid)
     local e = assert(gameplay_core.get_entity(gameplay_eid))
     local typeobject
@@ -252,7 +207,6 @@ function M.update(datamodel, gameplay_eid)
     else
         typeobject = iprototype.queryById(e.building.prototype)
     end
-    update(datamodel, typeobject)
 
     for _ in move_mb:unpack() do
         iui.leave()
@@ -310,91 +264,6 @@ function M.update(datamodel, gameplay_eid)
 
     for _ in show_item_list_mb:unpack() do
         iui.call_datamodel_method("/pkg/vaststars.resources/ui/detail_panel.html", "update_area_id", "expanded-chest-info")
-    end
-
-    for _ in set_transfer_source_mb:unpack() do
-        itransfer.set_source_eid(e.eid)
-        datamodel.status.transfer_source = true
-        datamodel.status.set_transfer_source = not datamodel.status.transfer_source and e.chest ~= nil
-        datamodel.buttons = handler(typeobject.name, datamodel.status)
-
-        local object = assert(objects:coord(e.building.x, e.building.y))
-        transfer_source_box.create(object.id)
-    end
-
-    for _ in transfer_source_mb:unpack() do
-        itransfer.set_source_eid(nil)
-        datamodel.status.transfer_source = false
-        datamodel.status.set_transfer_source = not datamodel.status.transfer_source and e.chest ~= nil
-        datamodel.buttons = handler(typeobject.name, datamodel.status)
-
-        transfer_source_box.remove()
-    end
-
-    for _ in transfer_mb:unpack() do
-        if not itransfer.get_source_eid() then
-            goto continue
-        end
-        local object = assert(objects:coord(e.building.x, e.building.y))
-        local gameplay_world = gameplay_core.get_world()
-
-        local t = {}
-        itransfer.transfer(gameplay_world, function(idx, item, n)
-            if e.station then
-                e.station_changed = true
-            end
-
-            if not t[item] then
-                t[item] = {idx = idx, n = 0}
-            end
-            t[item].n = t[item].n + n
-        end)
-
-        local tt = {}
-        for item, v in pairs(t) do
-            tt[#tt+1] = {item = item, n = v.n, idx = v.idx}
-        end
-        table.sort(tt, function(a, b) return a.idx < b.idx end)
-
-        if #tt == 0 then
-            show_message("transfer nothing")
-        end
-
-        local msgs = {}
-        for _, v in ipairs(tt) do
-            local typeobject = iprototype.queryById(v.item)
-            msgs[#msgs+1] = {icon = typeobject.item_icon, name = typeobject.name, count = v.n}
-        end
-        if #msgs > 0 then
-            local sp_x, sp_y = math3d.index(icamera_controller.world_to_screen(object.srt.t), 1, 2)
-            sp_x, sp_y= mu.convert_screen_to_device_coord(iviewport.device_viewrect, iviewport.viewrect, sp_x, sp_y)
-            show_items_mesage(sp_x, sp_y, msgs)
-        end
-
-        local seid = itransfer.get_source_eid()
-        local source = assert(gameplay_core.get_entity(seid))
-        if source.chest then
-            local typeobject = iprototype.queryById(source.building.prototype)
-            if not ichest.has_item(gameplay_world, source.chest) and typeobject.chest_destroy then
-                local object = assert(objects:coord(source.building.x, source.building.y))
-
-                iobject.remove(object)
-                objects:remove(object.id)
-                local building = global.buildings[object.id]
-                if building then
-                    for _, v in pairs(building) do
-                        v:remove()
-                    end
-                end
-
-                igameplay.destroy_entity(seid)
-                itransfer.set_source_eid(nil)
-                iui.leave()
-
-                transfer_source_box.remove()
-            end
-        end
-        ::continue::
     end
 
     for _ in remove_lorry_mb:unpack() do
