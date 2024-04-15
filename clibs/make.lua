@@ -141,7 +141,7 @@ lm:exe "vaststars" {
     },
     sources = {
         "vaststars_modules.c",
-        "../runtime/win32/vaststars.rc"
+        lm.AntDir .. "/runtime/windows/lua.rc"
     }
 }
 
@@ -159,6 +159,6 @@ lm:exe "vaststars_rt" {
     },
     sources = {
         "vaststars_modules.c",
-        "../runtime/win32/vaststars.rc"
+        lm.AntDir .. "/runtime/windows/lua.rc"
     }
 }
