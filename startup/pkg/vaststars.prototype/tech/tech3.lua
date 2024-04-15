@@ -24,7 +24,8 @@ local prototype = gameplay.register.prototype
     desc = "从废墟中搜索物资",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = {"task" },
-    task = {"unknown", 0, 4},
+    task = {"unknown", 0, 7},
+    task_params = {},
     prerequisites = {"物流教学"},
     count = 1,
     order = 380,
@@ -53,39 +54,39 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "放置物资" {
-    desc = "将物资放置至指挥中心",
-    icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
-    type = {"task" },
-    task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "砖石公路-X型", count = 1,},
-    prerequisites = {"废墟搜索"},
-    count = 1,
-    order = 381,
-    tips_pic = {
-      "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
-    },
-    guide_focus = {
-      {
-        prefab = "/pkg/vaststars.resources/glbs/selection-box-corner.glb/mesh.prefab",
-        x = 132.5,
-        y = 122.5,
-        w = 5.2,
-        h = 5.2,
-        color = {0.3, 1, 0, 1},
-        show_arrow = true,
-      },
-      {
-        camera_x = 130,
-        camera_y = 120,
-        w = 4.0,
-        h = 4.0,
-      },
-    },
-    sign_desc = {
-      { desc = "将废墟获取的采矿机放置至指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
-    },
-}
+--   prototype "放置物资" {
+--     desc = "将物资放置至指挥中心",
+--     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
+--     type = {"task" },
+--     task = {"unknown", 0, 7},
+--     task_params = {building = "指挥中心", item = "砖石公路-X型", count = 1,},
+--     prerequisites = {"废墟搜索"},
+--     count = 1,
+--     order = 381,
+--     tips_pic = {
+--       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
+--     },
+--     guide_focus = {
+--       {
+--         prefab = "/pkg/vaststars.resources/glbs/selection-box-corner.glb/mesh.prefab",
+--         x = 132.5,
+--         y = 122.5,
+--         w = 5.2,
+--         h = 5.2,
+--         color = {0.3, 1, 0, 1},
+--         show_arrow = true,
+--       },
+--       {
+--         camera_x = 130,
+--         camera_y = 120,
+--         w = 4.0,
+--         h = 4.0,
+--       },
+--     },
+--     sign_desc = {
+--       { desc = "将废墟获取的采矿机放置至指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+--     },
+-- }
 
   prototype "道路维修" {
     desc = "维修砖石公路",
@@ -98,7 +99,7 @@ local prototype = gameplay.register.prototype
                 {{162, 132}, {162, 122}},
               }
     },
-    prerequisites = {"放置物资"},
+    prerequisites = {"废墟搜索"},
     count = 1,
     order = 382,
     tips_pic = {
@@ -272,8 +273,8 @@ local prototype = gameplay.register.prototype
   prototype "更多公路" {
     desc = "生产砖石公路",
     type = { "task" },
-    task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "砖石公路-X型", count = 15,},
+    task = {"unknown", 0, 12},
+    task_params = {building = "组装机I", item = "砖石公路-X型",},
     count = 15,
     order = 387,
     prerequisites = {"石砖大生产"},
@@ -285,7 +286,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "组装机生产的15段砖石公路并放入指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产并获取15段砖石公路", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -311,8 +312,8 @@ local prototype = gameplay.register.prototype
   prototype "制造运输车" {
     desc = "制造运输车辆",
     type = { "task" },
-    task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "运输车辆I", count = 1,},
+    task = {"unknown", 0, 12},
+    task_params = {building = "组装机I", item = "运输车辆I",},
     count = 1,
     order = 389,
     prerequisites = {"铁板大生产"},
@@ -320,7 +321,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "从组装机生产1辆运输车并放置至物流中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产并获取1辆运输车", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -367,8 +368,8 @@ local prototype = gameplay.register.prototype
   prototype "制造采矿机" {
     desc = "制造轻型采矿机",
     type = { "task" },
-    task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "轻型采矿机", count = 1,},
+    task = {"unknown", 0, 12},
+    task_params = {building = "组装机I", item = "轻型采矿机",},
     count = 1,
     order = 391,
     prerequisites = {"更多运输车"},
@@ -376,7 +377,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用组装机1个轻型采矿机并放置至指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产并获取1台轻型采矿机", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 

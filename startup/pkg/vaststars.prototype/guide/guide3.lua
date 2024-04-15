@@ -31,21 +31,21 @@ local guide2 = {
     --     },
 	-- },
 
-    {
-        name = "",
-		narrative = {
-            {"哔哩..将获得{/color:4bd0ff 建筑物资}放入{/g 指挥中心}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
-        },
-        narrative_end = {
-            task = {
-                "放置物资",
-            },
-            guide_progress = 10,
-        },
-        prerequisites = {
-            "废墟搜索",
-        },
-	},
+    -- {
+    --     name = "",
+	-- 	narrative = {
+    --         {"哔哩..将获得{/color:4bd0ff 建筑物资}放入{/g 指挥中心}..哔哩..", "/pkg/vaststars.resources/ui/textures/guide/guide-6.texture"},
+    --     },
+    --     narrative_end = {
+    --         task = {
+    --             "放置物资",
+    --         },
+    --         guide_progress = 10,
+    --     },
+    --     prerequisites = {
+    --         "废墟搜索",
+    --     },
+	-- },
 
     {
         name = "",
@@ -60,7 +60,7 @@ local guide2 = {
             guide_progress = 10,
         },
         prerequisites = {
-            "放置物资",
+            "废墟搜索",
         },
 	},
 
