@@ -37,8 +37,8 @@ local prototype = gameplay.register.prototype
     desc = "仓库选择获取管道",
     icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture",
     type = { "task" },
-    task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "管道1-X型", count = 30,},
+    task = {"unknown", 0, 12},
+    task_params = {building = "仓库I", item = "管道1-X型",},
     count = 30,
     order = 401,
     effects = {},
@@ -73,7 +73,7 @@ local prototype = gameplay.register.prototype
       },
     },
     sign_desc = {
-      { desc = "仓库里获取30个“管道”并放入指挥中心", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "仓库里获取30个“管道”", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -189,8 +189,8 @@ local prototype = gameplay.register.prototype
   prototype "获取地下管" {
     desc = "获取打造的地下管",
     type = { "task" },
-    task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "地下管1-JI型", count = 2,},          
+    task = {"unknown", 0, 12},
+    task_params = {building = "组装机I", item = "地下管1-JI型",},          
     count = 2,
     order = 404,
     prerequisites = {"地下管生产设置"},
@@ -198,7 +198,7 @@ local prototype = gameplay.register.prototype
       "/pkg/vaststars.resources/ui/textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "从组装机里获取已生产的2个地下管", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
+      { desc = "组装机生产并获取2个地下管", icon = "/pkg/vaststars.resources/ui/textures/construct/industry.texture"},
     },
   }
 
@@ -364,8 +364,8 @@ local prototype = gameplay.register.prototype
   prototype "液罐获取" {
     desc = "获取液罐",
     type = { "task" },
-    task = {"unknown", 0, 7},
-    task_params = {building = "指挥中心", item = "液罐I", count = 2,},
+    task = {"unknown", 0, 12},
+    task_params = {building = "组装机I", item = "液罐I",},
     count = 2,
     order = 409,
     prerequisites = {"液罐制造工艺"},
