@@ -2,9 +2,8 @@
 #include "common/common.sh"
 #include "road.sh"
 
-vec4 CUSTOM_VS_POSITION(VSInput vsinput, inout Varyings varyings, out mat4 worldmat)
+vec4 CUSTOM_VS_POSITION(VSInput vsinput, inout Varyings varyings, mat4 worldmat)
 {
-	worldmat = (mat4)0;
 	return transform_road(vsinput, varyings);
 }
 
