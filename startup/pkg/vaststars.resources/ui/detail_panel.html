@@ -25,18 +25,7 @@
                 pointer-events: none;
                 animation: 0.5s linear 0s pannelmovement;
             }
-            .tips-bg {
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                margin: 2.5vmin 10vmin 0 0;
-                width: 68vmin;
-                height: 81.5vmin;
-                background-image: "/pkg/vaststars.resources/ui/textures/detail/tips_bg.texture";
-                background-size: 100% 100%;
-                margin-left: -3vmin;
-            }
-            assembler-info {
+            expanded-panel {
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -243,14 +232,14 @@
 
             <!-- expanded panel begin -->
             <!-- title -->
-            <div class = "tips-bg" style='flex-direction: column; justify-content:center; align-items: center; margin-left: -3vmin;' data-if="areaid=='expanded-model'" data-event-longpress = "onLongPressExpandedPanel(ev)">
+            <expanded-panel style='flex-direction: column; justify-content:center; align-items: center; margin-left: -3vmin;' data-if="areaid=='expanded-model'" data-event-longpress = "onLongPressExpandedPanel(ev)">
                 <div style="width: 100%; height: 10%; justify-content: center; align-items: center; text-align: center; font-size: 6vmin;">{{prototype_name}}</div>
                 <div style='width: 60%; height: 60%; justify-content: center; align-items: center; background-size: 100% 100%;' data-style-background-image = "model" data-if = "model ~= ''"/>
                 <div style="width: 80%; height: 10%; justify-content: center; align-items: center; text-align: center; color:#adadad; font-size:3.8vmin; word-break: break-all;">{{desc}}</div>
-            </div>
+            </expanded-panel>
 
             <!-- expanded panel - property list -->
-            <div class = "tips-bg" style='align-items: center;' data-if="areaid=='expanded-property-list' and #property_list > 0" data-event-longpress="onLongPressExpandedPanel(ev)">
+            <expanded-panel style='align-items: center;' data-if="areaid=='expanded-property-list' and #property_list > 0" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div data-for = "property : property_list">
                     <div style = "height: 18vmin; flex-direction: row; align-items: center; justify-content: center;">
                         <!-- div style = "width: 100%; height: 8vmin; background-size:cover;" data-style-background-image="property.icon" /-->
@@ -263,10 +252,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </expanded-panel>
 
             <!-- expanded panel - chest -->
-            <assembler-info data-if = "areaid == 'expanded-chest-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
+            <expanded-panel data-if = "areaid == 'expanded-chest-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <scroll-item-list style="width: 100.00%; height: 80%; gap: 1vmin;">
                     <div style = "width: 100%; gap: 1vmin; align-items: center;" data-for="chest, index : chest_list_1" data-event-click = "clickItem('chest', index)">
                         <div style="flex-direction: row; width: 75%; height: 12.5vmin;">
@@ -277,10 +266,10 @@
                         <div style="width: 82%; height: 0.10vmin; background-color: rgb(114, 108, 104);" />
                     </div>
                 </scroll-item-list>
-            </assembler-info>
+            </expanded-panel>
 
             <!-- expanded panel - miner -->
-            <div class="tips-bg" data-if = "areaid == 'expanded-miner-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
+            <expanded-panel data-if = "areaid == 'expanded-miner-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <scroll-item-list style="width: 100.00%; height: 80%; gap: 1vmin; align-items: center;">
                     <div style = "gap: 1vmin; background-image: '/pkg/vaststars.resources/ui/textures/item-config/category-bg.texture'; width: 80%; background-size: 23.50vmax 23.13vmin;">
                         <div style = "margin-top: 3vmin; margin-left: 3vmin; height: 6vmin; color: rgb(0, 255, 104); text-align: left; font-size: 3.5vmin;">成品: </div>
@@ -294,17 +283,17 @@
                         </div>
                     </div>
                 </scroll-item-list>
-            </div>
+            </expanded-panel>
 
             <!-- expanded panel - assembler -->
-            <assembler-info data-if = "areaid == 'expanded-assembler-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
+            <expanded-panel data-if = "areaid == 'expanded-assembler-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <scroll-item-list style="width: 100.00%; height: 80%; gap: 1vmin; align-items: center;">
                     <div style = "height: 6vmin; color: rgb(246, 142, 14); text-align: center; font-size: 4.8vmin;">{{recipe_name}}</div>
 
                     <div style = "gap: 1vmin; background-image: '/pkg/vaststars.resources/ui/textures/item-config/category-bg.texture'; width: 80%; background-size: 23.50vmax 23.13vmin;">
                         <div style = "margin-top: 3vmin; margin-left: 3vmin; height: 6vmin; color: rgb(0, 255, 104); text-align: left; font-size: 3.5vmin;">原料: </div>
                         <div style = "width: 100%; gap: 1vmin; align-items: center;" data-for="recipe_inputs" data-event-click = "clickItem('assembler', 'inputs', it.index)">
-                            <div style="flex-direction: row; height: 12.5vmin; gap: 1vmin;">
+                            <div style="flex-direction: row; width: 90%; height: 12.5vmin; gap: 1vmin;">
                                 <div class="small-item1" style="flex-grow: 0; width: 12.5vmin; height: 12.5vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" />
                                 <div style = "width: 50%; font-size: 4.8vmin; justify-content: flex-end; word-break: break-all;">{{it.name}}</div>
                                 <div style = "flex-grow: 1; font-size: 4.8vmin; justify-content: flex-end;">x {{it.count}}</div>
@@ -316,7 +305,7 @@
                     <div style = "gap: 1vmin; background-image: '/pkg/vaststars.resources/ui/textures/item-config/category-bg.texture'; width: 80%; background-size: 23.50vmax 23.13vmin;">
                         <div style = "margin-top: 3vmin; margin-left: 3vmin; height: 6vmin; color: rgb(0, 255, 104); text-align: left; font-size: 3.5vmin;">成品: </div>
                         <div style = "width: 100%; gap: 1vmin; align-items: center;" data-for="recipe_ouputs" data-event-click = "clickItem('assembler', 'outputs', it.index)">
-                            <div style="flex-direction: row; height: 12.5vmin; gap: 1vmin;">
+                            <div style="flex-direction: row; width: 90%; height: 12.5vmin; gap: 1vmin;">
                                 <div class="small-item1" style="flex-grow: 0; width: 12.5vmin; height: 12.5vmin; border: 0.3vmin rgb(0, 217, 255);" data-style-background-image="it.icon" />
                                 <div style = "width: 50%; font-size: 4.8vmin; justify-content: flex-end; word-break: break-all;">{{it.name}}</div>
                                 <div style = "flex-grow: 1; font-size: 4.8vmin; justify-content: flex-end;">x {{it.count}}</div>
@@ -325,10 +314,10 @@
                         </div>
                     </div>
                 </scroll-item-list>
-            </assembler-info>
+            </expanded-panel>
 
             <!-- expanded panel - station -->
-            <div class="tips-bg" style="flex-direction: row;" data-if = "areaid == 'expanded-station-info'" data-event-longpress = "onLongPressExpandedPanel(ev)">
+            <expanded-panel style="flex-direction: row;" data-if = "areaid == 'expanded-station-info'" data-event-longpress = "onLongPressExpandedPanel(ev)">
                 <div style="width:80%; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
                     <div style='flex-direction: column; align-items: center;' data-for = "chest : chest_list_1">
                         <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'demand' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'supply' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
@@ -340,10 +329,10 @@
                         <div style='font-size: 2.5vmin; color:rgb(255, 166, 0); -webkit-text-stroke: 0.26vmin rgb(0,0,0);'>{{chest.name}}</div>
                     </div>
                 </div>
-            </div>
+            </expanded-panel>
 
             <!-- expanded panel - depot -->
-            <div class="tips-bg" style="flex-direction: row;" data-if = "areaid == 'expanded-depot-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
+            <expanded-panel style="flex-direction: row;" data-if = "areaid == 'expanded-depot-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <scroll-item-list style="width: 100.00%; height: 80%; gap: 1vmin;">
                     <div style = "width: 100%; gap: 1vmin; align-items: center;" data-for="chest, index : chest_list_1" data-event-click = "clickItem('depot', index)">
                         <div style="flex-direction: row; width: 75%; height: 12.5vmin;">
@@ -354,10 +343,10 @@
                         <div style="width: 82%; height: 0.10vmin; background-color: rgb(114, 108, 104);" />
                     </div>
                 </scroll-item-list>
-            </div>
+            </expanded-panel>
 
             <!-- expanded panel - laboratory -->
-            <div class="tips-bg" style="gap: 1vmin;" data-if = "areaid == 'expanded-laboratory-bottom'" data-event-longpress="onLongPressExpandedPanel(ev)">
+            <expanded-panel style="gap: 1vmin;" data-if = "areaid == 'expanded-laboratory-bottom'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <scroll-item-list style="width: 81.5%; height: auto; flex-direction: row; align-items: center; flex-wrap: wrap;">
                     <div style='width: 25%; flex-direction: column; align-items: center;' data-for = "chest : chest_list_1" >
                         <div class="small-item1" style="margin: 0.4vmin; width: 12.5vmin; height: 12.5vmin;" data-style-border = "chest.type == 'supply' and '0.3vmin rgb(254, 98, 124);' or (chest.type == 'demand' and '0.3vmin rgb(23, 176, 240);' or '0.2vmin rgb(255, 255, 255);')" data-style-background-image="chest.icon">
@@ -373,7 +362,7 @@
                     
                     <div class="indicator" style='top: -7.5vmin; height: 8vmin; width: 1vmin;' data-style-left="progress"/>
                 </div>
-            </div>
+            </expanded-panel>
             <!-- expanded panel end -->
         </div>
     </body>
