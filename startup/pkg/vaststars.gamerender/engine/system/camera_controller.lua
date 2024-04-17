@@ -71,7 +71,8 @@ end
 local function get_screen_world_position(ce, position_type)
     if position_type == "CENTER" then
         local ray = {o = iom.get_position(ce), d = math3d.todirection(iom.get_rotation(ce))}
-        return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, XZ_PLANE), ray.o)
+        local _, p = math3d.plane_ray(ray.o, ray.d, XZ_PLANE, true)
+        return p
     else
         error(("invalid type : %s"):format(position_type))
     end
@@ -104,12 +105,14 @@ local function toggle_view(v, cur_xzpoint)
         local sx, sy = math3d.index(screen_point, 1, 2)
         sx, sy = mu.convert_screen_to_device_coord(iviewport.device_viewrect, iviewport.viewrect, sx, sy)
         local src_dir = math3d.inverse(math3d.todirection(sr))
-        local src_plane = math3d.plane(xzpoint, src_dir)
-        local src_dis = math3d.dot(st, src_dir) - math3d.index(src_plane, 4)
+
+        --plane: px*nx + py*ny + pz*nz + d = 0, D = (dot(n, p) + d)/length(n.xyz)
+        local src_plane = math3d.plane(src_dir, xzpoint)
+        local src_dis = math3d.point2plane(st, src_plane) --math3d.dot(st, src_dir) - math3d.index(src_plane, 4)
 
         local dst_dir = math3d.inverse(math3d.todirection(dr))
         local dst_xzpoint = math3d.sub(st, math3d.mul(dst_dir, src_dis + delta_dis))
-        local dst_plane = math3d.plane(dst_xzpoint, dst_dir)
+        local dst_plane = math3d.plane(dst_dir, dst_xzpoint)
 
         -- xzpoint_intersect_dst_plane_point
         local inter_point = icamera_controller.screen_to_world(sx, sy, dst_plane, dst_vp)
@@ -137,12 +140,12 @@ local function toggle_view(v, cur_xzpoint)
 
     local function get_delta_distance(sr, st, dr, dt, xzpoint)
         local src_dir = math3d.inverse(math3d.todirection(sr))
-        local src_plane = math3d.plane(xzpoint, src_dir)
-        local src_dis = math3d.dot(st, src_dir) - math3d.index(src_plane, 4)
+        local src_plane = math3d.plane(src_dir, xzpoint)
+        local src_dis = math3d.point2plane(st, src_plane) --math3d.dot(st, src_dir) - math3d.index(src_plane, 4)
 
         local dst_dir = math3d.inverse(math3d.todirection(dr))
-        local dst_plane = math3d.plane(xzpoint, dst_dir)
-        local dst_dis = math3d.dot(dt, dst_dir) - math3d.index(dst_plane, 4)
+        local dst_plane = math3d.plane(dst_dir, xzpoint)
+        local dst_dis = math3d.point2plane(dt, dst_plane) --math3d.dot(dt, dst_dir) - math3d.index(dst_plane, 4)
 
         return dst_dis - src_dis
     end
@@ -345,7 +348,8 @@ function icamera_controller.screen_to_world(x, y, plane, vp)
     local p1 = mu.ndc_to_world(vpmat, ndcpt)
 
     local ray = {o = p0, d = math3d.sub(p0, p1)}
-    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
+    local _, p = math3d.plane_ray(ray.o, ray.d, plane, true)
+    return p
 end
 
 function icamera_controller.world_to_screen(position)
@@ -364,21 +368,23 @@ function icamera_controller.get_interset_points(ce)
     w:extend(ce, "scene:in camera:in")
 
     local points = math3d.frustum_points(ce.camera.viewprojmat)
-    local lb_raydir = math3d.sub(math3d.array_index(points, 5), math3d.array_index(points, 1))
-    local lt_raydir = math3d.sub(math3d.array_index(points, 6), math3d.array_index(points, 2))
-    local rb_raydir = math3d.sub(math3d.array_index(points, 7), math3d.array_index(points, 3))
-    local rt_raydir = math3d.sub(math3d.array_index(points, 8), math3d.array_index(points, 4))
 
     local height = 0
-    local xz_plane = math3d.vector(0, 1, 0, height)
-
+    local xz_plane = math3d.plane(math3d.vector(0, 1, 0), height)
     local eyepos = math3d.index(ce.scene.worldmat, 4)
-    return {
-        math3d.muladd(math3d.plane_ray(eyepos, lb_raydir, xz_plane), lb_raydir, eyepos),
-        math3d.muladd(math3d.plane_ray(eyepos, lt_raydir, xz_plane), lt_raydir, eyepos),
-        math3d.muladd(math3d.plane_ray(eyepos, rb_raydir, xz_plane), rb_raydir, eyepos),
-        math3d.muladd(math3d.plane_ray(eyepos, rt_raydir, xz_plane), rt_raydir, eyepos),
-    }
+
+    local results = {}
+    for i=1, 4 do
+        local rd = math3d.sub(math3d.array_index(points, i+4), math3d.array_index(points, i))
+        local t, p = math3d.plane_ray(eyepos, rd, xz_plane, true)
+        if nil == t then
+            error "plane_ray not found interset"
+        end
+
+        results[#results+1] = p
+    end
+
+    return results
 end
 
 function icamera_controller.focus_on_position(type, position, callback)

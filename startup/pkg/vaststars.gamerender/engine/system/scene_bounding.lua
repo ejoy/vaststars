@@ -3,7 +3,7 @@ local world = ecs.world
 local w     = world.w
 
 local math3d    = require "math3d"
-local CUSTOM_NEAR_PLANE <const> = math3d.constant("v4", {0, 1, 0, 5})
+local CUSTOM_NEAR_PLANE <const> = math3d.constant("v4", {0, 1, 0,-5})   --same as math3d.plane(math3d.vector(0.0, 1.0, 0.0), 5)
 local CUSTOM_FAR_PLANE <const>  = math3d.constant("v4", {0, 1, 0, 0})
 
 local mathpkg   = import_package "ant.math"
@@ -26,9 +26,9 @@ local function ray_intersect_nearfar_planes(rays)
     local p = {}
     for _, r in ipairs(rays) do
         local function intersect_plane(plane)
-            local t = math3d.plane_ray(r.o, r.d, plane)
+            local t, pt = math3d.plane_ray(r.o, r.d, plane, true)
             local _ = (0 <= t and t <= 1.0) or error(("We assume scene between near and far plane, intersert t:%f, ray.o: %s, ray.d:%s"):format(t, math3d.tostring(r.o), math3d.tostring(r.d)))
-            p[#p+1] =  mu.ray_point(r, t)
+            p[#p+1] =  pt
         end
         intersect_plane(CUSTOM_NEAR_PLANE)
         intersect_plane(CUSTOM_FAR_PLANE)
