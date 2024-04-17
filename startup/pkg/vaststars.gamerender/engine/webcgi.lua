@@ -12,6 +12,11 @@ local function register_command()
     COMMAND.ping = function(q)
         return {COMMAND = q}
     end
+	COMMAND.traceback = function(cmd, q)
+		local timeout = tonumber(q.timeout or 100)
+		local tlog = ltask.call(1, "tracelog", timeout)
+		return tlog
+	end
 
 	function S.world_command(what, ...)
         world:pub {"web_cgi_cmd", what, ...}
