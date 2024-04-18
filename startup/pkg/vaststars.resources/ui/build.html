@@ -62,9 +62,9 @@
 
         <sector-menu-button-container data-style-transform = "it.outer_transform" data-for = "buttons" data-event-longpress="onLongPress(ev, it.desc)">
             <div style = "position: absolute; pointer-events: none; width: 18.23vmin; height: 18.23vmin;" data-style-transform = "it.inner_transform">
-                <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin;" data-event-click = "clickButton(it.command)">
+                <sector-menu-button style = "width: 18.23vmin; height: 18.23vmin; align-items: center;" data-event-click = "clickButton(it.command)">
                     <div style = "position: absolute; background-size: 100% 100%; position: absolute; width: 100%; height: 100%;" data-style-background-image = "it.background_image" />
-                    <div data-if = "it.number ~= ''" style = "position: absolute; right: 0vmin; width: 50.00%; font-size: 3.00vmin; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "(it.number == '' or it.number == '+') and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>
+                    <div data-if = "it.number ~= ''" style = "width: 70.00%; justify-content: center; font-size: 4.00vmin; text-align: center; align-items: center; -webkit-text-stroke: 0.2vmin rgb(63, 60, 63);" data-style-color = "(it.number == '' or it.number == '+') and 'rgb(0,255,0)' or (it.number > 0 and 'rgb(0,255,0)' or 'rgb(255,255,255)')">{{it.number}}</div>
                 </sector-menu-button>
             </div>
         </sector-menu-button-container>
