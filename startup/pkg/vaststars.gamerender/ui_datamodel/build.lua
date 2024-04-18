@@ -3,9 +3,9 @@ local world = ecs.world
 
 local CONSTRUCT_LIST <const> = ecs.require "vaststars.prototype|construct_list"
 local BUTTONS <const> = {
-    { command = "rotate",           icon = "/pkg/vaststars.resources/ui/textures/build/rotate.texture", },
-    { command = "continuous_build", icon = "/pkg/vaststars.resources/ui/textures/build/single_build.texture", },
-    { command = "single_build",     icon = "/pkg/vaststars.resources/ui/textures/build/continuous_build.texture", },
+    { command = "rotate",           show_number = false, icon = "/pkg/vaststars.resources/ui/textures/build/rotate.texture", },
+    { command = "continuous_build", show_number = true,  icon = "/pkg/vaststars.resources/ui/textures/build/single_build.texture", },
+    { command = "single_build",     show_number = true,  icon = "/pkg/vaststars.resources/ui/textures/build/continuous_build.texture", },
 }
 local DESC <const> = ecs.require "vaststars.prototype|menu.desc"
 
@@ -20,20 +20,27 @@ local click_item_mb = mailbox:sub {"click_item"}
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 local set_button_offset = ecs.require "ui_datamodel.common.sector_menu".set_button_offset
 local ichest = require "gameplay.interface.chest"
+local ibackpack = require "gameplay.interface.backpack"
 
 local M = {}
 
 local function get_list(gameplay_eid)
     local gameplay_world = gameplay_core.get_world()
     local e = gameplay_world:fetch_entity(gameplay_eid)
+
+    local gameplay_world = gameplay_core.get_world()
+    local base = ibackpack.get_base_entity(gameplay_world)
     local items = {}
-    for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
-        local slot = ichest.get(gameplay_world, e.chest, i)
-        if not slot then
-            break
-        end
-        if slot.item ~= 0 and slot.amount > 0 then
-            items[slot.item] = (items[slot.item] or 0) + slot.amount
+
+    if base.eid ~= gameplay_eid then
+        for i = 1, ichest.get_max_slot(iprototype.queryById(e.building.prototype)) do
+            local slot = ichest.get(gameplay_world, e.chest, i)
+            if not slot then
+                break
+            end
+            if slot.item ~= 0 and slot.amount > 0 then
+                items[slot.item] = (items[slot.item] or 0) + slot.amount
+            end
         end
     end
 
@@ -45,7 +52,7 @@ local function get_list(gameplay_eid)
 
         for item_idx, prototype_name in ipairs(menu.items) do
             local typeobject = assert(iprototype.queryByName(prototype_name))
-            local count = items[typeobject.id] or 0
+            local count = base.eid == gameplay_eid and ibackpack.query(gameplay_world, base, typeobject.id) or (items[typeobject.id] or 0)
             if not (item_unlocked(typeobject.name) or count > 0) then
                 goto continue
             end
@@ -88,7 +95,7 @@ local function get_index(list, prototype)
     error(("%s not found in construct_list"):format(iprototype.queryById(prototype).name))
 end
 
-local function _handler(datamodel)
+local function _handler(datamodel, item_count)
     local t = {}
     for _, v in ipairs(BUTTONS) do
         if datamodel[v.command] then
@@ -96,11 +103,18 @@ local function _handler(datamodel)
                 command = v.command,
                 background_image = v.icon,
                 desc = DESC["build." .. v.command] or "",
+                number = v.show_number and item_count or '',
             }
         end
     end
     set_button_offset(t)
     return t
+end
+
+local function _get_item_count(prototype)
+    local gameplay_world = gameplay_core.get_world()
+    local base = ibackpack.get_base_entity(gameplay_world)
+    return ibackpack.query(gameplay_world, base, prototype)
 end
 
 function M.create(gameplay_eid, prototype, move_building)
@@ -109,6 +123,7 @@ function M.create(gameplay_eid, prototype, move_building)
     local rotate, single_build, continuous_build = false, false, false
     local category_idx, item_idx = 0, 0
     local construct_list = move_building and {} or get_list(gameplay_eid)
+    local item_count = 0
 
     if prototype then
         local typeobject = assert(iprototype.queryById(prototype))
@@ -123,7 +138,13 @@ function M.create(gameplay_eid, prototype, move_building)
             update_list_item(construct_list, category_idx, item_idx, "selected", true)
         end
         rotate = (typeobject.rotate_on_build == true)
+
+        local gameplay_world = gameplay_core.get_world()
+        local base = ibackpack.get_base_entity(gameplay_world)
+        item_count = ibackpack.query(gameplay_world, base, prototype)
     end
+
+    iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "show_bottom_bar", false)
 
     local t = {
         rotate = rotate,
@@ -136,8 +157,12 @@ function M.create(gameplay_eid, prototype, move_building)
         construct_list = construct_list,
         show_list = show_list,
     }
-    t.buttons = _handler(t)
+    t.buttons = _handler(t, item_count)
     return t
+end
+
+function M.close(datamodel)
+    iui.call_datamodel_method("/pkg/vaststars.resources/ui/construct.html", "show_bottom_bar", true)
 end
 
 function M.update(datamodel)
@@ -153,14 +178,18 @@ function M.update(datamodel)
         iui.redirect("/pkg/vaststars.resources/ui/construct.html", "set_continuity", false)
         datamodel.single_build = false
         datamodel.continuous_build = true
-        datamodel.buttons = _handler(datamodel)
+
+        local prototype = datamodel.construct_list[datamodel.category_idx].items[datamodel.item_idx].prototype
+        datamodel.buttons = _handler(datamodel, _get_item_count(prototype))
     end
 
     for _ in continuous_build_mb:unpack() do
         iui.redirect("/pkg/vaststars.resources/ui/construct.html", "set_continuity", true)
         datamodel.single_build = true
         datamodel.continuous_build = false
-        datamodel.buttons = _handler(datamodel)
+
+        local prototype = datamodel.construct_list[datamodel.category_idx].items[datamodel.item_idx].prototype
+        datamodel.buttons = _handler(datamodel, _get_item_count(prototype))
     end
 
     for _, _, _, category_idx, item_idx in click_item_mb:unpack() do
@@ -176,10 +205,11 @@ function M.update(datamodel)
         datamodel.main_button_icon = typeobject.item_icon
 
         datamodel.rotate = true
+
         local continuity = iprototype.continuity(typeobject)
         datamodel.single_build = continuity
         datamodel.continuous_build = not continuity
-        datamodel.buttons = _handler(datamodel)
+        datamodel.buttons = _handler(datamodel, _get_item_count(prototype))
 
         iui.redirect("/pkg/vaststars.resources/ui/construct.html", "construct_entity", typeobject.name, continuity)
     end

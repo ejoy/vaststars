@@ -17,11 +17,8 @@ local CHANGED_FLAG_DEPOT <const> = CONSTANT.CHANGED_FLAG_DEPOT
 local math3d = require "math3d"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.require "engine.system.ui_system"
-local icamera_controller = ecs.require "engine.system.camera_controller"
-local interval_call = ecs.require "engine.interval_call"
 local gameplay = import_package "vaststars.gameplay"
 local igameplay_station = gameplay.interface "station"
-local iviewport = ecs.require "ant.render|viewport.state"
 
 local ui_click_mb = mailbox:sub {"ui_click"}
 -- menu events
@@ -41,15 +38,11 @@ local backpack_to_building_mb = mailbox:sub {"backpack_to_building"}
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local ibackpack = require "gameplay.interface.backpack"
-local igameplay = ecs.require "gameplay.gameplay_system"
-local iobject = ecs.require "object"
-local global = require "global"
 local icoord = require "coord"
 local itask = ecs.require "task"
 local objects = require "objects"
 local handler = ecs.require "ui_datamodel.common.building_menu_handler"
 local show_message = ecs.require "show_message".show_message
-local show_items_mesage = ecs.require "show_message".show_items_mesage
 
 ---------------
 local M = {}

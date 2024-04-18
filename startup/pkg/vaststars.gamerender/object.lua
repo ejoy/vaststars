@@ -43,7 +43,7 @@ local function new(init)
 	t.__lastversion = {
         id = _new_object_id(),
         prototype_name = assert(init.prototype_name),
-        dir = assert(init.dir), 
+        dir = assert(init.dir),
         x = assert(init.x),
         y = assert(init.y),
         srt = init.srt,

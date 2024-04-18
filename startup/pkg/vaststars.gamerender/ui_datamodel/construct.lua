@@ -207,6 +207,7 @@ function M.create()
         electricity_unit = "W",
         electricity_negative = false,
         new_tech_count = _get_new_tech_count(global.science.tech_list),
+        show_bottom_bar = true,
     }
 end
 
@@ -836,5 +837,9 @@ function M.update(datamodel)
     end
 
     iobject.flush()
+end
+
+function M.show_bottom_bar(datamodel, show)
+    datamodel.show_bottom_bar = show
 end
 return M
