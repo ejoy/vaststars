@@ -785,7 +785,7 @@ prototype "运输车辆I" {
     pollution = 500,
     item_icon = "/pkg/vaststars.resources/textures/icons/item/truck.texture",
     item_model = "/pkg/vaststars.resources/glbs/stackeditems/building.glb/mesh.prefab",
-    icon = "mem:/pkg/vaststars.resources/glbs/stackeditems/building.glb/mesh.prefab config:s,1,3",
+    icon = "mem:/pkg/vaststars.resources/glbs/lorry-1.glb/mesh.prefab config:s,1,3",
     model = "/pkg/vaststars.resources/glbs/lorry-1.glb/mesh.prefab",
 }
 
