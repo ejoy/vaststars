@@ -403,6 +403,7 @@ local function get_property(e, typeobject)
     if e.airport then
         local typeobject = iprototype.queryById(e.building.prototype)
         t.values['drone_count'] = #typeobject.drone
+        t.chest_style = typeobject.chest_style
     end
     if e.chimney and e.chimney.recipe ~= 0 then
         local typeobject = assert(iprototype.queryById(e.chimney.recipe))
@@ -645,6 +646,35 @@ end
 local last_inputs, last_ouputs
 local preinput
 
+local DRONE_STATUS = {
+    init = 0,
+    has_error = 1,
+    empty_task = 2,
+    idle = 3,
+    at_home = 4,
+    go_mov1 = 5,
+    go_mov2 = 6,
+    go_home = 7,
+}
+for k, v in pairs(DRONE_STATUS) do
+    DRONE_STATUS[v] = k
+end
+
+local function _update_drone_infos(datamodel)
+    for idx, eid in ipairs(datamodel.drones) do
+        local de = assert(gameplay_core.get_entity(eid))
+
+        local item = assert(de.drone.item)
+        local building = objects:coord(de.drone.next_x, de.drone.next_y)
+
+        datamodel.drone_infos[idx] = {
+            item_icon = item ~= 0 and iprototype.queryById(item).item_icon or "",
+            building_icon = building and iprototype.queryByName(building.prototype_name).item_icon or "",
+            status = DRONE_STATUS[de.drone.status],
+        }
+    end
+end
+
 function M.create(object_id)
     building_to_backpack = true
 
@@ -663,8 +693,23 @@ function M.create(object_id)
         desc = iprototype.item(typeobject).item_description,
         prototype_name = iprototype.display_name(typeobject),
         model = "mem:" .. typeobject.model .. " config:d,1,4,1.2",
-        areaid = ""
+        areaid = "",
+        drones = {},
+        drone_infos = {},
     }
+
+    if e.airport then
+        local gameplay_world = gameplay_core.get_world()
+        local gameplay_ecs = gameplay_world.ecs
+        for de in gameplay_ecs:select "drone:in eid:in" do
+            if de.drone.home == e.airport.id then
+                datamodel.drones[#datamodel.drones + 1] = de.eid
+            end
+        end
+
+        _update_drone_infos(datamodel)
+    end
+
     last_inputs, last_ouputs = update_property_list(datamodel, get_entity_property_list(object_id))
     preinput = {}
     power_statistic = {
@@ -682,6 +727,10 @@ function M.create(object_id)
     timer:interval(3, function ()
         _update_model(datamodel.model)
     end)
+
+    if next(datamodel.drones) then
+        timer:interval(30, _update_drone_infos)
+    end
     return datamodel
 end
 
@@ -754,7 +803,7 @@ local function update_power(power)
 end
 
 function M.update(datamodel, object_id)
-    timer:update()
+    timer:update(datamodel)
 
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
