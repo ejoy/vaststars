@@ -72,12 +72,20 @@
             scroll-item-list {
                 overflow: scroll;
             }
-            @keyframes arrow-move {
+            @keyframes arrow-move-1 {
                 0% {
                     background-position-x: 0vmin;
                 }
                 100% {
                     background-position-x: 2.65vmin;
+                }
+            }
+            @keyframes arrow-move-2 {
+                0% {
+                    background-position-x: 0vmin;
+                }
+                100% {
+                    background-position-x: -2.65vmin;
                 }
             }
         </style>
@@ -172,12 +180,12 @@
                 </div>
 
                 <!-- airport -->
-                <div style="margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 1vmin;" data-if = "chest_style=='airport'" data-event-longpress="onLongPress(ev, 'expanded-airport-info')" data-event-click="onClick(ev, 'expanded-airport-info')">
-                    <div style="padding: 1vmin; align-items: center; justify-content: space-between; flex-direction: row; margin-top: 1vmin; width: 100%;" data-for="drone_infos">
-                        <div class="small-item1" data-style-border = "it.status == 'go_mov1' and '0.2vmin rgb(214, 3, 75)' or (it.status == 'go_mov2' and '0.2vmin rgb(3, 150, 217)' or '0.2vmin rgb(251, 177, 61)')" style="width:7vmin; height:7vmin;" data-style-background-image="it.item_icon" />
-                        <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow1.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov1'" />
-                        <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow2.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov2'" />
-                        <div class="small-item1" data-style-border = "it.status == 'go_mov1' and '0.2vmin rgb(214, 3, 75)' or (it.status == 'go_mov2' and '0.2vmin rgb(3, 150, 217)' or '0.2vmin rgb(251, 177, 61)')" style="width:7vmin; height:7vmin;" data-style-background-image="it.building_icon" />
+                <div style="margin-left: 3%; margin-right: 3%; flex-direction: row; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 1vmin; padding-top: 1vmin;" data-if = "chest_style=='airport'" data-event-longpress="onLongPress(ev, 'expanded-airport-info')" data-event-click="onClick(ev, 'expanded-airport-info')">
+                    <div style="padding: 0vmin 1vmin 0vmin 1vmin; align-items: center; justify-content: space-between; flex-direction: row; width: 100%;" data-for="drone_infos">
+                        <div class="small-item1" data-style-border = "it.status == 'go_mov1' and '0.2vmin rgb(214, 3, 75)' or (it.status == 'go_mov2' and '0.2vmin rgb(3, 150, 217)' or '0.2vmin rgb(251, 177, 61)')" style="width: 6vmin; height: 6vmin;" data-style-background-image="it.item_icon" />
+                        <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow1.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move-1 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov1'" />
+                        <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow2.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move-2 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov2'" />
+                        <div class="small-item1" data-style-border = "it.status == 'go_mov1' and '0.2vmin rgb(214, 3, 75)' or (it.status == 'go_mov2' and '0.2vmin rgb(3, 150, 217)' or '0.2vmin rgb(251, 177, 61)')" style="width: 6vmin; height: 6vmin;" data-style-background-image="it.building_icon" />
                     </div>
                 </div>
 
@@ -367,8 +375,8 @@
             <expanded-panel style="justify-content: flex-start; align-items: center; padding: 5.00%;" data-if = "areaid == 'expanded-airport-info'" data-event-longpress="onLongPressExpandedPanel(ev)">
                 <div style="padding: 1vmin; align-items: center; justify-content: space-between; flex-direction: row; margin-top: 1vmin; width: 100%;" data-for="drone_infos">
                     <div class="small-item1" data-style-border = "it.status == 'go_mov1' and '0.2vmin rgb(214, 3, 75)' or (it.status == 'go_mov2' and '0.2vmin rgb(3, 150, 217)' or '0.2vmin rgb(251, 177, 61)')" style="width: 11vmin; height: 11vmin;" data-style-background-image="it.item_icon" />
-                    <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow1.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov1'" />
-                    <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow2.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov2'" />
+                    <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow1.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move-1 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov1'" />
+                    <div style = "width: 6.60vmin; height: 3.50vmin; background-image: '/pkg/vaststars.resources/ui/textures/detail/arrow2.texture'; background-size: 2.65vmin 2.65vmin; animation: arrow-move-2 2s infinite linear; background-repeat: repeat-x;" data-if = "it.status == 'go_mov2'" />
                     <div class="small-item1" data-style-border = "it.status == 'go_mov1' and '0.2vmin rgb(214, 3, 75)' or (it.status == 'go_mov2' and '0.2vmin rgb(3, 150, 217)' or '0.2vmin rgb(251, 177, 61)')" style="width: 11vmin; height: 11vmin;" data-style-background-image="it.building_icon" />
                 </div>
             </expanded-panel>

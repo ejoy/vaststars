@@ -661,18 +661,29 @@ for k, v in pairs(DRONE_STATUS) do
 end
 
 local function _update_drone_infos(datamodel)
+    local drone_infos = {}
     for idx, eid in ipairs(datamodel.drones) do
         local de = assert(gameplay_core.get_entity(eid))
 
         local item = assert(de.drone.item)
         local building = objects:coord(de.drone.next_x, de.drone.next_y)
 
-        datamodel.drone_infos[idx] = {
-            item_icon = item ~= 0 and iprototype.queryById(item).item_icon or "",
-            building_icon = building and iprototype.queryByName(building.prototype_name).item_icon or "",
-            status = DRONE_STATUS[de.drone.status],
-        }
+        local item_icon = item ~= 0 and iprototype.queryById(item).item_icon
+        local building_icon = building and iprototype.queryByName(building.prototype_name).item_icon
+
+        if item_icon and building_icon then
+            local home_icon = iprototype.queryById(de.drone.home).item_icon
+            drone_infos[#drone_infos + 1] = {
+                item_icon = item_icon or home_icon,
+                building_icon = building_icon or home_icon,
+                status = DRONE_STATUS[de.drone.status],
+            }
+        else
+
+        end
     end
+
+    datamodel.drone_infos = drone_infos
 end
 
 function M.create(object_id)
