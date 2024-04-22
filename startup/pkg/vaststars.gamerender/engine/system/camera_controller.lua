@@ -103,7 +103,7 @@ local function toggle_view(v, cur_xzpoint)
         local dst_vp = math3d.mul(pm, dst_vm)
 
         local sx, sy = math3d.index(screen_point, 1, 2)
-        sx, sy = mu.convert_screen_to_device_coord(iviewport.device_viewrect, iviewport.viewrect, sx, sy)
+        sx, sy = iviewport.unscale_xy(sx, sy)
         local src_dir = math3d.inverse(math3d.todirection(sr))
 
         --plane: px*nx + py*ny + pz*nz + d = 0, D = (dot(n, p) + d)/length(n.xyz)
@@ -336,7 +336,7 @@ end
 
 -- the following interfaces must be called after the `camera_usage` stage
 function icamera_controller.screen_to_world(x, y, plane, vp)
-    x, y = mu.convert_device_to_screen_coord(iviewport.device_viewrect, iviewport.viewrect, x, y)
+    x, y = iviewport.scale_xy(x, y)
     local ce <close> = world:entity(irq.main_camera(), "camera:in")
     local vpmat = vp and vp or ce.camera.viewprojmat
 
