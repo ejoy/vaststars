@@ -142,7 +142,7 @@ namespace lua_world {
         auto type = (stat_type)luaL_checkoption(L, 3, NULL, opts);
         switch (type) {
         case stat_type::production: {
-            ant::flatmap<uint16_t, uint32_t> production;
+            bee::flatmap<uint16_t, uint32_t> production;
             for (auto& f : dataset) {
                 stat_add(production, f.production);
             }
@@ -155,7 +155,7 @@ namespace lua_world {
             return 1;
         }
         case stat_type::consumption: {
-            ant::flatmap<uint16_t, uint32_t> consumption;
+            bee::flatmap<uint16_t, uint32_t> consumption;
             for (auto& f : dataset) {
                 stat_add(consumption, f.consumption);
             }
@@ -168,7 +168,7 @@ namespace lua_world {
             return 1;
         }
         case stat_type::generate_power: {
-            ant::flatmap<uint16_t, uint64_t> generate_power;
+            bee::flatmap<uint16_t, uint64_t> generate_power;
             for (auto& f : dataset) {
                 stat_add(generate_power, f.generate_power);
             }
@@ -181,7 +181,7 @@ namespace lua_world {
             return 1;
         }
         case stat_type::consume_power: {
-            ant::flatmap<uint16_t, uint64_t> consume_power;
+            bee::flatmap<uint16_t, uint64_t> consume_power;
             for (auto& f : dataset) {
                 stat_add(consume_power, f.consume_power);
             }

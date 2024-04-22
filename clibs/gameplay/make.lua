@@ -17,7 +17,6 @@ lm:lua_source "gameplay" {
         lm.AntDir .. "/3rd/luaecs",
         lm.AntDir .. "/3rd/bee.lua",
         lm.AntDir .. "/clibs/ecs/",
-        lm.AntDir .. "/pkg/ant.scene/",
     },
     sources = {
         "src/**/*.c",

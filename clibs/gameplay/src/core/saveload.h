@@ -4,7 +4,7 @@
 #include <functional>
 #if defined(_WIN32)
 #   include <windows.h>
-#   include <bee/platform/win/wtf8.h>
+#   include <bee/win/wtf8.h>
 #endif
 
 namespace lua_world {

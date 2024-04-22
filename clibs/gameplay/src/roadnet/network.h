@@ -5,7 +5,7 @@
 #include "roadnet/road_straight.h"
 #include "util/component.h"
 #include "util/dynarray.h"
-#include "flatmap.h"
+#include <bee/utility/flatmap.h>
 
 struct world;
 
@@ -48,6 +48,6 @@ namespace roadnet {
         dynarray<lorryid>               straightLorry;
         dynarray<map_coord>             straightCoord;
         component::lorry*                     lorryAry;
-        ant::flatmap<route_key, route_value> routeCached;
+        bee::flatmap<route_key, route_value> routeCached;
     };
 }

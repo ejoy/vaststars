@@ -4,7 +4,7 @@
 #include "roadnet/lorry.h"
 #include "roadnet/endpoint.h"
 #include "luaecs.h"
-#include "flatmap.h"
+#include <bee/utility/flatmap.h>
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
 
@@ -96,8 +96,8 @@ static int lbuild(lua_State *L) {
         }
     }
     if (w.dirty & (kDirtyEndpoint | kDirtyStation)) {
-        ant::flatmap<roadnet::straightid, uint16_t>         stations;
-        ant::flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
+        bee::flatmap<roadnet::straightid, uint16_t>         stations;
+        bee::flatmap<roadnet::lorryid, roadnet::straightid> lorrywhere;
         for (auto& v : ecs::select<component::station, component::endpoint>(w.ecs)) {
             auto& station = v.get<component::station>();
             auto& endpoint = v.get<component::endpoint>();

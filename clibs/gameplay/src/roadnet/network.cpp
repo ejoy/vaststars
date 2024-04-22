@@ -200,7 +200,7 @@ namespace roadnet {
         return dir;
     }
 
-    static uint8_t getMapBits(const ant::flatmap<loction, uint8_t>& map, const loction& l) {
+    static uint8_t getMapBits(const bee::flatmap<loction, uint8_t>& map, const loction& l) {
         auto res = map.find(l);
         return res ? *res : 0;
     }
@@ -259,11 +259,11 @@ namespace roadnet {
     };
 
     struct updateMapStatus {
-        ant::flatmap<loction, uint8_t> map;
-        ant::flatmap<loction, crossid> crossMap;
-        ant::flatmap<loction, straightGrid> straightMap;
-        ant::flatmap<loction, startingStatus> startingMap;
-        ant::flatmap<loction, endpointStatus> endpointMap;
+        bee::flatmap<loction, uint8_t> map;
+        bee::flatmap<loction, crossid> crossMap;
+        bee::flatmap<loction, straightGrid> straightMap;
+        bee::flatmap<loction, startingStatus> startingMap;
+        bee::flatmap<loction, endpointStatus> endpointMap;
         dynarray<lorryStatus> lorryStatusAry;
         std::vector<straightData> straightVec;
         uint16_t genCrossId = 0;
@@ -911,8 +911,8 @@ namespace roadnet {
         lorryDestroy(l.get<component::lorry>(), w);
     }
     void network::updateRemoveLorry(world& w, size_t n) {
-        ant::flatset<lorryid> lorryWillRemove;
-        ant::flatmap<straightid, uint8_t> endpointWillReset;
+        bee::flatset<lorryid> lorryWillRemove;
+        bee::flatmap<straightid, uint8_t> endpointWillReset;
         lorryWillRemove.reserve(n);
         endpointWillReset.reserve(n);
         for (auto& e : ecs::select<component::lorry_willremove, component::lorry>(w.ecs)) {

@@ -1,6 +1,6 @@
 ﻿#include "roadnet/route.h"
 #include "roadnet/network.h"
-#include "flatmap.h"
+#include <bee/utility/flatmap.h>
 #include <bee/nonstd/unreachable.h>
 #include <optional>
 #include <queue>
@@ -17,7 +17,7 @@ namespace roadnet {
             straightid prev;
             direction  dir;
         };
-        using dijkstraResult = ant::flatmap<straightid, dijkstraNode>;
+        using dijkstraResult = bee::flatmap<straightid, dijkstraNode>;
         dijkstraQueue  openlist;
         dijkstraResult results;
 

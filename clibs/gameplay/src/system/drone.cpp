@@ -172,7 +172,7 @@ static void rebuild(world& w) {
         std::vector<chestinfo> chest;
     };
     std::map<uint16_t, mapinfo> globalmap;
-    ant::flatset<uint16_t> used_id;
+    bee::flatset<uint16_t> used_id;
     for (auto& v : ecs::select<component::airport>(w.ecs)) {
         auto& airport = v.get<component::airport>();
         used_id.insert(airport.id);
@@ -199,7 +199,7 @@ static void rebuild(world& w) {
         });
     }
 
-    ant::flatmap<uint16_t, uint16_t> created_airport;
+    bee::flatmap<uint16_t, uint16_t> created_airport;
     std::map<uint16_t, airport> airports;
     uint16_t maxid = 1;
     auto create_airport_id = [&]()->uint16_t {

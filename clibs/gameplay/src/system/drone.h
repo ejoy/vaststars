@@ -2,7 +2,7 @@
 
 #include "util/component.h"
 #include "system/building.h"
-#include "flatmap.h"
+#include <bee/utility/flatmap.h>
 #include <bee/nonstd/bit.h>
 #include <vector>
 #include <map>

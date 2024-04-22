@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include "chest.h"
-#include "flatmap.h"
+#include <bee/utility/flatmap.h>
 
 struct world;
 struct lua_State;
@@ -30,8 +30,8 @@ public:
     void             queue_set(const queue_t& q);
     const queue_t&   queue_get() const;
 
-    ant::flatmap<uint16_t, uint16_t> progress;
-    ant::flatset<uint16_t> researched;
+    bee::flatmap<uint16_t, uint16_t> progress;
+    bee::flatset<uint16_t> researched;
     queue_t queue;
     std::map<uint16_t, std::map<uint16_t, ingredients_opt>> cache;
 };
