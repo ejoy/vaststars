@@ -329,10 +329,7 @@ local function pickupObject(datamodel, position, blur)
     end
     idetail.unselected()
 
-    local o = ipick_object.pick(coord[1], coord[2], blur)
-    assert(o)
-    local building_eid
-
+    local o = assert(ipick_object.pick(coord[1], coord[2], blur))
     if o and o.class == CLASS.Lorry then
         local typeobject = iprototype.queryByName(o.name)
         iui.open({rml = "/pkg/vaststars.resources/ui/non_building_detail_panel.html"}, typeobject.icon, typeobject.mineral_name and typeobject.mineral_name or iprototype.display_name(typeobject), o.eid)
@@ -378,7 +375,8 @@ local function pickupObject(datamodel, position, blur)
         datamodel.status = "FOCUS"
 
         iui.open({rml = "/pkg/vaststars.resources/ui/building_menu.html"}, gameplay_eid, false)
-        building_eid = gameplay_eid
+
+        idetail.selected(gameplay_eid)
 
     elseif o and (o.class == CLASS.Mountain or o.class == CLASS.Road) then
         local typeobject = iprototype.queryByName(o.name)
@@ -744,8 +742,6 @@ function M.update(datamodel)
                 elseif selected_obj.class == CLASS.Object then
                     local object = selected_obj.object
                     icamera_controller.focus_on_position("CENTER", object.srt.t)
-
-                    idetail.selected(object.gameplay_eid)
                 else
                     if selected_obj.get_pos then
                         icamera_controller.focus_on_position("CENTER", math3d.vector(selected_obj:get_pos()))
