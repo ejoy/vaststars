@@ -668,11 +668,17 @@ local function _update_drone_infos(datamodel)
         local item = assert(de.drone.item)
         local building = objects:coord(de.drone.next_x, de.drone.next_y)
 
-        local item_icon = item ~= 0 and iprototype.queryById(item).item_icon
-        local building_icon = building and iprototype.queryByName(building.prototype_name).item_icon
+        local item_icon
+        if item ~= 0 then
+            item_icon = iprototype.queryById(item).item_icon
+        end
+        local building_icon
+        if building then
+            building_icon = iprototype.queryByName(building.prototype_name).item_icon
+        end
 
         if building_icon then
-            local home_icon = iprototype.queryById(de.drone.home).item_icon
+            local home_icon = "/pkg/vaststars.resources/textures/icons/item/drone-depot.texture"
             drone_infos[#drone_infos + 1] = {
                 item_icon = item_icon or home_icon,
                 building_icon = building_icon or home_icon,
