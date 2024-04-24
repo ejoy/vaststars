@@ -1,5 +1,7 @@
 local lm = require "luamake"
 
+lm:import "src/version/make.lua"
+
 lm:runlua "compile_gameplay_ecs" {
     script = "../../clibs/gameplay/compile_ecs.lua",
     args = {

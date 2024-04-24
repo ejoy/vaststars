@@ -1,16 +1,10 @@
 local lm = require "luamake"
 
 lm:import "gameplay/make.lua"
-lm:import "version/make.lua"
 
 lm:copy "bootstrap_lua" {
     inputs = "bootstrap.lua",
     outputs = "$bin/main.lua",
-}
-
-local modules = {
-    "gameplay",
-    "version",
 }
 
 local LuaInclude = lm.AntDir .. "/3rd/bee.lua/3rd/lua"
@@ -20,7 +14,7 @@ if lm.os == "ios" then
         deps = {
             "ant_runtime",
             "ant_links",
-            modules
+            "gameplay",
         },
         includes = {
             LuaInclude,
@@ -55,7 +49,7 @@ if lm.os == "android" then
             "ant_runtime",
             "ant_links",
             "bgfx-lib",
-            modules
+            "gameplay",
         },
         ldflags = "-Wl,--no-undefined",
         includes = {
@@ -73,7 +67,7 @@ if lm.os == "macos" then
             "ant_runtime",
             "ant_links",
             "bootstrap_lua",
-            modules
+            "gameplay",
         },
         includes = {
             LuaInclude,
@@ -88,7 +82,7 @@ if lm.os == "macos" then
             "bgfx-lib",
             "ant_links",
             "bootstrap_lua",
-            modules
+            "gameplay",
         },
         includes = {
             LuaInclude,
@@ -105,7 +99,7 @@ if lm.os == "macos" then
             "bgfx-lib",
             "ant_links",
             "bootstrap_lua",
-            modules
+            "gameplay",
         },
         includes = {
             LuaInclude,
@@ -130,7 +124,7 @@ lm:exe "vaststars" {
         "bgfx-lib",
         "ant_links",
         "bootstrap_lua",
-        modules
+        "gameplay",
     },
     includes = {
         LuaInclude,
@@ -151,7 +145,7 @@ lm:exe "vaststars_rt" {
         "bgfx-lib",
         "ant_links",
         "bootstrap_lua",
-        modules
+        "gameplay",
     },
     includes = {
         LuaInclude,

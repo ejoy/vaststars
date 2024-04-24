@@ -48,6 +48,7 @@ static void loadmodules(lua_State* L) {
     CORE(world)
     CORE(version)
     CORE(fluidflow)
+    CORE(version)
 }
 
 LUALIB_API void luaL_openlibs (lua_State *L) {

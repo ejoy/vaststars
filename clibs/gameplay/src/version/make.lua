@@ -23,10 +23,3 @@ lm:phony {
     },
     outputs = "version.cpp",
 }
-
-lm:lua_source "version" {
-    cxx = "c++20",
-    sources = {
-        "version.cpp",
-    }
-}
