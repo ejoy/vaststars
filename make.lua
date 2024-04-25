@@ -92,7 +92,9 @@ if lm.os == "windows" then
         },
     }
     lm:default {
+        "ant",
         "copy_dll",
+        "lua54",
         "vaststars",
         lm.sanitize and "copy_asan_v2",
     }

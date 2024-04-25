@@ -1,0 +1,20 @@
+LIBRARY vaststars
+EXPORTS
+    luaopen_vaststars_assembling_system
+    luaopen_vaststars_laboratory_system
+    luaopen_vaststars_chimney_system
+    luaopen_vaststars_generator_system
+    luaopen_vaststars_powergrid_system
+    luaopen_vaststars_pump_system
+    luaopen_vaststars_fluid_system
+    luaopen_vaststars_task_system
+    luaopen_vaststars_roadnet_system
+    luaopen_vaststars_station_system
+    luaopen_vaststars_drone_system
+    luaopen_vaststars_stat_system
+    luaopen_vaststars_building_system
+    luaopen_vaststars_chest_core
+    luaopen_vaststars_world_core
+    luaopen_vaststars_version_core
+    luaopen_vaststars_fluidflow_core
+    luaopen_vaststars_version_core

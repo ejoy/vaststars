@@ -96,23 +96,20 @@ if lm.os == "macos" then
     return
 end
 
-lm:exe "vaststars" {
+lm:dll "lua54" {
+    sources = "lua54/forward_lua.c",
+}
+
+lm:lua_dll "vaststars" {
+    export_luaopen = "off",
     deps = {
-        "ant_runtime",
-        "bgfx-lib",
-        "ant_links",
-        "bootstrap_lua",
         "gameplay",
     },
     includes = {
-        LuaInclude,
-        lm.AntDir .. "/runtime/common",
-    },
-    msvc = {
-        defines = "LUA_BUILD_AS_DLL",
+        lm.AntDir .. "/3rd/bee.lua/",
     },
     sources = {
-        "vaststars_modules.c",
-        lm.AntDir .. "/runtime/windows/lua.rc"
-    }
+        "gameplay/gameplay.def",
+        lm.AntDir .. "/3rd/bee.lua/bee/win/wtf8.cpp",
+    },
 }
