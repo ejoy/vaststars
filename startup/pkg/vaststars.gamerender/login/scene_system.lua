@@ -44,7 +44,7 @@ local function init_game(template)
     imineral.init(template.mineral)
     imountain:init(template.mountain)
 
-    local w, h = settings_manager.get("window_size"):match("(%d+)x(%d+)")
+    local w, h = settings_manager.get("window_size", "1280x720"):match("(%d+)x(%d+)")
     iwr.set_resolution_limits(w + 0, h + 0)
 
     rhwi.set_profie(settings_manager.get("debug", false))
