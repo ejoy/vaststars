@@ -41,7 +41,7 @@ luamake -os ios
 ```
 3. Resource packaging
 ``` bash
-./bin/macos/debug/vaststars -p ios
+./bin/macos/debug/ant -p ios
 ```
 4. Open the [iOS](https://github.com/ejoy/vaststars/tree/master/runtime/ios/vaststars) project with Xcode and generate ipa
 
@@ -49,27 +49,27 @@ luamake -os ios
 
 Run the PC version of the game
 ``` bash
-./bin/msvc/debug/vaststars.exe
+./bin/msvc/debug/ant.exe
 ```
 
 Run editor
 ``` bash
-./bin/msvc/debug/vaststars.exe -d
+./bin/msvc/debug/ant.exe -d
 ```
 
 Run file server
 ``` bash
-./bin/msvc/debug/vaststars.exe -s
+./bin/msvc/debug/ant.exe -s
 ```
 
 Resource packaging
 ``` bash
-./bin/msvc/debug/vaststars.exe -p
+./bin/msvc/debug/ant.exe -p
 ```
 
 Run other tools (such as running test/simple in ant)
 ``` bash
-./bin/msvc/debug/vaststars.exe [lua path]
+./bin/msvc/debug/ant.exe [lua path]
 ```
 
 ### iOS Version

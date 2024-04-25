@@ -43,7 +43,7 @@ luamake -os ios
 ```
 3. 资源打包
 ``` bash
-./bin/macos/debug/vaststars -p ios
+./bin/macos/debug/ant -p ios
 ```
 4. 用xcode打开[ios工程](https://github.com/ejoy/vaststars/tree/master/runtime/ios/vaststars)，生成ipa
 
@@ -51,27 +51,27 @@ luamake -os ios
 
 运行 PC 版游戏
 ``` bash
-./bin/msvc/debug/vaststars.exe
+./bin/msvc/debug/ant.exe
 ```
 
 运行编辑器
 ``` bash
-./bin/msvc/debug/vaststars.exe -d
+./bin/msvc/debug/ant.exe -d
 ```
 
 运行文件服务器
 ``` bash
-./bin/msvc/debug/vaststars.exe -s
+./bin/msvc/debug/ant.exe -s
 ```
 
 资源打包
 ``` bash
-./bin/msvc/debug/vaststars.exe -p
+./bin/msvc/debug/ant.exe -p
 ```
 
 运行其他工具(例如运行ant中的test/simple)
 ``` bash
-./bin/msvc/debug/vaststars.exe [lua path]
+./bin/msvc/debug/ant.exe [lua path]
 ```
 
 ### iOS 版本

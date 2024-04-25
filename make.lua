@@ -110,5 +110,6 @@ if lm.os == "ios" then
 end
 
 lm:default {
+    "ant",
     "vaststars",
 }
