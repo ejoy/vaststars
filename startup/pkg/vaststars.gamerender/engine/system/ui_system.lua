@@ -280,6 +280,15 @@ irmlui.onMessage("settings|debug", function(info)
     rhwi.set_profie(debug)
 end)
 
+irmlui.onMessage("settings|window_size", function(info)
+    local r = not settings_manager.get("window_size", "1280x720")
+    if r == "1280x720" then
+        settings_manager.set("window_size", "1280x720")
+    else
+        settings_manager.set("window_size", "1920x1080")
+    end
+end)
+
 irmlui.onMessage("settings|reboot", function(info)
     window.reboot {
         feature = {"vaststars.gamerender|login"},
