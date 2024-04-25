@@ -11,11 +11,6 @@ lm:conf {
     visibility = "default",
     c = "c17",
     cxx = "c++20",
-    msvc = {
-        defines = {
-            "_ITERATOR_DEBUG_LEVEL=0",
-        }
-    },
     macos = {
         sys = "macos13.3",
     },
