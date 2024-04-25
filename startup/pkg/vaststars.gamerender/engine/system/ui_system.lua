@@ -13,6 +13,7 @@ local settings_manager = import_package "vaststars.settings_manager"
 local iprototype_cache = require "gameplay.prototype_cache.init"
 local iprototype = require "gameplay.interface.prototype"
 local itypes = require "gameplay.interface.types"
+local iwr = ecs.require "ant.render|viewport.window_resize"
 
 local windowBindings = {} -- = {[rml] = { w = xx, datamodel = xx, }, ...}
 local changedWindows = {}
@@ -274,19 +275,13 @@ irmlui.onMessage("settings|info", function(info)
     icanvas.show("icon", info)
 end)
 
-irmlui.onMessage("settings|debug", function(info)
-    local debug = not settings_manager.get("debug", false)
-    settings_manager.set("debug", debug)
+irmlui.onMessage("settings|debug", function(debug)
     rhwi.set_profie(debug)
 end)
 
-irmlui.onMessage("settings|window_size", function(info)
-    local r = not settings_manager.get("window_size", "1280x720")
-    if r == "1280x720" then
-        settings_manager.set("window_size", "1280x720")
-    else
-        settings_manager.set("window_size", "1920x1080")
-    end
+irmlui.onMessage("settings|window_size", function(window_size)
+    local w, h = window_size:match("(%d+)x(%d+)")
+    iwr.set_resolution_limits(w + 0, h + 0)
 end)
 
 irmlui.onMessage("settings|reboot", function(info)

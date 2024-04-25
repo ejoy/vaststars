@@ -142,48 +142,60 @@
                     <line-container><line /></line-container>
 
                     <list-item>
-                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">音乐音效</div>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%; flex-direction: row; gap: 2vmin;">
+                            音乐音效
+                            <div data-style-color = "music and 'rgb(254, 180, 28)' or 'rgb(102, 97, 102)'">{{music and '开启' or '关闭'}}</div>
+                        </div>
                         <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
                             <ping-pong bind-var = "music"
                                 background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-1.texture"
                                 background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-2.texture"
-                                text-1 = "开启" text-2 = "关闭"
+                                text-1 = "" text-2 = "" data-event-click = "clickMusic()"
                             />
                         </div>
                     </list-item>
                     <line-container><line /></line-container>
 
                     <list-item>
-                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">提示信息</div>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%; flex-direction: row; gap: 2vmin;">
+                            提示信息
+                            <div data-style-color = "info and 'rgb(254, 180, 28)' or 'rgb(102, 97, 102)'">{{info and '开启' or '关闭'}}</div>
+                        </div>
                         <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
                             <ping-pong bind-var = "info"
                                 background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-1.texture"
                                 background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-2.texture"
-                                text-1 = "开启" text-2 = "关闭" data-event-click = "clickInfo()"
+                                text-1 = "" text-2 = "" data-event-click = "clickInfo()"
                             />
                         </div>
                     </list-item>
                     <line-container><line /></line-container>
 
                     <list-item>
-                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">调试信息</div>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%; flex-direction: row; gap: 2vmin;">
+                            调试信息
+                            <div data-style-color = "debug and 'rgb(254, 180, 28)' or 'rgb(102, 97, 102)'">{{debug and '开启' or '关闭'}}</div>
+                        </div>
                         <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
                             <ping-pong bind-var = "debug"
                                 background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-1.texture"
                                 background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-2.texture"
-                                text-1 = "开启" text-2 = "关闭" data-event-click = "clickButton('settings|debug', false)"
+                                text-1 = "" text-2 = "" data-event-click = "clickDebug()"
                             />
                         </div>
                     </list-item>
                     <line-container><line /></line-container>
 
                     <list-item>
-                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%;">720p/1080p(重启生效)</div>
+                        <div style = "font-size: 4.50vmin; align-items: center; justify-content: center; width: 50%; height: 100%; flex-direction: row; gap: 2vmin;">
+                            分辨率
+                            <div data-style-color = "window_size == '720p' and 'rgb(254, 180, 28)' or 'rgb(102, 97, 102)'">{{window_size}}</div>
+                        </div>
                         <div style = "width: 50%; height: 100%; align-items: center; justify-content: center;">
-                            <ping-pong bind-var = "window_size"
+                            <ping-pong bind-var = "show_window_size"
                                 background-image-1 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-1.texture"
                                 background-image-2 = "/pkg/vaststars.resources/ui/textures/settings/ping-pong-2.texture"
-                                text-1 = "720p" text-2 = "1080p" data-event-click = "clickButton('settings|window_size')"
+                                text-1 = "" text-2 = "" data-event-click = "clickWindowSize()"
                             />
                         </div>
                     </list-item>

@@ -25,6 +25,7 @@ local imineral = ecs.require "mineral"
 local init = ecs.require "init"
 local game_settings = ecs.require "game_settings"
 local settings_manager = import_package "vaststars.settings_manager"
+local iwr = ecs.require "ant.render|viewport.window_resize"
 
 local m = ecs.system "game_init_system"
 
@@ -45,6 +46,9 @@ local function init_game(template)
 
     imineral.init(template.mineral)
     imountain:init(template.mountain)
+
+    local w, h = settings_manager.get("window_size"):match("(%d+)x(%d+)")
+    iwr.set_resolution_limits(w + 0, h + 0)
 
     rhwi.set_profie(settings_manager.get("debug", false))
 
