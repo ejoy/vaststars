@@ -112,13 +112,6 @@ if lm.os == "ios" then
     return
 end
 
-if lm.os == "android" then
-    lm:default {
-        "vaststars",
-    }
-    return
-end
-
 lm:default {
     "vaststars",
 }
