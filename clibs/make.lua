@@ -120,7 +120,7 @@ end
 
 lm:exe "vaststars" {
     deps = {
-        "ant_editor",
+        "ant_runtime",
         "bgfx-lib",
         "ant_links",
         "bootstrap_lua",
@@ -132,24 +132,6 @@ lm:exe "vaststars" {
     },
     msvc = {
         defines = "LUA_BUILD_AS_DLL",
-    },
-    sources = {
-        "vaststars_modules.c",
-        lm.AntDir .. "/runtime/windows/lua.rc"
-    }
-}
-
-lm:exe "vaststars_rt" {
-    deps = {
-        "ant_runtime",
-        "bgfx-lib",
-        "ant_links",
-        "bootstrap_lua",
-        "gameplay",
-    },
-    includes = {
-        LuaInclude,
-        lm.AntDir .. "/runtime/common",
     },
     sources = {
         "vaststars_modules.c",

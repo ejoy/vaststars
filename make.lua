@@ -98,7 +98,6 @@ if lm.os == "windows" then
     }
     lm:default {
         "copy_dll",
-        "vaststars_rt",
         "vaststars",
         lm.sanitize and "copy_asan_v2",
     }
