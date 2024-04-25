@@ -62,7 +62,7 @@ if lm.os == "android" then
 end
 
 if lm.os == "macos" then
-    lm:lib "vaststars_rt_static" {
+    lm:lib "vaststars_static" {
         deps = {
             "ant_runtime",
             "ant_links",
@@ -78,7 +78,7 @@ if lm.os == "macos" then
 
     lm:exe "vaststars" {
         deps = {
-            "ant_editor",
+            "ant_runtime",
             "bgfx-lib",
             "ant_links",
             "bootstrap_lua",
@@ -90,28 +90,6 @@ if lm.os == "macos" then
         },
         msvc = {
             defines = "LUA_BUILD_AS_DLL",
-        },
-        sources = "vaststars_modules.c"
-    }
-    lm:exe "vaststars_rt" {
-        deps = {
-            "ant_runtime",
-            "bgfx-lib",
-            "ant_links",
-            "bootstrap_lua",
-            "gameplay",
-        },
-        includes = {
-            LuaInclude,
-            lm.AntDir .. "/runtime/common",
-        },
-        frameworks = {
-            "Carbon",
-            "Cocoa",
-            "IOKit",
-            "IOSurface",
-            "Metal",
-            "QuartzCore",
         },
         sources = "vaststars_modules.c"
     }
