@@ -19,6 +19,7 @@ local function register_command()
 	end
 
 	function S.world_command(what, ...)
+		print("world_command|pub message", what, ...)
         world:pub {"web_cgi_cmd", what, ...}
         return "SUCCESS"
     end

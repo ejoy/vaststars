@@ -26,6 +26,19 @@
             <a href="#" onclick="sendRequest('debug/world_command/debug');">Show Debug</a>
         </li>
         <li><a href="texture">Texture</a></li>
+        <li>
+            <form name="resolution-form" style = "margin: 0;" onsubmit="
+                    var w = document.forms['resolution-form']['w'].value;
+                    var h = document.forms['resolution-form']['h'].value;
+                    sendRequest('debug/world_command/resolution?w=' + w + '&h=' + h); return false;">
+                <label>Resolution:</label><br>
+                <label>w: </label>
+                <input name="w" type="text" style="width: 70px;" value="1028" />
+                <label>h: </label>
+                <input name="h" type="text" style="width: 70px;" value="720" />
+                <button type="submit">Update</button>
+            </form>
+        </li>
     </ul>
 
     <form id="upload-form" action="upload" method="post" enctype="multipart/form-data">
