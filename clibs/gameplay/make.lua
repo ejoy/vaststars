@@ -11,7 +11,7 @@ lm:runlua "compile_gameplay_ecs" {
     outputs = "../../clibs/gameplay/src/util/component.h",
 }
 
-lm:lua_source "gameplay" {
+lm:lua_src "gameplay" {
     objdeps = "compile_gameplay_ecs",
     includes = {
         "src/",
