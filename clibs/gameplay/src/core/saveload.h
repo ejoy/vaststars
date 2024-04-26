@@ -7,6 +7,8 @@
 #    include <windows.h>
 #endif
 
+#include <cassert>
+
 namespace lua_world {
     template <typename T>
         requires(std::is_trivially_copyable_v<T>)
