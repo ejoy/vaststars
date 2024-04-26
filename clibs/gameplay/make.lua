@@ -15,15 +15,12 @@ lm:lua_source "gameplay" {
     objdeps = "compile_gameplay_ecs",
     includes = {
         "src/",
-        "src/roadnet",
-        lm.AntDir .. "/3rd/luaecs",
-        lm.AntDir .. "/3rd/bee.lua",
+        lm.AntDir .. "/3rd/luaecs/",
+        lm.AntDir .. "/3rd/bee.lua/",
         lm.AntDir .. "/clibs/ecs/",
     },
     sources = {
         "src/**/*.c",
         "src/**/*.cpp",
-        "!src/core/road.c",
-        "!src/core/mining.cpp",
     }
 }
