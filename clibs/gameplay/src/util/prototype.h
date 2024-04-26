@@ -1,10 +1,12 @@
 #pragma once
 
+#include <bee/nonstd/unreachable.h>
+
+#include <lua.hpp>
+#include <string_view>
 #include <type_traits>
 #include <variant>
-#include <string_view>
-#include <lua.hpp>
-#include <bee/nonstd/unreachable.h>
+
 #include "core/world.h"
 #include "util/enum.h"
 
@@ -27,7 +29,7 @@ namespace prototype {
     template <string_literal str>
     struct key {};
 
-    inline void error(world& w, const char *fmt, ...) {
+    inline void error(world& w, const char* fmt, ...) {
         va_list argp;
         va_start(argp, fmt);
         luaL_where(w.L, 1);
@@ -39,14 +41,15 @@ namespace prototype {
 
     struct lua_value {
         std::variant<
-            std::monostate,   // LUA_TNIL
-            bool,             // LUA_TBOOLEAN
-            void*,            // LUA_TLIGHTUSERDATA
-            lua_Integer,      // LUA_TNUMBER
-            lua_Number,       // LUA_TNUMBER
-            std::string_view, // LUA_TSTRING
-            lua_CFunction     // LUA_TFUNCTION
-        > storage;
+            std::monostate,    // LUA_TNIL
+            bool,              // LUA_TBOOLEAN
+            void*,             // LUA_TLIGHTUSERDATA
+            lua_Integer,       // LUA_TNUMBER
+            lua_Number,        // LUA_TNUMBER
+            std::string_view,  // LUA_TSTRING
+            lua_CFunction      // LUA_TFUNCTION
+            >
+            storage;
 
         template <typename T, typename I>
         static constexpr bool checklimit(I i) {
@@ -55,14 +58,11 @@ namespace prototype {
             static_assert(sizeof(I) >= sizeof(T));
             if constexpr (sizeof(I) == sizeof(T)) {
                 return true;
-            }
-            else if constexpr (std::numeric_limits<I>::is_signed == std::numeric_limits<T>::is_signed) {
+            } else if constexpr (std::numeric_limits<I>::is_signed == std::numeric_limits<T>::is_signed) {
                 return i >= std::numeric_limits<T>::lowest() && i <= (std::numeric_limits<T>::max)();
-            }
-            else if constexpr (std::numeric_limits<I>::is_signed) {
+            } else if constexpr (std::numeric_limits<I>::is_signed) {
                 return static_cast<std::make_unsigned_t<I>>(i) >= std::numeric_limits<T>::lowest() && static_cast<std::make_unsigned_t<I>>(i) <= (std::numeric_limits<T>::max)();
-            }
-            else {
+            } else {
                 return static_cast<std::make_signed_t<I>>(i) >= std::numeric_limits<T>::lowest() && static_cast<std::make_signed_t<I>>(i) <= (std::numeric_limits<T>::max)();
             }
         }
@@ -80,13 +80,12 @@ namespace prototype {
             case LUA_TNUMBER:
                 if (lua_isinteger(L, idx)) {
                     storage.emplace<lua_Integer>(lua_tointeger(L, idx));
-                }
-                else {
+                } else {
                     storage.emplace<lua_Number>(lua_tonumber(L, idx));
                 }
                 break;
             case LUA_TSTRING: {
-                size_t sz = 0;
+                size_t sz       = 0;
                 const char* str = lua_tolstring(L, idx, &sz);
                 storage.emplace<std::string_view>(str, sz);
                 break;
@@ -111,12 +110,11 @@ namespace prototype {
 
         template <typename R>
         R get(world& w, uint16_t id, const char* name) {
-            return std::visit([&](auto&& arg)->R {
+            return std::visit([&](auto&& arg) -> R {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, R>) {
                     return arg;
-                }
-                else if constexpr (std::is_same_v<T, lua_Integer>) {
+                } else if constexpr (std::is_same_v<T, lua_Integer>) {
                     if constexpr (std::is_integral_v<R>) {
                         static_assert(sizeof(R) <= sizeof(lua_Integer));
                         if (checklimit<R>(arg)) {
@@ -124,8 +122,7 @@ namespace prototype {
                         }
                         error(w, "[%d].%s limit exceeded.", id, name);
                         std::unreachable();
-                    }
-                    else if constexpr (std::is_enum_v<R>) {
+                    } else if constexpr (std::is_enum_v<R>) {
                         using UR = std::underlying_type_t<R>;
                         static_assert(std::is_unsigned_v<UR>);
                         static_assert(sizeof(UR) <= sizeof(size_t));
@@ -135,36 +132,35 @@ namespace prototype {
                         }
                         error(w, "[%d].%s limit exceeded.", id, name);
                         std::unreachable();
-                    }
-                    else {
+                    } else {
                         error(w, "[%d].%s is not integer.", id, name);
                         std::unreachable();
                     }
-                }
-                else {
+                } else {
                     error(w, "[%d].%s invalid type.", id, name);
                     std::unreachable();
                 }
-            }, storage);
+            },
+                              storage);
         }
 
         template <typename R>
-        R const* get_ptr(world& w, uint16_t id, const char* name) {
-            return std::visit([&](auto&& arg)->R const* {
+        const R* get_ptr(world& w, uint16_t id, const char* name) {
+            return std::visit([&](auto&& arg) -> const R* {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, std::string_view>) {
                     return reinterpret_cast<R const*>(arg.data());
-                }
-                else {
+                } else {
                     error(w, "[%d].%s invalid type.", id, name);
                     std::unreachable();
                 }
-            }, storage);
+            },
+                              storage);
         }
 
         template <typename R>
         std::span<const R> get_span(world& w, uint16_t id, const char* name) {
-            return std::visit([&](auto&& arg)->std::span<const R> {
+            return std::visit([&](auto&& arg) -> std::span<const R> {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, std::string_view>) {
                     if (arg.size() % sizeof(R) != 0) {
@@ -172,14 +168,14 @@ namespace prototype {
                         std::unreachable();
                     }
                     auto first = reinterpret_cast<R const*>(arg.data());
-                    auto last  = reinterpret_cast<R const*>(arg.data()+arg.size());
+                    auto last  = reinterpret_cast<R const*>(arg.data() + arg.size());
                     return std::span<const R>(first, last);
-                }
-                else {
+                } else {
                     error(w, "[%d].%s invalid type.", id, name);
                     std::unreachable();
                 }
-            }, storage);
+            },
+                              storage);
         }
     };
 
@@ -188,7 +184,7 @@ namespace prototype {
             uint32_t k = 0;
             lua_value v;
         };
-        struct cache_slot s[CACHE_SLOTS+1];
+        struct cache_slot s[CACHE_SLOTS + 1];
         lua_State* L;
         int last = 0;
     };
@@ -231,26 +227,25 @@ namespace prototype {
     template <string_literal str, typename T = typename key<str>::type>
     std::conditional_t<lua_value::get_value_v<T>, T, const T&>
     get(world& w, uint16_t id) {
-        cache* c = w.P;
-        uint32_t cid = (key<str>::id<<16) | id;
-        auto& s = c->s[inthash(cid)];
+        cache* c     = w.P;
+        uint32_t cid = (key<str>::id << 16) | id;
+        auto& s      = c->s[inthash(cid)];
         if (s.k != cid) {
             fetch_value(w, c, id, str.value, s.v);
             s.k = cid;
         }
         if constexpr (lua_value::get_value_v<T>) {
             return s.v.get<T>(w, id, str.value);
-        }
-        else {
+        } else {
             return *s.v.get_ptr<T>(w, id, str.value);
         }
     }
 
     template <string_literal str, typename T>
     std::span<const T> get_span(world& w, uint16_t id) {
-        cache* c = w.P;
-        uint32_t cid = (key<str>::id<<16) | id;
-        auto& s = c->s[inthash(cid)];
+        cache* c     = w.P;
+        uint32_t cid = (key<str>::id << 16) | id;
+        auto& s      = c->s[inthash(cid)];
         if (s.k != cid) {
             fetch_value(w, c, id, str.value, s.v);
             s.k = cid;
@@ -258,9 +253,10 @@ namespace prototype {
         return s.v.get_span<T>(w, id, str.value);
     }
 
-#define PROTOTYPE(NAME, TYPE) \
-    template <> struct key<#NAME> { \
-        using type = TYPE; \
+#define PROTOTYPE(NAME, TYPE)                    \
+    template <>                                  \
+    struct key<#NAME> {                          \
+        using type                   = TYPE;     \
         static constexpr uint16_t id = __LINE__; \
     };
     PROTOTYPE(priority, uint8_t)

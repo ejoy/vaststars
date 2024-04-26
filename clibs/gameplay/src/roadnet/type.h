@@ -1,23 +1,26 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <compare>
 #include <type_traits>
 
 namespace roadnet {
-    enum class direction: uint8_t {
+    enum class direction : uint8_t {
         l = 0,
         t,
         r,
         b,
     };
 
+    // clang-format off
     enum class cross_type: uint8_t {
         ll=0, lt, lr, lb,
         tl,   tt, tr, tb,
         rl,   rt, rr, rb,
         bl,   bt, br, bb,
     };
+    // clang-format on
 
     struct loction {
         union {
@@ -28,10 +31,11 @@ namespace roadnet {
             uint16_t id;
         };
         constexpr loction() = default;
-        constexpr loction(uint16_t id) : id(id)
-        {}
-        constexpr loction(uint8_t x, uint8_t y) : x(x), y(y)
-        {}
+        constexpr loction(uint16_t id)
+            : id(id) {}
+        constexpr loction(uint8_t x, uint8_t y)
+            : x(x)
+            , y(y) {}
         constexpr bool operator==(const loction& r) const {
             return id == r.id;
         }
@@ -53,18 +57,16 @@ namespace roadnet {
         constexpr map_coord() noexcept
             : x(0)
             , y(0)
-            , z((uint8_t)map_index::invaild)
-        { }
+            , z((uint8_t)map_index::invaild) {}
         constexpr map_coord(loction loc, map_index i, cross_type ct) noexcept
             : x(loc.x)
             , y(loc.y)
-            , z(make_z(i, ct))
-        { }
+            , z(make_z(i, ct)) {}
         void set(map_index i) noexcept {
             z = ((uint8_t)i & 0x0F) | (z & 0xF0);
         }
         loction get_loction() const noexcept {
-            return {x,y};
+            return { x, y };
         }
         static constexpr uint8_t make_z(map_index i, cross_type ct) {
             return ((uint8_t)i & 0x0F) | ((uint8_t)ct << 4);
@@ -79,16 +81,16 @@ namespace roadnet {
         uint8_t y;
         uint8_t z;
     };
-    static_assert(sizeof(map_coord) == 3*sizeof(uint8_t));
+    static_assert(sizeof(map_coord) == 3 * sizeof(uint8_t));
 
-    enum class lorry_status: uint8_t {
+    enum class lorry_status : uint8_t {
         normal,
         wait,
         target_unreachable,
         target_none,
     };
 
-    enum class lorry_target: uint8_t {
+    enum class lorry_target : uint8_t {
         mov1,
         mov2,
         home,
@@ -97,22 +99,24 @@ namespace roadnet {
     struct objectid {
         uint16_t index;
 
-        constexpr objectid() noexcept : index(0xFFFF) {}
-        constexpr objectid(uint16_t index) noexcept: index(index) {}
+        constexpr objectid() noexcept
+            : index(0xFFFF) {}
+        constexpr objectid(uint16_t index) noexcept
+            : index(index) {}
 
-        //TODO: use consteval
+        // TODO: use consteval
         static constexpr objectid invalid() {
             return {};
         }
         explicit operator bool() const noexcept {
             return index != 0xFFFF;
         }
-        auto operator <=>(const objectid& o) const noexcept = default;
+        auto operator<=>(const objectid& o) const noexcept = default;
         uint16_t get_index() const noexcept {
             return index;
         }
     };
-    using lorryid = objectid;
+    using lorryid    = objectid;
     using straightid = objectid;
-    using crossid = objectid;
+    using crossid    = objectid;
 }

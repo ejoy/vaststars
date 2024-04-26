@@ -1,14 +1,15 @@
 #pragma once
 
+#include <roadnet/type.h>
+
 #include <cstdint>
 #include <functional>
 #include <optional>
-#include <roadnet/type.h>
 
 struct world;
 struct market_impl;
 
-enum class market_start_type: uint8_t {
+enum class market_start_type : uint8_t {
     starting,
     endpoint,
 };
@@ -24,8 +25,7 @@ struct market_match {
         , from(from)
         , to(to)
         , dist1(dist1)
-        , dist2(0)
-    { }
+        , dist2(0) {}
     static bool sort1(const market_match& a, const market_match& b) {
         return a.dist1 < b.dist1;
     }

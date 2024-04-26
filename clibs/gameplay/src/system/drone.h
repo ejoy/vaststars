@@ -1,11 +1,13 @@
 #pragma once
 
-#include "util/component.h"
-#include "system/building.h"
-#include <bee/utility/flatmap.h>
 #include <bee/nonstd/bit.h>
-#include <vector>
+#include <bee/utility/flatmap.h>
+
 #include <map>
+#include <vector>
+
+#include "system/building.h"
+#include "util/component.h"
 
 struct airport {
     struct item_market {
@@ -13,8 +15,8 @@ struct airport {
         std::vector<airport_berth> demand;
         std::vector<airport_berth> transit;
         bool active() const {
-            auto supply_n = supply.size();
-            auto demand_n = demand.size();
+            auto supply_n  = supply.size();
+            auto demand_n  = demand.size();
             auto transit_n = transit.size();
             switch (transit_n) {
             case 0:

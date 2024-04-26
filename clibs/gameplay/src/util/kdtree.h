@@ -7,23 +7,23 @@
 #include <vector>
 
 template <typename T, typename Dataset, typename AccessorType = uint16_t>
-T kdtree_getdata(Dataset const& dataset, AccessorType i, uint8_t dim);
+T kdtree_getdata(const Dataset& dataset, AccessorType i, uint8_t dim);
 
 template <typename T, uint8_t DIM = 2, typename Dataset = std::vector<std::array<T, DIM>>, typename AccessorType = uint16_t>
 class kdtree {
 public:
     static constexpr size_t kLeafMaxSize = 10;
-    using ElementType = T;
-    using Offset      = AccessorType;
-    using Size        = AccessorType;
-    using Dimension   = uint8_t;
+    using ElementType                    = T;
+    using Offset                         = AccessorType;
+    using Size                           = AccessorType;
+    using Dimension                      = uint8_t;
     struct Node {
         union {
             struct leaf {
                 Offset left, right;
             } lr;
             struct nonleaf {
-                Dimension   divfeat;
+                Dimension divfeat;
                 ElementType divlow, divhigh;
             } sub;
         } node_type;
@@ -34,16 +34,15 @@ public:
         ElementType low, high;
     };
     using BoundingBox = std::array<Interval, DIM>;
-    using Point = std::array<ElementType, DIM>;
+    using Point       = std::array<ElementType, DIM>;
 
     std::vector<AccessorType> acc;
-    NodePtr                   root_node;
-    BoundingBox               root_bbox;
-    const Dataset&            dataset;
+    NodePtr root_node;
+    BoundingBox root_bbox;
+    const Dataset& dataset;
 
     explicit kdtree(const Dataset& dataset)
-        : dataset(dataset) 
-    { build(); }
+        : dataset(dataset) { build(); }
     explicit kdtree(const kdtree&) = delete;
 
     void build() {
@@ -77,15 +76,15 @@ public:
         if (!root_node) {
             return false;
         }
-        float epsError = 1;
+        float epsError       = 1;
         ElementType distance = ElementType();
-        Point dists; dists.fill(0);
+        Point dists;
+        dists.fill(0);
         for (Dimension i = 0; i < DIM; ++i) {
             if (query_point[i] < root_bbox[i].low) {
                 dists[i] = result_set.accumDist(query_point[i], root_bbox[i].low);
                 distance += dists[i];
-            }
-            else if (query_point[i] > root_bbox[i].high) {
+            } else if (query_point[i] > root_bbox[i].high) {
                 dists[i] = result_set.accumDist(query_point[i], root_bbox[i].high);
                 distance += dists[i];
             }
@@ -99,7 +98,7 @@ private:
         min_elem = kdtree_getdata<ElementType>(dataset, acc[ind], element);
         max_elem = min_elem;
         for (Offset i = 1; i < count; ++i) {
-            ElementType val = kdtree_getdata<ElementType>(dataset, acc[ind+i], element);
+            ElementType val = kdtree_getdata<ElementType>(dataset, acc[ind + i], element);
             if (val < min_elem) min_elem = val;
             if (val > max_elem) max_elem = val;
         }
@@ -116,8 +115,8 @@ private:
 
             for (Dimension i = 0; i < DIM; ++i) {
                 ElementType v = kdtree_getdata<ElementType>(dataset, acc[left], i);
-                bbox[i].low  = v;
-                bbox[i].high = v;
+                bbox[i].low   = v;
+                bbox[i].high  = v;
             }
             for (Offset k = left + 1; k < right; ++k) {
                 for (Dimension i = 0; i < DIM; ++i) {
@@ -128,10 +127,9 @@ private:
                         bbox[i].high = v;
                 }
             }
-        }
-        else {
-            Offset      idx;
-            Dimension   cutfeat;
+        } else {
+            Offset idx;
+            Dimension cutfeat;
             ElementType cutval;
             middleSplit(left, right - left, idx, cutfeat, cutval, bbox);
 
@@ -139,11 +137,11 @@ private:
 
             BoundingBox left_bbox(bbox);
             left_bbox[cutfeat].high = cutval;
-            node->child1 = divideTree(left, left + idx, left_bbox);
+            node->child1            = divideTree(left, left + idx, left_bbox);
 
             BoundingBox right_bbox(bbox);
             right_bbox[cutfeat].low = cutval;
-            node->child2 = divideTree(left + idx, right, right_bbox);
+            node->child2            = divideTree(left + idx, right, right_bbox);
 
             node->node_type.sub.divlow  = left_bbox[cutfeat].high;
             node->node_type.sub.divhigh = right_bbox[cutfeat].low;
@@ -157,11 +155,13 @@ private:
     }
 
     void middleSplit(Offset ind, Size count, Offset& index, Dimension& cutfeat, ElementType& cutval, const BoundingBox& bbox) {
-        auto EPS = static_cast<ElementType>(0.00001);
+        auto EPS             = static_cast<ElementType>(0.00001);
         ElementType max_span = bbox[0].high - bbox[0].low;
         for (Dimension i = 1; i < DIM; ++i) {
             ElementType span = bbox[i].high - bbox[i].low;
-            if (span > max_span) { max_span = span; }
+            if (span > max_span) {
+                max_span = span;
+            }
         }
         ElementType max_spread = -1;
         cutfeat                = 0;
@@ -230,12 +230,12 @@ private:
     }
 
     template <class RESULTSET>
-    bool searchLevel(RESULTSET& result_set, const Point& pt, NodePtr const& node, ElementType mindistsq, Point& dists, float epsError) const {
+    bool searchLevel(RESULTSET& result_set, const Point& pt, const NodePtr& node, ElementType mindistsq, Point& dists, float epsError) const {
         if ((node->child1 == nullptr) && (node->child2 == nullptr)) {
             ElementType worst_dist = result_set.worstDist();
             for (Offset i = node->node_type.lr.left; i < node->node_type.lr.right; ++i) {
                 AccessorType accessor = acc[i];
-                ElementType distance = ElementType();
+                ElementType distance  = ElementType();
                 for (Dimension i = 0; i < DIM; ++i) {
                     distance += result_set.accumDist(pt[i], kdtree_getdata<ElementType>(dataset, accessor, i));
                 }
@@ -248,23 +248,22 @@ private:
             return true;
         }
 
-        Dimension   idx   = node->node_type.sub.divfeat;
+        Dimension idx     = node->node_type.sub.divfeat;
         ElementType val   = pt[idx];
         ElementType diff1 = val - node->node_type.sub.divlow;
         ElementType diff2 = val - node->node_type.sub.divhigh;
 
-        NodePtr const* bestChild;
-        NodePtr const* otherChild;
+        const NodePtr* bestChild;
+        const NodePtr* otherChild;
         ElementType cut_dist;
         if ((diff1 + diff2) < 0) {
             bestChild  = &node->child1;
             otherChild = &node->child2;
-            cut_dist = result_set.accumDist(val, node->node_type.sub.divhigh);
-        }
-        else {
+            cut_dist   = result_set.accumDist(val, node->node_type.sub.divhigh);
+        } else {
             bestChild  = &node->child2;
             otherChild = &node->child1;
-            cut_dist = result_set.accumDist(val, node->node_type.sub.divlow);
+            cut_dist   = result_set.accumDist(val, node->node_type.sub.divlow);
         }
 
         if (!searchLevel(result_set, pt, *bestChild, mindistsq, dists, epsError)) {

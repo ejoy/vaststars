@@ -1,8 +1,8 @@
 #include <lua.hpp>
 
-#include "luaecs.h"
-#include "core/world.h"
 #include "core/capacitance.h"
+#include "core/world.h"
+#include "luaecs.h"
 
 #define STATUS_IDLE 0
 #define STATUS_DONE 1
@@ -16,7 +16,7 @@ sync_input_fluidbox(world& w, component::assembling& assembling, component::ches
     for (size_t i = 0; i < 4; ++i) {
         uint16_t fluid = fb.in[i].fluid;
         if (fluid != 0) {
-            uint8_t index = ((assembling.fluidbox_in >> (i*4)) & 0xF) - 1;
+            uint8_t index  = ((assembling.fluidbox_in >> (i * 4)) & 0xF) - 1;
             uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
             w.fluidflows[fluid].set(fb.in[i].id, value);
         }
@@ -31,7 +31,7 @@ sync_output_fluidbox(world& w, component::assembling& assembling, component::che
     for (size_t i = 0; i < 3; ++i) {
         uint16_t fluid = fb.out[i].fluid;
         if (fluid != 0) {
-            uint8_t index = ((assembling.fluidbox_out >> (i*4)) & 0xF) - 1;
+            uint8_t index  = ((assembling.fluidbox_out >> (i * 4)) & 0xF) - 1;
             uint16_t value = chest::get_fluid(w, container::index::from(c2.chest), index);
             w.fluidflows[fluid].set(fb.out[i].id, value);
         }
@@ -66,16 +66,15 @@ static bool assembling_update(world& w, component::assembling& assembling, compo
 }
 
 static int
-lupdate(lua_State *L) {
+lupdate(lua_State* L) {
     auto& w = getworld(L);
     for (auto& v : ecs::select<component::assembling, component::chest, component::building>(w.ecs)) {
-        bool is_consumer = v.component<component::consumer>();
-        bool is_generator = v.component<component::generator>();
+        bool is_consumer                  = v.component<component::consumer>();
+        bool is_generator                 = v.component<component::generator>();
         component::assembling& assembling = v.get<component::assembling>();
         if (is_consumer && is_generator) {
             continue;
-        }
-        else if (is_consumer) {
+        } else if (is_consumer) {
             auto capacitance = v.component<component::capacitance>();
             if (!capacitance) {
                 continue;
@@ -87,7 +86,7 @@ lupdate(lua_State *L) {
             if (assembling.recipe == 0) {
                 continue;
             }
-            component::chest& chest = v.get<component::chest>();
+            component::chest& chest   = v.get<component::chest>();
             component::fluidboxes* fb = v.component<component::fluidboxes>();
             if (!assembling_update(w, assembling, chest, fb)) {
                 continue;
@@ -96,8 +95,7 @@ lupdate(lua_State *L) {
                 assembling.progress -= assembling.speed;
                 assembling_update(w, assembling, chest, fb);
             }
-        }
-        else if (is_generator) {
+        } else if (is_generator) {
             auto capacitance = v.component<component::capacitance>();
             if (!capacitance) {
                 continue;
@@ -105,7 +103,7 @@ lupdate(lua_State *L) {
             if (assembling.recipe == 0) {
                 continue;
             }
-            component::chest& chest = v.get<component::chest>();
+            component::chest& chest   = v.get<component::chest>();
             component::fluidboxes* fb = v.component<component::fluidboxes>();
             if (!assembling_update(w, assembling, chest, fb)) {
                 continue;
@@ -115,12 +113,11 @@ lupdate(lua_State *L) {
                 assembling.progress -= assembling.speed;
                 assembling_update(w, assembling, chest, fb);
             }
-        }
-        else {
+        } else {
             if (assembling.recipe == 0) {
                 continue;
             }
-            component::chest& chest = v.get<component::chest>();
+            component::chest& chest   = v.get<component::chest>();
             component::fluidboxes* fb = v.component<component::fluidboxes>();
             if (!assembling_update(w, assembling, chest, fb)) {
                 continue;
@@ -133,7 +130,7 @@ lupdate(lua_State *L) {
 }
 
 extern "C" int
-luaopen_vaststars_assembling_system(lua_State *L) {
+luaopen_vaststars_assembling_system(lua_State* L) {
     luaL_checkversion(L);
     luaL_Reg l[] = {
         { "update", lupdate },

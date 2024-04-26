@@ -1,13 +1,14 @@
 #pragma once
 
+#include <assert.h>
+#include <stdint.h>
+#include <util/component.h>
+
 #include <list>
 #include <memory>
 #include <optional>
 #include <span>
 #include <vector>
-#include <assert.h>
-#include <stdint.h>
-#include <util/component.h>
 
 struct world;
 struct lua_State;
@@ -23,14 +24,14 @@ struct recipe_items {
 
 class container {
 public:
-    using size_type = uint16_t;
+    using size_type                      = uint16_t;
     static constexpr size_type kPageSize = 256;
     struct index {
         uint8_t page;
         uint8_t slot;
         index operator+(uint8_t v) const {
             assert((size_t)slot + v < kPageSize);
-            return {page, (uint8_t)(slot + v)};
+            return { page, (uint8_t)(slot + v) };
         }
         index& operator++() {
             assert((size_t)slot + 1 < kPageSize);
@@ -40,7 +41,7 @@ public:
         bool operator==(const index& rhs) const {
             return page == rhs.page && slot == rhs.slot;
         }
-        operator uint16_t () const {
+        operator uint16_t() const {
             return page | (slot << 8);
         }
         static index from(uint16_t v) {
@@ -51,31 +52,30 @@ public:
         }
     };
     struct slot {
-        enum class slot_type: uint8_t {
+        enum class slot_type : uint8_t {
             none = 0,
             supply,
             demand,
             transit,
         };
         slot_type type = slot_type::none;
-        uint8_t   eof;
-        uint16_t  item = 0;
-        uint16_t  amount = 0;
-        uint16_t  limit = 0;
-        uint16_t  lock_item = 0;
-        uint16_t  lock_space = 0;
+        uint8_t eof;
+        uint16_t item       = 0;
+        uint16_t amount     = 0;
+        uint16_t limit      = 0;
+        uint16_t lock_item  = 0;
+        uint16_t lock_space = 0;
     };
     struct page {
         slot slots[kPageSize];
     };
     struct chunk {
     public:
-        chunk() {} // for saveload
+        chunk() {}  // for saveload
         chunk(uint8_t slot, size_type length)
-            : slot(slot)
-        {
+            : slot(slot) {
             assert(1 <= length && length <= 256);
-            this->length = (uint8_t)(length-1);
+            this->length = (uint8_t)(length - 1);
         }
         bool operator<(const chunk& rhs) const {
             return slot < rhs.slot;
@@ -92,10 +92,12 @@ public:
             length -= size;
         }
         uint8_t slot;
+
     private:
         uint8_t length;
     };
-    static constexpr index kInvalidIndex = {0,0};
+    static constexpr index kInvalidIndex = { 0, 0 };
+
 public:
     container() {
         init();
@@ -111,7 +113,7 @@ public:
         if (idx == kInvalidIndex) {
             return;
         }
-        free_chunk(idx.page, {idx.slot, size});
+        free_chunk(idx.page, { idx.slot, size });
     }
     slot& at(index idx) {
         assert(idx.page < pages.size());
@@ -121,7 +123,7 @@ public:
     }
     std::span<slot> slice(index idx, size_type size) {
         assert(idx.page < pages.size());
-        return {pages[idx.page]->slots + idx.slot, size};
+        return { pages[idx.page]->slots + idx.slot, size };
     }
     void init() {
         pages.emplace_back(new page);
@@ -132,11 +134,12 @@ public:
         pages.clear();
         freelist.clear();
     }
+
 private:
     void init_array(index start, size_type size) {
-        uint8_t last = start.slot+(uint8_t)(size-1);
+        uint8_t last = start.slot + (uint8_t)(size - 1);
         for (size_t i = 0; i < size; ++i) {
-            pages[start.page]->slots[start.slot+i].eof = last;
+            pages[start.page]->slots[start.slot + i].eof = last;
         }
     }
     index alloc_array_(size_type size) {
@@ -147,27 +150,24 @@ private:
             page = (uint8_t)(pages.size() - 1);
             slot = top;
             top += size;
-        }
-        else if (size + top == kPageSize) {
-            page = (uint8_t)(pages.size()-1);
+        } else if (size + top == kPageSize) {
+            page = (uint8_t)(pages.size() - 1);
             slot = top;
             alloc_page();
-        }
-        else if (size == kPageSize) {
+        } else if (size == kPageSize) {
             free_page_last();
             alloc_page();
-            page = (uint8_t)(pages.size()-1);
+            page = (uint8_t)(pages.size() - 1);
             slot = 0;
             alloc_page();
-        }
-        else {
+        } else {
             free_page_last();
             alloc_page();
-            page = (uint8_t)(pages.size()-1);
+            page = (uint8_t)(pages.size() - 1);
             slot = 0;
-            top = (uint8_t)size;
+            top  = (uint8_t)size;
         }
-        index start {page, slot};
+        index start { page, slot };
         init_array(start, size);
         return start;
     }
@@ -176,11 +176,10 @@ private:
             auto& lst = freelist[i];
             for (auto it = lst.begin(); it != lst.end(); ++it) {
                 if (it->size() >= size) {
-                    index start {(uint8_t)i, it->slot};
+                    index start { (uint8_t)i, it->slot };
                     if (it->size() == size) {
                         lst.erase(it);
-                    }
-                    else {
+                    } else {
                         it->slot += size;
                         it->sub_size(size);
                     }
@@ -192,7 +191,7 @@ private:
         return alloc_array_(size);
     }
     void free_page_last() {
-        free_chunk((uint8_t)(pages.size()-1), {top, size_type(kPageSize - top)});
+        free_chunk((uint8_t)(pages.size() - 1), { top, size_type(kPageSize - top) });
     }
     void alloc_page() {
         assert(pages.size() <= 255);
@@ -200,8 +199,8 @@ private:
         top = 0;
     }
     void free_chunk(uint8_t page, chunk c) {
-        if ((size_t)page+1 > freelist.size()) {
-            freelist.resize(page+1);
+        if ((size_t)page + 1 > freelist.size()) {
+            freelist.resize(page + 1);
         }
         auto& lst = freelist[page];
         for (auto it = lst.begin(); it != lst.end(); ++it) {
@@ -230,7 +229,8 @@ private:
             }
         }
     }
-public: //TODO for saveload
+
+public:  // TODO for saveload
     std::vector<std::unique_ptr<page>> pages;
     std::vector<std::list<chunk>> freelist;
     uint8_t top;
@@ -240,7 +240,7 @@ namespace chest {
 
     container::index create(world& w, container::slot* data, container::size_type size);
     void destroy(world& w, container::index c, bool recycle);
-    
+
     container::slot& array_at(world& w, container::index c, uint8_t offset);
     container::slot* array_get(world& w, container::index c, uint8_t offset);
     std::span<container::slot> array_slice(world& w, container::index c, uint8_t offset, uint16_t size);
@@ -249,15 +249,15 @@ namespace chest {
 
     // for fluidflow
     uint16_t get_fluid(world& w, container::index c, uint8_t offset);
-    void     set_fluid(world& w, container::index c, uint8_t offset, uint16_t value);
+    void set_fluid(world& w, container::index c, uint8_t offset, uint16_t value);
 
     // for chest
-    bool     pickup(world& w, container::index c, uint16_t recipe);
-    bool     place(world& w, container::index c, uint16_t recipe);
+    bool pickup(world& w, container::index c, uint16_t recipe);
+    bool place(world& w, container::index c, uint16_t recipe);
 
     // for laboratory
-    bool     pickup(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
-    bool     place(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
+    bool pickup(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
+    bool place(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
 
     // for market
     container::slot* find_item(world& w, container::index c, uint16_t item);

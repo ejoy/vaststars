@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdint>
+#include <vector>
+
 struct fluidflow_network;
 struct fluid_box;
 struct fluid_state;
@@ -9,7 +12,7 @@ struct fluidflow {
     ~fluidflow();
     uint16_t create_id();
     void remove_id(uint16_t id);
-    bool build(uint16_t id, struct fluid_box *box);
+    bool build(uint16_t id, struct fluid_box* box);
     bool teardown(int id);
     void resetconnect();
     bool connect(int from, int to, bool oneway);

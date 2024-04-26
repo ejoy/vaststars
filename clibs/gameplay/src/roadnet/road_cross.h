@@ -22,37 +22,17 @@ namespace roadnet::road {
         return 1 << (uint16_t)crossType(from, to);
     }
 
-    constexpr uint16_t NoNorth = 0
-        | crossTypeMask(direction::t, direction::t)
-        | crossTypeMask(direction::r, direction::l)
-        | crossTypeMask(direction::r, direction::b)
-        | crossTypeMask(direction::b, direction::l)
-    ;
-    constexpr uint16_t NoEast = 0
-        | crossTypeMask(direction::r, direction::r)
-        | crossTypeMask(direction::b, direction::t)
-        | crossTypeMask(direction::b, direction::l)
-        | crossTypeMask(direction::l, direction::t)
-    ;
-    constexpr uint16_t NoSouth = 0
-        | crossTypeMask(direction::b, direction::b)
-        | crossTypeMask(direction::l, direction::r)
-        | crossTypeMask(direction::l, direction::t)
-        | crossTypeMask(direction::t, direction::r)
-    ;
-    constexpr uint16_t NoWest = 0
-        | crossTypeMask(direction::l, direction::l)
-        | crossTypeMask(direction::t, direction::b)
-        | crossTypeMask(direction::t, direction::r)
-        | crossTypeMask(direction::r, direction::b)
-    ;
+    constexpr uint16_t NoNorth = 0 | crossTypeMask(direction::t, direction::t) | crossTypeMask(direction::r, direction::l) | crossTypeMask(direction::r, direction::b) | crossTypeMask(direction::b, direction::l);
+    constexpr uint16_t NoEast  = 0 | crossTypeMask(direction::r, direction::r) | crossTypeMask(direction::b, direction::t) | crossTypeMask(direction::b, direction::l) | crossTypeMask(direction::l, direction::t);
+    constexpr uint16_t NoSouth = 0 | crossTypeMask(direction::b, direction::b) | crossTypeMask(direction::l, direction::r) | crossTypeMask(direction::l, direction::t) | crossTypeMask(direction::t, direction::r);
+    constexpr uint16_t NoWest  = 0 | crossTypeMask(direction::l, direction::l) | crossTypeMask(direction::t, direction::b) | crossTypeMask(direction::t, direction::r) | crossTypeMask(direction::r, direction::b);
 
     struct cross {
-        straightid neighbor[4] = {};
+        straightid neighbor[4]     = {};
         straightid rev_neighbor[4] = {};
-        lorryid    cross_lorry[2] = {};
+        lorryid cross_lorry[2]     = {};
         cross_type cross_status[2];
-        uint16_t   ban = 0;
+        uint16_t ban = 0;
         roadnet::loction loc;
         loction getLoction(network& w) const;
         void update(world& w, uint64_t ti);

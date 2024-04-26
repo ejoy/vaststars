@@ -1,10 +1,13 @@
-#include <lua.hpp>
-#include <stdlib.h>
-#include <memory.h>
-#include <assert.h>
 #include "core/chest.h"
-#include "core/world.h"
+
+#include <assert.h>
+#include <memory.h>
+#include <stdlib.h>
+
+#include <lua.hpp>
+
 #include "core/backpack.h"
+#include "core/world.h"
 #include "util/prototype.h"
 
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
@@ -48,17 +51,17 @@ std::span<container::slot> chest::array_slice(world& w, container::index start) 
 container::index chest::create(world& w, container::slot* data, container::size_type size) {
     auto start = w.container.create_chest(size);
     for (uint8_t i = 0; i < size; ++i) {
-        auto& s = w.container.at(start + i);
+        auto& s  = w.container.at(start + i);
         auto eof = s.eof;
-        s = data[i];
-        s.eof = eof;
+        s        = data[i];
+        s.eof    = eof;
     }
     return start;
 }
 
 void chest::destroy(world& w, container::index c, bool recycle) {
     if (recycle) {
-        for (auto& s: chest::array_slice(w, c)) {
+        for (auto& s : chest::array_slice(w, c)) {
             if (s.item != 0 && s.amount != 0) {
                 backpack_place(w, s.item, s.amount);
             }
@@ -80,20 +83,20 @@ void chest::set_fluid(world& w, container::index c, uint8_t offset, uint16_t val
 }
 
 bool chest::pickup(world& w, container::index c, uint16_t recipe) {
-    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
+    const auto& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
     return chest::pickup(w, c, &ingredients, 0);
 }
 
 bool chest::place(world& w, container::index c, uint16_t recipe) {
-    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
-    auto const& results = prototype::get<"results", recipe_items>(w, recipe);
-    //TODO ingredients.n -> uint8_t
+    const auto& ingredients = prototype::get<"ingredients", recipe_items>(w, recipe);
+    const auto& results     = prototype::get<"results", recipe_items>(w, recipe);
+    // TODO ingredients.n -> uint8_t
     return chest::place(w, c, &results, (uint8_t)ingredients.n);
 }
 
 bool chest::pickup(world& w, container::index c, const recipe_items* r, uint8_t offset) {
     size_t i = 0;
-    for (auto& s: chest::array_slice(w, c, offset, r->n)) {
+    for (auto& s : chest::array_slice(w, c, offset, r->n)) {
         auto& t = r->items[i++];
         assert(s.item == t.item);
         if (s.amount < t.amount) {
@@ -101,7 +104,7 @@ bool chest::pickup(world& w, container::index c, const recipe_items* r, uint8_t 
         }
     }
     i = 0;
-    for (auto& s: chest::array_slice(w, c, offset, r->n)) {
+    for (auto& s : chest::array_slice(w, c, offset, r->n)) {
         auto& t = r->items[i++];
         s.amount -= t.amount;
     }
@@ -110,7 +113,7 @@ bool chest::pickup(world& w, container::index c, const recipe_items* r, uint8_t 
 
 bool chest::place(world& w, container::index c, const recipe_items* r, uint8_t offset) {
     size_t i = 0;
-    for (auto& s: chest::array_slice(w, c, offset, r->n)) {
+    for (auto& s : chest::array_slice(w, c, offset, r->n)) {
         auto& t = r->items[i++];
         assert(s.item == t.item);
         if (s.amount + t.amount > s.limit) {
@@ -118,7 +121,7 @@ bool chest::place(world& w, container::index c, const recipe_items* r, uint8_t o
         }
     }
     i = 0;
-    for (auto& s: chest::array_slice(w, c, offset, r->n)) {
+    for (auto& s : chest::array_slice(w, c, offset, r->n)) {
         auto& t = r->items[i++];
         s.amount += t.amount;
     }
@@ -132,7 +135,7 @@ uint16_t chest::size(world& w, container::index c) {
 }
 
 container::slot* chest::find_item(world& w, container::index c, uint16_t item) {
-    for (auto& s: chest::array_slice(w, c)) {
+    for (auto& s : chest::array_slice(w, c)) {
         if (s.item == item) {
             return &s;
         }
@@ -142,11 +145,11 @@ container::slot* chest::find_item(world& w, container::index c, uint16_t item) {
 
 static int
 lcreate(lua_State* L) {
-    auto& w = getworld(L);
-    size_t sz = 0;
+    auto& w            = getworld(L);
+    size_t sz          = 0;
     container::slot* s = (container::slot*)luaL_checklstring(L, 2, &sz);
-    size_t n = sz / sizeof(container::slot);
-    if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container::slot) != 0) {
+    size_t n           = sz / sizeof(container::slot);
+    if (n < 0 || n > (uint16_t)-1 || sz % sizeof(container::slot) != 0) {
         return luaL_error(L, "size out of range.");
     }
     auto index = chest::create(w, s, (container::size_type)n);
@@ -156,19 +159,19 @@ lcreate(lua_State* L) {
 
 static int
 ldestroy(lua_State* L) {
-    auto& w = getworld(L);
+    auto& w        = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    bool recycle = lua_toboolean(L, 3);
+    bool recycle   = lua_toboolean(L, 3);
     chest::destroy(w, container::index::from(index), recycle);
     return 0;
 }
 
 static int
 lget(lua_State* L) {
-    auto& w = getworld(L);
+    auto& w        = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
-    auto c = container::index::from(index);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3) - 1);
+    auto c         = container::index::from(index);
     if (c == container::kInvalidIndex) {
         return 0;
     }
@@ -179,11 +182,21 @@ lget(lua_State* L) {
     auto& s = chest::array_at(w, c, offset);
     lua_createtable(L, 0, 7);
     switch (s.type) {
-    case container::slot::slot_type::none:    lua_pushstring(L, "none"); break;
-    case container::slot::slot_type::supply:  lua_pushstring(L, "supply"); break;
-    case container::slot::slot_type::demand:  lua_pushstring(L, "demand"); break;
-    case container::slot::slot_type::transit: lua_pushstring(L, "transit"); break;
-    default:                                  lua_pushstring(L, "unknown"); break;
+    case container::slot::slot_type::none:
+        lua_pushstring(L, "none");
+        break;
+    case container::slot::slot_type::supply:
+        lua_pushstring(L, "supply");
+        break;
+    case container::slot::slot_type::demand:
+        lua_pushstring(L, "demand");
+        break;
+    case container::slot::slot_type::transit:
+        lua_pushstring(L, "transit");
+        break;
+    default:
+        lua_pushstring(L, "unknown");
+        break;
     }
     lua_setfield(L, -2, "type");
     lua_pushinteger(L, s.item);
@@ -203,10 +216,10 @@ lget(lua_State* L) {
 
 static int
 lset(lua_State* L) {
-    auto& w = getworld(L);
+    auto& w        = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
-    auto c = container::index::from(index);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3) - 1);
+    auto c         = container::index::from(index);
     if (c == container::kInvalidIndex) {
         return 0;
     }
@@ -215,11 +228,11 @@ lset(lua_State* L) {
         return 0;
     }
     bool changed = false;
-    auto& s = chest::array_at(w, c, offset);
+    auto& s      = chest::array_at(w, c, offset);
     if (LUA_TNIL != lua_getfield(L, 4, "item")) {
         uint16_t item = (uint16_t)luaL_checkinteger(L, -1);
         if (s.item != item) {
-            s.item = item;
+            s.item  = item;
             changed = true;
         }
     }
@@ -228,7 +241,7 @@ lset(lua_State* L) {
         uint16_t amount = (uint16_t)luaL_checkinteger(L, -1);
         if (s.amount != amount) {
             s.amount = amount;
-            changed = true;
+            changed  = true;
         }
     }
     lua_pop(L, 1);
@@ -248,11 +261,11 @@ lset(lua_State* L) {
 
 static int
 lpickup(lua_State* L) {
-    auto& w = getworld(L);
+    auto& w        = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
-    uint16_t n = (uint16_t)(luaL_checkinteger(L, 4));
-    auto c = container::index::from(index);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3) - 1);
+    uint16_t n     = (uint16_t)(luaL_checkinteger(L, 4));
+    auto c         = container::index::from(index);
     if (c == container::kInvalidIndex) {
         return 0;
     }
@@ -264,11 +277,10 @@ lpickup(lua_State* L) {
     if (s.type == container::slot::slot_type::none || s.item == 0) {
         return 0;
     }
-    if (n > s.amount)  {
-        n = s.amount;
+    if (n > s.amount) {
+        n        = s.amount;
         s.amount = 0;
-    }
-    else {
+    } else {
         s.amount = s.amount - n;
     }
     if (s.amount < s.lock_item) {
@@ -280,11 +292,11 @@ lpickup(lua_State* L) {
 
 static int
 lplace(lua_State* L) {
-    auto& w = getworld(L);
+    auto& w        = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
-    uint16_t n = (uint16_t)(luaL_checkinteger(L, 4));
-    auto c = container::index::from(index);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3) - 1);
+    uint16_t n     = (uint16_t)(luaL_checkinteger(L, 4));
+    auto c         = container::index::from(index);
     if (c == container::kInvalidIndex) {
         return 0;
     }
@@ -296,11 +308,10 @@ lplace(lua_State* L) {
     if (s.type == container::slot::slot_type::none || s.item == 0) {
         return 0;
     }
-    if (s.amount + n > s.limit)  {
-        n = s.limit - s.amount;
+    if (s.amount + n > s.limit) {
+        n        = s.limit - s.amount;
         s.amount = s.limit;
-    }
-    else {
+    } else {
         s.amount = s.amount + n;
     }
     if (s.lock_space + s.amount > s.limit) {
@@ -311,7 +322,7 @@ lplace(lua_State* L) {
 }
 
 extern "C" int
-luaopen_vaststars_chest_core(lua_State *L) {
+luaopen_vaststars_chest_core(lua_State* L) {
     luaL_checkversion(L);
     luaL_Reg l[] = {
         { "create", lcreate },

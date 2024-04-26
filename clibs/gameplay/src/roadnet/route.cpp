@@ -1,10 +1,13 @@
 ﻿#include "roadnet/route.h"
-#include "roadnet/network.h"
-#include <bee/utility/flatmap.h>
+
+#include <assert.h>
 #include <bee/nonstd/unreachable.h>
+#include <bee/utility/flatmap.h>
+
 #include <optional>
 #include <queue>
-#include <assert.h>
+
+#include "roadnet/network.h"
 
 namespace roadnet {
     constexpr uint16_t kCrossDistance = 4;
@@ -13,12 +16,12 @@ namespace roadnet {
         using dijkstraVisit = std::pair<uint16_t, straightid>;
         using dijkstraQueue = std::priority_queue<dijkstraVisit, std::vector<dijkstraVisit>, std::greater<>>;
         struct dijkstraNode {
-            uint16_t   distance;
+            uint16_t distance;
             straightid prev;
-            direction  dir;
+            direction dir;
         };
         using dijkstraResult = bee::flatmap<straightid, dijkstraNode>;
-        dijkstraQueue  openlist;
+        dijkstraQueue openlist;
         dijkstraResult results;
 
         uint16_t get_distance(straightid N) const {
@@ -39,18 +42,23 @@ namespace roadnet {
             auto [found, node] = results.find_or_insert(N);
             if (!found || node->distance > distance) {
                 *node = dijkstraNode { distance, prev, dir };
-                openlist.push({distance, N});
+                openlist.push({ distance, N });
             }
         }
     };
 
     static constexpr direction reverse(direction dir) {
         switch (dir) {
-        case direction::l: return direction::r;
-        case direction::t: return direction::b;
-        case direction::r: return direction::l;
-        case direction::b: return direction::t;
-        default: std::unreachable();
+        case direction::l:
+            return direction::r;
+        case direction::t:
+            return direction::b;
+        case direction::r:
+            return direction::l;
+        case direction::b:
+            return direction::t;
+        default:
+            std::unreachable();
         }
     }
 
@@ -69,17 +77,17 @@ namespace roadnet {
         while (vec.size() >= 2) {
             auto StartId = vec.back();
             vec.pop_back();
-            auto StartNode = ctx.get(vec.back());
-            auto StartDir = StartNode->dir;
+            auto StartNode    = ctx.get(vec.back());
+            auto StartDir     = StartNode->dir;
             auto LastDistance = StartNode->distance;
             for (auto it = vec.rbegin(); it != vec.rend(); ++it) {
-                auto C = *it;
+                auto C    = *it;
                 auto node = ctx.get(C);
                 w.routeCached.insert_or_assign(route_key { StartId, C }, route_value {
-                    true,
-                    StartDir,
-                    (uint16_t)(node->distance - StartDistance),
-                });
+                                                                             true,
+                                                                             StartDir,
+                                                                             (uint16_t)(node->distance - StartDistance),
+                                                                         });
                 C = node->prev;
             }
             StartDistance = LastDistance;
@@ -92,7 +100,7 @@ namespace roadnet {
 
     static route_value dijkstra(network& w, straightid S, straightid E) {
         dijkstraContext ctx;
-        ctx.openlist.push({0, S});
+        ctx.openlist.push({ 0, S });
         while (!ctx.openlist.empty()) {
             auto [distance, G] = ctx.openlist.top();
             ctx.openlist.pop();
@@ -100,12 +108,12 @@ namespace roadnet {
                 continue;
             }
             auto& straight = w.StraightRoad(G);
-            crossid Cross = straight.neighbor;
+            crossid Cross  = straight.neighbor;
             if (Cross) {
                 direction prev = reverse(straight.dir);
-                auto& cross = w.CrossRoad(Cross);
+                auto& cross    = w.CrossRoad(Cross);
                 for (uint8_t i = 0; i < 4; ++i) {
-                    direction dir = (direction)i;
+                    direction dir   = (direction)i;
                     straightid Next = cross.neighbor[i];
                     if (Next && cross.allowed(prev, dir)) {
                         auto& straight = w.StraightRoad(Next);
@@ -117,7 +125,7 @@ namespace roadnet {
                 return buildResult(w, ctx, S, E);
             }
         }
-        for (auto const& [id, node] : ctx.results) {
+        for (const auto& [id, node] : ctx.results) {
             w.routeCached.insert_or_assign(route_key { id, E }, route_value { false });
         }
         return { false };

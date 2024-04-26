@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+
 #include "util/component.h"
 
 struct building {

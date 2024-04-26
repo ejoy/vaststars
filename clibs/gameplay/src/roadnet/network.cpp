@@ -1,14 +1,17 @@
 ﻿#include "roadnet/network.h"
+
+#include <bee/nonstd/unreachable.h>
+
+#include <cassert>
+
 #include "core/world.h"
 #include "roadnet/lorry.h"
 #include "util/prototype.h"
-#include <bee/nonstd/unreachable.h>
-#include <cassert>
 
 namespace roadnet {
     constexpr uint8_t kRoadSize = 2;
 
-    enum class MapRoad: uint8_t {
+    enum class MapRoad : uint8_t {
         Left    = 1 << 0,
         Top     = 1 << 1,
         Right   = 1 << 2,
@@ -24,7 +27,7 @@ namespace roadnet {
     }
 
     template <typename T, typename F>
-        requires (std::is_member_function_pointer_v<F>)
+        requires(std::is_member_function_pointer_v<F>)
     static void array_call(world& w, uint64_t ti, T& ary, F func) {
         size_t N = ary.size();
         for (size_t i = 0; i < N; ++i) {
@@ -34,21 +37,35 @@ namespace roadnet {
 
     static constexpr direction reverse(direction dir) {
         switch (dir) {
-        case direction::l: return direction::r;
-        case direction::t: return direction::b;
-        case direction::r: return direction::l;
-        case direction::b: return direction::t;
-        default: std::unreachable();
+        case direction::l:
+            return direction::r;
+        case direction::t:
+            return direction::b;
+        case direction::r:
+            return direction::l;
+        case direction::b:
+            return direction::t;
+        default:
+            std::unreachable();
         }
     }
 
     static constexpr loction move(loction loc, direction dir) {
         switch (dir) {
-        case direction::l: loc.x -= kRoadSize; break;
-        case direction::t: loc.y -= kRoadSize; break;
-        case direction::r: loc.x += kRoadSize; break;
-        case direction::b: loc.y += kRoadSize; break;
-        default: std::unreachable();
+        case direction::l:
+            loc.x -= kRoadSize;
+            break;
+        case direction::t:
+            loc.y -= kRoadSize;
+            break;
+        case direction::r:
+            loc.x += kRoadSize;
+            break;
+        case direction::b:
+            loc.y += kRoadSize;
+            break;
+        default:
+            std::unreachable();
         }
         return loc;
     }
@@ -59,36 +76,54 @@ namespace roadnet {
 
     static constexpr uint8_t makeMask(const char* maskstr) {
         uint8_t m = 0;
-        m |= maskstr[0] != '_'? (1 << 0): 0;
-        m |= maskstr[1] != '_'? (1 << 1): 0;
-        m |= maskstr[2] != '_'? (1 << 2): 0;
-        m |= maskstr[3] != '_'? (1 << 3): 0;
-        m |= maskstr[4] != '_'? (1 << 4): 0;
-        m |= maskstr[5] != '_'? (1 << 5): 0;
-        m |= maskstr[6] != '_'? (1 << 6): 0;
-        m |= maskstr[7] != '_'? (1 << 7): 0;
+        m |= maskstr[0] != '_' ? (1 << 0) : 0;
+        m |= maskstr[1] != '_' ? (1 << 1) : 0;
+        m |= maskstr[2] != '_' ? (1 << 2) : 0;
+        m |= maskstr[3] != '_' ? (1 << 3) : 0;
+        m |= maskstr[4] != '_' ? (1 << 4) : 0;
+        m |= maskstr[5] != '_' ? (1 << 5) : 0;
+        m |= maskstr[6] != '_' ? (1 << 6) : 0;
+        m |= maskstr[7] != '_' ? (1 << 7) : 0;
         return m;
     }
 
     static constexpr uint8_t mask(wchar_t c) {
         switch (c) {
-        case L' ': return makeMask("________");
-        case L'║': return makeMask("_T_BN_S_");
-        case L'═': return makeMask("L_R__E_W");
-        case L'╔': return makeMask("__RB_ES_");
-        case L'╠': return makeMask("_TRB____");
-        case L'╚': return makeMask("_TR_NE__");
-        case L'╦': return makeMask("L_RB____");
-        case L'╬': return makeMask("LTRB____");
-        case L'╩': return makeMask("LTR_____");
-        case L'╗': return makeMask("L__B__SW");
-        case L'╣': return makeMask("LT_B____");
-        case L'╝': return makeMask("LT__N__W");
-        case L'>': return makeMask("L___NES_");
-        case L'v': return makeMask("_T___ESW");
-        case L'<': return makeMask("__R_N_SW");
-        case L'^': return makeMask("___B_ESW");
-        default: assert(false); return 0;
+        case L' ':
+            return makeMask("________");
+        case L'║':
+            return makeMask("_T_BN_S_");
+        case L'═':
+            return makeMask("L_R__E_W");
+        case L'╔':
+            return makeMask("__RB_ES_");
+        case L'╠':
+            return makeMask("_TRB____");
+        case L'╚':
+            return makeMask("_TR_NE__");
+        case L'╦':
+            return makeMask("L_RB____");
+        case L'╬':
+            return makeMask("LTRB____");
+        case L'╩':
+            return makeMask("LTR_____");
+        case L'╗':
+            return makeMask("L__B__SW");
+        case L'╣':
+            return makeMask("LT_B____");
+        case L'╝':
+            return makeMask("LT__N__W");
+        case L'>':
+            return makeMask("L___NES_");
+        case L'v':
+            return makeMask("_T___ESW");
+        case L'<':
+            return makeMask("__R_N_SW");
+        case L'^':
+            return makeMask("___B_ESW");
+        default:
+            assert(false);
+            return 0;
         }
     }
 
@@ -130,68 +165,94 @@ namespace roadnet {
         switch (m & 0xF) {
         case maskl(L'║'):
             switch (dir) {
-            case direction::t: return direction::b;
-            case direction::b: return direction::t;
-            default: break;
+            case direction::t:
+                return direction::b;
+            case direction::b:
+                return direction::t;
+            default:
+                break;
             }
             break;
         case maskl(L'═'):
             switch (dir) {
-            case direction::l: return direction::r;
-            case direction::r: return direction::l;
-            default: break;
+            case direction::l:
+                return direction::r;
+            case direction::r:
+                return direction::l;
+            default:
+                break;
             }
             break;
         case maskl(L'>'):
             switch (dir) {
-            case direction::l: return direction::l;
-            default: break;
+            case direction::l:
+                return direction::l;
+            default:
+                break;
             }
             break;
         case maskl(L'v'):
             switch (dir) {
-            case direction::t: return direction::t;
-            default: break;
+            case direction::t:
+                return direction::t;
+            default:
+                break;
             }
             break;
         case maskl(L'<'):
             switch (dir) {
-            case direction::r: return direction::r;
-            default: break;
+            case direction::r:
+                return direction::r;
+            default:
+                break;
             }
             break;
         case maskl(L'^'):
             switch (dir) {
-            case direction::b: return direction::b;
-            default: break;
+            case direction::b:
+                return direction::b;
+            default:
+                break;
             }
             break;
         case maskl(L'╔'):
             switch (dir) {
-            case direction::r: return direction::b;
-            case direction::b: return direction::r;
-            default: break;
+            case direction::r:
+                return direction::b;
+            case direction::b:
+                return direction::r;
+            default:
+                break;
             }
             break;
         case maskl(L'╚'):
             switch (dir) {
-            case direction::r: return direction::t;
-            case direction::t: return direction::r;
-            default: break;
+            case direction::r:
+                return direction::t;
+            case direction::t:
+                return direction::r;
+            default:
+                break;
             }
             break;
         case maskl(L'╗'):
             switch (dir) {
-            case direction::l: return direction::b;
-            case direction::b: return direction::l;
-            default: break;
+            case direction::l:
+                return direction::b;
+            case direction::b:
+                return direction::l;
+            default:
+                break;
             }
             break;
         case maskl(L'╝'):
             switch (dir) {
-            case direction::l: return direction::t;
-            case direction::t: return direction::l;
-            default: break;
+            case direction::l:
+                return direction::t;
+            case direction::t:
+                return direction::l;
+            default:
+                break;
             }
             break;
         }
@@ -212,37 +273,36 @@ namespace roadnet {
     };
 
     struct NeighborResult {
-        loction      l;
-        direction    dir;
-        uint16_t     n;
-        uint8_t      m;
+        loction l;
+        direction dir;
+        uint16_t n;
+        uint8_t m;
         NeighborType type;
     };
 
     struct straightData {
         straightid id;
-        uint16_t   len;
-        loction    loc;
-        direction  start_dir;
-        direction  finish_dir;
-        crossid neighbor; // the next cross along this straight road
+        uint16_t len;
+        loction loc;
+        direction start_dir;
+        direction finish_dir;
+        crossid neighbor;  // the next cross along this straight road
         straightData(straightid id, uint16_t len, loction loc, direction start_dir, direction finish_dir, crossid neighbor)
             : id(id)
             , len(len)
             , loc(loc)
             , start_dir(start_dir)
             , finish_dir(finish_dir)
-            , neighbor(neighbor)
-        {}
+            , neighbor(neighbor) {}
     };
 
     struct straightGrid {
         straightid id0;
         straightid id1;
-        uint16_t   offset0:    14;
-        uint16_t   direction0:  2;
-        uint16_t   offset1:    14;
-        uint16_t   direction1:  2;
+        uint16_t offset0 : 14;
+        uint16_t direction0 : 2;
+        uint16_t offset1 : 14;
+        uint16_t direction1 : 2;
     };
     static_assert(sizeof(straightGrid) == sizeof(uint64_t));
 
@@ -266,7 +326,7 @@ namespace roadnet {
         bee::flatmap<loction, endpointStatus> endpointMap;
         dynarray<lorryStatus> lorryStatusAry;
         std::vector<straightData> straightVec;
-        uint16_t genCrossId = 0;
+        uint16_t genCrossId             = 0;
         uint32_t genStraightLorryOffset = 0;
         uint32_t genStraightCoordOffset = 0;
     };
@@ -282,37 +342,37 @@ namespace roadnet {
     static NeighborResult findNeighbor(updateMapStatus& status, loction l, direction dir) {
         uint16_t n = 0;
         for (;;) {
-            loction next = move(l, dir);
-            uint8_t m = getMapBits(status.map, next);
+            loction next       = move(l, dir);
+            uint8_t m          = getMapBits(status.map, next);
             direction prev_dir = reverse(dir);
             if (!hasDirection(m, prev_dir)) {
                 uint8_t curm = getMapBits(status.map, l);
                 if (isCross(curm)) {
                     assert(n == 0);
-                    return {l, dir, n, curm, NeighborType::Cross};
+                    return { l, dir, n, curm, NeighborType::Cross };
                 }
                 if (isEndpoint(status, l)) {
                     assert(n == 0);
-                    return {l, dir, n, curm, NeighborType::Endpoint};
+                    return { l, dir, n, curm, NeighborType::Endpoint };
                 }
                 if (isStarting(status, next)) {
                     assert(n == 0);
-                    return {l, dir, n, m, NeighborType::Starting};
+                    return { l, dir, n, m, NeighborType::Starting };
                 }
                 dir = next_direction(l, curm, dir);
                 continue;
             }
             if (isCross(m)) {
-                return {next, dir, n, m, NeighborType::Cross};
+                return { next, dir, n, m, NeighborType::Cross };
             }
             if (isEndpoint(status, next)) {
-                return {next, dir, n, m, NeighborType::Endpoint};
+                return { next, dir, n, m, NeighborType::Endpoint };
             }
             if (isStarting(status, next)) {
-                return {next, dir, n, m, NeighborType::Starting};
+                return { next, dir, n, m, NeighborType::Starting };
             }
             assert(next != l);
-            l = next;
+            l   = next;
             dir = reverse(dir);
             dir = next_direction(next, m, dir);
             n++;
@@ -321,8 +381,8 @@ namespace roadnet {
 
     static void walkToNeighbor(updateMapStatus& status, loction l, direction dir, std::function<void(loction, map_index, cross_type)> func) {
         for (;;) {
-            loction next = move(l, dir);
-            uint8_t m = getMapBits(status.map, next);
+            loction next       = move(l, dir);
+            uint8_t m          = getMapBits(status.map, next);
             direction prev_dir = reverse(dir);
             if (!hasDirection(m, prev_dir)) {
                 uint8_t curm = getMapBits(status.map, l);
@@ -340,10 +400,10 @@ namespace roadnet {
             direction next_dir = next_direction(next, m, prev_dir);
             func(next, map_index::unset, road::crossType(prev_dir, next_dir));
             if (isStarting(status, next) || isEndpoint(status, next)) {
-                func({}, map_index::unset, cross_type::ll); //TODO: remove it
+                func({}, map_index::unset, cross_type::ll);  // TODO: remove it
                 return;
             }
-            l = next;
+            l   = next;
             dir = next_dir;
         }
     }
@@ -360,8 +420,7 @@ namespace roadnet {
                 return;
             }
             assert(nb.l == loc && na.n != loc);
-        }
-        else if (na.type == NeighborType::Cross && nb.type == NeighborType::Cross) {
+        } else if (na.type == NeighborType::Cross && nb.type == NeighborType::Cross) {
             assert(na.l == nb.l);
             assert(na.n == nb.n);
             if (nb.dir == b) {
@@ -369,8 +428,7 @@ namespace roadnet {
                 std::swap(a, b);
             }
             assert(na.dir == a);
-        }
-        else {
+        } else {
             assert(false);
         }
         auto stInfo = status.startingMap.find(loc);
@@ -379,7 +437,7 @@ namespace roadnet {
         assert(cross_a);
 
         straightData& straight = status.straightVec.emplace_back(
-            straightid {(uint16_t)status.straightVec.size()},
+            straightid { (uint16_t)status.straightVec.size() },
             na.n * road::straight::N + 1,
             loc,
             a,
@@ -396,29 +454,26 @@ namespace roadnet {
         if (na.type != NeighborType::Cross || nb.type != NeighborType::Cross) {
             return;
         }
-        assert (loc != na.l && loc != nb.l);
+        assert(loc != na.l && loc != nb.l);
         if (na.l == nb.l) {
             assert(false);
-        }
-        else if (na.l.y == nb.l.y) {
+        } else if (na.l.y == nb.l.y) {
             assert(loc.y != na.l.y);
             bool left_handled = loc.y > na.l.y;
-            bool a_less_b = na.l.x > nb.l.x;
+            bool a_less_b     = na.l.x > nb.l.x;
             if (left_handled != a_less_b) {
                 std::swap(na, nb);
                 std::swap(a, b);
             }
-        }
-        else if (na.l.x == nb.l.x) {
+        } else if (na.l.x == nb.l.x) {
             assert(loc.x != nb.l.x);
             bool left_handled = loc.x < nb.l.x;
-            bool a_less_b = na.l.y > nb.l.y;
+            bool a_less_b     = na.l.y > nb.l.y;
             if (left_handled != a_less_b) {
                 std::swap(na, nb);
                 std::swap(a, b);
             }
-        }
-        else {
+        } else {
             assert(false);
         }
         auto epInfo = status.endpointMap.find(loc);
@@ -429,7 +484,7 @@ namespace roadnet {
         assert(cross_b);
 
         straightData& straight1 = status.straightVec.emplace_back(
-            straightid {(uint16_t)status.straightVec.size()},
+            straightid { (uint16_t)status.straightVec.size() },
             (nb.n + 1) * road::straight::N,
             nb.l,
             reverse(nb.dir),
@@ -438,8 +493,8 @@ namespace roadnet {
         );
         w.CrossRoad(*cross_b).setNeighbor(reverse(nb.dir), straight1.id);
         epInfo->endpoint->rev_neighbor = straight1.id;
-        straightData& straight2 = status.straightVec.emplace_back(
-            straightid {(uint16_t)status.straightVec.size()},
+        straightData& straight2        = status.straightVec.emplace_back(
+            straightid { (uint16_t)status.straightVec.size() },
             na.n * road::straight::N + 1,
             loc,
             a,
@@ -452,9 +507,9 @@ namespace roadnet {
 
     static void insertLorry01(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
         assert(z == map_index::w0 || z == map_index::w1);
-        lorryid lorryId {uint16_t(l.get_index<component::lorry>())};
+        lorryid lorryId { uint16_t(l.get_index<component::lorry>()) };
         if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, z)) {
-            if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)(1-(uint8_t)z))) {
+            if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, (map_index)(1 - (uint8_t)z))) {
                 nw.destroyLorry(w, l);
             }
         }
@@ -462,16 +517,16 @@ namespace roadnet {
 
     static void insertLorry10(network& nw, world& w, straightGrid& grid, lorry_entity& l, map_index z) {
         assert(z == map_index::w0 || z == map_index::w1);
-        lorryid lorryId {uint16_t(l.get_index<component::lorry>())};
+        lorryid lorryId { uint16_t(l.get_index<component::lorry>()) };
         if (!nw.StraightRoad(grid.id1).insertLorry(nw, lorryId, grid.offset1, z)) {
-            if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)(1-(uint8_t)z))) {
+            if (!nw.StraightRoad(grid.id0).insertLorry(nw, lorryId, grid.offset0, (map_index)(1 - (uint8_t)z))) {
                 nw.destroyLorry(w, l);
             }
         }
     }
 
     lorryid network::getLorryId(component::lorry& l) {
-        return lorryid {uint16_t(&l - lorryAry)};
+        return lorryid { uint16_t(&l - lorryAry) };
     }
 
     void network::refresh(world& w, bool check) {
@@ -488,27 +543,27 @@ namespace roadnet {
 
     static loction buildingLoction(world& world, component::building& b, loction l) {
         uint16_t area = prototype::get<"area">(world, b.prototype);
-        uint8_t w = area >> 8;
-        uint8_t h = area & 0xFF;
+        uint8_t w     = area >> 8;
+        uint8_t h     = area & 0xFF;
         assert(w > 0 && h > 0);
         w--;
         h--;
         uint8_t x;
         uint8_t y;
         switch (b.direction) {
-        case 0: // N
+        case 0:  // N
             x = uint8_t(b.x + l.x);
             y = uint8_t(b.y + l.y);
             break;
-        case 1: // E
+        case 1:  // E
             x = uint8_t(b.x + (h - l.y - 1));
             y = uint8_t(b.y + l.x);
             break;
-        case 2: // S
+        case 2:  // S
             x = uint8_t(b.x + (w - l.x - 1));
             y = uint8_t(b.y + (h - l.y - 1));
             break;
-        case 3: // W
+        case 3:  // W
             x = uint8_t(b.x + l.y);
             y = uint8_t(b.y + (w - l.x - 1));
             break;
@@ -527,11 +582,11 @@ namespace roadnet {
     };
 
     static uint8_t rotateMask(uint8_t m, direction dir) {
-        uint8_t v1 = (m >> 0) & 0xF;
-        uint8_t v2 = (m >> 4) & 0xF;
+        uint8_t v1    = (m >> 0) & 0xF;
+        uint8_t v2    = (m >> 4) & 0xF;
         uint8_t shift = (uint8_t)dir;
-        v1 = ((v1 << shift) & 0xF) | ((v1 >> (4 - shift)) & 0xF);
-        v2 = ((v2 << shift) & 0xF) | ((v2 >> (4 - shift)) & 0xF);
+        v1            = ((v1 << shift) & 0xF) | ((v1 >> (4 - shift)) & 0xF);
+        v2            = ((v2 << shift) & 0xF) | ((v2 >> (4 - shift)) & 0xF);
         return v1 | (v2 << 4);
     }
 
@@ -542,66 +597,62 @@ namespace roadnet {
         updateMapStatus status;
         for (auto& e : ecs::select<component::road, component::building>(w.ecs)) {
             auto& building = e.get<component::building>();
-            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
-                auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
+            for (const auto& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
+                auto loc           = buildingLoction(w, building, { pt.x, pt.y });
+                uint8_t mask       = rotateMask(pt.mask, (direction)building.direction);
                 auto [found, slot] = status.map.find_or_insert(loc);
                 assert(!found);
                 *slot = mask;
             }
         }
         for (auto& e : ecs::select<component::starting, component::building>(w.ecs)) {
-            auto& starting = e.get<component::starting>();
-            auto& building = e.get<component::building>();
+            auto& starting    = e.get<component::starting>();
+            auto& building    = e.get<component::building>();
             starting.neighbor = 0xffff;
             {
-                uint16_t l = prototype::get<"starting">(w, building.prototype);
-                auto loc = buildingLoction(w, building, std::bit_cast<loction>(l));
+                uint16_t l         = prototype::get<"starting">(w, building.prototype);
+                auto loc           = buildingLoction(w, building, std::bit_cast<loction>(l));
                 auto [found, slot] = status.startingMap.find_or_insert(loc);
                 assert(!found);
                 slot->starting = &starting;
             }
-            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
-                auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
+            for (const auto& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
+                auto loc           = buildingLoction(w, building, { pt.x, pt.y });
+                uint8_t mask       = rotateMask(pt.mask, (direction)building.direction);
                 auto [found, slot] = status.map.find_or_insert(loc);
                 if (found) {
                     *slot |= mask;
-                }
-                else {
+                } else {
                     *slot = mask;
                 }
             }
         }
         for (auto& e : ecs::select<component::endpoint, component::building>(w.ecs)) {
-            auto& endpoint = e.get<component::endpoint>();
-            auto& building = e.get<component::building>();
-            endpoint.neighbor = 0xffff;
+            auto& endpoint        = e.get<component::endpoint>();
+            auto& building        = e.get<component::building>();
+            endpoint.neighbor     = 0xffff;
             endpoint.rev_neighbor = 0xffff;
             {
-                uint16_t l = prototype::get<"endpoint">(w, building.prototype);
-                auto loc = buildingLoction(w, building, std::bit_cast<loction>(l));
+                uint16_t l         = prototype::get<"endpoint">(w, building.prototype);
+                auto loc           = buildingLoction(w, building, std::bit_cast<loction>(l));
                 auto [found, slot] = status.endpointMap.find_or_insert(loc);
                 assert(!found);
                 slot->endpoint = &endpoint;
                 if (e.component<component::building_new>()) {
                     slot->changed = true;
-                }
-                else if (e.component<component::building_changed>()) {
+                } else if (e.component<component::building_changed>()) {
                     slot->changed = true;
-                }
-                else if (e.component<component::station_changed>()) {
+                } else if (e.component<component::station_changed>()) {
                     slot->changed = true;
                 }
             }
-            for (auto const& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
-                auto loc = buildingLoction(w, building, {pt.x, pt.y});
-                uint8_t mask = rotateMask(pt.mask, (direction)building.direction);
+            for (const auto& pt : prototype::get_span<"road", road_prototype>(w, building.prototype)) {
+                auto loc           = buildingLoction(w, building, { pt.x, pt.y });
+                uint8_t mask       = rotateMask(pt.mask, (direction)building.direction);
                 auto [found, slot] = status.map.find_or_insert(loc);
                 if (found) {
                     *slot |= mask;
-                }
-                else {
+                } else {
                     *slot = mask;
                 }
             }
@@ -611,7 +662,7 @@ namespace roadnet {
             if (lorryInvalid(lorry)) {
                 continue;
             }
-            auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
+            auto& s  = status.lorryStatusAry[getLorryId(lorry).get_index()];
             s.ending = StraightRoad(lorry.ending).waitingLoction(*this);
             if (lorry.target == lorry_target::mov1) {
                 s.mov2 = StraightRoad(lorry.mov2).waitingLoction(*this);
@@ -619,21 +670,22 @@ namespace roadnet {
         }
 
         // step.2
-        for (auto const& [loc, m] : status.map) {
+        for (const auto& [loc, m] : status.map) {
             if (isCross(m)) {
                 assert(!isStarting(status, loc) && !isEndpoint(status, loc));
                 crossid id { status.genCrossId++ };
                 bool ok = status.crossMap.insert(loc, id);
-                assert(ok); (void)ok;
+                assert(ok);
+                (void)ok;
             }
         }
 
         // step.3
         crossAry.reset(status.genCrossId);
-        for (auto const& [loc, id]: status.crossMap) {
+        for (const auto& [loc, id] : status.crossMap) {
             road::cross& cross = CrossRoad(id);
-            cross.loc = loc;
-            uint8_t m = getMapBits(status.map, loc);
+            cross.loc          = loc;
+            uint8_t m          = getMapBits(status.map, loc);
             if (m & MapRoad::NoNorth) {
                 cross.ban |= road::NoNorth;
             }
@@ -646,7 +698,7 @@ namespace roadnet {
             if (m & MapRoad::NoWest) {
                 cross.ban |= road::NoWest;
             }
-    
+
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
                 if (m & (1 << i) && !cross.hasNeighbor(dir)) {
@@ -654,12 +706,11 @@ namespace roadnet {
                     if (loc == result.l) {
                         if (result.n == 0) {
                             // nothing to do
-                        }
-                        else {
+                        } else {
                             assert(result.n > 0);
                             assert(dir == reverse(result.dir));
                             straightData& straight = status.straightVec.emplace_back(
-                                straightid {(uint16_t)status.straightVec.size()},
+                                straightid { (uint16_t)status.straightVec.size() },
                                 result.n * road::straight::N + 1,
                                 loc,
                                 dir,
@@ -669,15 +720,14 @@ namespace roadnet {
                             cross.setNeighbor(dir, straight.id);
                             cross.setRevNeighbor(reverse(result.dir), straight.id);
                         }
-                    }
-                    else {
+                    } else {
                         if (result.type == NeighborType::Cross) {
                             auto res = status.crossMap.find(result.l);
                             assert(res);
-                            crossid neighbor_id {*res};
-                            road::cross& neighbor = CrossRoad(neighbor_id);
+                            crossid neighbor_id { *res };
+                            road::cross& neighbor   = CrossRoad(neighbor_id);
                             straightData& straight1 = status.straightVec.emplace_back(
-                                straightid {(uint16_t)status.straightVec.size()},
+                                straightid { (uint16_t)status.straightVec.size() },
                                 result.n * road::straight::N + 1,
                                 loc,
                                 dir,
@@ -687,7 +737,7 @@ namespace roadnet {
                             cross.setNeighbor(dir, straight1.id);
                             neighbor.setRevNeighbor(reverse(result.dir), straight1.id);
                             straightData& straight2 = status.straightVec.emplace_back(
-                                straightid {(uint16_t)status.straightVec.size()},
+                                straightid { (uint16_t)status.straightVec.size() },
                                 result.n * road::straight::N + 1,
                                 result.l,
                                 reverse(result.dir),
@@ -703,38 +753,66 @@ namespace roadnet {
         }
 
         // step.4
-        for (auto const& [loc, _] : status.startingMap) {
+        for (const auto& [loc, _] : status.startingMap) {
             auto m = status.map.find(loc);
             assert(m);
             switch (*m & 0xF) {
-            case maskl(L'║'): setStarting(*this, status, loc, direction::t, direction::b); break;
-            case maskl(L'═'): setStarting(*this, status, loc, direction::l, direction::r); break;
-            case maskl(L'╔'): setStarting(*this, status, loc, direction::r, direction::b); break;
-            case maskl(L'╚'): setStarting(*this, status, loc, direction::r, direction::t); break;
-            case maskl(L'╗'): setStarting(*this, status, loc, direction::l, direction::b); break;
-            case maskl(L'╝'): setStarting(*this, status, loc, direction::l, direction::t); break;
-            default: assert(false); break;
+            case maskl(L'║'):
+                setStarting(*this, status, loc, direction::t, direction::b);
+                break;
+            case maskl(L'═'):
+                setStarting(*this, status, loc, direction::l, direction::r);
+                break;
+            case maskl(L'╔'):
+                setStarting(*this, status, loc, direction::r, direction::b);
+                break;
+            case maskl(L'╚'):
+                setStarting(*this, status, loc, direction::r, direction::t);
+                break;
+            case maskl(L'╗'):
+                setStarting(*this, status, loc, direction::l, direction::b);
+                break;
+            case maskl(L'╝'):
+                setStarting(*this, status, loc, direction::l, direction::t);
+                break;
+            default:
+                assert(false);
+                break;
             }
         }
-        for (auto const& [loc, _] : status.endpointMap) {
+        for (const auto& [loc, _] : status.endpointMap) {
             auto m = status.map.find(loc);
             assert(m);
             switch (*m & 0xF) {
-            case maskl(L'║'): setEndpoint(*this, status, loc, direction::t, direction::b); break;
-            case maskl(L'═'): setEndpoint(*this, status, loc, direction::l, direction::r); break;
-            case maskl(L'╔'): setEndpoint(*this, status, loc, direction::r, direction::b); break;
-            case maskl(L'╚'): setEndpoint(*this, status, loc, direction::r, direction::t); break;
-            case maskl(L'╗'): setEndpoint(*this, status, loc, direction::l, direction::b); break;
-            case maskl(L'╝'): setEndpoint(*this, status, loc, direction::l, direction::t); break;
-            default: assert(false); break;
+            case maskl(L'║'):
+                setEndpoint(*this, status, loc, direction::t, direction::b);
+                break;
+            case maskl(L'═'):
+                setEndpoint(*this, status, loc, direction::l, direction::r);
+                break;
+            case maskl(L'╔'):
+                setEndpoint(*this, status, loc, direction::r, direction::b);
+                break;
+            case maskl(L'╚'):
+                setEndpoint(*this, status, loc, direction::r, direction::t);
+                break;
+            case maskl(L'╗'):
+                setEndpoint(*this, status, loc, direction::l, direction::b);
+                break;
+            case maskl(L'╝'):
+                setEndpoint(*this, status, loc, direction::l, direction::t);
+                break;
+            default:
+                assert(false);
+                break;
             }
         }
 
         // step.5
         straightAry.reset(status.straightVec.size());
-        for (auto& data: status.straightVec) {
+        for (auto& data : status.straightVec) {
             road::straight& straight = StraightRoad(data.id);
-            size_t length = data.len;
+            size_t length            = data.len;
             straight.init(data.id, (uint16_t)length, data.finish_dir, data.neighbor);
             straight.setLorryOffset(status.genStraightLorryOffset);
             straight.setCoordOffset(status.genStraightCoordOffset);
@@ -743,33 +821,31 @@ namespace roadnet {
         }
         straightCoord.reset(status.genStraightCoordOffset);
         size_t straightCoordOffset = 0;
-        for (auto& data: status.straightVec) {
+        for (auto& data : status.straightVec) {
             assert(StraightRoad(data.id).coordOffset == straightCoordOffset);
             uint16_t offset = 0;
             walkToNeighbor(status, data.loc, data.start_dir, [&](loction l, map_index i, cross_type ct) {
                 if (i == map_index::invaild) {
                     i = map_index::unset;
                     offset--;
-                    direction from = road::crossFrom(ct);
-                    direction to = road::crossTo(ct);
+                    direction from     = road::crossFrom(ct);
+                    direction to       = road::crossTo(ct);
                     auto [found, grid] = status.straightMap.find_or_insert(l);
                     assert(found);
-                    grid->id0 = data.id;
-                    grid->offset0 = offset;
+                    grid->id0        = data.id;
+                    grid->offset0    = offset;
                     grid->direction0 = (uint16_t)from;
                     grid->direction1 = (uint16_t)to;
-                }
-                else if (!status.crossMap.find(l)) {
-                    direction from = road::crossFrom(ct);
-                    direction to = road::crossTo(ct);
+                } else if (!status.crossMap.find(l)) {
+                    direction from     = road::crossFrom(ct);
+                    direction to       = road::crossTo(ct);
                     auto [found, grid] = status.straightMap.find_or_insert(l);
                     if (found) {
-                        grid->id1 = data.id;
+                        grid->id1     = data.id;
                         grid->offset1 = offset;
                         assert(grid->direction0 == (uint16_t)to);
                         assert(grid->direction1 == (uint16_t)from);
-                    }
-                    else {
+                    } else {
                         *grid = straightGrid {
                             data.id,
                             {},
@@ -780,7 +856,7 @@ namespace roadnet {
                         };
                     }
                 }
-                straightCoord[straightCoordOffset + offset++] = {l, i, ct};
+                straightCoord[straightCoordOffset + offset++] = { l, i, ct };
             });
             straightCoordOffset += offset;
         }
@@ -800,8 +876,7 @@ namespace roadnet {
                     if (auto ep2 = status.endpointMap.find(s.mov2); ep2 && !ep2->changed) {
                         lorryGoMov1(lorry, lorry.item_prototype, *ep1->endpoint, *ep2->endpoint);
                     }
-                }
-                else {
+                } else {
                     destroyLorry(w, e);
                     continue;
                 }
@@ -811,8 +886,7 @@ namespace roadnet {
                 auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
                 if (auto ep = status.endpointMap.find(s.ending); ep && !ep->changed) {
                     lorryGoMov2(lorry, ep->endpoint->rev_neighbor, lorry.item_amount);
-                }
-                else {
+                } else {
                     destroyLorry(w, e);
                     continue;
                 }
@@ -822,8 +896,7 @@ namespace roadnet {
                 auto& s = status.lorryStatusAry[getLorryId(lorry).get_index()];
                 if (auto ep = status.endpointMap.find(s.ending); ep && !ep->changed) {
                     lorryGoHome(lorry, *ep->endpoint);
-                }
-                else {
+                } else {
                     destroyLorry(w, e);
                     continue;
                 }
@@ -832,7 +905,7 @@ namespace roadnet {
             default:
                 std::unreachable();
             }
-            loction loc {lorry.x, lorry.y};
+            loction loc { lorry.x, lorry.y };
             auto m = getMapBits(status.map, loc);
             switch (getRoadType(m)) {
             case road_type::invalid:
@@ -854,30 +927,24 @@ namespace roadnet {
                         if (!straight.insertLorry(*this, getLorryId(lorry), roadGrid->offset0, map_coord::get_map_index(lorry.z))) {
                             destroyLorry(w, e);
                         }
-                    }
-                    else {
+                    } else {
                         direction dir0 = direction(roadGrid->direction0);
                         direction dir1 = direction(roadGrid->direction1);
                         direction from = road::crossFrom(map_coord::get_cross_type(lorry.z));
-                        direction to = road::crossTo(map_coord::get_cross_type(lorry.z));
+                        direction to   = road::crossTo(map_coord::get_cross_type(lorry.z));
                         if (to == dir1) {
                             insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                        }
-                        else if (to == dir0) {
+                        } else if (to == dir0) {
                             insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                        }
-                        else if (from == dir0) {
+                        } else if (from == dir0) {
                             insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                        }
-                        else if (from == dir1) {
+                        } else if (from == dir1) {
                             insertLorry10(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
-                        }
-                        else {
+                        } else {
                             insertLorry01(*this, w, *roadGrid, e, map_coord::get_map_index(lorry.z));
                         }
                     }
-                }
-                else {
+                } else {
                     destroyLorry(w, e);
                 }
                 break;
@@ -924,8 +991,7 @@ namespace roadnet {
             auto [found, slot] = endpointWillReset.find_or_insert(lorry.ending);
             if (found) {
                 *slot += 1;
-            }
-            else {
+            } else {
                 *slot = 1;
             }
         }

@@ -1,7 +1,9 @@
 #include "core/techtree.h"
+
+#include <assert.h>
+
 #include "core/world.h"
 #include "util/prototype.h"
-#include <assert.h>
 
 uint16_t techtree_mgr::get_progress(uint16_t techid) const {
     auto iter = progress.find(techid);
@@ -18,7 +20,7 @@ bool techtree_mgr::is_researched(uint16_t techid) const {
 bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
     bool finish = false;
     if (val >= max) {
-        val = max;
+        val    = max;
         finish = true;
     }
     progress.insert_or_assign(techid, std::move(val));
@@ -29,7 +31,7 @@ bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
     return finish;
 }
 
-bool techtree_mgr::research_set(world& w,uint16_t techid, uint16_t val) {
+bool techtree_mgr::research_set(world& w, uint16_t techid, uint16_t val) {
     auto count = prototype::get<"count">(w, techid);
     if (!research_set(techid, count, val)) {
         return false;
@@ -40,11 +42,11 @@ bool techtree_mgr::research_set(world& w,uint16_t techid, uint16_t val) {
 
 bool techtree_mgr::research_add(uint16_t techid, uint16_t max, uint16_t inc) {
     assert(inc != 0);
-    bool finish = false;
+    bool finish        = false;
     auto [found, slot] = progress.find_or_insert(techid);
-    uint32_t value = found? ((uint32_t)*slot + inc): inc;
+    uint32_t value     = found ? ((uint32_t)*slot + inc) : inc;
     if (value >= max) {
-        value = max;
+        value  = max;
         finish = true;
     }
     *slot = value;
@@ -60,7 +62,7 @@ struct lab_inputs {
     uint16_t items[1];
 };
 
-static std::optional<uint16_t> recipeFind(lab_inputs const& r, uint16_t item) {
+static std::optional<uint16_t> recipeFind(const lab_inputs& r, uint16_t item) {
     for (uint16_t i = 0; i < r.n; ++i) {
         if (r.items[i] == item) {
             return i;
@@ -71,29 +73,29 @@ static std::optional<uint16_t> recipeFind(lab_inputs const& r, uint16_t item) {
 
 techtree_mgr::ingredients_opt& techtree_mgr::get_ingredients(world& w, uint16_t labid, uint16_t techid) {
     auto& techcache = cache[techid];
-    auto iter = techcache.find(labid);
+    auto iter       = techcache.find(labid);
     if (iter != techcache.end()) {
         return iter->second;
     }
-    auto const& inputs = prototype::get<"inputs", lab_inputs>(w, labid);
-    auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, techid);
+    const auto& inputs      = prototype::get<"inputs", lab_inputs>(w, labid);
+    const auto& ingredients = prototype::get<"ingredients", recipe_items>(w, techid);
 
-    ingredients_t r(inputs.n+1);
-    r[0].item = inputs.n;
+    ingredients_t r(inputs.n + 1);
+    r[0].item   = inputs.n;
     r[0].amount = 0;
     for (uint16_t i = 0; i < inputs.n; ++i) {
-        r[i+1].item = inputs.items[i];
-        r[i+1].amount = 0;
+        r[i + 1].item   = inputs.items[i];
+        r[i + 1].amount = 0;
     }
 
     for (uint16_t i = 0; i < ingredients.n; ++i) {
         uint16_t item = ingredients.items[i].item;
-        auto result = recipeFind(inputs, item);
+        auto result   = recipeFind(inputs, item);
         if (!result) {
             auto res = techcache.emplace(labid, std::nullopt);
             return res.first->second;
         }
-        r[*result+1].amount = ingredients.items[i].amount;
+        r[*result + 1].amount = ingredients.items[i].amount;
     }
 
     auto res = techcache.emplace(labid, r);

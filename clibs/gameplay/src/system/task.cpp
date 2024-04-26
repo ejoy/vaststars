@@ -1,11 +1,11 @@
 #include <lua.hpp>
 
-#include "luaecs.h"
 #include "core/world.h"
+#include "luaecs.h"
 #include "util/prototype.h"
 
 struct task {
-    enum class type: uint16_t {
+    enum class type : uint16_t {
         stat_production = 0,
         stat_consumption,
         select_entity,
@@ -13,7 +13,7 @@ struct task {
         power_generator,
         unknown,
     };
-    type     type;
+    type type;
     uint16_t e;
     uint16_t p1;
     uint16_t p2;
@@ -25,7 +25,6 @@ struct task {
     uint64_t eval(world& w) const;
     uint16_t progress(world& w) const;
 };
-
 
 uint64_t task::stat_production(world& w) const {
     auto iter = w.stat._total.production.find(p1);
@@ -57,7 +56,7 @@ uint64_t task::power_generator(world& w) const {
     constexpr uint16_t UPS = 30;
     // 10m / 150 = 10 * 60 * 30 / 150 = 120(frame)
     uint64_t sum = 0;
-    for (auto const& [_, v] : w.stat._dataset[2].back().generate_power) {
+    for (const auto& [_, v] : w.stat._dataset[2].back().generate_power) {
         sum += v;
     }
     return sum / (120 / UPS);
@@ -65,11 +64,16 @@ uint64_t task::power_generator(world& w) const {
 
 uint64_t task::eval(world& w) const {
     switch (type) {
-    case task::type::stat_production:         return stat_production(w);
-    case task::type::stat_consumption:        return stat_consumption(w);
-    case task::type::select_entity:           return select_entity(w);
-    case task::type::power_generator:         return power_generator(w);
-    default: return 0;
+    case task::type::stat_production:
+        return stat_production(w);
+    case task::type::stat_consumption:
+        return stat_consumption(w);
+    case task::type::select_entity:
+        return select_entity(w);
+    case task::type::power_generator:
+        return power_generator(w);
+    default:
+        return 0;
     }
 }
 
@@ -86,7 +90,7 @@ uint16_t task::progress(world& w) const {
 }
 
 static int
-lupdate(lua_State *L) {
+lupdate(lua_State* L) {
     auto& w = getworld(L);
     for (;;) {
         uint16_t taskid = w.techtree.queue_top();
@@ -97,7 +101,7 @@ lupdate(lua_State *L) {
         if (0 != time) {
             break;
         }
-        auto const& task = prototype::get<"task", struct task>(w, taskid);
+        const auto& task = prototype::get<"task", struct task>(w, taskid);
         if (task.type == task::type::unknown) {
             break;
         }
@@ -110,12 +114,12 @@ lupdate(lua_State *L) {
 }
 
 extern "C" int
-luaopen_vaststars_task_system(lua_State *L) {
-	luaL_checkversion(L);
-	luaL_Reg l[] = {
-		{ "update", lupdate },
-		{ NULL, NULL },
-	};
-	luaL_newlib(L, l);
-	return 1;
+luaopen_vaststars_task_system(lua_State* L) {
+    luaL_checkversion(L);
+    luaL_Reg l[] = {
+        { "update", lupdate },
+        { NULL, NULL },
+    };
+    luaL_newlib(L, l);
+    return 1;
 }

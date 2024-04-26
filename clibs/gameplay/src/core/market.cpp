@@ -1,10 +1,11 @@
+#include <bee/utility/flatmap.h>
 #include <core/market.h>
 #include <core/world.h>
 #include <roadnet/route.h>
-#include <bee/utility/flatmap.h>
+
 #include <map>
-#include <vector>
 #include <optional>
+#include <vector>
 
 struct market_path {
     uint16_t from;
@@ -13,8 +14,7 @@ struct market_path {
     market_path(uint16_t from, uint16_t to, uint16_t distance)
         : from(from)
         , to(to)
-        , distance(distance)
-    { }
+        , distance(distance) {}
     static bool sort(const market_path& a, const market_path& b) {
         return a.distance < b.distance;
     }
@@ -31,8 +31,7 @@ struct market_endpoint {
     uint16_t distance;
     market_endpoint(uint16_t id, uint16_t distance)
         : id(id)
-        , distance(distance)
-    { }
+        , distance(distance) {}
     static bool sort(const market_endpoint& a, const market_endpoint& b) {
         return a.distance < b.distance;
     }
@@ -50,19 +49,17 @@ struct market_impl {
 };
 
 template <typename Key, typename Mapped>
-void flatmap_add(bee::flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
+void flatmap_add(bee::flatmap<Key, Mapped>& m, const Key& key, Mapped mapped) {
     auto [found, slot] = m.find_or_insert(key);
     if (found) {
         *slot += mapped;
-    }
-    else {
+    } else {
         *slot = mapped;
     }
 }
 
 market::market()
-    : impl(new market_impl)
-{}
+    : impl(new market_impl) {}
 
 market::~market() {
     delete impl;
@@ -111,9 +108,9 @@ void market::match_begin(world& w) {
     for (auto it = impl->items.begin(); it != impl->items.end();) {
         auto& m = *it;
         std::vector<market_path> paths;
-        for (auto const& [from, _] : m.supply) {
+        for (const auto& [from, _] : m.supply) {
             auto starting = endpoints[from].neighbor;
-            for (auto const& [to, _] : m.demand) {
+            for (const auto& [to, _] : m.demand) {
                 auto ending = endpoints[to].rev_neighbor;
                 if (auto distance = route_distance(w.rw, starting, ending)) {
                     paths.emplace_back(from, to, *distance);
@@ -121,7 +118,7 @@ void market::match_begin(world& w) {
             }
         }
         std::sort(std::begin(paths), std::end(paths), market_path::sort);
-        for (auto const& path : paths) {
+        for (const auto& path : paths) {
             auto supply_n = m.supply.find(path.from);
             auto demand_n = m.demand.find(path.to);
             if (supply_n && demand_n) {
@@ -141,8 +138,7 @@ void market::match_begin(world& w) {
         }
         if (m.supply.empty() && m.demand.empty()) {
             it = impl->items.erase(it);
-        }
-        else {
+        } else {
             ++it;
         }
     }
@@ -150,7 +146,7 @@ void market::match_begin(world& w) {
 
 void market::match_end(world& w) {
     std::sort(std::begin(impl->matchs), std::end(impl->matchs), market_match::sort1);
-    for (auto const& m : impl->matchs) {
+    for (const auto& m : impl->matchs) {
         add_supply(m.from, m.item);
         add_demand(m.to, m.item);
     }
@@ -165,8 +161,7 @@ std::optional<market_match> market::match(world& w, roadnet::straightid pos) {
     for (auto& m : impl->matchs) {
         if (auto distance = route_distance(w.rw, pos, endpoints[m.from].rev_neighbor)) {
             m.dist2 = m.dist1 + *distance;
-        }
-        else {
+        } else {
             m.dist2 = 0xffff;
         }
     }
@@ -187,7 +182,7 @@ uint16_t market::nearest_park(world& w, roadnet::straightid pos) {
     auto endpoints = ecs::array<component::endpoint>(w.ecs);
     std::vector<market_endpoint> park_sorts;
     park_sorts.reserve(impl->parks.size());
-    for (auto id: impl->parks) {
+    for (auto id : impl->parks) {
         auto ending = endpoints[id].rev_neighbor;
         if (auto distance = route_distance(w.rw, pos, ending)) {
             park_sorts.emplace_back(id, *distance);
@@ -195,8 +190,7 @@ uint16_t market::nearest_park(world& w, roadnet::straightid pos) {
     }
     if (park_sorts.empty()) {
         *slot = 0xffff;
-    }
-    else {
+    } else {
         std::sort(std::begin(park_sorts), std::end(park_sorts), market_endpoint::sort);
         *slot = park_sorts.front().id;
     }
@@ -209,11 +203,11 @@ bool market::relocate(world& w, uint16_t item, roadnet::straightid pos, uint16_t
             auto endpoints = ecs::array<component::endpoint>(w.ecs);
             uint16_t min_to;
             uint16_t min_distance = 0xFFFF;
-            for (auto const& [to, _] : m.demand) {
+            for (const auto& [to, _] : m.demand) {
                 auto ending = endpoints[to].rev_neighbor;
                 if (auto distance = route_distance(w.rw, pos, ending)) {
                     if (min_distance < *distance) {
-                        min_to = to;
+                        min_to       = to;
                         min_distance = *distance;
                     }
                 }

@@ -1,9 +1,12 @@
 #define TARGET_NAME "ant.exe"
 
 #if defined(_MSC_VER)
-    #define FORWARDED_EXPORT(exp_name) __pragma (comment (linker, "/export:" #exp_name "=" TARGET_NAME "." #exp_name))
+#    define FORWARDED_EXPORT(exp_name) \
+        __pragma(comment(linker, "/export:" #exp_name "=" TARGET_NAME "." #exp_name))
 #elif defined(__GNUC__)
-    #define FORWARDED_EXPORT(exp_name) __asm__ (".section .drectve\n\t.ascii \" -export:" #exp_name "= " TARGET_NAME "." #exp_name " \"");
+#    define FORWARDED_EXPORT(exp_name)                                               \
+        __asm__(".section .drectve\n\t.ascii \" -export:" #exp_name "= " TARGET_NAME \
+                "." #exp_name " \"");
 #endif
 
 FORWARDED_EXPORT(luaL_addgsub)

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <type_traits>
 #include <string_view>
+#include <type_traits>
 
 constexpr bool enum_is_valid(std::string_view name) noexcept {
     for (std::size_t i = name.size(); i > 0; --i) {
@@ -23,9 +23,9 @@ constexpr bool enum_is_valid(std::string_view name) noexcept {
 template <typename E, E V>
 constexpr auto enum_is_valid() noexcept {
 #if __GNUC__ || __clang__
-    return enum_is_valid({__PRETTY_FUNCTION__, sizeof(__PRETTY_FUNCTION__) - 2});
+    return enum_is_valid({ __PRETTY_FUNCTION__, sizeof(__PRETTY_FUNCTION__) - 2 });
 #elif _MSC_VER
-    return enum_is_valid({__FUNCSIG__, sizeof(__FUNCSIG__) - 17});
+    return enum_is_valid({ __FUNCSIG__, sizeof(__FUNCSIG__) - 17 });
 #else
     static_assert(false, "Unsupported compiler");
 #endif
@@ -41,7 +41,7 @@ constexpr auto enum_count() noexcept {
     if constexpr (!enum_is_valid<E, e>()) {
         return I;
     } else {
-        return enum_count<E, I+1>();
+        return enum_count<E, I + 1>();
     }
 }
 

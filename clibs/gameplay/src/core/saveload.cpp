@@ -1,14 +1,16 @@
-#include <string>
-#include "core/world.h"
 #include "core/saveload.h"
-#include "roadnet/network.h"
-#include "util/queue.h"
-#include "util/prototype.h"
-#include <unordered_map>
+
 #include <concepts>
+#include <string>
+#include <unordered_map>
+
+#include "core/world.h"
+#include "roadnet/network.h"
+#include "util/prototype.h"
+#include "util/queue.h"
 
 extern "C" {
-    #include "core/fluidflow.h"
+#include "core/fluidflow.h"
 }
 
 namespace lua_world {
@@ -19,19 +21,19 @@ namespace lua_world {
         return v;
     }
 
-    template<typename T>
+    template <typename T>
     concept QueueType = std::same_as<T, queue<typename T::value_type, T::chunk_size>>;
 
     template <QueueType T>
     void file_write(FILE* f, const T& t) {
         file_write(f, t.size());
-        for (auto const& e : t) {
+        for (const auto& e : t) {
             file_write(f, e);
         }
     }
     template <QueueType T>
     void file_read(FILE* f, T& t) {
-        //TODO: performance optimization
+        // TODO: performance optimization
         t.clear();
         size_t n = file_readv<size_t>(f);
         for (size_t i = 0; i < n; ++i) {
@@ -40,16 +42,16 @@ namespace lua_world {
         }
     }
 
-    template<template<typename...> class Template, typename Class>
+    template <template <typename...> class Template, typename Class>
     struct is_instantiation : std::false_type {};
-    template<template<typename...> class Template, typename... Args>
+    template <template <typename...> class Template, typename... Args>
     struct is_instantiation<Template, Template<Args...>> : std::true_type {};
-    template<typename Class, template<typename...> class Template>
+    template <typename Class, template <typename...> class Template>
     concept is_instantiation_of = is_instantiation<Template, Class>::value;
 
-    template<typename T>
+    template <typename T>
     concept map_type =
-    is_instantiation_of<T, std::map> || is_instantiation_of<T, std::unordered_map>;
+        is_instantiation_of<T, std::map> || is_instantiation_of<T, std::unordered_map>;
 
     template <typename First, typename Second>
     void file_write_pair(FILE* f, const std::pair<First, Second>& t) {
@@ -62,15 +64,15 @@ namespace lua_world {
         file_read(f, t.second);
     }
     template <typename T>
-        requires (is_instantiation_of<T, std::map>)
+        requires(is_instantiation_of<T, std::map>)
     void file_write(FILE* f, const T& t) {
         file_write<size_t>(f, t.size());
-        for (auto const& kv : t) {
+        for (const auto& kv : t) {
             file_write_pair(f, kv);
         }
     }
     template <typename T>
-        requires (is_instantiation_of<T, std::map>)
+        requires(is_instantiation_of<T, std::map>)
     void file_read(FILE* f, T& t) {
         t.clear();
         size_t n = file_readv<size_t>(f);
@@ -82,16 +84,16 @@ namespace lua_world {
     }
 
     template <typename T>
-        requires (is_instantiation_of<T, bee::flatmap> || is_instantiation_of<T, bee::flatset>)
+        requires(is_instantiation_of<T, bee::flatmap> || is_instantiation_of<T, bee::flatset>)
     void file_write(FILE* f, const T& t) {
-        auto const& data = t.toraw();
+        const auto& data = t.toraw();
         file_write(f, data.h);
         if (data.h.mask != 0) {
             file_write(f, data.buckets, data.h.mask + 1);
         }
     }
     template <typename T>
-        requires (is_instantiation_of<T, bee::flatmap> || is_instantiation_of<T, bee::flatset>)
+        requires(is_instantiation_of<T, bee::flatmap> || is_instantiation_of<T, bee::flatset>)
     void file_read(FILE* f, T& t) {
         auto& data = t.toraw();
         if (data.h.mask != 0) {
@@ -100,8 +102,7 @@ namespace lua_world {
         file_read(f, data.h);
         if (data.h.mask == 0) {
             data.buckets = reinterpret_cast<decltype(data.buckets)>(&data.h.mask);
-        }
-        else {
+        } else {
             data.buckets = static_cast<decltype(data.buckets)>(std::malloc(sizeof(data.buckets[0]) * (data.h.mask + 1)));
             if (!data.buckets) {
                 throw std::bad_alloc {};
@@ -111,13 +112,13 @@ namespace lua_world {
     }
 
     template <typename T>
-        requires (is_instantiation_of<T, roadnet::dynarray>)
+        requires(is_instantiation_of<T, roadnet::dynarray>)
     static void file_write(FILE* f, const T& t) {
         file_write(f, t.size());
         file_write(f, t.begin(), t.size());
     }
     template <typename T>
-        requires (is_instantiation_of<T, roadnet::dynarray>)
+        requires(is_instantiation_of<T, roadnet::dynarray>)
     static void file_read(FILE* f, T& t) {
         size_t n = file_readv<size_t>(f);
         t.reset(n);
@@ -125,15 +126,15 @@ namespace lua_world {
     }
 
     template <typename T>
-        requires (is_instantiation_of<T, std::list>)
+        requires(is_instantiation_of<T, std::list>)
     static void file_write(FILE* f, const T& t) {
         file_write(f, t.size());
-        for (auto const& v : t) {
+        for (const auto& v : t) {
             file_write(f, v);
         }
     }
     template <typename T>
-        requires (is_instantiation_of<T, std::list>)
+        requires(is_instantiation_of<T, std::list>)
     static void file_read(FILE* f, T& t) {
         size_t n = file_readv<size_t>(f);
         t.resize(n);
@@ -143,13 +144,13 @@ namespace lua_world {
     }
 
     template <typename T>
-        requires (is_instantiation_of<T, std::vector>)
+        requires(is_instantiation_of<T, std::vector>)
     static void file_write(FILE* f, const T& t) {
         file_write(f, t.size());
         file_write(f, t.data(), t.size());
     }
     template <typename T>
-        requires (is_instantiation_of<T, std::vector>)
+        requires(is_instantiation_of<T, std::vector>)
     static void file_read(FILE* f, T& t) {
         size_t n = file_readv<size_t>(f);
         t.resize(n);
@@ -194,9 +195,11 @@ namespace lua_world {
             return false;
         }
         lua_rawgeti(L, -1, 1);
-        lua_Integer head = luaL_checkinteger(L, -1); lua_pop(L, 1);
+        lua_Integer head = luaL_checkinteger(L, -1);
+        lua_pop(L, 1);
         lua_rawgeti(L, -1, 2);
-        lua_Integer tail = luaL_checkinteger(L, -1); lua_pop(L, 1);
+        lua_Integer tail = luaL_checkinteger(L, -1);
+        lua_pop(L, 1);
         fseek(f, (long)head, SEEK_SET);
         func();
         if (ftell(f) != (long)tail) {
@@ -215,11 +218,11 @@ namespace lua_world {
 
         lua_newtable(L);
 
-        backup_scope(L, f, "time", [&](){
+        backup_scope(L, f, "time", [&]() {
             file_write(f, w.time);
         });
 
-        backup_scope(L, f, "stat", [&](){
+        backup_scope(L, f, "stat", [&]() {
             file_write(f, w.stat._total);
             for (auto& dataset : w.stat._dataset) {
                 file_write(f, dataset.pos);
@@ -229,13 +232,13 @@ namespace lua_world {
             }
         });
 
-        backup_scope(L, f, "techtree", [&](){
+        backup_scope(L, f, "techtree", [&]() {
             file_write(f, w.techtree.queue);
             file_write(f, w.techtree.researched);
             file_write(f, w.techtree.progress);
         });
 
-        backup_scope(L, f, "container", [&](){
+        backup_scope(L, f, "container", [&]() {
             file_write(f, w.container.pages.size());
             for (auto const& page : w.container.pages) {
                 file_write(f, page->slots);
@@ -250,7 +253,7 @@ namespace lua_world {
             file_write(f, w.container.top);
         });
 
-        backup_scope(L, f, "roadnet", [&](){
+        backup_scope(L, f, "roadnet", [&]() {
             auto& rw = w.rw;
             file_write(f, rw.crossAry);
             file_write(f, rw.straightAry);
@@ -258,7 +261,7 @@ namespace lua_world {
             file_write(f, rw.straightCoord);
         });
 
-        backup_scope(L, f, "fluidflow", [&](){
+        backup_scope(L, f, "fluidflow", [&]() {
             file_write(f, w.fluidflows.size());
             fluid_state state;
             for (auto& [fluid, flow] : w.fluidflows) {
@@ -279,7 +282,7 @@ namespace lua_world {
         return 1;
     }
 
-    int restore_world(lua_State *L) {
+    int restore_world(lua_State* L) {
         auto& w = getworld(L);
 
         w.P = prototype::create_cache(L);
@@ -296,35 +299,33 @@ namespace lua_world {
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);
 
-        restore_scope(L, f, "time", [&](){
-            file_read(f, w.time);
-        }, [&](){
-            w.time = 0;
-        });
+        restore_scope(
+            L, f, "time", [&]() { file_read(f, w.time); }, [&]() { w.time = 0; }
+        );
 
-        restore_scope(L, f, "stat", [&](){
+        restore_scope(
+            L, f, "stat", [&]() {
             file_read(f, w.stat._total);
             for (auto& dataset : w.stat._dataset) {
                 file_read(f, dataset.pos);
                 for (auto& frame : dataset.data) {
                     file_read(f, frame);
                 }
-            }
-        }, [&](){
-            w.stat._total.reset();
-        });
+            } }, [&]() { w.stat._total.reset(); }
+        );
 
-        restore_scope(L, f, "techtree", [&](){
+        restore_scope(
+            L, f, "techtree", [&]() {
             file_read(f, w.techtree.queue);
             file_read(f, w.techtree.researched);
-            file_read(f, w.techtree.progress);
-        }, [&](){
+            file_read(f, w.techtree.progress); }, [&]() {
             w.techtree.queue.clear();
             w.techtree.researched.clear();
-            w.techtree.progress.clear();
-        });
+            w.techtree.progress.clear(); }
+        );
 
-        restore_scope(L, f, "container", [&](){
+        restore_scope(
+            L, f, "container", [&]() {
             w.container.clear();
             auto page_n = file_readv<size_t>(f);
             w.container.pages.reserve(page_n);
@@ -343,24 +344,25 @@ namespace lua_world {
                 }
                 w.container.freelist.emplace_back(std::move(lst));
             }
-            file_read(f, w.container.top);
-        }, [&](){
+            file_read(f, w.container.top); }, [&]() {
             w.container.clear();
-            w.container.init();
-        });
+            w.container.init(); }
+        );
 
-        restore_scope(L, f, "roadnet", [&](){
+        restore_scope(
+            L, f, "roadnet", [&]() {
             auto& rw = w.rw;
             file_read(f, rw.crossAry);
             file_read(f, rw.straightAry);
             file_read(f, rw.straightLorry);
             file_read(f, rw.straightCoord);
-            rw.routeCached.clear();
-        }, [&](){
-            //TODO
-        });
+            rw.routeCached.clear(); }, [&]() {
+                // TODO
+            }
+        );
 
-        restore_scope(L, f, "fluidflow", [&](){
+        restore_scope(
+            L, f, "fluidflow", [&]() {
             w.fluidflows.clear();
             auto n = file_readv<size_t>(f);
             for (size_t i = 0; i < n; ++i) {
@@ -376,10 +378,8 @@ namespace lua_world {
                 }
                 file_read(f, flow.maxid);
                 file_read(f, flow.freelist);
-            }
-        }, [&](){
-            w.fluidflows.clear();
-        });
+            } }, [&]() { w.fluidflows.clear(); }
+        );
 
         fclose(f);
         return 0;

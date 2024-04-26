@@ -20,5 +20,5 @@ namespace roadnet {
     void lorryTargetNone(component::lorry& l);
     void lorryUpdate(ecs::entity<component::lorry>& e, component::lorry& l);
     bool lorryNextDirection(component::lorry& l, world& w, straightid C, direction& dir);
-    bool lorryReady(component::lorry const& l) noexcept;
+    bool lorryReady(const component::lorry& l) noexcept;
 }

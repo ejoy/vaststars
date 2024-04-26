@@ -2,11 +2,11 @@
 #include <string_view>
 
 static std::string_view GameVersion = {
-    #include "GameVersion.h"
+#include "GameVersion.h"
 };
 
 static std::string_view EngineVersion = {
-    #include "EngineVersion.h"
+#include "EngineVersion.h"
 };
 
 extern "C" int

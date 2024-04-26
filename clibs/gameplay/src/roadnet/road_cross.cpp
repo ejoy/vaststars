@@ -1,9 +1,11 @@
 ﻿#include "roadnet/road_cross.h"
-#include "roadnet/network.h"
-#include "roadnet/lorry.h"
-#include "core/world.h"
-#include <bee/nonstd/unreachable.h>
+
 #include <assert.h>
+#include <bee/nonstd/unreachable.h>
+
+#include "core/world.h"
+#include "roadnet/lorry.h"
+#include "roadnet/network.h"
 
 namespace roadnet::road {
     static constexpr bool constIsCross(cross_type a, cross_type b) {
@@ -40,14 +42,22 @@ namespace roadnet::road {
         return m;
     }
     static constexpr uint16_t CrossMap[16] = {
-        constGetCrossMask(cross_type(0)),  constGetCrossMask(cross_type(1)),
-        constGetCrossMask(cross_type(2)),  constGetCrossMask(cross_type(3)),
-        constGetCrossMask(cross_type(4)),  constGetCrossMask(cross_type(5)),
-        constGetCrossMask(cross_type(6)),  constGetCrossMask(cross_type(7)),
-        constGetCrossMask(cross_type(8)),  constGetCrossMask(cross_type(9)),
-        constGetCrossMask(cross_type(10)), constGetCrossMask(cross_type(11)),
-        constGetCrossMask(cross_type(12)), constGetCrossMask(cross_type(13)),
-        constGetCrossMask(cross_type(14)), constGetCrossMask(cross_type(15)),
+        constGetCrossMask(cross_type(0)),
+        constGetCrossMask(cross_type(1)),
+        constGetCrossMask(cross_type(2)),
+        constGetCrossMask(cross_type(3)),
+        constGetCrossMask(cross_type(4)),
+        constGetCrossMask(cross_type(5)),
+        constGetCrossMask(cross_type(6)),
+        constGetCrossMask(cross_type(7)),
+        constGetCrossMask(cross_type(8)),
+        constGetCrossMask(cross_type(9)),
+        constGetCrossMask(cross_type(10)),
+        constGetCrossMask(cross_type(11)),
+        constGetCrossMask(cross_type(12)),
+        constGetCrossMask(cross_type(13)),
+        constGetCrossMask(cross_type(14)),
+        constGetCrossMask(cross_type(15)),
     };
     static bool isCross(cross_type a, cross_type b) {
         return (CrossMap[(uint8_t)a] & (1 << (uint16_t)b)) != 0;
@@ -55,8 +65,8 @@ namespace roadnet::road {
 
     loction cross::getLoction(network& w) const {
         return loc;
-        //TODO
-        //return w.StraightRoad(rev_neighbor).waitingLoction(w);
+        // TODO
+        // return w.StraightRoad(rev_neighbor).waitingLoction(w);
     }
 
     bool cross::hasNeighbor(direction dir) const {
@@ -88,19 +98,19 @@ namespace roadnet::road {
                 continue;
             }
             cross_type t = cross_status[i];
-            auto& road = w.rw.StraightRoad(neighbor[(uint8_t)t & 0x03u]);
+            auto& road   = w.rw.StraightRoad(neighbor[(uint8_t)t & 0x03u]);
             if (road.canEntry(w.rw)) {
                 road.move(w, id);
                 cross_lorry[i] = lorryid::invalid();
             }
         }
         for (uint8_t ii = 0; ii < 4; ++ii) {
-            uint8_t i = (ii + (ti>>4)) % 4; // swap the order of the lorries every 16 ticks
+            uint8_t i = (ii + (ti >> 4)) % 4;  // swap the order of the lorries every 16 ticks
             if (!rev_neighbor[i]) {
                 continue;
             }
             auto& straight = w.rw.StraightRoad(rev_neighbor[(size_t)i]);
-            lorryid id = straight.waitingLorry(w.rw);
+            lorryid id     = straight.waitingLorry(w.rw);
             if (!id) {
                 continue;
             }
@@ -122,23 +132,21 @@ namespace roadnet::road {
             size_t idx;
             if (!cross_lorry[0] && !cross_lorry[1]) {
                 idx = 0;
-            }
-            else if (cross_lorry[0]) {
+            } else if (cross_lorry[0]) {
                 if (isCross(type, cross_status[0])) {
                     continue;
                 }
                 idx = 1;
-            }
-            else {
+            } else {
                 if (isCross(type, cross_status[1])) {
                     continue;
                 }
                 idx = 0;
             }
             straight.waitingLorry(w.rw) = lorryid::invalid();
-            cross_lorry[idx] = id;
-            cross_status[idx] = type;
-            auto loc = getLoction(w.rw);
+            cross_lorry[idx]            = id;
+            cross_status[idx]           = type;
+            auto loc                    = getLoction(w.rw);
             lorryMove(l, w, loc.x, loc.y, map_coord::make_z(map_index::w1, cross_status[idx]));
         }
     }
@@ -164,18 +172,18 @@ namespace roadnet::road {
         if (cross_lorry[0] && cross_lorry[1]) {
             return false;
         }
-        bool has_lorry = cross_lorry[0] || cross_lorry[1];
-        size_t empty_idx = cross_lorry[0]? 1: 0;
-        size_t lorry_idx = cross_lorry[0]? 0: 1;
-        uint8_t from_v = (uint8_t)crossFrom(type);
-        uint8_t to_v = (uint8_t)crossTo(type);
+        bool has_lorry   = cross_lorry[0] || cross_lorry[1];
+        size_t empty_idx = cross_lorry[0] ? 1 : 0;
+        size_t lorry_idx = cross_lorry[0] ? 0 : 1;
+        uint8_t from_v   = (uint8_t)crossFrom(type);
+        uint8_t to_v     = (uint8_t)crossTo(type);
         for (uint8_t j = 0; j < 4; ++j) {
             for (uint8_t i = 0; i < 4; ++i) {
                 direction from = direction((from_v + i) % 4);
-                direction to = direction((to_v + j) % 4);
+                direction to   = direction((to_v + j) % 4);
                 if (hasNeighbor(to) && hasRevNeighbor(from) && allowed(from, to)) {
                     if (!has_lorry || !isCross(cross_status[lorry_idx], crossType(from, to))) {
-                        cross_lorry[empty_idx] = lorryId;
+                        cross_lorry[empty_idx]  = lorryId;
                         cross_status[empty_idx] = crossType(from, to);
                         return true;
                     }

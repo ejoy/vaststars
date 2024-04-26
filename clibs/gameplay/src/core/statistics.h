@@ -1,30 +1,30 @@
 #pragma once
 
 #include <bee/utility/flatmap.h>
+
 #include <array>
 
 struct world;
 
 template <typename Key, typename Mapped>
-void stat_add(bee::flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {
+void stat_add(bee::flatmap<Key, Mapped>& m, const Key& key, Mapped mapped) {
     auto [found, slot] = m.find_or_insert(key);
     if (found) {
         *slot += mapped;
-    }
-    else {
+    } else {
         *slot = mapped;
     }
 }
 
 template <typename Key, typename Mapped>
-void stat_add(bee::flatmap<Key, Mapped>& a, bee::flatmap<Key, Mapped> const& b) {
-    for (auto const& [k, v] : b) {
+void stat_add(bee::flatmap<Key, Mapped>& a, const bee::flatmap<Key, Mapped>& b) {
+    for (const auto& [k, v] : b) {
         stat_add(a, k, v);
     }
 }
 
 template <typename Key, typename Mapped>
-void stat_add(bee::flatmap<Key, Mapped>& m, recipe_items const& r) {
+void stat_add(bee::flatmap<Key, Mapped>& m, const recipe_items& r) {
     for (size_t i = 0; i < r.n; ++i) {
         stat_add<Key, Mapped>(m, r.items[i].item, r.items[i].amount);
     }
@@ -36,9 +36,9 @@ struct statistics {
         bee::flatmap<uint16_t, uint32_t> consumption;
         bee::flatmap<uint16_t, uint64_t> generate_power;
         bee::flatmap<uint16_t, uint64_t> consume_power;
-        uint64_t                    power = 0;
+        uint64_t power = 0;
         void reset();
-        void add(frame const& f);
+        void add(const frame& f);
     };
     static constexpr uint16_t PRECISION = 150;
     struct dataset {
@@ -46,10 +46,10 @@ struct statistics {
         uint16_t pos = 0;
         uint64_t tick;
         void step();
-        void sum(dataset const& d);
+        void sum(const dataset& d);
         bool update(uint64_t time);
-        bool update(uint64_t time, dataset const& d);
-        frame const& back() const;
+        bool update(uint64_t time, const dataset& d);
+        const frame& back() const;
     };
 
     statistics();

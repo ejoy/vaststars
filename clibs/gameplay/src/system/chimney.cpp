@@ -1,7 +1,7 @@
 #include <lua.hpp>
 
-#include "luaecs.h"
 #include "core/world.h"
+#include "luaecs.h"
 #include "util/prototype.h"
 extern "C" {
 #include "core/fluidflow.h"
@@ -11,7 +11,7 @@ extern "C" {
 #define STATUS_DONE 1
 #define STATUS_WORKING 2
 
-static bool fluidbox_pickup(world& w, component::fluidbox& f, recipe_items const& r) {
+static bool fluidbox_pickup(world& w, component::fluidbox& f, const recipe_items& r) {
     if (r.n != 1 || r.items[0].item != f.fluid) {
         return false;
     }
@@ -47,8 +47,8 @@ chimney_update(world& w, ecs::entity<component::chimney, component::fluidbox>& v
             c.status = STATUS_IDLE;
         }
         if (c.status == STATUS_IDLE) {
-            auto const& ingredients = prototype::get<"ingredients", recipe_items>(w, c.recipe);
-            component::fluidbox& f = v.get<component::fluidbox>();
+            const auto& ingredients = prototype::get<"ingredients", recipe_items>(w, c.recipe);
+            component::fluidbox& f  = v.get<component::fluidbox>();
             if (!fluidbox_pickup(w, f, ingredients)) {
                 return;
             }
@@ -62,7 +62,7 @@ chimney_update(world& w, ecs::entity<component::chimney, component::fluidbox>& v
 }
 
 static int
-lupdate(lua_State *L) {
+lupdate(lua_State* L) {
     auto& w = getworld(L);
     for (auto& v : ecs::select<component::chimney, component::fluidbox>(w.ecs)) {
         chimney_update(w, v);
@@ -71,12 +71,12 @@ lupdate(lua_State *L) {
 }
 
 extern "C" int
-luaopen_vaststars_chimney_system(lua_State *L) {
-	luaL_checkversion(L);
-	luaL_Reg l[] = {
-		{ "update", lupdate },
-		{ NULL, NULL },
-	};
-	luaL_newlib(L, l);
-	return 1;
+luaopen_vaststars_chimney_system(lua_State* L) {
+    luaL_checkversion(L);
+    luaL_Reg l[] = {
+        { "update", lupdate },
+        { NULL, NULL },
+    };
+    luaL_newlib(L, l);
+    return 1;
 }

@@ -1,12 +1,15 @@
-﻿#include <lua.hpp>
-#include "system/drone.h"
-#include "luaecs.h"
-#include "core/world.h"
-#include "core/capacitance.h"
-#include "core/backpack.h"
+﻿#include "system/drone.h"
+
 #include <bee/nonstd/unreachable.h>
 #include <math.h>
+
 #include <algorithm>
+#include <lua.hpp>
+
+#include "core/backpack.h"
+#include "core/capacitance.h"
+#include "core/world.h"
+#include "luaecs.h"
 
 using DroneEntity = ecs::entity<component::drone>;
 
@@ -25,8 +28,8 @@ static uint8_t safe_sub(uint8_t a, uint8_t b) {
 struct building_rect {
     uint8_t x1, x2, y1, y2;
     building_rect(uint8_t x, uint8_t y, uint8_t direction, uint16_t area, uint16_t scale_area) {
-        uint8_t w = area >> 8;
-        uint8_t h = area & 0xFF;
+        uint8_t w  = area >> 8;
+        uint8_t h  = area & 0xFF;
         uint8_t sw = scale_area >> 8;
         uint8_t sh = scale_area & 0xFF;
         assert(w > 0 && h > 0);
@@ -37,34 +40,38 @@ struct building_rect {
         if (sh < h) {
             std::swap(sh, h);
         }
-        w--; sw--;
-        h--; sh--;
+        w--;
+        sw--;
+        h--;
+        sh--;
         uint8_t wl = (sw - w) / 2;
         uint8_t wr = sw - wl;
         uint8_t hl = (sh - h) / 2;
         uint8_t hr = sh - hl;
         switch (direction) {
-        case 0: // N
-        case 2: // S
-            x1 = safe_sub(x, wl); x2 = safe_add(x, wr);
-            y1 = safe_sub(y, hl); y2 = safe_add(y, hr);
+        case 0:  // N
+        case 2:  // S
+            x1 = safe_sub(x, wl);
+            x2 = safe_add(x, wr);
+            y1 = safe_sub(y, hl);
+            y2 = safe_add(y, hr);
             break;
-        case 1: // E
-        case 3: // W
-            x1 = safe_sub(x, hl); x2 = safe_add(x, hr);
-            y1 = safe_sub(y, wl); y2 = safe_add(y, wr);
+        case 1:  // E
+        case 3:  // W
+            x1 = safe_sub(x, hl);
+            x2 = safe_add(x, hr);
+            y1 = safe_sub(y, wl);
+            y2 = safe_add(y, wr);
             break;
         default:
             std::unreachable();
         }
     }
-    building_rect(component::building const& b, uint16_t area)
-        : building_rect(b.x, b.y, b.direction, area, area)
-    {}
-    building_rect(component::building const& b, uint16_t area, uint16_t scale_area)
-        : building_rect(b.x, b.y, b.direction, area, scale_area)
-    {}
-    void each(std::function<void(uint8_t,uint8_t)> f) {
+    building_rect(const component::building& b, uint16_t area)
+        : building_rect(b.x, b.y, b.direction, area, area) {}
+    building_rect(const component::building& b, uint16_t area, uint16_t scale_area)
+        : building_rect(b.x, b.y, b.direction, area, scale_area) {}
+    void each(std::function<void(uint8_t, uint8_t)> f) {
         for (uint8_t i = x1; i <= x2; ++i)
             for (uint8_t j = y1; j <= y2; ++j)
                 f(i, j);
@@ -86,13 +93,13 @@ static uint16_t getxy(uint8_t x, uint8_t y) {
     return ((uint16_t)x << 8) | (uint16_t)y;
 }
 
-static container::slot& ChestAt(world& w, airport_berth const& berth) {
+static container::slot& ChestAt(world& w, const airport_berth& berth) {
     auto building = w.buildings.find(getxy(berth.x, berth.y));
     assert(building);
     return chest::array_at(w, container::index::from(building->chest), berth.slot);
 }
 
-static container::slot* ChestGet(world& w, airport_berth const& berth) {
+static container::slot* ChestGet(world& w, const airport_berth& berth) {
     if (auto building = w.buildings.find(getxy(berth.x, berth.y))) {
         return chest::array_get(w, container::index::from(building->chest), berth.slot);
     }
@@ -125,22 +132,19 @@ struct ChestSearcher {
         building* building;
         Node(airport_berth berth, struct building* building)
             : berth(berth)
-            , building(building)
-        {}
+            , building(building) {}
     };
-    struct ItemNode: public Node {
+    struct ItemNode : public Node {
         uint16_t item;
         ItemNode(airport_berth berth, struct building* building, uint16_t item)
             : Node(berth, building)
-            , item(item)
-        {}
+            , item(item) {}
     };
-    struct AmountNode: public Node {
+    struct AmountNode : public Node {
         uint16_t amount;
         AmountNode(airport_berth berth, struct building* building, uint16_t amount)
             : Node(berth, building)
-            , amount(amount)
-        {}
+            , amount(amount) {}
     };
     std::vector<Node> demand_place;
     std::vector<AmountNode> transit_pickup;
@@ -163,8 +167,7 @@ static void rebuild(world& w) {
         container::slot::slot_type type;
         chestinfo(uint16_t item, container::slot::slot_type type)
             : item(item)
-            , type(type)
-        {}
+            , type(type) {}
     };
     struct mapinfo {
         uint8_t x;
@@ -179,10 +182,10 @@ static void rebuild(world& w) {
     }
 
     for (auto& v : ecs::select<component::chest, component::building>(w.ecs)) {
-        auto& chest = v.get<component::chest>();
+        auto& chest    = v.get<component::chest>();
         auto& building = v.get<component::building>();
-        uint16_t area = prototype::get<"area">(w, building.prototype);
-        auto c = container::index::from(chest.chest);
+        uint16_t area  = prototype::get<"area">(w, building.prototype);
+        auto c         = container::index::from(chest.chest);
         if (c == container::kInvalidIndex) {
             continue;
         }
@@ -190,7 +193,7 @@ static void rebuild(world& w) {
         m.x = building.x;
         m.y = building.y;
         for (auto& chestslot : chest::array_slice(w, c)) {
-            chestslot.lock_item = 0;
+            chestslot.lock_item  = 0;
             chestslot.lock_space = 0;
             m.chest.emplace_back(chestslot.item, chestslot.type);
         }
@@ -201,8 +204,8 @@ static void rebuild(world& w) {
 
     bee::flatmap<uint16_t, uint16_t> created_airport;
     std::map<uint16_t, airport> airports;
-    uint16_t maxid = 1;
-    auto create_airport_id = [&]()->uint16_t {
+    uint16_t maxid         = 1;
+    auto create_airport_id = [&]() -> uint16_t {
         for (; maxid <= (std::numeric_limits<uint16_t>::max)(); ++maxid) {
             if (!airports.contains(maxid) && !used_id.contains(maxid)) {
                 return maxid;
@@ -211,7 +214,7 @@ static void rebuild(world& w) {
         return 0;
     };
     for (auto& v : ecs::select<component::airport, component::building, component::capacitance>(w.ecs)) {
-        auto& airport = v.get<component::airport>();
+        auto& airport  = v.get<component::airport>();
         auto& building = v.get<component::building>();
         if (airport.id == 0) {
             airport.id = create_airport_id();
@@ -219,13 +222,13 @@ static void rebuild(world& w) {
         }
         auto homeBuilding = createBuildingCache(w, building, 0);
         struct airport info;
-        info.prototype = building.prototype;
-        info.width = homeBuilding.w;
-        info.height = homeBuilding.h;
-        info.homeBerth = airport_berth { building.x, building.y, 0 };
+        info.prototype   = building.prototype;
+        info.width       = homeBuilding.w;
+        info.height      = homeBuilding.h;
+        info.homeBerth   = airport_berth { building.x, building.y, 0 };
         info.capacitance = &v.get<component::capacitance>();
         std::map<uint16_t, mapinfo> set;
-        uint16_t area = prototype::get<"area">(w, building.prototype);
+        uint16_t area        = prototype::get<"area">(w, building.prototype);
         uint16_t supply_area = prototype::get<"supply_area">(w, building.prototype);
         building_rect(building, area, supply_area).each([&](uint8_t x, uint8_t y) {
             auto pm = globalmap.find(getxy(x, y));
@@ -234,10 +237,10 @@ static void rebuild(world& w) {
                 set.emplace(getxy(m.x, m.y), m);
             }
         });
-        for (auto& [_, m]: set) {
+        for (auto& [_, m] : set) {
             for (uint8_t i = 0; i < (uint8_t)m.chest.size(); ++i) {
                 auto& slot = m.chest[i];
-                airport_berth berth {m.x, m.y, i};
+                airport_berth berth { m.x, m.y, i };
                 switch (slot.type) {
                 case container::slot::slot_type::supply:
                     info.market[slot.item].supply.emplace_back(berth);
@@ -256,8 +259,7 @@ static void rebuild(world& w) {
         for (auto it = info.market.begin(); it != info.market.end();) {
             if (it->second.active()) {
                 ++it;
-            }
-            else {
+            } else {
                 it = info.market.erase(it);
             }
         }
@@ -274,86 +276,84 @@ static void rebuild(world& w) {
         case drone_status::init:
             if (auto p = created_airport.find(drone.home)) {
                 drone.home = *p;
-                CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
-                    drone.prev = std::bit_cast<airport_berth>(info.homeBerth);
-                    if (info.market.empty()) {
-                        SetStatus(drone, drone_status::idle);
-                        return;
+                CheckHasHome(
+                    w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, const airport& info) {
+                        drone.prev = std::bit_cast<airport_berth>(info.homeBerth);
+                        if (info.market.empty()) {
+                            SetStatus(drone, drone_status::idle);
+                            return;
+                        }
+                        SetStatus(drone, drone_status::at_home);
                     }
-                    SetStatus(drone, drone_status::at_home);
-                });
-            }
-            else {
+                );
+            } else {
                 SetStatus(drone, drone_status::has_error);
             }
             e.enable_tag<component::drone_changed>();
             break;
         case drone_status::idle:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
-                if (drone.prev != info.homeBerth) {
-                    GoHome(w, e, drone, info);
-                    return;
+            CheckHasHome(
+                w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, const airport& info) {
+                    if (drone.prev != info.homeBerth) {
+                        GoHome(w, e, drone, info);
+                        return;
+                    }
+                    if (!info.market.empty()) {
+                        SetStatus(drone, drone_status::at_home);
+                    }
                 }
-                if (!info.market.empty()) {
-                    SetStatus(drone, drone_status::at_home);
-                }
-            });
+            );
             break;
         case drone_status::at_home:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
-                if (drone.prev != info.homeBerth) {
-                    SetStatus(drone, drone_status::idle);
-                    GoHome(w, e, drone, info);
-                    return;
+            CheckHasHome(
+                w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, const airport& info) {
+                    if (drone.prev != info.homeBerth) {
+                        SetStatus(drone, drone_status::idle);
+                        GoHome(w, e, drone, info);
+                        return;
+                    }
+                    if (info.market.empty()) {
+                        SetStatus(drone, drone_status::idle);
+                    }
                 }
-                if (info.market.empty()) {
-                    SetStatus(drone, drone_status::idle);
-                }
-            });
+            );
             break;
         case drone_status::go_home:
         case drone_status::empty_task:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
-                // nothing to do, just check home
-            });
+            CheckHasHome(
+                w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, const airport& info) {
+                    // nothing to do, just check home
+                }
+            );
             break;
         case drone_status::go_mov1:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
-                auto& mov1 = drone.next;
-                auto& mov2 = drone.mov2;
-                auto slot1 = ChestGet(w, mov1);
-                auto slot2 = ChestGet(w, mov2);
-                if (0
-                    || !slot1
-                    || !slot2
-                    || slot1->item != slot2->item
-                    || (slot1->type != container::slot::slot_type::supply && slot1->type != container::slot::slot_type::transit)
-                    || (slot2->type != container::slot::slot_type::demand && slot2->type != container::slot::slot_type::transit)
-                    || slot1->amount <= slot1->lock_item
-                    || slot2->limit <= slot2->amount + slot2->lock_space
-                ) {
-                    SetStatus(drone, drone_status::empty_task);
-                    return;
+            CheckHasHome(
+                w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, const airport& info) {
+                    auto& mov1 = drone.next;
+                    auto& mov2 = drone.mov2;
+                    auto slot1 = ChestGet(w, mov1);
+                    auto slot2 = ChestGet(w, mov2);
+                    if (0 || !slot1 || !slot2 || slot1->item != slot2->item || (slot1->type != container::slot::slot_type::supply && slot1->type != container::slot::slot_type::transit) || (slot2->type != container::slot::slot_type::demand && slot2->type != container::slot::slot_type::transit) || slot1->amount <= slot1->lock_item || slot2->limit <= slot2->amount + slot2->lock_space) {
+                        SetStatus(drone, drone_status::empty_task);
+                        return;
+                    }
+                    slot1->lock_item++;
+                    slot2->lock_space++;
                 }
-                slot1->lock_item++;
-                slot2->lock_space++;
-            });
+            );
             break;
         case drone_status::go_mov2:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport const& info) {
-                auto& mov2 = drone.next;
-                auto slot2 = ChestGet(w, mov2);
-                if (0
-                    || !slot2
-                    || drone.item != slot2->item
-                    || (slot2->type != container::slot::slot_type::demand && slot2->type != container::slot::slot_type::transit)
-                    || slot2->limit <= slot2->amount + slot2->lock_space
-                ) {
-                    SetStatus(drone, drone_status::empty_task);
-                    return;
+            CheckHasHome(
+                w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, const airport& info) {
+                    auto& mov2 = drone.next;
+                    auto slot2 = ChestGet(w, mov2);
+                    if (0 || !slot2 || drone.item != slot2->item || (slot2->type != container::slot::slot_type::demand && slot2->type != container::slot::slot_type::transit) || slot2->limit <= slot2->amount + slot2->lock_space) {
+                        SetStatus(drone, drone_status::empty_task);
+                        return;
+                    }
+                    slot2->lock_space++;
                 }
-                slot2->lock_space++;
-            });
+            );
             break;
         default:
             std::unreachable();
@@ -378,40 +378,40 @@ static void Move(world& w, DroneEntity& e, component::drone& drone, const ChestS
         Arrival(w, e, drone);
         return;
     }
-    auto source = drone.prev;
+    auto source         = drone.prev;
     auto sourceBuilding = w.buildings.find(getxy(source.x, source.y));
     if (!sourceBuilding) {
-        static building dummy {0,0,0};
+        static building dummy { 0, 0, 0 };
         sourceBuilding = &dummy;
     }
-    float x1 = source.x + sourceBuilding->w / 2.f;
-    float y1 = source.y + sourceBuilding->h / 2.f;
-    float x2 = target.berth.x + target.building->w / 2.f;
-    float y2 = target.berth.y + target.building->h / 2.f;
-    float dx = x1-x2;
-    float dy = y1-y2;
-    float z = sqrt(dx*dx+dy*dy);
-    auto speed = prototype::get<"speed">(w, drone.prototype);
-    drone.maxprogress = drone.progress = uint16_t(z*1000/speed);
+    float x1          = source.x + sourceBuilding->w / 2.f;
+    float y1          = source.y + sourceBuilding->h / 2.f;
+    float x2          = target.berth.x + target.building->w / 2.f;
+    float y2          = target.berth.y + target.building->h / 2.f;
+    float dx          = x1 - x2;
+    float dy          = y1 - y2;
+    float z           = sqrt(dx * dx + dy * dy);
+    auto speed        = prototype::get<"speed">(w, drone.prototype);
+    drone.maxprogress = drone.progress = uint16_t(z * 1000 / speed);
     e.enable_tag<component::drone_changed>();
 }
 
 static void DoTask(world& w, DroneEntity& e, component::drone& drone, const airport& info, const ChestSearcher::Node& mov1, const ChestSearcher::Node& mov2) {
     {
-        //lock mov1
+        // lock mov1
         auto& chestslot = ChestAt(w, mov1.berth);
         assert(chestslot.amount > chestslot.lock_item);
         chestslot.lock_item += 1;
     }
     {
-        //lock mov2
+        // lock mov2
         auto& chestslot = ChestAt(w, mov2.berth);
         assert(chestslot.limit > chestslot.amount + chestslot.lock_space);
         chestslot.lock_space += 1;
     }
-    //update drone
+    // update drone
     mov1.building->pickup_time = w.drone_time;
-    mov2.building->place_time = w.drone_time;
+    mov2.building->place_time  = w.drone_time;
     SetStatus(drone, drone_status::go_mov1);
     drone.mov2 = std::bit_cast<airport_berth>(mov2.berth);
     Move(w, e, drone, mov1);
@@ -419,12 +419,12 @@ static void DoTask(world& w, DroneEntity& e, component::drone& drone, const airp
 
 static void DoTaskOnlyMov2(world& w, DroneEntity& e, component::drone& drone, const airport& info, const ChestSearcher::Node& mov2) {
     {
-        //lock mov2
+        // lock mov2
         auto& chestslot = ChestAt(w, mov2.berth);
         assert(chestslot.limit > chestslot.amount + chestslot.lock_space);
         chestslot.lock_space += 1;
     }
-    //update drone
+    // update drone
     mov2.building->place_time = w.drone_time;
     Move(w, e, drone, mov2);
 }
@@ -432,7 +432,7 @@ static void DoTaskOnlyMov2(world& w, DroneEntity& e, component::drone& drone, co
 static void GoHome(world& w, DroneEntity& e, component::drone& drone, const airport& info) {
     assert((drone_status)drone.status != drone_status::at_home);
     SetStatus(drone, drone_status::go_home);
-    building homeBuilding {0, 0, info.width, info.height};
+    building homeBuilding { 0, 0, info.width, info.height };
     ChestSearcher::Node node {
         info.homeBerth,
         &homeBuilding,
@@ -505,21 +505,19 @@ static bool FindTask(world& w, DroneEntity& e, component::drone& drone, airport&
             if (s.transit_pickup.empty()) {
                 continue;
             }
-        }
-        else {
-            for (auto const& s : supply_pickup) {
+        } else {
+            for (const auto& s : supply_pickup) {
                 searcher_array.emplace_back(ChestSearcher::ItemNode {
                     s.berth,
                     s.building,
-                    item
-                });
+                    item });
             }
         }
         searcher.emplace(item, std::move(s));
     }
     if (!searcher_array.empty()) {
         auto& supply = *std::min_element(std::begin(searcher_array), std::end(searcher_array), ChestSearcher::PickupTimeSort);
-        auto& suite = searcher[supply.item];
+        auto& suite  = searcher[supply.item];
         if (!suite.demand_place.empty()) {
             auto& demand = *std::min_element(std::begin(suite.demand_place), std::end(suite.demand_place), ChestSearcher::PlaceTimeSort);
             DoTask(w, e, drone, info, supply, demand);
@@ -538,18 +536,17 @@ static bool FindTask(world& w, DroneEntity& e, component::drone& drone, airport&
     for (auto& [item, suite] : searcher) {
         assert(!suite.transit_pickup.empty());
         if (!suite.demand_place.empty()) {
-            for (auto const& s : suite.demand_place) {
+            for (const auto& s : suite.demand_place) {
                 searcher_array.emplace_back(ChestSearcher::ItemNode {
                     s.berth,
                     s.building,
-                    item
-                });
+                    item });
             }
         }
     }
     if (!searcher_array.empty()) {
-        auto& demand = *std::min_element(std::begin(searcher_array), std::end(searcher_array), ChestSearcher::PlaceTimeSort);
-        auto& suite = searcher[demand.item];
+        auto& demand  = *std::min_element(std::begin(searcher_array), std::end(searcher_array), ChestSearcher::PlaceTimeSort);
+        auto& suite   = searcher[demand.item];
         auto& transit = *std::max_element(std::begin(suite.transit_pickup), std::end(suite.transit_pickup), ChestSearcher::AmountSort);
         DoTask(w, e, drone, info, transit, demand);
         consumer.cost_power();
@@ -563,13 +560,12 @@ static bool FindTask(world& w, DroneEntity& e, component::drone& drone, airport&
             searcher_array.emplace_back(ChestSearcher::ItemNode {
                 max_transit.berth,
                 max_transit.building,
-                item
-            });
+                item });
         }
     }
     if (!searcher_array.empty()) {
         auto& max_transit = *std::min_element(std::begin(searcher_array), std::end(searcher_array), ChestSearcher::PickupTimeSort);
-        auto& suite = searcher[max_transit.item];
+        auto& suite       = searcher[max_transit.item];
         auto& min_transit = *std::min_element(std::begin(suite.transit_place), std::end(suite.transit_place), ChestSearcher::AmountSort);
         DoTask(w, e, drone, info, max_transit, min_transit);
         consumer.cost_power();
@@ -637,75 +633,75 @@ static void Arrival(world& w, DroneEntity& e, component::drone& drone) {
     drone.prev = drone.next;
     switch ((drone_status)drone.status) {
     case drone_status::go_mov1: {
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
-            auto& slot = ChestAt(w, drone.next);
-            assert(slot.item != 0
-                && (slot.type == container::slot::slot_type::supply || slot.type == container::slot::slot_type::transit)
-                && slot.amount >= slot.lock_item
-                && slot.lock_item > 0
-            );
-            auto mov2Berth = drone.mov2;
-            auto movBuilding = w.buildings.find(getxy(mov2Berth.x, mov2Berth.y));
-            assert(movBuilding);
-            slot.lock_item--;
-            slot.amount--;
-            drone.item = slot.item;
-            SetStatus(drone, drone_status::go_mov2);
-            ChestSearcher::Node node {
-                mov2Berth,
-                movBuilding,
-            };
-            Move(w, e, drone, node);
-            drone.mov2 = airport_berth {0,0,0};
-        });
+        CheckHasHome(
+            w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
+                auto& slot = ChestAt(w, drone.next);
+                assert(slot.item != 0 && (slot.type == container::slot::slot_type::supply || slot.type == container::slot::slot_type::transit) && slot.amount >= slot.lock_item && slot.lock_item > 0);
+                auto mov2Berth   = drone.mov2;
+                auto movBuilding = w.buildings.find(getxy(mov2Berth.x, mov2Berth.y));
+                assert(movBuilding);
+                slot.lock_item--;
+                slot.amount--;
+                drone.item = slot.item;
+                SetStatus(drone, drone_status::go_mov2);
+                ChestSearcher::Node node {
+                    mov2Berth,
+                    movBuilding,
+                };
+                Move(w, e, drone, node);
+                drone.mov2 = airport_berth { 0, 0, 0 };
+            }
+        );
         break;
     }
     case drone_status::go_mov2: {
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
-            auto& slot = ChestAt(w, drone.next);
-            assert(slot.item == drone.item
-                && (slot.type == container::slot::slot_type::demand || slot.type == container::slot::slot_type::transit)
-                && slot.limit >= slot.amount + slot.lock_space
-                && slot.lock_space > 0
-            );
-            slot.lock_space--;
-            slot.amount++;
-            drone.item = 0;
-            FindTaskNotAtHome(w, e, drone, info);
-        });
+        CheckHasHome(
+            w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
+                auto& slot = ChestAt(w, drone.next);
+                assert(slot.item == drone.item && (slot.type == container::slot::slot_type::demand || slot.type == container::slot::slot_type::transit) && slot.limit >= slot.amount + slot.lock_space && slot.lock_space > 0);
+                slot.lock_space--;
+                slot.amount++;
+                drone.item = 0;
+                FindTaskNotAtHome(w, e, drone, info);
+            }
+        );
         break;
     }
     case drone_status::go_home:
-        drone.next = airport_berth {0,0,0};
+        drone.next        = airport_berth { 0, 0, 0 };
         drone.maxprogress = 0;
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
-            if (drone.prev != info.homeBerth) {
-                GoHome(w, e, drone, info);
-                return;
+        CheckHasHome(
+            w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
+                if (drone.prev != info.homeBerth) {
+                    GoHome(w, e, drone, info);
+                    return;
+                }
+                if (info.market.empty()) {
+                    SetStatus(drone, drone_status::idle);
+                    return;
+                }
+                if (FindTask(w, e, drone, info)) {
+                    return;
+                }
+                SetStatus(drone, drone_status::at_home);
             }
-            if (info.market.empty()) {
-                SetStatus(drone, drone_status::idle);
-                return;
-            }
-            if (FindTask(w, e, drone, info)) {
-                return;
-            }
-            SetStatus(drone, drone_status::at_home);
-        });
+        );
         break;
     case drone_status::empty_task:
-        CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
-            if (drone.item == 0) {
-                FindTaskNotAtHome(w, e, drone, info);
-                return;
+        CheckHasHome(
+            w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
+                if (drone.item == 0) {
+                    FindTaskNotAtHome(w, e, drone, info);
+                    return;
+                }
+                if (FindTaskOnlyMov2(w, e, drone, info)) {
+                    return;
+                }
+                backpack_place(w, drone.item, 1);
+                drone.item = 0;
+                GoHome(w, e, drone, info);
             }
-            if (FindTaskOnlyMov2(w, e, drone, info)) {
-                return;
-            }
-            backpack_place(w, drone.item, 1);
-            drone.item = 0;
-            GoHome(w, e, drone, info);
-        });
+        );
         break;
     default:
         std::unreachable();
@@ -722,19 +718,21 @@ static void Update(world& w, DroneEntity& e, component::drone& drone) {
 }
 
 static int
-lupdate(lua_State *L) {
+lupdate(lua_State* L) {
     auto& w = getworld(L);
     for (auto& e : ecs::select<component::drone>(w.ecs)) {
         auto& drone = e.get<component::drone>();
         switch ((drone_status)drone.status) {
         case drone_status::at_home:
-            CheckHasHome(w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
-                if (info.market.empty()) {
-                    SetStatus(drone, drone_status::idle);
-                    return;
+            CheckHasHome(
+                w, e, drone, +[](world& w, DroneEntity& e, component::drone& drone, airport& info) {
+                    if (info.market.empty()) {
+                        SetStatus(drone, drone_status::idle);
+                        return;
+                    }
+                    FindTask(w, e, drone, info);
                 }
-                FindTask(w, e, drone, info);
-            });
+            );
             break;
         case drone_status::go_mov1:
         case drone_status::go_mov2:
@@ -754,13 +752,13 @@ lupdate(lua_State *L) {
 }
 
 extern "C" int
-luaopen_vaststars_drone_system(lua_State *L) {
-	luaL_checkversion(L);
-	luaL_Reg l[] = {
-		{ "build", lbuild },
-		{ "update", lupdate },
-		{ NULL, NULL },
-	};
-	luaL_newlib(L, l);
-	return 1;
+luaopen_vaststars_drone_system(lua_State* L) {
+    luaL_checkversion(L);
+    luaL_Reg l[] = {
+        { "build", lbuild },
+        { "update", lupdate },
+        { NULL, NULL },
+    };
+    luaL_newlib(L, l);
+    return 1;
 }

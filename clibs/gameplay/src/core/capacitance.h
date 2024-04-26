@@ -1,7 +1,7 @@
 #pragma once
 
-#include "luaecs.h"
 #include "core/world.h"
+#include "luaecs.h"
 #include "util/prototype.h"
 
 struct consumer_context {
@@ -11,7 +11,7 @@ struct consumer_context {
     uint32_t capacitance;
     uint32_t costall(uint32_t v) {
         if (c.shortage + v > capacitance) {
-            v = capacitance - c.shortage;
+            v          = capacitance - c.shortage;
             c.shortage = capacitance;
             return v;
         }
@@ -42,10 +42,9 @@ struct consumer_context {
     }
 };
 
-
 inline consumer_context get_consumer(world& w, uint16_t prototype, component::capacitance& c) {
-    uint32_t power = prototype::get<"power">(w, prototype);
-    uint32_t drain = prototype::get<"drain">(w, prototype);
+    uint32_t power       = prototype::get<"power">(w, prototype);
+    uint32_t drain       = prototype::get<"drain">(w, prototype);
     uint32_t capacitance = prototype::get<"capacitance">(w, prototype);
     return {
         c, power, drain, capacitance
@@ -78,8 +77,7 @@ struct generator_context {
     inline void force_produce() {
         if (power < c.shortage) {
             c.shortage -= power;
-        }
-        else {
+        } else {
             c.shortage = 0;
         }
     }
@@ -87,8 +85,7 @@ struct generator_context {
         uint32_t real_power = (power / fixed) * efficiency + (power % fixed) * efficiency / fixed;
         if (real_power < c.shortage) {
             c.shortage -= real_power;
-        }
-        else {
+        } else {
             c.shortage = 0;
         }
     }
@@ -97,8 +94,8 @@ struct generator_context {
 template <class Entity>
 generator_context get_generator(world& w, Entity& v, component::capacitance& c) {
     component::building& building = v.template get<component::building>();
-    uint32_t power = prototype::get<"power">(w, building.prototype);
-    uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
+    uint32_t power                = prototype::get<"power">(w, building.prototype);
+    uint32_t capacitance          = prototype::get<"capacitance">(w, building.prototype);
     return {
         c, power, capacitance
     };

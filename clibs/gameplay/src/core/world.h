@@ -1,16 +1,17 @@
 #pragma once
 
-#include "core/chest.h"
-#include "util/component.h"
-#include "ecs/select.h"
-#include "core/techtree.h"
-#include "core/statistics.h"
-#include "core/market.h"
-#include "system/fluid.h"
-#include "system/drone.h"
-#include "system/building.h"
-#include "roadnet/network.h"
 #include <map>
+
+#include "core/chest.h"
+#include "core/market.h"
+#include "core/statistics.h"
+#include "core/techtree.h"
+#include "ecs/select.h"
+#include "roadnet/network.h"
+#include "system/building.h"
+#include "system/drone.h"
+#include "system/fluid.h"
+#include "util/component.h"
 
 struct lua_State;
 struct ecs_context;
@@ -27,7 +28,6 @@ constexpr uint64_t kDirtyStation   = 1 << 5;
 constexpr uint64_t kDirtyAirport   = 1 << 6;
 constexpr uint64_t kDirtyEndpoint  = 1 << 7;
 
-
 struct world {
     ecs_context* ecs;
     lua_State* L;
@@ -40,8 +40,8 @@ struct world {
     std::map<uint16_t, airport> airports;
     bee::flatmap<uint16_t, building> buildings;
     market market;
-    uint64_t time = 0;
-    uint64_t dirty = 0;
+    uint64_t time       = 0;
+    uint64_t dirty      = 0;
     uint32_t drone_time = 0;
     component::global_state* state;
 };
