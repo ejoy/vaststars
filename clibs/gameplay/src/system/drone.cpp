@@ -129,7 +129,7 @@ static void GoHome(world& w, DroneEntity& e, component::drone& drone, const airp
 struct ChestSearcher {
     struct Node {
         airport_berth berth;
-        building* building;
+        struct building* building;
         Node(airport_berth berth, struct building* building)
             : berth(berth)
             , building(building) {}

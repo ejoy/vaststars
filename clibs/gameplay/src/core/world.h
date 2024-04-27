@@ -32,14 +32,14 @@ struct world {
     ecs_context* ecs;
     lua_State* L;
     prototype::cache* P;
-    container container;
+    struct container container;
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
     statistics stat;
     roadnet::network rw;
     std::map<uint16_t, airport> airports;
     bee::flatmap<uint16_t, building> buildings;
-    market market;
+    struct market market;
     uint64_t time       = 0;
     uint64_t dirty      = 0;
     uint32_t drone_time = 0;
