@@ -32,7 +32,7 @@ struct world {
     ecs_context* ecs;
     lua_State* L;
     prototype::cache* P;
-    struct container container;
+    class container container;
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
     statistics stat;
