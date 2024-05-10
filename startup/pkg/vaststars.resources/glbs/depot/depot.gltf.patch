@@ -26,7 +26,8 @@ value:
   data:
     scene:
       t: {-2.5, 6, -2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -39,7 +40,8 @@ value:
   data:
     scene:
       t: {-2.5, 6, 2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -52,7 +54,8 @@ value:
   data:
     scene:
       t: {2.5, 6, -2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -65,7 +68,8 @@ value:
   data:
     scene:
       t: {2.5, 6, 2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -99,7 +103,8 @@ value:
   data:
     scene:
       t: {-2.5, 6, -2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -108,7 +113,8 @@ value:
   data:
     scene:
       t: {-2.5, 6, 2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -117,7 +123,8 @@ value:
   data:
     scene:
       t: {2.5, 6, -2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -126,7 +133,8 @@ value:
   data:
     scene:
       t: {2.5, 6, 2.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:

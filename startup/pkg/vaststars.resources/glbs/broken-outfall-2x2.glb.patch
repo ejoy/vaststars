@@ -32,7 +32,8 @@ value:
       s: {8, 8, 8}
       t: {7.099999904632568, -2.200000047683716, 0}
     visible: true
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
     ant.efk|efk

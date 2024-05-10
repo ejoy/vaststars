@@ -6,7 +6,8 @@ value:
   data:
     scene:
       t: {6.159999847412109, 7.059999942779541, -10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -19,7 +20,8 @@ value:
   data:
     scene:
       t: {-6.159999847412109, 7.059999942779541, -10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -32,7 +34,8 @@ value:
   data:
     scene:
       t: {12.319999694824219, 10.140000343322754, 0}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -45,7 +48,8 @@ value:
   data:
     scene:
       t: {-12.319999694824219, 10.140000343322754, 0}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -58,7 +62,8 @@ value:
   data:
     scene:
       t: {6.159999847412109, 16.040000915527344, 10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -71,7 +76,8 @@ value:
   data:
     scene:
       t: {-6.159999847412109, 16.040000915527344, 10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -166,7 +172,8 @@ value:
   data:
     scene:
       t: {6.159999847412109, 7.059999942779541, -10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -175,7 +182,8 @@ value:
   data:
     scene:
       t: {-6.159999847412109, 7.059999942779541, -10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -184,7 +192,8 @@ value:
   data:
     scene:
       t: {12.319999694824219, 10.140000343322754, 0}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -193,7 +202,8 @@ value:
   data:
     scene:
       t: {-12.319999694824219, 10.140000343322754, 0}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -202,7 +212,8 @@ value:
   data:
     scene:
       t: {6.159999847412109, 16.040000915527344, 10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -211,7 +222,8 @@ value:
   data:
     scene:
       t: {-6.159999847412109, 16.040000915527344, 10.670000076293945}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:

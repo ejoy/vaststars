@@ -8,151 +8,176 @@ policy:
 data:
   scene:
     t: {40, 0, 100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 2
+mount:
+  /scene/parent: 2
 prefab: /pkg/vaststars.resources/glbs/air-filter/air-filter.gltf/work.prefab
 ---
 data:
   scene:
     t: {-150, 0, 0}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 4
+mount:
+  /scene/parent: 4
 prefab: /pkg/vaststars.resources/glbs/accumulator-1/accumulator-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-40, 0, 100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 6
+mount:
+  /scene/parent: 6
 prefab: /pkg/vaststars.resources/glbs/air-filter/air-filter.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-147.39999389648438, 0, 38.900001525878906}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 8
+mount:
+  /scene/parent: 8
 prefab: /pkg/vaststars.resources/glbs/boiler/boiler.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-147.39999389648438, 0, -43}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 10
+mount:
+  /scene/parent: 10
 prefab: /pkg/vaststars.resources/glbs/chemical-plant-1/chemical-plant-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-45, 0, 50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 12
+mount:
+  /scene/parent: 12
 prefab: /pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {45, 0, 50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 14
+mount:
+  /scene/parent: 14
 prefab: /pkg/vaststars.resources/glbs/chimney-1/chimney-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {100, 0, 100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 16
+mount:
+  /scene/parent: 16
 prefab: /pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {200, 0, 100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 18
+mount:
+  /scene/parent: 18
 prefab: /pkg/vaststars.resources/glbs/crusher-1/crusher-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {-200, 0, 40}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 20
+mount:
+  /scene/parent: 20
 prefab: /pkg/vaststars.resources/glbs/depot/depot.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-55.900001525878906, 0, 180}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 22
+mount:
+  /scene/parent: 22
 prefab: /pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {60, 0, 180}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 24
+mount:
+  /scene/parent: 24
 prefab: /pkg/vaststars.resources/glbs/distillery-1/distillery-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {-232.9246826171875, 0, 38.17839050292969}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
@@ -161,395 +186,461 @@ tag:
 data:
   scene:
     t: {-198.69483947753906, 0, 0}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 28
+mount:
+  /scene/parent: 28
 prefab: /pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-227.928466796875, 0, 0}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 30
+mount:
+  /scene/parent: 30
 prefab: /pkg/vaststars.resources/glbs/drone-depot/drone-depot.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-193.17855834960938, 0, -38.45345687866211}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 32
+mount:
+  /scene/parent: 32
 prefab: /pkg/vaststars.resources/glbs/electric-pole-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {-60, 0, -100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 34
+mount:
+  /scene/parent: 34
 prefab: /pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {60, 0, -100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 36
+mount:
+  /scene/parent: 36
 prefab: /pkg/vaststars.resources/glbs/electrolyzer-1/electrolyzer-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {120, 0, 50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 38
+mount:
+  /scene/parent: 38
 prefab: /pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {240, 0, 50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 40
+mount:
+  /scene/parent: 40
 prefab: /pkg/vaststars.resources/glbs/flotation-cell-1/flotation-cell-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {-60, 0, -50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 42
+mount:
+  /scene/parent: 42
 prefab: /pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {20, 0, -50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 44
+mount:
+  /scene/parent: 44
 prefab: /pkg/vaststars.resources/glbs/furnace-1/furnace-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {-207.6969451904297, 0, -88.91860961914063}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 46
+mount:
+  /scene/parent: 46
 prefab: /pkg/vaststars.resources/glbs/geothermal-plant/geothermal-plant.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {-144.78134155273438, 0, -87.68624877929688}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 48
+mount:
+  /scene/parent: 48
 prefab: /pkg/vaststars.resources/glbs/goods-station-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {120, 0, 170}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 50
+mount:
+  /scene/parent: 50
 prefab: /pkg/vaststars.resources/glbs/headquater-1/headquater-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {240, 0, 170}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 52
+mount:
+  /scene/parent: 52
 prefab: /pkg/vaststars.resources/glbs/headquater-1/headquater-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {70, 0, 0}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 54
+mount:
+  /scene/parent: 54
 prefab: /pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {210, 0, 0}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 56
+mount:
+  /scene/parent: 56
 prefab: /pkg/vaststars.resources/glbs/hydro-plant-1/hydro-plant-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {100, 0, -50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 58
+mount:
+  /scene/parent: 58
 prefab: /pkg/vaststars.resources/glbs/lab-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {220, 0, -50}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 60
+mount:
+  /scene/parent: 60
 prefab: /pkg/vaststars.resources/glbs/lab-1.glb/work.prefab
 ---
 data:
   scene:
     t: {130, 0, -100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 62
+mount:
+  /scene/parent: 62
 prefab: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb/mesh.prefab
 ---
 data:
   scene:
     t: {210, 0, -100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 64
+mount:
+  /scene/parent: 64
 prefab: /pkg/vaststars.resources/glbs/mars-assembling-machine.glb/work.prefab
 ---
 data:
   scene:
     t: {-50, -3.0517578125e-05, 250}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 66
+mount:
+  /scene/parent: 66
 prefab: /pkg/vaststars.resources/glbs/mars-outfall.glb/mesh.prefab
 ---
 data:
   scene:
     t: {50, 0, 250}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 68
+mount:
+  /scene/parent: 68
 prefab: /pkg/vaststars.resources/glbs/mars-outfall.glb/work.prefab
 ---
 data:
   scene:
     t: {100, 0, 230}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 70
+mount:
+  /scene/parent: 70
 prefab: /pkg/vaststars.resources/glbs/mars-pumpjack.glb/mesh.prefab
 ---
 data:
   scene:
     t: {180, 0, 230}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 72
+mount:
+  /scene/parent: 72
 prefab: /pkg/vaststars.resources/glbs/mars-pumpjack.glb/work.prefab
 ---
 data:
   scene:
     t: {270, 0, 100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 74
+mount:
+  /scene/parent: 74
 prefab: /pkg/vaststars.resources/glbs/miner-1/miner-1.gltf/mesh.prefab
 ---
 data:
   scene:
     t: {370, 0, 100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 76
+mount:
+  /scene/parent: 76
 prefab: /pkg/vaststars.resources/glbs/miner-1/miner-1.gltf/work.prefab
 ---
 data:
   scene:
     t: {-60, 0, -160}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 78
+mount:
+  /scene/parent: 78
 prefab: /pkg/vaststars.resources/glbs/pump-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {20, 0, -160}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 80
+mount:
+  /scene/parent: 80
 prefab: /pkg/vaststars.resources/glbs/pump-1.glb/work.prefab
 ---
 data:
   scene:
     t: {-150, 0, 90}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 82
+mount:
+  /scene/parent: 82
 prefab: /pkg/vaststars.resources/glbs/solar-panel-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {-200, 0, 100}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 84
+mount:
+  /scene/parent: 84
 prefab: /pkg/vaststars.resources/glbs/storage-tank-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {70, 0, -160}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 86
+mount:
+  /scene/parent: 86
 prefab: /pkg/vaststars.resources/glbs/turbine-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {110, 0, -160}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 88
+mount:
+  /scene/parent: 88
 prefab: /pkg/vaststars.resources/glbs/turbine-1.glb/work.prefab
 ---
 data:
   scene:
     t: {280, 0, 0}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   mesh
 ---
-mount: 90
+mount:
+  /scene/parent: 90
 prefab: /pkg/vaststars.resources/glbs/wind-turbine-1.glb/mesh.prefab
 ---
 data:
   scene:
     t: {330, 0, 0}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
   work
 ---
-mount: 92
+mount:
+  /scene/parent: 92
 prefab: /pkg/vaststars.resources/glbs/wind-turbine-1.glb/work.prefab

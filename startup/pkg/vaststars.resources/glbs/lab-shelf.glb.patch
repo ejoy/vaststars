@@ -6,7 +6,8 @@ value:
   data:
     scene:
       t: {0, 6.400000095367432, 0}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -30,7 +31,8 @@ value:
   data:
     scene:
       t: {0, 6.400000095367432, 0}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:

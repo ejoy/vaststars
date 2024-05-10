@@ -7,7 +7,8 @@ value:
     scene:
       s: {1.5, 1.5, 1.5}
       t: {0, 3.7491300106048584, -1.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -19,7 +20,8 @@ path: /-
 value:
   data:
     scene: {}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -57,7 +59,8 @@ value:
       s: {3, 3, 3}
       t: {0, 0, -2.5}
     visible: true
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
     ant.efk|efk
@@ -83,7 +86,8 @@ value:
     scene:
       s: {1.5, 1.5, 1.5}
       t: {0, 3.7491300106048584, -1.5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -91,7 +95,8 @@ value:
   ---
   data:
     scene: {}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:

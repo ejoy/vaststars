@@ -12,7 +12,8 @@ value:
   data:
     scene:
       t: {-15, 6, 16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -25,7 +26,8 @@ value:
   data:
     scene:
       t: {0, 6, 20}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -38,7 +40,8 @@ value:
   data:
     scene:
       t: {15, 6, 16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -52,7 +55,8 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {15, 6, -16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -66,7 +70,8 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 6, -20}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -80,7 +85,8 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {-15, 6, -16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -113,7 +119,8 @@ value:
       s: 4
       t: {0, 3, 0}
     visible: true
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
     ant.efk|efk
@@ -152,7 +159,8 @@ value:
   data:
     scene:
       t: {-15, 6, 16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -161,7 +169,8 @@ value:
   data:
     scene:
       t: {0, 6, 20}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -170,7 +179,8 @@ value:
   data:
     scene:
       t: {15, 6, 16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -180,7 +190,8 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {15, 6, -16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -190,7 +201,8 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {0, 6, -20}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -200,7 +212,8 @@ value:
     scene:
       r: {0, 1, 0, -4.371138828673793e-08}
       t: {-15, 6, -16}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:

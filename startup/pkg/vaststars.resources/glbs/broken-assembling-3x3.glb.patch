@@ -16,7 +16,8 @@ value:
     scene:
       s: {10, 10, 10}
     visible: true
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
     ant.efk|efk

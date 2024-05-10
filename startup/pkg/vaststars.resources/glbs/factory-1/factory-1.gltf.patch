@@ -7,7 +7,8 @@ value:
     scene:
       r: {-0.09904574602842331, 0.8923990726470947, 0.2391175776720047, 0.36964380741119385}
       t: {-15, 0, -5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -21,7 +22,8 @@ value:
     scene:
       r: {-0.09904574602842331, 0.8923990726470947, 0.2391175776720047, 0.36964380741119385}
       t: {-10, 5, -11}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -35,7 +37,8 @@ value:
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {0, 6.199999809265137, -15}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -49,7 +52,8 @@ value:
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {0, 6.199999809265137, -15}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -63,7 +67,8 @@ value:
     scene:
       r: {0.2391175776720047, 0.36964383721351624, -0.09904575347900391, 0.8923990726470947}
       t: {10, 5, -10}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -77,7 +82,8 @@ value:
     scene:
       r: {0.08715572953224182, 3.9302004497799415e-17, 4.492240823949958e-16, 0.9961947202682495}
       t: {15, 0, -5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -117,7 +123,8 @@ value:
     scene:
       r: {-0.09904574602842331, 0.8923990726470947, 0.2391175776720047, 0.36964380741119385}
       t: {-15, 0, -5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -127,7 +134,8 @@ value:
     scene:
       r: {-0.09904574602842331, 0.8923990726470947, 0.2391175776720047, 0.36964380741119385}
       t: {-10, 5, -11}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -137,7 +145,8 @@ value:
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {0, 6.199999809265137, -15}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -147,7 +156,8 @@ value:
     scene:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       t: {0, 6.199999809265137, -15}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -157,7 +167,8 @@ value:
     scene:
       r: {0.2391175776720047, 0.36964383721351624, -0.09904575347900391, 0.8923990726470947}
       t: {10, 5, -10}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:
@@ -167,7 +178,8 @@ value:
     scene:
       r: {0.08715572953224182, 3.9302004497799415e-17, 4.492240823949958e-16, 0.9961947202682495}
       t: {15, 0, -5}
-  mount: 1
+  mount:
+    /scene/parent: 1
   policy:
     ant.scene|scene_object
   tag:

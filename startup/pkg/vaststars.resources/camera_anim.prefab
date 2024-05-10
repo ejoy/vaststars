@@ -10,7 +10,8 @@ data:
   scene:
     r: {0.4226182699203491, 0, 0, 0.9063077569007874}
     t: {-100, 200, -200}
-mount: 1
+mount:
+  /scene/parent: 1
 policy:
   ant.scene|scene_object
 tag:
@@ -31,7 +32,8 @@ data:
   scene:
     t: {0, 0, 0}
     updir: {0, 1, 0, 0}
-mount: 2
+mount:
+  /scene/parent: 2
 policy:
   ant.camera|camera
   ant.camera|exposure
@@ -46,7 +48,8 @@ data:
     s: {1, 1, 1}
     t: {10, -20,40}
   visible: true
-mount: 3
+mount:
+  /scene/parent: 3
 policy:
   ant.scene|scene_object
   ant.efk|efk
