@@ -14,7 +14,8 @@ else
 end
 
 local fs = require "bee.filesystem"
-local ProjectDir = fs.exe_path()
+local sys = require "bee.sys"
+local ProjectDir = sys.exe_path()
     :parent_path()
     :parent_path()
     :parent_path()
