@@ -6,7 +6,7 @@
 #endif //SUB_MESH_COUNT
 
 BUFFER_RO(b_mesh_indices,    uint, 0);
-BUFFER_WR(b_indirect_buffer, uvec4, 1);
+BUFFER_WO(b_indirect_buffer, uvec4, 1);
 uniform vec4 u_buffer_param;
 uniform vec4 u_mesh_params[SUB_MESH_COUNT];
 

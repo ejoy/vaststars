@@ -2,7 +2,7 @@
 #include <bgfx_compute.sh>
 
 BUFFER_RO(b_mesh_buffer, uint, 0);
-BUFFER_WR(b_indirect_buffer, uvec4, 1);
+BUFFER_WO(b_indirect_buffer, uvec4, 1);
 uniform vec4 u_mesh_param;
 
 uint calc_vb_offset(uint shape, uint dir)
