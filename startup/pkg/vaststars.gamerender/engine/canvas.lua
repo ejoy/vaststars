@@ -4,7 +4,7 @@ local w     = world.w
 
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
-local icas   = ecs.require "ant.terrain|canvas"
+local icas   = ecs.require "vaststars.external|canvas"
 local iom = ecs.require "ant.objcontroller|obj_motion"
 
 local CANVAS_BUILD <const> = {
@@ -83,7 +83,7 @@ function M.create(canvas_type, show, yaxis)
     local canvas_eid; canvas_eid = world:create_entity {
         policy = {
             "ant.scene|scene_object",
-            "ant.terrain|canvas",
+            "vaststars.external|canvas",
         },
         data = {
             scene = {
