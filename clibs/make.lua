@@ -71,10 +71,6 @@ if lm.os == "macos" then
     return
 end
 
-lm:dll "lua54" {
-    sources = "lua54/forward_lua.c",
-}
-
 lm:lua_dll "vaststars" {
     export_luaopen = "off",
     deps = {
