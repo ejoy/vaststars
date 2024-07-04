@@ -2,7 +2,6 @@ colorspace: sRGB
 compress:
   android: ASTC6x6
   ios: ASTC6x6
-  windows: BC3
 noresize: true
 maxsize: 1024
 normalmap: false

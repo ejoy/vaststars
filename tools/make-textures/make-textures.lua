@@ -30,10 +30,7 @@ end
 
 local TEXTURE_CONTENT <const> = [[
 colorspace: sRGB
-compress:
-  android: ASTC6x6
-  ios: ASTC6x6
-  windows: BC3
+compress: true
 noresize: true
 normalmap: false
 path: %s

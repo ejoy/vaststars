@@ -1,8 +1,5 @@
 colorspace: sRGB
-compress:
-  android: ASTC4x4
-  ios: ASTC4x4
-  windows: BC3
+compress: true
 noresize: true
 normalmap: false
 path: $path ../../images/canvas/pickup-fluid-indication-arrow-output.png
