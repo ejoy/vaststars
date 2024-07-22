@@ -22,5 +22,8 @@ lm:lua_src "gameplay" {
     sources = {
         "src/**/*.c",
         "src/**/*.cpp",
-    }
+    },
+	msvc = {
+		flags = "/utf-8",
+	}
 }
